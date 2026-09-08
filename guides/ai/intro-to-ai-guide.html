@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Introduction to AI — A Beginner's Guide (Agents, Search & Local Search)</title>
 <script>
   window.MathJax = {
@@ -121,7 +121,15 @@
 </style>
 </head>
 <body id="top">
-<a href="../../index.html" style="position:fixed;top:10px;left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
+<style>
+  :root { --sgl-safe-top: 0px; }
+  @media (display-mode: standalone) {
+    :root { --sgl-safe-top: env(safe-area-inset-top); }
+    body { padding-top: var(--sgl-safe-top); }
+    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }
+  }
+</style>
+<a href="../../index.html" style="position:fixed;top:calc(10px + var(--sgl-safe-top));left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
 <div class="shell">
 <nav class="sidebar">
   <div class="toc-title">Intro to AI</div>
