@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Study Guide Library</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#8c3b2e" />
+
+  <!-- iOS home screen support -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Study Guides" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="assets/library.css" />
+</head>
+<body>
+  <header class="lib-header">
+    <h1>Study Guide Library</h1>
+    <p>Every guide, in one place.</p>
+  </header>
+
+  <div class="lib-controls">
+    <input
+      id="lib-search"
+      class="lib-search"
+      type="search"
+      placeholder="Search guides…"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+    />
+    <div id="lib-filters" class="lib-filters"></div>
+  </div>
+
+  <main class="lib-main">
+    <div id="lib-list"></div>
+  </main>
+
+  <div id="lib-offline-badge" class="lib-offline-badge"></div>
+
+  <script src="assets/library.js"></script>
+</body>
+</html>

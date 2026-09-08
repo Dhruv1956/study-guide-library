@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ML Numerical Problems — IA Prep Guide</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #faf5ec;
+    --cream-2: #f3ead9;
+    --ink: #2b2118;
+    --ink-soft: #4a3b2c;
+    --brown: #7a5c3e;
+    --gold: #b8863f;
+    --blue-bg: #eaf1f6;
+    --blue-line: #6f96ac;
+    --green-bg: #eef3e6;
+    --green-line: #7c9a5c;
+    --amber-bg: #fbf0dc;
+    --amber-line: #c98a2c;
+    --red-bg: #f7e9e6;
+    --red-line: #b0563f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'EB Garamond', serif;
+    background: var(--cream);
+    color: var(--ink);
+    margin:0;
+    padding:0 0 80px 0;
+    font-size:19px;
+    line-height:1.65;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 32px;}
+  header.title{
+    background: linear-gradient(135deg, #3f2f20, #6b4b30);
+    color: #f6ecd9;
+    padding:56px 32px 44px 32px;
+    margin-bottom: 10px;
+  }
+  header.title .inner{max-width:880px;margin:0 auto;}
+  header.title h1{font-size:2.5em; margin:0 0 8px 0; font-weight:700; letter-spacing:0.3px;}
+  header.title p{font-size:1.15em; margin:4px 0; color:#e6d3b3; font-style:italic;}
+  header.title .tag{
+    display:inline-block; margin-top:14px; background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 16px;
+    font-size:0.85em; letter-spacing:0.5px; text-transform:uppercase; color:#f0dfc0;
+  }
+  nav.toc{
+    background: var(--cream-2);
+    border:1px solid #e2d3ba;
+    border-radius:10px;
+    padding:20px 26px;
+    margin:30px 0 40px 0;
+  }
+  nav.toc h2{margin:0 0 10px 0; font-size:1.05em; text-transform:uppercase; letter-spacing:1px; color:var(--brown);}
+  nav.toc ol{margin:0; padding-left:22px;}
+  nav.toc li{margin:4px 0;}
+  nav.toc a{color:var(--ink); text-decoration:none; border-bottom:1px dotted var(--gold);}
+  nav.toc a:hover{color:var(--gold);}
+
+  h2.section-title{
+    font-size:1.9em;
+    margin-top:64px;
+    padding-bottom:10px;
+    border-bottom: 3px solid var(--gold);
+    color:#3f2f20;
+    display:flex; align-items:baseline; gap:12px;
+  }
+  h2.section-title .num{
+    font-family:'Fira Code',monospace; font-size:0.5em; background:var(--gold); color:#fff;
+    padding:4px 10px; border-radius:6px; font-weight:600;
+  }
+  h3{font-size:1.3em; color:var(--brown); margin-top:34px; border-left:4px solid var(--gold); padding-left:12px;}
+  h4{font-size:1.1em; color:var(--ink-soft); margin-top:24px;}
+
+  p{margin:14px 0;}
+  ul,ol{margin:10px 0;}
+  li{margin:6px 0;}
+
+  .box{
+    border-radius:10px;
+    padding:18px 22px;
+    margin:22px 0;
+    border-left-width:5px;
+    border-left-style:solid;
+  }
+  .box-title{font-weight:700; font-size:0.85em; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;}
+  .theory{background:var(--blue-bg); border-color:var(--blue-line);}
+  .theory .box-title{color:var(--blue-line);}
+  .worked{background:var(--green-bg); border-color:var(--green-line);}
+  .worked .box-title{color:var(--green-line);}
+  .practice{background:var(--amber-bg); border-color:var(--amber-line);}
+  .practice .box-title{color:var(--amber-line);}
+  .note{background:var(--red-bg); border-color:var(--red-line);}
+  .note .box-title{color:var(--red-line);}
+
+  table{border-collapse:collapse; width:100%; margin:16px 0; background:#fffdf8;}
+  th,td{border:1px solid #ddccae; padding:8px 12px; text-align:center; font-size:0.95em;}
+  th{background:var(--cream-2); color:var(--brown);}
+  .step{
+    margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid #d9c69c;
+  }
+  .step-label{font-weight:600; color:var(--brown); display:block; margin-bottom:2px;}
+  .answer-final{
+    display:inline-block; background:#fff; border:2px solid var(--gold); border-radius:8px;
+    padding:8px 16px; margin-top:10px; font-weight:600;
+  }
+  .formula-sheet table{font-size:0.92em;}
+  code{font-family:'Fira Code', monospace; background:#f0e6d2; padding:1px 6px; border-radius:4px; font-size:0.85em;}
+  .pill{
+    display:inline-block; font-size:0.7em; text-transform:uppercase; letter-spacing:0.5px;
+    background:#3f2f20; color:#f6ecd9; padding:3px 10px; border-radius:12px; margin-left:8px; vertical-align:middle;
+  }
+  hr.sep{border:none; border-top:1px dashed #cbb98d; margin:36px 0;}
+  footer{text-align:center; color:var(--brown); font-style:italic; margin-top:70px; font-size:0.95em;}
+</style>
+</head>
+<body>
+<a href="../../index.html" style="position:fixed;top:10px;left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
+
+<header class="title">
+  <div class="inner">
+    <h1>ML Numerical Problems</h1>
+    <p>IA Preparation Guide — Fundamentals of Machine Learning (CSS 3131)</p>
+    <span class="tag">Built from your 4 lecture decks</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#sec1">Simple Linear Regression — Least Squares Method</a></li>
+    <li><a href="#sec2">Multiple Linear Regression — Normal Equation</a></li>
+    <li><a href="#sec3">Linear Regression via Gradient Descent (SGD)</a></li>
+    <li><a href="#sec4">Logistic Regression — Sigmoid, Odds &amp; Predictions</a></li>
+    <li><a href="#sec5">Quick-Reference Formula Sheet</a></li>
+    <li><a href="#sec6">How to Approach the Numerical Question in the Exam</a></li>
+  </ol>
+</nav>
+
+<p>I went through all four of your lecture PDFs (Fundamentals of ML, Linear Regression/Gradient Descent, Parametric vs Non-Parametric, Logistic Regression). Four calculation types show up with full worked examples — these are your most likely IA numerical-question candidates. For each one below you get: the theory in plain terms, a fully re-derived worked example (I recomputed everything by hand and cross-checked with Python so every number here is verified), and fresh practice problems with complete solutions so you can test yourself before checking the answer.</p>
+
+<!-- =========================================================== -->
+<h2 class="section-title" id="sec1"><span class="num">01</span> Simple Linear Regression — Least Squares Method</h2>
+
+<div class="box theory">
+  <div class="box-title">Theory</div>
+  <p>We're fitting a straight line $\hat{y} = mx + c$ through a set of $(x_i, y_i)$ points, choosing $m$ (slope) and $c$ (intercept) to minimize the squared error between actual $y$ and predicted $\hat y$.</p>
+  <p>The closed-form (calculus-derived) formulas are:</p>
+  $$ m = \frac{\sum_{i=1}^{n}(x_i - \bar x)(y_i - \bar y)}{\sum_{i=1}^{n}(x_i - \bar x)^2} \qquad\qquad c = \bar y - m\bar x $$
+  <p>where $\bar x$ and $\bar y$ are the means of $x$ and $y$.</p>
+  <p><strong>Error / goodness-of-fit metrics</strong> — these almost always follow the slope/intercept calculation in an exam question:</p>
+  $$ SS_{tot} = \sum (y_i - \bar y)^2 \qquad SS_{res} = \sum (y_i - \hat y_i)^2 $$
+  $$ MSE = \frac{SS_{res}}{n} \qquad RMSE = \sqrt{MSE} \qquad R^2 = 1 - \frac{SS_{res}}{SS_{tot}} $$
+  <p>$R^2$ tells you what fraction of the variation in $y$ is "explained" by $x$ — closer to 1 is a better fit.</p>
+</div>
+
+<div class="box worked">
+  <div class="box-title">Worked Example (from your slides, fully derived)</div>
+  <p>Data points: $(1,2)$, $(2,3)$, $(3,5)$.</p>
+  <div class="step"><span class="step-label">Step 1 — Means</span>
+  $\bar x = \dfrac{1+2+3}{3} = 2 \qquad \bar y = \dfrac{2+3+5}{3} = 3.333$</div>
+  <div class="step"><span class="step-label">Step 2 — Numerator and denominator of $m$</span>
+  <table>
+    <tr><th>$x_i$</th><th>$y_i$</th><th>$x_i-\bar x$</th><th>$y_i-\bar y$</th><th>$(x_i-\bar x)(y_i-\bar y)$</th><th>$(x_i-\bar x)^2$</th></tr>
+    <tr><td>1</td><td>2</td><td>-1</td><td>-1.333</td><td>1.333</td><td>1</td></tr>
+    <tr><td>2</td><td>3</td><td>0</td><td>-0.333</td><td>0</td><td>0</td></tr>
+    <tr><td>3</td><td>5</td><td>1</td><td>1.667</td><td>1.667</td><td>1</td></tr>
+    <tr><th colspan="4">Sum</th><th>3.0</th><th>2</th></tr>
+  </table>
+  </div>
+  <div class="step"><span class="step-label">Step 3 — Slope and intercept</span>
+  $m = \dfrac{3.0}{2} = 1.5 \qquad c = 3.333 - 1.5(2) = 0.333$</div>
+  <div class="step"><span class="step-label">Step 4 — Predictions</span>
+  $\hat y = 1.5x + 0.333 \;\Rightarrow\; \hat y = [1.833,\ 3.333,\ 4.833]$</div>
+  <div class="step"><span class="step-label">Step 5 — $SS_{tot}$, $SS_{res}$, $R^2$</span>
+  <table>
+    <tr><th>$x$</th><th>$y$</th><th>$\hat y$</th><th>$(y-\bar y)^2$</th><th>$(y-\hat y)^2$</th></tr>
+    <tr><td>1</td><td>2</td><td>1.83</td><td>1.77</td><td>0.029</td></tr>
+    <tr><td>2</td><td>3</td><td>3.33</td><td>0.11</td><td>0.109</td></tr>
+    <tr><td>3</td><td>5</td><td>4.83</td><td>2.79</td><td>0.029</td></tr>
+    <tr><th colspan="3">Sum</th><th>$SS_{tot}=4.67$</th><th>$SS_{res}=0.167$</th></tr>
+  </table>
+  $$R^2 = 1 - \frac{0.167}{4.67} = 1 - 0.0358 = 0.9642$$
+  $$MSE = \frac{0.167}{3} = 0.0556 \qquad RMSE = \sqrt{0.0556} = 0.236$$
+  </div>
+  <span class="answer-final">m = 1.5, c = 0.333, R² = 0.9642, RMSE = 0.236</span>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 1.1 — try it yourself first</div>
+  <p>Fit a simple linear regression line to: $x = [2,4,6,8,10]$, $y=[3,7,5,10,12]$. Find $m$, $c$, then compute $R^2$ and $RMSE$.</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <div class="step"><span class="step-label">Means</span>$\bar x = 6,\ \bar y = 7.4$</div>
+    <div class="step"><span class="step-label">Sums</span>$\sum(x_i-\bar x)(y_i-\bar y) = 42,\quad \sum(x_i-\bar x)^2 = 40$</div>
+    <div class="step"><span class="step-label">Slope/intercept</span>$m = \dfrac{42}{40} = 1.05,\qquad c = 7.4 - 1.05(6) = 1.1$</div>
+    <div class="step"><span class="step-label">Predictions</span>$\hat y = [3.2,\ 5.3,\ 7.4,\ 9.5,\ 11.6]$</div>
+    <div class="step"><span class="step-label">Metrics</span>$SS_{tot} = 53.2,\quad SS_{res} = 9.1$
+    $$R^2 = 1-\frac{9.1}{53.2} = 0.829 \qquad MSE = \frac{9.1}{5}=1.82 \qquad RMSE = \sqrt{1.82}=1.349$$</div>
+    <span class="answer-final">m = 1.05, c = 1.1, R² = 0.829, RMSE = 1.349</span>
+  </details>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 1.2 — clean-number version</div>
+  <p>Fit a line to $x=[1,2,3,4]$, $y=[2,4,5,8]$. Find $m$, $c$, $R^2$.</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <div class="step"><span class="step-label">Means</span>$\bar x = 2.5,\ \bar y = 4.75$</div>
+    <div class="step"><span class="step-label">Sums</span>$\sum(x_i-\bar x)(y_i-\bar y)=9.5,\quad \sum(x_i-\bar x)^2 = 5$</div>
+    <div class="step"><span class="step-label">Slope/intercept</span>$m = \dfrac{9.5}{5}=1.9,\qquad c = 4.75-1.9(2.5)=0$</div>
+    <div class="step"><span class="step-label">Predictions</span>$\hat y = [1.9,\ 3.8,\ 5.7,\ 7.6]$</div>
+    <div class="step"><span class="step-label">Metrics</span>$SS_{tot}=18.75,\quad SS_{res}=0.7$
+    $$R^2 = 1-\frac{0.7}{18.75} = 0.963$$</div>
+    <span class="answer-final">m = 1.9, c = 0, R² = 0.963</span>
+  </details>
+</div>
+
+<!-- =========================================================== -->
+<h2 class="section-title" id="sec2"><span class="num">02</span> Multiple Linear Regression — Normal Equation</h2>
+
+<div class="box theory">
+  <div class="box-title">Theory</div>
+  <p>With more than one input feature, we fit $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_p x_p$. The closed-form solution (no iteration needed) is the <strong>Normal Equation</strong>:</p>
+  $$ \hat\beta = (X^TX)^{-1}X^Ty $$
+  <p>where $X$ is the <em>design matrix</em> — every row is one data point, with a leading column of 1's for the intercept $\beta_0$.</p>
+  <p><strong>The five calculation steps every time:</strong></p>
+  <ol>
+    <li>Build $X$ (add the column of 1's) and the target vector $y$.</li>
+    <li>Compute $X^T$ (transpose).</li>
+    <li>Compute the product $X^TX$ (a square matrix).</li>
+    <li>Invert $X^TX$ to get $(X^TX)^{-1}$.</li>
+    <li>Multiply: $\hat\beta = (X^TX)^{-1}(X^Ty)$.</li>
+  </ol>
+</div>
+
+<div class="box note">
+  <div class="box-title">Heads-up — a discrepancy in your slide deck</div>
+  <p>Your Lecture&nbsp;1 slides give this dataset:</p>
+  <table style="max-width:300px;">
+    <tr><th>$x_1$</th><th>$x_2$</th><th>$y$</th></tr>
+    <tr><td>1</td><td>2</td><td>5</td></tr>
+    <tr><td>2</td><td>1</td><td>6</td></tr>
+    <tr><td>3</td><td>4</td><td>10</td></tr>
+    <tr><td>4</td><td>3</td><td>11</td></tr>
+  </table>
+  <p>...and states the answer as $\theta = [2.1,\ 1.4,\ 0.8]$. I recomputed this by hand and cross-verified in Python — that answer doesn't actually satisfy the normal equation for this data. The <strong>correct</strong> coefficients for this exact dataset are $\beta = [1.75,\ 1.75,\ 0.75]$, which fits all four points exactly (check: $1.75+1.75(1)+0.75(2)=5$ ✓, and so on for the rest). The worked example below uses the correct numbers and shows every step, so you can follow the same method safely — just don't memorize the slide's final answer as-is.</p>
+</div>
+
+<div class="box worked">
+  <div class="box-title">Worked Example (slide's dataset, correctly solved)</div>
+  <div class="step"><span class="step-label">Step 1 — Design matrix and target</span>
+  $$X = \begin{bmatrix}1&1&2\\1&2&1\\1&3&4\\1&4&3\end{bmatrix} \qquad y = \begin{bmatrix}5\\6\\10\\11\end{bmatrix}$$
+  </div>
+  <div class="step"><span class="step-label">Step 2 — $X^TX$</span>
+  Each entry of $X^TX$ is a dot product of two columns of $X$. Working these out:
+  $$X^TX = \begin{bmatrix}4&10&10\\10&30&28\\10&28&30\end{bmatrix}$$
+  </div>
+  <div class="step"><span class="step-label">Step 3 — $X^Ty$</span>
+  $$X^Ty = \begin{bmatrix}1+1+1+1\\1(5)+2(6)+3(10)+4(11)\\2(5)+1(6)+4(10)+3(11)\end{bmatrix} = \begin{bmatrix}32\\91\\89\end{bmatrix}$$
+  </div>
+  <div class="step"><span class="step-label">Step 4 — Invert $X^TX$</span>
+  $$(X^TX)^{-1} = \begin{bmatrix}1.8125&-0.3125&-0.3125\\-0.3125&0.3125&-0.1875\\-0.3125&-0.1875&0.3125\end{bmatrix}$$
+  </div>
+  <div class="step"><span class="step-label">Step 5 — Multiply to get $\hat\beta$</span>
+  $$\hat\beta = (X^TX)^{-1}X^Ty = \begin{bmatrix}1.75\\1.75\\0.75\end{bmatrix}$$
+  $$y = 1.75 + 1.75x_1 + 0.75x_2$$
+  </div>
+  <span class="answer-final">β₀ = 1.75, β₁ = 1.75, β₂ = 0.75</span>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 2.1 — Normal Equation, clean numbers</div>
+  <p>Data: $(x_1,x_2,y)$ = $(1,1,6)$, $(2,1,8)$, $(1,3,8)$, $(3,2,11)$. Find $\hat\beta = [\beta_0,\beta_1,\beta_2]$.</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <div class="step"><span class="step-label">Design matrix</span>
+    $$X=\begin{bmatrix}1&1&1\\1&2&1\\1&1&3\\1&3&2\end{bmatrix} \quad y=\begin{bmatrix}6\\8\\8\\11\end{bmatrix}$$</div>
+    <div class="step"><span class="step-label">$X^TX$ and $X^Ty$</span>
+    $$X^TX = \begin{bmatrix}4&7&7\\7&15&12\\7&12&15\end{bmatrix} \qquad X^Ty = \begin{bmatrix}33\\63\\60\end{bmatrix}$$</div>
+    <div class="step"><span class="step-label">Inverse and multiply</span>
+    $$(X^TX)^{-1} = \begin{bmatrix}2.7&-0.7&-0.7\\-0.7&0.367&0.033\\-0.7&0.033&0.367\end{bmatrix}$$
+    $$\hat\beta = \begin{bmatrix}3\\2\\1\end{bmatrix} \;\Rightarrow\; y = 3 + 2x_1 + x_2$$</div>
+    <p>Check: for $(1,1)$: $3+2+1=6$ ✓ &nbsp;for $(3,2)$: $3+6+2=11$ ✓ — exact fit.</p>
+    <span class="answer-final">β₀ = 3, β₁ = 2, β₂ = 1</span>
+  </details>
+</div>
+
+<!-- =========================================================== -->
+<h2 class="section-title" id="sec3"><span class="num">03</span> Linear Regression via Gradient Descent (SGD)</h2>
+
+<div class="box theory">
+  <div class="box-title">Theory</div>
+  <p>Instead of solving for coefficients in closed form, Stochastic Gradient Descent starts with $B_0=0, B_1=0$ and updates them <strong>one training example at a time</strong>, nudging them a little closer to the optimum on each pass:</p>
+  $$ p(i) = B_0 + B_1\cdot x(i) \qquad \text{error} = p(i)-y(i) $$
+  $$ B_0^{(t+1)} = B_0^{(t)} - \alpha \cdot \text{error} \qquad B_1^{(t+1)} = B_1^{(t)} - \alpha \cdot \text{error}\cdot x(i) $$
+  <p>$\alpha$ is the learning rate (a small constant like 0.01 or 0.1). One full pass through all training points is called an <strong>epoch</strong>.</p>
+  <p><strong>Exam tip:</strong> the question will almost always give you a small dataset (4–5 points), an initial $B_0, B_1$ (usually both 0), a value of $\alpha$, and ask you to hand-compute 1–2 iterations or one full epoch, showing $p(i)$, error, and the updated $B_0, B_1$ at every step.</p>
+</div>
+
+<div class="box worked">
+  <div class="box-title">Worked Example (from your slides — first epoch, α = 0.01)</div>
+  <p>Dataset: $x=[1,2,4,3,5]$, $y=[1,3,3,2,5]$. Start: $B_0=0, B_1=0$.</p>
+  <table>
+    <tr><th>Iter</th><th>x</th><th>y</th><th>$p(i)=B_0+B_1x$</th><th>error $=p-y$</th><th>New $B_0$</th><th>New $B_1$</th></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>-1</td><td>0.0100</td><td>0.0100</td></tr>
+    <tr><td>2</td><td>2</td><td>3</td><td>0.03</td><td>-2.97</td><td>0.0397</td><td>0.0694</td></tr>
+    <tr><td>3</td><td>4</td><td>3</td><td>0.3173</td><td>-2.6827</td><td>0.06653</td><td>0.17671</td></tr>
+    <tr><td>4</td><td>3</td><td>2</td><td>0.59665</td><td>-1.40335</td><td>0.08056</td><td>0.21881</td></tr>
+    <tr><td>5</td><td>5</td><td>5</td><td>1.17460</td><td>-3.82540</td><td>0.11881</td><td>0.41008</td></tr>
+  </table>
+  <div class="step"><span class="step-label">How iteration 2 was actually computed (so you can reproduce it)</span>
+  $$p(2) = 0.01 + 0.01(2) = 0.03 \qquad \text{error} = 0.03-3=-2.97$$
+  $$B_0^{new} = 0.01-0.01(-2.97) = 0.0397 \qquad B_1^{new} = 0.01-0.01(-2.97)(2)=0.0694$$
+  </div>
+  <p>After 4 full epochs (20 iterations total), the slides show this converges to $B_0 \approx 0.231,\ B_1\approx 0.790$, close to the Normal Equation's exact solution — that's the whole point of gradient descent: it approaches the same answer iteratively instead of solving for it directly.</p>
+  <span class="answer-final">After 1 iteration: B₀ = 0.01, B₁ = 0.01</span>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 3.1 — SGD by hand</div>
+  <p>Dataset: $x=[1,2,3]$, $y=[2,4,5]$. Start $B_0=0,B_1=0$, learning rate $\alpha=0.1$. Compute 3 iterations (one epoch).</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <table>
+      <tr><th>Iter</th><th>x</th><th>y</th><th>p(i)</th><th>error</th><th>New $B_0$</th><th>New $B_1$</th></tr>
+      <tr><td>1</td><td>1</td><td>2</td><td>0</td><td>-2.0</td><td>0.20</td><td>0.20</td></tr>
+      <tr><td>2</td><td>2</td><td>4</td><td>0.60</td><td>-3.40</td><td>0.54</td><td>0.88</td></tr>
+      <tr><td>3</td><td>3</td><td>5</td><td>3.18</td><td>-1.82</td><td>0.722</td><td>1.426</td></tr>
+    </table>
+    <div class="step"><span class="step-label">Iteration 3 in detail</span>
+    $p(3) = 0.54+0.88(3)=3.18 \quad \text{error}=3.18-5=-1.82$
+    $B_0^{new}=0.54-0.1(-1.82)=0.722 \qquad B_1^{new}=0.88-0.1(-1.82)(3)=1.426$</div>
+    <span class="answer-final">After 3 iterations: B₀ = 0.722, B₁ = 1.426</span>
+  </details>
+</div>
+
+<!-- =========================================================== -->
+<h2 class="section-title" id="sec4"><span class="num">04</span> Logistic Regression — Sigmoid, Odds &amp; Predictions</h2>
+
+<div class="box theory">
+  <div class="box-title">Theory</div>
+  <p>Logistic regression is a <strong>classification</strong> method (despite the name). It squashes a linear combination $z = B_0 + B_1x$ through the sigmoid function into a probability between 0 and 1:</p>
+  $$ P(x) = \sigma(z) = \frac{1}{1+e^{-z}} = \frac{e^z}{1+e^z} $$
+  <p><strong>Odds</strong> and <strong>log-odds (logit)</strong> — the ratio of "event happens" to "event doesn't happen":</p>
+  $$ \text{odds} = \frac{P}{1-P} \qquad \text{logit}(P) = \ln\left(\frac{P}{1-P}\right) = z = B_0+B_1x $$
+  <p><strong>Decision rule:</strong> predict class $1$ if $P \geq 0.5$, else predict class $0$.</p>
+</div>
+
+<div class="box worked">
+  <div class="box-title">Worked Example 1 — Predicting probability from coefficients</div>
+  <p>Given $B_0=-100,\ B_1=0.6$. Find $P(\text{rich}\mid \text{income}=150)$.</p>
+  <div class="step"><span class="step-label">Step 1 — Compute $z$</span>
+  $z = -100 + 0.6(150) = -100+90 = -10$</div>
+  <div class="step"><span class="step-label">Step 2 — Apply sigmoid</span>
+  $$P = \frac{1}{1+e^{-(-10)}} = \frac{1}{1+e^{10}} = \frac{1}{1+22026.47} = 0.0000453979$$
+  </div>
+  <div class="step"><span class="step-label">Step 3 — Decision</span>
+  Since $0.0000454 < 0.5$, predict class $0$ (poor).</div>
+  <p><em>Note: your slide rounds/prints this as "0.000453978687" — the precise value is $4.5398\times10^{-5} = 0.0000453979$; same digits, watch the decimal placement if you're copying it into an exam answer.</em></p>
+  <span class="answer-final">P ≈ 0.0000454 → predict "poor" (class 0)</span>
+</div>
+
+<div class="box worked">
+  <div class="box-title">Worked Example 2 — Odds and log-odds from a probability</div>
+  <p>If $P(\text{win}) = 0.6$:</p>
+  $$\text{odds} = \frac{0.6}{1-0.6} = \frac{0.6}{0.4} = 1.5 \qquad \text{logit}(P) = \ln(1.5) = 0.405$$
+  <span class="answer-final">odds = 1.5, log-odds = 0.405</span>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 4.1 — sigmoid prediction</div>
+  <p>Given $B_0=-6,\ B_1=0.05$. Find the probability that a person passes a test given a score input $x=100$, and state the predicted class.</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <div class="step">$z = -6+0.05(100) = -6+5=-1$</div>
+    <div class="step">$P = \dfrac{1}{1+e^{1}} = \dfrac{1}{1+2.718} = 0.269$</div>
+    <div class="step">$0.269 < 0.5 \Rightarrow$ predict class 0.</div>
+    <span class="answer-final">P ≈ 0.269 → predict class 0</span>
+  </details>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 4.2 — odds/log-odds</div>
+  <p>If $P = 0.75$, find the odds and log-odds.</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <div class="step">$\text{odds} = \dfrac{0.75}{0.25} = 3$</div>
+    <div class="step">$\text{logit} = \ln(3) = 1.0986$</div>
+    <span class="answer-final">odds = 3, log-odds ≈ 1.099</span>
+  </details>
+</div>
+
+<div class="box practice">
+  <div class="box-title">Practice 4.3 — the slide's unfinished example, completed</div>
+  <p>Your Lecture 4 deck sets up "predict pass/fail from hours studied" but stops before giving numbers. Using representative coefficients $B_0=-4,\ B_1=1.2$, find the probability of passing for a student who studies (a) 3.5 hours and (b) 7.5 hours.</p>
+  <details>
+    <summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show full solution</summary>
+    <div class="step"><span class="step-label">(a) 3.5 hours</span>
+    $z=-4+1.2(3.5) = -4+4.2=0.2 \qquad P=\dfrac{1}{1+e^{-0.2}} = 0.550$</div>
+    <div class="step"><span class="step-label">(b) 7.5 hours</span>
+    $z=-4+1.2(7.5)=-4+9=5 \qquad P=\dfrac{1}{1+e^{-5}} = 0.993$</div>
+    <span class="answer-final">3.5 hrs → P ≈ 0.550 (pass); 7.5 hrs → P ≈ 0.993 (pass)</span>
+  </details>
+</div>
+
+<!-- =========================================================== -->
+<h2 class="section-title" id="sec5"><span class="num">05</span> Quick-Reference Formula Sheet</h2>
+
+<div class="box theory formula-sheet">
+  <table>
+    <tr><th>Method</th><th>Core formula</th></tr>
+    <tr><td>Simple Linear Regression (slope)</td><td>$m = \dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}$</td></tr>
+    <tr><td>Simple Linear Regression (intercept)</td><td>$c = \bar y - m\bar x$</td></tr>
+    <tr><td>MSE / RMSE</td><td>$MSE=\frac{1}{n}\sum(y_i-\hat y_i)^2,\quad RMSE=\sqrt{MSE}$</td></tr>
+    <tr><td>$R^2$</td><td>$R^2 = 1-\dfrac{SS_{res}}{SS_{tot}}$</td></tr>
+    <tr><td>Normal Equation</td><td>$\hat\beta = (X^TX)^{-1}X^Ty$</td></tr>
+    <tr><td>SGD update rule</td><td>$B_0 \mathrel{-}= \alpha\cdot\text{error};\quad B_1 \mathrel{-}= \alpha\cdot\text{error}\cdot x$</td></tr>
+    <tr><td>Sigmoid</td><td>$P(x) = \dfrac{1}{1+e^{-z}},\quad z=B_0+B_1x$</td></tr>
+    <tr><td>Odds / log-odds</td><td>$\text{odds}=\dfrac{P}{1-P},\quad \text{logit}(P) = \ln(\text{odds}) = z$</td></tr>
+  </table>
+</div>
+
+<!-- =========================================================== -->
+<h2 class="section-title" id="sec6"><span class="num">06</span> How to Approach the Numerical Question in the Exam</h2>
+
+<div class="box note">
+  <div class="box-title">Strategy</div>
+  <ol>
+    <li><strong>Identify the method first.</strong> Look for the giveaways: a design matrix / matrix inverse notation → Normal Equation. Words like "iteration," "epoch," "learning rate α" → Gradient Descent. A single $(x,y)$ pair with slope/intercept only → Simple Linear Regression. Anything about "probability," "sigmoid," or "classify" → Logistic Regression.</li>
+    <li><strong>Write the general formula first</strong>, then substitute numbers — examiners give partial credit for the correct formula even if arithmetic slips.</li>
+    <li><strong>Show intermediate sums/matrices explicitly</strong> (like the $\bar x, \bar y$ table or the $X^TX$ matrix above) rather than jumping straight to the final number — this is exactly the style your slides use, and it's what graders expect to see.</li>
+    <li><strong>Box or underline your final answer</strong> (coefficients, $R^2$, or probability).</li>
+    <li><strong>Sanity-check</strong>: plug your fitted coefficients back into one data point and confirm the prediction is reasonably close to the actual $y$ — this catches arithmetic errors before you hand in the paper.</li>
+  </ol>
+</div>
+
+</div>
+
+<footer>Built from M&amp;C ML Lectures 1–4 · every worked number cross-verified · good luck with the IA</footer>
+
+</body>
+</html>

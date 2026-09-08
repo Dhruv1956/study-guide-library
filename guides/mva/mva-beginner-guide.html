@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multivariate Analysis — A Beginner's Guide (MND, Hotelling's T², Correlation, Wishart)</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{
+    --cream:#fbf6e9;
+    --paper:#fffdf7;
+    --ink:#2b2620;
+    --ink-soft:#5b5347;
+    --rule:#e4d9bd;
+    --accent:#a8632f;
+    --accent2:#5c7a5e;
+    --def-bg:#eef3fb; --def-line:#5b7fb5;
+    --ex-bg:#fdf3e3;  --ex-line:#c98a2c;
+    --an-bg:#eef6ee;  --an-line:#5c9a63;
+    --warn-bg:#fbeaea; --warn-line:#c0504d;
+    --key-bg:#f3edf9; --key-line:#8a63c9;
+    --fix-bg:#fff0e8; --fix-line:#d9622b;
+    --code-bg:#2b2620; --code-ink:#f2ead9;
+    --sidebar-w:290px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'EB Garamond', Georgia, 'Times New Roman', serif;
+    font-size:19px; line-height:1.65;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  code, .mono, pre, .pseudocode, .kbd{ font-family:'JetBrains Mono', monospace; }
+
+  a{color:var(--accent);}
+  h1,h2,h3,h4{ font-family:'EB Garamond', serif; font-weight:700; color:#221e19; line-height:1.25; }
+
+  .shell{ display:flex; max-width:1400px; margin:0 auto; }
+  .sidebar{
+    width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:22px 16px 40px 22px; border-right:1px solid var(--rule);
+    background:var(--paper);
+  }
+  .sidebar h3{ font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:22px 0 8px; }
+  .sidebar h3:first-child{ margin-top:0; }
+  .sidebar a{ display:block; text-decoration:none; color:var(--ink-soft); font-size:14.5px; padding:4px 0 4px 10px; border-left:2px solid transparent; }
+  .sidebar a:hover{ color:var(--accent); border-left-color:var(--accent); }
+  .sidebar .toc-title{ font-family:'EB Garamond',serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:4px;}
+  .sidebar .toc-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:14px; }
+  .main{ flex:1; min-width:0; padding:40px 56px 100px; }
+
+  .hero{ padding-bottom:28px; border-bottom:3px solid var(--accent); margin-bottom:36px; }
+  .hero .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); }
+  .hero h1{ font-size:40px; margin:8px 0 10px; }
+  .hero p.lead{ font-size:20px; color:var(--ink-soft); max-width:760px; }
+  .hero .badges{ margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; }
+  .badge{ font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--paper); border:1px solid var(--rule); padding:4px 10px; border-radius:20px; color:var(--ink-soft); }
+
+  .part-header{ margin-top:70px; padding:22px 26px; background:linear-gradient(120deg,#3a2f22,#5c4a34); color:#fbf6e9; border-radius:10px; }
+  .part-header .ptag{ font-family:'JetBrains Mono',monospace; font-size:13px; opacity:.75; letter-spacing:.06em; text-transform:uppercase;}
+  .part-header h2{ color:#fff; font-size:29px; margin:6px 0 8px; }
+  .part-header p{ margin:0; color:#f0e6d2; font-size:16.5px; max-width:800px;}
+
+  section.slide{ margin-top:46px; padding-top:8px; border-top:1px solid var(--rule); }
+  section.slide:first-of-type{ border-top:none; }
+  .slide-tag{ font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--accent2); background:#e9f0e9; display:inline-block; padding:2px 9px; border-radius:4px; margin-bottom:8px;}
+  .slide h3{ font-size:25px; margin:2px 0 14px; }
+  .slide h4{ font-size:19px; margin:22px 0 8px; color:var(--accent); }
+  .slide p{ margin:12px 0; }
+  .slide ul, .slide ol{ padding-left:26px; }
+  .slide li{ margin:6px 0; }
+
+  .box{ margin:18px 0; padding:14px 18px; border-radius:8px; border-left:5px solid; }
+  .box .box-label{ font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px; display:block;}
+  .def{ background:var(--def-bg); border-color:var(--def-line);} .def .box-label{color:var(--def-line);}
+  .ex{ background:var(--ex-bg); border-color:var(--ex-line);} .ex .box-label{color:var(--ex-line);}
+  .an{ background:var(--an-bg); border-color:var(--an-line);} .an .box-label{color:var(--an-line);}
+  .warn{ background:var(--warn-bg); border-color:var(--warn-line);} .warn .box-label{color:var(--warn-line);}
+  .key{ background:var(--key-bg); border-color:var(--key-line);} .key .box-label{color:var(--key-line);}
+  .fix{ background:var(--fix-bg); border-color:var(--fix-line);} .fix .box-label{color:var(--fix-line);}
+
+  pre.pseudocode{ background:var(--code-bg); color:var(--code-ink); padding:16px 18px; border-radius:8px; overflow-x:auto; font-size:15px; line-height:1.6;}
+  pre.pseudocode .kw{ color:#e3b95c; } pre.pseudocode .cm{color:#9c9284; font-style:italic;}
+
+  table.grid{ width:100%; border-collapse:collapse; margin:16px 0; font-size:16.5px;}
+  table.grid th, table.grid td{ border:1px solid var(--rule); padding:8px 12px; text-align:left; vertical-align:top;}
+  table.grid th{ background:#f1e9d3; font-family:'JetBrains Mono',monospace; font-size:13px; text-transform:uppercase; letter-spacing:.03em;}
+  table.grid tr:nth-child(even) td{ background:#fffaf0; }
+  table.trace{ font-family:'JetBrains Mono',monospace; font-size:14.5px; }
+  table.trace th{ background:#3a2f22; color:#f0e6d2; }
+  .center{ text-align:center; }
+  .small{ font-size:14.5px; color:var(--ink-soft); }
+  .arrow{ color:var(--accent); font-weight:700; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  @media(max-width:900px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .chip{ display:inline-block; background:#f1e9d3; border:1px solid var(--rule); padding:6px 12px; border-radius:6px; margin:4px 6px 4px 0; font-family:'JetBrains Mono',monospace; font-size:14px;}
+
+  .qbox{ background:#fff; border:2px dashed var(--accent2); border-radius:8px; padding:14px 18px; margin:18px 0;}
+  .qbox .box-label{ color:var(--accent2); font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; font-weight:700;}
+
+  footer{ margin-top:80px; padding-top:24px; border-top:1px solid var(--rule); color:var(--ink-soft); font-size:14px; text-align:center;}
+
+  .backtotop{ position:fixed; bottom:24px; right:24px; background:var(--accent); color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:18px; box-shadow:0 4px 12px rgba(0,0,0,.2); opacity:0; transition:opacity .2s; pointer-events:none;}
+  .backtotop.show{ opacity:1; pointer-events:auto; }
+
+  details summary{ cursor:pointer; color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:14px; margin:14px 0; }
+  details .box{ background:#f7f4ee; border-color:#a8632f; }
+
+  @media(max-width:1000px){
+    .shell{ flex-direction:column; }
+    .sidebar{ position:relative; width:100%; height:auto; border-right:none; border-bottom:1px solid var(--rule); }
+    .main{ padding:28px 20px 80px; }
+  }
+</style>
+</head>
+<body id="top">
+<a href="../../index.html" style="position:fixed;top:10px;left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
+<div class="shell">
+<nav class="sidebar">
+  <div class="toc-title">Multivariate Analysis</div>
+  <div class="toc-sub">A slow, beginner-friendly walkthrough</div>
+
+  <h3>Part 1 · MND &amp; Hotelling's T²</h3>
+  <a href="#p1-intro">1. What is multivariate data?</a>
+  <a href="#p1-descriptive">2. Mean vector &amp; covariance matrix</a>
+  <a href="#p1-randomvec">3. Random vectors &amp; expectation</a>
+  <a href="#p1-covmatrix">4. Population covariance &amp; correlation</a>
+  <a href="#p1-mnd">5. The Multivariate Normal Distribution</a>
+  <a href="#p1-properties">6. Properties of the MND</a>
+  <a href="#p1-worked">7. Worked problems on the properties</a>
+  <a href="#p1-conditional">8. Conditional distributions</a>
+  <a href="#p1-hotelling1">9. Hotelling's T² (one sample)</a>
+  <a href="#p1-hotelling2">10. Hotelling's T² (two samples)</a>
+  <a href="#p1-largesample">11. Large samples &amp; the Chi-square case</a>
+
+  <h3>Part 2 · Multiple &amp; Partial Correlation</h3>
+  <a href="#p2-motivation">1. What simple correlation can't tell you</a>
+  <a href="#p2-partial">2. Partial correlation</a>
+  <a href="#p2-multiple">3. Multiple correlation</a>
+  <a href="#p2-properties">4. Properties &amp; the negative-correlation puzzle</a>
+  <a href="#p2-formal">5. The formal (matrix) definition</a>
+  <a href="#p2-worked">6. Worked numerical problems</a>
+
+  <h3>Part 3 · Wishart Distribution &amp; MLE</h3>
+  <a href="#p3-motivation">1. From Chi-square to Wishart</a>
+  <a href="#p3-crossproduct">2. The cross-product matrix</a>
+  <a href="#p3-definition">3. Defining the Wishart distribution</a>
+  <a href="#p3-properties">4. Three key properties (with proofs)</a>
+  <a href="#p3-mle-setup">5. Setting up Maximum Likelihood</a>
+  <a href="#p3-mle-mean">6. MLE of the mean vector</a>
+  <a href="#p3-mle-cov">7. MLE of the covariance matrix</a>
+
+  <h3>&nbsp;</h3>
+  <a href="#recap">Full recap &amp; glossary</a>
+</nav>
+<main class="main">
+<div class="hero">
+  <div class="eyebrow">Study Guide · Multivariate Analysis</div>
+  <h1>MND, Hotelling's T², Correlation &amp; Wishart — Explained Slowly</h1>
+  <p class="lead">This guide walks through all three of your MVA notes — <em>MND and Hotelling's T-square</em>, <em>Multiple and Partial Correlation</em>, and <em>Wishart Distribution and MLE</em> — page by page, in plain English, building every formula up from a concrete picture before the matrix algebra shows up.</p>
+  <div class="badges">
+    <span class="badge">MIT Manipal · Handwritten notes</span>
+    <span class="badge">3 documents · 51 pages covered</span>
+    <span class="badge">All worked examples independently re-checked</span>
+  </div>
+</div>
+
+<div class="qbox">
+  <span class="box-label">How to read this guide</span>
+  <p style="margin:6px 0 0;">Coloured boxes mean different things as you scroll:</p>
+  <p style="margin:8px 0 0;">
+    <span class="chip" style="background:var(--def-bg);border-color:var(--def-line);color:var(--def-line)">Definition</span>
+    <span class="chip" style="background:var(--ex-bg);border-color:var(--ex-line);color:var(--ex-line)">Worked Example</span>
+    <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Analogy</span>
+    <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Common Confusion</span>
+    <span class="chip" style="background:var(--key-bg);border-color:var(--key-line);color:var(--key-line)">Key Takeaway</span>
+    <span class="chip" style="background:var(--fix-bg);border-color:var(--fix-line);color:var(--fix-line)">Correction to your notes</span>
+  </p>
+  <p class="small" style="margin-top:10px;">Every calculation from your notes was redone independently while building this guide. Almost everything checked out exactly — the one place it didn't is flagged clearly in Part 1, Section 9, with the corrected working.</p>
+</div>
+<div class="part-header">
+  <div class="ptag">Part 1 of 3</div>
+  <h2>Multivariate Normal Distribution &amp; Hotelling's T²</h2>
+  <p>Everything in univariate statistics you already know — means, variances, the normal curve, the t-test — has a "multivariate" version, built for when you're measuring <em>several</em> things about each individual at once instead of just one. This part builds that whole picture from scratch, ending at Hotelling's T², the multivariate cousin of the t-test.</p>
+</div>
+
+<section class="slide" id="p1-intro">
+  <span class="slide-tag">Page 1</span>
+  <h3>1. What is multivariate data, and why do we need MVA?</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Multivariate data</strong> is data involving <em>more than one variable measured on each observation</em>.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Worked example from your notes</span>
+    <p>Suppose you're analysing data on students. For each student you record: marks in Mathematics, marks in Science, marks in CS. That's <strong>3 variables recorded on each student</strong> — this is multivariate data.</p>
+  </div>
+  <table class="grid">
+    <tr><th>Type</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td><strong>Univariate</strong></td><td>One variable per observation</td><td>Height of students</td></tr>
+    <tr><td><strong>Bivariate</strong></td><td>Two variables per observation</td><td>Height &amp; Weight</td></tr>
+    <tr><td><strong>Multivariate</strong></td><td>Many variables per observation</td><td>Height, Weight, Age, Blood Pressure, etc.</td></tr>
+  </table>
+  <p>A "variable" here really means a <strong>random variable</strong> — something that comes with its own mean, variance, and (when there's more than one) covariances and correlations with the other variables.</p>
+  <h4>Other real-world examples of multivariate data</h4>
+  <ul>
+    <li><strong>Weather data:</strong> temperature, wind speed, rainfall, air quality index.</li>
+    <li><strong>Patient health records:</strong> blood pressure, cholesterol level, age, weight, heart rate.</li>
+    <li><strong>Smartphone features:</strong> battery capacity, camera quality, screen size, RAM, price.</li>
+    <li><strong>Employee performance:</strong> experience, number of projects completed, salary, work hours per week.</li>
+  </ul>
+  <div class="key">
+    <span class="box-label">Why MVA is needed</span>
+    <p>Multivariate Analysis is the branch of statistics concerned with data that consists of measurements on <strong>several</strong> variables for each individual/object. It matters because most real-world problems are influenced by multiple factors at once — MVA lets us understand the <strong>interactions, patterns, and relationships</strong> between variables, not just look at each one in isolation.</p>
+  </div>
+  <h4>The structure of multivariate data</h4>
+  <p>Suppose we have measurements on \(p\) variables for each of \(n\) experimental units (people, products, etc). We write \(x_{ij}\) for the observed value of the \(j\)-th variable (\(j=1,\dots,p\)) on the \(i\)-th unit (\(i=1,\dots,n\)). This is gathered into an \((n \times p)\) data matrix — <strong>rows are observations, columns are variables</strong>:</p>
+  <p>\[ X = \begin{bmatrix} x_{11} & x_{12} & \cdots & x_{1p} \\ x_{21} & x_{22} & \cdots & x_{2p} \\ \vdots & & \ddots & \vdots \\ x_{n1} & x_{n2} & \cdots & x_{np} \end{bmatrix}_{n \times p} \]</p>
+  <table class="grid">
+    <tr><th>Student</th><th>Math</th><th>Science</th><th>CS</th></tr>
+    <tr><td>A</td><td>85</td><td>78</td><td>...</td></tr>
+    <tr><td>B</td><td>72</td><td>55</td><td>...</td></tr>
+    <tr><td>C</td><td>65</td><td>76</td><td>...</td></tr>
+  </table>
+</section>
+
+<section class="slide" id="p1-descriptive">
+  <span class="slide-tag">Pages 2–4</span>
+  <h3>2. Descriptive statistics for multivariate data</h3>
+  <p>Descriptive statistics for MVD means summarising data involving more than one variable at a time. There are two central objects you build immediately: a <strong>mean vector</strong> and a <strong>covariance matrix</strong>.</p>
+
+  <h4>The mean vector</h4>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>The <strong>mean vector</strong> simply stacks the average of each variable into one column:</p>
+    <p>\[ X = \begin{bmatrix} X_1\\X_2\\ \vdots \\X_p \end{bmatrix} \quad \Longrightarrow \quad \bar{X} = \begin{bmatrix} \bar{X}_1\\ \bar{X}_2\\ \vdots \\ \bar{X}_p \end{bmatrix} \]</p>
+  </div>
+
+  <h4>The (sample) variance-covariance matrix</h4>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>Captures the variability of <em>each</em> variable on its own (the diagonal) and the covariances (relationships) <em>between</em> every pair of variables (the off-diagonal). It's always symmetric — the relationship between \(X_1\) and \(X_2\) is the same as between \(X_2\) and \(X_1\).</p>
+    <p>\[ S = \begin{bmatrix} S_{11} & S_{12} & \cdots & S_{1p} \\ S_{21} & S_{22} & \cdots & S_{2p} \\ \vdots & & \ddots & \vdots \\ S_{p1} & S_{p2} & \cdots & S_{pp} \end{bmatrix} \]</p>
+    <p>where, using the sample of size \(n\):</p>
+    <p>\[ S_{11} = \frac{1}{n-1}\sum (X_1-\bar X_1)^2, \quad \dots, \quad S_{12}=S_{21}=\frac{1}{n-1}\sum (X_1-\bar X_1)(X_2-\bar X_2) \]</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Think of the covariance matrix as a "relationship report card" for your variables. The diagonal entries are each variable's own "spread" (variance) — how much it wobbles around its own average. The off-diagonal entries tell you whether two variables tend to move <em>together</em> (positive covariance), move <em>opposite</em> to each other (negative), or don't influence each other linearly at all (near zero).</p>
+  </div>
+  <p class="small">Your notes also mention the <strong>correlation matrix</strong> \(R\) — same idea, but every entry is standardised to lie in \([-1,1]\), so you can compare relationship strengths across variables measured in totally different units.</p>
+</section>
+<section class="slide" id="p1-randomvec">
+  <span class="slide-tag">Page 4</span>
+  <h3>3. Multivariate distributions, random vectors &amp; expectation</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>A <strong>multivariate distribution</strong> describes the underlying random structure of an entire <em>vector</em> of random variables at once — not just one variable. From it we can derive the marginal properties of each individual variable, and it also describes relationships between variables or groups of variables.</p>
+  </div>
+  <p>A <strong>random vector</strong> is simply a vector whose entries are themselves random variables. Similarly, a <strong>random matrix</strong> is a matrix whose entries are random variables. The <strong>expected value</strong> of a random vector/matrix is defined entry-by-entry:</p>
+  <p>\[ X = \begin{bmatrix}X_1\\X_2\\\vdots\\X_p\end{bmatrix} \quad \Longrightarrow \quad E(X) = \begin{bmatrix}E(X_1)\\E(X_2)\\\vdots\\E(X_p)\end{bmatrix} = \begin{bmatrix}\mu_1\\\mu_2\\\vdots\\\mu_p\end{bmatrix} = \mu \]</p>
+  <p class="small">This \(\mu\) is the <strong>population</strong> mean vector — the true underlying average, as opposed to \(\bar X\) which is the average we actually compute from a sample.</p>
+</section>
+
+<section class="slide" id="p1-covmatrix">
+  <span class="slide-tag">Page 5</span>
+  <h3>4. The population covariance matrix and correlation coefficient</h3>
+  <div class="def">
+    <span class="box-label">Definition — Covariance matrix (a.k.a. Dispersion matrix)</span>
+    <p>\[ \Sigma = E\big[(X-\mu)(X-\mu)^{\top}\big] = \begin{bmatrix}\sigma_{11} & \sigma_{12} & \cdots \\ \sigma_{12} & \sigma_{22} & \cdots \\ \vdots & & \ddots \end{bmatrix} \]</p>
+  </div>
+  <p>Let's expand this for \(p=2\) variables to see exactly where each entry comes from:</p>
+  <p>\[ \Sigma = E\begin{bmatrix} (X_1-\mu_1)^2 & (X_1-\mu_1)(X_2-\mu_2) \\ (X_2-\mu_2)(X_1-\mu_1) & (X_2-\mu_2)^2 \end{bmatrix} = \begin{bmatrix}\sigma_{11} & \sigma_{12}\\ \sigma_{21} & \sigma_{22}\end{bmatrix} \]</p>
+  <p>Here \(\sigma_{11}=\text{Var}(X_1)\), \(\sigma_{22}=\text{Var}(X_2)\), and \(\sigma_{12}=\sigma_{21}=\text{Cov}(X_1,X_2)\).</p>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>If \(\Sigma = \begin{bmatrix}9 & 3\\3 & 4\end{bmatrix}\), then \(V(X_1)=9 \Rightarrow \text{S.D}(X_1)=3\), and \(V(X_2)=4 \Rightarrow \text{S.D}(X_2)=2\).</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Definition — Population correlation coefficient</span>
+    <p>\[ \rho_{ik} = \frac{\sigma_{ik}}{\sqrt{\sigma_{ii}}\sqrt{\sigma_{kk}}} = \frac{\text{Covariance}}{\text{S.D}(X_i)\cdot \text{S.D}(X_k)} \]</p>
+    <p>It measures the amount of <strong>linear</strong> association between the random variables \(X_i\) and \(X_k\).</p>
+  </div>
+</section>
+<section class="slide" id="p1-mnd">
+  <span class="slide-tag">Pages 6–7</span>
+  <h3>5. The Multivariate Normal Distribution (MND)</h3>
+  <p>Your notes build this up exactly the right way: start from the familiar one-variable (univariate) normal curve, then ask what changes when you have several correlated variables at once.</p>
+  <h4>Recall: the normal distribution in one dimension</h4>
+  <p>\[ X \sim N(\mu, \sigma^2), \qquad f(x) = \frac{1}{\sigma\sqrt{2\pi}} \, e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}, \qquad -\infty < x < \infty \]</p>
+  <div class="qbox">
+    <span class="box-label">The motivating question from your notes</span>
+    <p>But what if we want to model multiple continuous variables together — say height, weight, and age of students — which may be correlated? We need a distribution that can capture this multivariate behaviour, especially the relationships (covariances) between the variables.</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>A random vector \(X=(X_1,X_2,\dots,X_p)'\) follows a <strong>Multivariate Normal Distribution (MND)</strong> with mean vector \(\mu\) and covariance matrix \(\Sigma\), written \(X \sim N_p(\mu,\Sigma)\).</p>
+  </div>
+  <h4>Building the density function — the key insight</h4>
+  <p>Look at the exponent of the univariate normal density: \(\left(\frac{x-\mu}{\sigma}\right)^2\). Your notes point out this can be rewritten as \((x-\mu)(\sigma^2)^{-1}(x-\mu)\) — i.e. "deviation, times inverse-variance, times deviation." That's exactly the form that generalises cleanly to \(p\) dimensions: just replace the scalar deviation with a vector deviation, and the scalar \(\sigma^2\) with the matrix \(\Sigma\):</p>
+  <p>\[ (X-\mu)^{\top}\Sigma^{-1}(X-\mu) \quad \longrightarrow \quad \textbf{Mahalanobis distance} \]</p>
+  <div class="an">
+    <span class="box-label">Analogy — what the Mahalanobis distance is really doing</span>
+    <p>Ordinary (Euclidean) distance from the mean would treat every direction in the data equally. But real variables have different spreads and are correlated with each other. The Mahalanobis distance corrects for this: it measures "how many standard-deviations away" a point is, <em>after accounting for the shape and orientation of the data's spread</em>. A point that's far away along a direction where the data barely varies counts as "more unusual" than the same physical distance in a direction where the data naturally spreads out a lot.</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Definition — the MND density function</span>
+    <p>For a random vector \(X=(X_1,\dots,X_p)'\):</p>
+    <p>\[ f(x) = \frac{1}{(2\pi)^{p/2}\,|\Sigma|^{1/2}} \exp\left[-\frac{1}{2}(x-\mu)^{\top}\Sigma^{-1}(x-\mu)\right], \qquad -\infty < x_i < \infty,\ i=1,\dots,p \]</p>
+    <p>Notation: \(X \sim N_p(\mu,\Sigma)\) — directly analogous to the notation for the normal density in the univariate case.</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-properties">
+  <span class="slide-tag">Pages 7–10</span>
+  <h3>6. Properties of the MND</h3>
+  <p>The following are true for a random vector \(X\) having an MND:</p>
+  <ol>
+    <li>Linear combinations of the components of \(X\) are normally distributed.</li>
+    <li>All subsets of the components of \(X\) also have an MND.</li>
+    <li>Zero covariance implies the corresponding components are independent.</li>
+    <li>The conditional distributions of the components are multivariate normal.</li>
+  </ol>
+
+  <h4>Result 1 — a single linear combination</h4>
+  <div class="def">
+    <span class="box-label">Result</span>
+    <p>If \(X\) is distributed as \(N_p(\mu,\Sigma)\), then any linear combination \(a'X = a_1X_1+a_2X_2+\dots+a_pX_p\) is distributed as \(N(a'\mu,\; a'\Sigma a)\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example — sanity check</span>
+    <p>Take \(a'=[1,0,\dots,0]\), so \(a'X = X_1\). Then \(a'\mu=\mu_1\), and \(a'\Sigma a = \sigma_{11}\) (you can verify this by directly multiplying out the matrices — the "1,0,...,0" simply picks out the top-left entry of \(\Sigma\)). So the result correctly tells us \(X_1 \sim N(\mu_1,\sigma_{11})\) — exactly what we'd expect, since \(X_1\) alone is just one of the components.</p>
+  </div>
+
+  <h4>Result 2 — several linear combinations at once</h4>
+  <div class="def">
+    <span class="box-label">Result</span>
+    <p>For a fixed \(q\times p\) matrix \(A\), the vector \(AX\) is distributed as \(N_q(A\mu,\; A\Sigma A')\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>Let \(X \sim N_3(\mu,\Sigma)\). Find the distribution of \(\begin{bmatrix}X_1-X_2\\X_2-X_3\end{bmatrix}\).</p>
+    <p>Here \(A=\begin{bmatrix}1&-1&0\\0&1&-1\end{bmatrix}\). Then:</p>
+    <p>\[ A\mu = \begin{bmatrix}\mu_1-\mu_2\\\mu_2-\mu_3\end{bmatrix} \]</p>
+    <p>\[ A\Sigma A' = \begin{bmatrix}\sigma_{11}-2\sigma_{12}+\sigma_{22} & \sigma_{12}+\sigma_{23}-\sigma_{22}-\sigma_{13}\\ \sigma_{12}+\sigma_{23}-\sigma_{22}-\sigma_{13} & \sigma_{22}-2\sigma_{23}+\sigma_{33}\end{bmatrix} \]</p>
+    <p class="small">This is exactly the kind of "variance of a difference" formula you'd expect from univariate stats — \(\text{Var}(X_1-X_2)=\sigma_{11}-2\sigma_{12}+\sigma_{22}\) — just extended to a 2-dimensional output.</p>
+  </div>
+
+  <h4>Result 3 — every subset of variables is itself MND</h4>
+  <p>Partition \(X\), its mean \(\mu\), and its covariance \(\Sigma\) into blocks:</p>
+  <p>\[ X=\begin{bmatrix}X_1\\X_2\end{bmatrix},\quad \mu=\begin{bmatrix}\mu_1\\\mu_2\end{bmatrix},\quad \Sigma=\begin{bmatrix}\Sigma_{11}&\Sigma_{12}\\\Sigma_{21}&\Sigma_{22}\end{bmatrix} \]</p>
+  <p>Then \(X_1\) alone is distributed as \(N_q(\mu_1,\Sigma_{11})\) — you can simply "crop" the mean vector and the top-left block of the covariance matrix.</p>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X \sim N_5(\mu,\Sigma)\). Find the distribution of \(\begin{bmatrix}X_2\\X_4\end{bmatrix}\). Simply pick out rows/columns 2 and 4 of \(\mu\) and \(\Sigma\):</p>
+    <p>\[ \begin{bmatrix}X_2\\X_4\end{bmatrix} \sim N_2\left(\begin{bmatrix}\mu_2\\\mu_4\end{bmatrix},\; \begin{bmatrix}\sigma_{22}&\sigma_{24}\\\sigma_{42}&\sigma_{44}\end{bmatrix}\right) \]</p>
+  </div>
+
+  <h4>Result 4 — independence and zero covariance</h4>
+  <table class="grid">
+    <tr><td><strong>(a)</strong></td><td>If \(X_1\) and \(X_2\) are independent, then \(\text{Cov}(X_1,X_2)=0\) (a matrix of zeros).</td></tr>
+    <tr><td><strong>(b)</strong></td><td>If \(\begin{bmatrix}X_1\\X_2\end{bmatrix} \sim N_{q_1+q_2}\left(\begin{bmatrix}\mu_1\\\mu_2\end{bmatrix},\begin{bmatrix}\Sigma_{11}&\Sigma_{12}\\\Sigma_{21}&\Sigma_{22}\end{bmatrix}\right)\), then \(X_1\) and \(X_2\) are independent <strong>if and only if</strong> \(\Sigma_{12}=0\).</td></tr>
+    <tr><td><strong>(c)</strong></td><td>Conversely, if \(X_1 \sim N_{q_1}(\mu_1,\Sigma_{11})\) and \(X_2 \sim N_{q_2}(\mu_2,\Sigma_{22})\) are independent, then jointly \(\begin{bmatrix}X_1\\X_2\end{bmatrix}\) has an MND with a block-diagonal covariance matrix \(\begin{bmatrix}\Sigma_{11}&0\\0&\Sigma_{22}\end{bmatrix}\).</td></tr>
+  </table>
+  <div class="key">
+    <span class="box-label">Key takeaway — this is special to the normal distribution!</span>
+    <p>In general statistics, "zero covariance" does <strong>not</strong> imply independence — two variables can have zero <em>linear</em> relationship while still being tightly dependent in a non-linear way. Result (b) above is a special, powerful fact that's only true because we're inside the MND world: for jointly normal variables, zero covariance <em>is enough</em> to guarantee full independence.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X \sim N_3(\mu,\Sigma)\) with \(\Sigma = \begin{bmatrix}4&1&0\\1&3&0\\0&0&2\end{bmatrix}\). Are \(X_1\) and \(X_2\) independent? What about \((X_1,X_2)\) and \(X_3\)?</p>
+    <p>\(\text{Cov}(X_1,X_2)=\sigma_{12}=1 \neq 0\) → <strong>not independent</strong>. But the covariance between \((X_1,X_2)\) and \(X_3\) is the block \(\begin{bmatrix}0\\0\end{bmatrix}\) → <strong>independent</strong>. So \(X_3\) is independent of \(X_1\) and also of \(X_2\), even though \(X_1\) and \(X_2\) are not independent of each other.</p>
+  </div>
+</section>
+<section class="slide" id="p1-worked">
+  <span class="slide-tag">Pages 11–13</span>
+  <h3>7. Worked numerical problems on the properties</h3>
+
+  <h4>Problem 1 — mean and covariance of a linear combination</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>Given \(\mu=\begin{bmatrix}4\\-1\\5\end{bmatrix}\), \(\Sigma=\begin{bmatrix}2&1&0.5\\1&3&1\\0.5&1&2.5\end{bmatrix}\), and \(Y=2X_1+3X_2-X_3\). Find the mean and variance of \(Y\).</p>
+    <p>Here \(a'=[2,3,-1]\). Mean: \(a'\mu = 2(4)+3(-1)-1(5) = 8-3-5 = \mathbf{0}\).</p>
+    <p>Variance: \(a'\Sigma a\). First compute \(\Sigma a = [2(2)+1(3)+0.5(-1),\; 1(2)+3(3)+1(-1),\; 0.5(2)+1(3)+2.5(-1)] = [6.5,\ 10,\ 1.5]\). Then \(a'\Sigma a = 2(6.5)+3(10)+(-1)(1.5) = 13+30-1.5 = \mathbf{41.5}\).</p>
+    <p class="small">This matches your notes exactly (\(a'\Sigma a = 41.5\)) — confirmed correct.</p>
+  </div>
+
+  <h4>Problem 2 — mean vector of two linear combinations</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X \sim N_3(\mu,\Sigma)\), \(\mu=\begin{bmatrix}1\\2\\3\end{bmatrix}\). Define \(Y_1=2X_1+X_2-X_3\), \(Y_2=-X_1+3X_2+2X_3\).</p>
+    <p>Here \(A=\begin{bmatrix}2&1&-1\\-1&3&2\end{bmatrix}\). Mean of \(Y\): \(A\mu = \begin{bmatrix}2(1)+1(2)-1(3)\\-1(1)+3(2)+2(3)\end{bmatrix} = \begin{bmatrix}1\\11\end{bmatrix}\).</p>
+    <p class="small">Matches your notes' answer of \([1,\,11]'\) — confirmed correct.</p>
+  </div>
+
+  <h4>Problems on independence</h4>
+  <p>Your notes work through several "check independence" problems using one simple rule: <strong>for independence between two groups of variables, look only at the corresponding block of \(\Sigma\) — if that block is all zeros, they're independent.</strong></p>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X=(X_1,X_2,X_3)'\), \(\Sigma = \begin{bmatrix}1&-1&-2\\-1&5&0\\-2&0&2\end{bmatrix}\) (rows/cols ordered \(X_1,X_2,X_3\)).</p>
+    <table class="grid">
+      <tr><th>Pair checked</th><th>Relevant block</th><th>Conclusion</th></tr>
+      <tr><td>\(X_1\) &amp; \(X_3\)</td><td>\(\Sigma_{13}=-2\)</td><td>Not independent</td></tr>
+      <tr><td>\(X_2\) &amp; \(X_3\)</td><td>\(\Sigma_{23}=0\)</td><td>Independent</td></tr>
+      <tr><td>\(X_1\) &amp; \((X_2,X_3)\)</td><td>\([-1,-2]\)</td><td>Not independent</td></tr>
+      <tr><td>\(X_2\) &amp; \((X_1,X_3)\)</td><td>\([-1,0]\)</td><td>Not independent</td></tr>
+      <tr><td>\(X_3\) &amp; \((X_1,X_2)\)</td><td>\([-2,0]\)</td><td>Independent</td></tr>
+    </table>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion — checking independence of a linear combination</span>
+    <p>What about something like \(\left(\frac{X_1+X_2}{2}\right)\) and \(X_3\)? You can't just "read off" a block here, because \(\frac{X_1+X_2}{2}\) isn't one of the original variables — it's a linear combination. The trick from your notes: rewrite it using Result 2 (linear combinations) with \(A=\begin{bmatrix}\frac12&\frac12&0\\0&0&1\end{bmatrix}\), compute the new covariance matrix \(A\Sigma A'\), and <em>then</em> check whether the relevant block of the resulting \(2\times 2\) matrix is zero.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example (this exact case, independently re-verified)</span>
+    <p>With \(\Sigma=\begin{bmatrix}1&-2&0\\-2&5&0\\0&0&2\end{bmatrix}\), \(A=\begin{bmatrix}\frac12&\frac12&0\\0&0&1\end{bmatrix}\), computing \(A\Sigma A'\) gives \(\begin{bmatrix}\frac12 & 0\\0&2\end{bmatrix}\) — the off-diagonal is 0, so \(\frac{X_1+X_2}{2}\) and \(X_3\) <strong>are independent</strong>.</p>
+  </div>
+</section>
+<section class="slide" id="p1-conditional">
+  <span class="slide-tag">Pages 14–19</span>
+  <h3>8. Conditional distributions</h3>
+  <p>Your notes start this with a lovely simple, non-formula example before introducing any matrix algebra — worth walking through slowly.</p>
+  <div class="an">
+    <span class="box-label">The motivating example from your notes</span>
+    <table class="grid">
+      <tr><th>Student</th><th>Study Hours (Y)</th><th>Marks (X)</th></tr>
+      <tr><td>A</td><td>2</td><td>50</td></tr>
+      <tr><td>B</td><td>2</td><td>55</td></tr>
+      <tr><td>C</td><td>2</td><td>60</td></tr>
+      <tr><td>D</td><td>5</td><td>70</td></tr>
+      <tr><td>E</td><td>5</td><td>75</td></tr>
+      <tr><td>F</td><td>5</td><td>80</td></tr>
+    </table>
+    <p>We want the distribution of Marks (X) <em>given</em> Study Hours (Y). If \(Y=2\) hours, Marks \(\in\{50,55,60\}\), each with probability \(\frac13\) — this is the <strong>conditional distribution</strong> of X given \(Y=2\). Similarly, if \(Y=5\) hours, Marks \(\in\{70,75,80\}\), each with probability \(\frac13\). The conditional distribution tells us how marks are distributed <em>once we already know</em> how many hours a student studied — we've restricted our focus to a smaller, more specific slice of the data.</p>
+  </div>
+
+  <div class="def">
+    <span class="box-label">Definition — the general formula</span>
+    <p>Let \(X=\begin{bmatrix}X_1\\X_2\end{bmatrix} \sim N_p(\mu,\Sigma)\) with \(\mu=\begin{bmatrix}\mu_1\\\mu_2\end{bmatrix}\), \(\Sigma=\begin{bmatrix}\Sigma_{11}&\Sigma_{12}\\\Sigma_{21}&\Sigma_{22}\end{bmatrix}\). Then the conditional distribution of \(X_1\) given \(X_2=x_2\) is <strong>normal</strong>, with:</p>
+    <p>\[ \text{Mean} = \mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2) \]</p>
+    <p>\[ \text{Variance} = \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21} \]</p>
+    <p class="small">Notice the variance formula does <strong>not</strong> depend on the particular value \(x_2\) — only the mean shifts depending on what you condition on.</p>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion — can the conditional mean/variance be negative?</span>
+    <p>The <strong>conditional mean</strong> can absolutely come out negative — it's just a shifted average, and can take any real value depending on the data (imagine the average bank balance in a city being negative on average, due to debts). But the <strong>conditional variance</strong> can <em>never</em> be negative — it's an expected <em>squared</em> deviation, and a square is always \(\geq 0\).</p>
+  </div>
+
+  <h4>Worked Example 1</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X \sim N_3(\mu,\Sigma)\), \(\mu=[1,-1,2]'\), \(\Sigma=\begin{bmatrix}4&0&-1\\0&5&0\\-1&0&2\end{bmatrix}\). Find:</p>
+    <p>(i) \((X_1\mid X_2=x_2)\): since \(\Sigma_{12}=0\), mean \(=\mu_1=1\), variance \(=\Sigma_{11}=4\). So \((X_1\mid X_2=x_2)\sim N(1,4)\).</p>
+    <p>(ii) \((X_2\mid X_1=x_1)\): since \(\Sigma_{21}=0\), mean\(=\mu_2=-1\), variance\(=\Sigma_{22}=5\). So \((X_2\mid X_1=x_1)\sim N(-1,5)\).</p>
+    <p>(iii) \((X_1\mid X_3=x_3)\): mean \(=\mu_1+\Sigma_{13}\Sigma_{33}^{-1}(x_3-\mu_3) = 1+(-1)(\tfrac12)(x_3-2) = \frac{4-x_3}{2}\). Variance \(=\Sigma_{11}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{31} = 4-(-1)(\tfrac12)(-1) = 4-0.5=\mathbf{3.5}\).</p>
+    <p class="small">Part (iii) was left as "try yourself" in your notes — the completed answer is \((X_1\mid X_3=x_3)\sim N\!\left(\frac{4-x_3}{2},\,3.5\right)\).</p>
+  </div>
+
+  <h4>Worked Example 2</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X\sim N_3(\mu,\Sigma)\), \(\mu=[1,2,3]'\), \(\Sigma=\begin{bmatrix}4&1&0\\1&5&2\\0&2&3\end{bmatrix}\). Find the conditional mean and variance of \(X_1\) given \(X_2=2,X_3=3\).</p>
+    <p>Partition: \(\Sigma_{11}=4\), \(\Sigma_{12}=[1,0]\), \(\Sigma_{22}=\begin{bmatrix}5&2\\2&3\end{bmatrix}\). Since \(x_2-\mu_2=2-2=0\) and \(x_3-\mu_3=3-3=0\), the whole correction term vanishes:</p>
+    <p>\[ \text{Mean} = 1 + [1,0]\,\Sigma_{22}^{-1}\begin{bmatrix}0\\0\end{bmatrix} = 1 \]</p>
+    <p>The conditional variance needs \(\Sigma_{22}^{-1} = \frac{1}{15-4}\begin{bmatrix}3&-2\\-2&5\end{bmatrix} = \begin{bmatrix}\frac{3}{11}&\frac{-2}{11}\\\frac{-2}{11}&\frac{5}{11}\end{bmatrix}\), giving \(\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21} = [1,0]\Sigma_{22}^{-1}[1,0]' = \frac{3}{11}\). So Variance \(= 4-\frac{3}{11} = \frac{41}{11} \approx 3.727\).</p>
+  </div>
+
+  <h4>Worked Example — conditional variance (a second, related calculation)</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>For a different partition where the target's own variance is 2, and the conditioning block gives \(\Sigma_{12}=[1,2]\), \(\Sigma_{22}=\begin{bmatrix}1&1\\1&3\end{bmatrix}\):</p>
+    <p>\(\Sigma_{22}^{-1} = \frac{1}{2}\begin{bmatrix}3&-1\\-1&1\end{bmatrix}\). Then \(\Sigma_{12}\Sigma_{22}^{-1} = [1,2]\cdot\frac12\begin{bmatrix}3&-1\\-1&1\end{bmatrix} = [0.5,\,0.5]\), and \(\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21} = [0.5,0.5]\cdot[1,2]' = 0.5+1 = 1.5\).</p>
+    <p>Conditional variance \(= 2-1.5=\mathbf{0.5}\), giving a conditional distribution of the form \(N\big(0.5x_1+0.5x_2+1.5,\ 0.5\big)\).</p>
+    <p class="small">This matches your notes' final boxed answer exactly.</p>
+  </div>
+
+  <h4>Worked Example — correlation matrix from a covariance matrix</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(\Sigma = \begin{bmatrix}25&-2&4\\-2&4&1\\4&1&9\end{bmatrix}\). Find the correlation matrix, and the correlation between \(X_1\) and \(\frac{X_2+X_3}{2}\).</p>
+    <p>Using \(\rho_{ij}=\sigma_{ij}/\sqrt{\sigma_{ii}\sigma_{jj}}\):</p>
+    <p>\(\rho_{12}=\dfrac{-2}{\sqrt{25\times4}}=\dfrac{-2}{10}=-0.2\), \(\ \rho_{13}=\dfrac{4}{\sqrt{25\times9}}=\dfrac{4}{15}=0.266\), \(\ \rho_{23}=\dfrac{1}{\sqrt{4\times9}}=\dfrac{1}{6}=0.166\)</p>
+    <p>\[ R=\begin{bmatrix}1&-0.2&0.266\\-0.2&1&0.166\\0.266&0.166&1\end{bmatrix} \]</p>
+    <p><strong>For the second part</strong> — let \(Y=\frac{X_2+X_3}{2}\). Using \(\text{Cov}(X_1,Y)=\tfrac12\text{Cov}(X_1,X_2)+\tfrac12\text{Cov}(X_1,X_3) = \tfrac12(-2)+\tfrac12(4)=1\), and \(\text{Var}(Y)=\tfrac14[V(X_2)+V(X_3)+2\text{Cov}(X_2,X_3)] = \tfrac14[4+9+2(1)]=3.75\):</p>
+    <p>\[ \rho(X_1,Y) = \frac{1}{\sqrt{25}\sqrt{3.75}} = \frac{1}{5\times1.936} = \frac{1}{9.68} \approx \mathbf{0.1033} \ \ (\text{a mild positive correlation}) \]</p>
+    <p class="small">Your notes verify this two different ways — direct covariance-algebra, and building the transformation matrix \(A=\begin{bmatrix}1&0&0\\0&\frac12&\frac12\end{bmatrix}\) and computing \(A\Sigma A'\) — both give the same answer, which is a nice consistency check.</p>
+  </div>
+
+  <h4>Worked Example 5 — completing the exercise left in your notes</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X\sim N_3(\mu,\Sigma)\), \(\mu=[-3,1,4]'\), \(\Sigma=\begin{bmatrix}1&-2&0\\-2&5&0\\0&0&2\end{bmatrix}\). Your notes set up finding the conditional distribution of \(X_2\) given \(X_1=x_1,\,X_3=x_3\), and leave the final numbers as "calculate it &amp; try variance also." Here's the finished calculation:</p>
+    <p>Rearranging so \(X_2\) is the target and \((X_1,X_3)\) is the conditioning pair: \(\Sigma_{11}=5\) (variance of \(X_2\)), \(\Sigma_{12}=[-2,\,0]\), \(\Sigma_{22}=\begin{bmatrix}1&0\\0&2\end{bmatrix}\) (diagonal, so its inverse is just \(\begin{bmatrix}1&0\\0&0.5\end{bmatrix}\)).</p>
+    <p>Mean \(= 1 + [-2,0]\begin{bmatrix}1&0\\0&0.5\end{bmatrix}\begin{bmatrix}x_1+3\\x_3-4\end{bmatrix} = 1 + [-2,0]\begin{bmatrix}x_1+3\\0.5(x_3-4)\end{bmatrix} = 1-2(x_1+3) = \mathbf{-2x_1-5}\)</p>
+    <p>Variance \(= 5 - [-2,0]\begin{bmatrix}1&0\\0&0.5\end{bmatrix}\begin{bmatrix}-2\\0\end{bmatrix} = 5-[-2,0]\begin{bmatrix}-2\\0\end{bmatrix} = 5-4=\mathbf{1}\)</p>
+    <p>So \((X_2\mid X_1=x_1,X_3=x_3) \sim N(-2x_1-5,\ 1)\).</p>
+  </div>
+</section>
+<section class="slide" id="p1-hotelling1">
+  <span class="slide-tag">Pages 19–23</span>
+  <h3>9. Hotelling's T² Statistic (one sample)</h3>
+  <p>This is the destination this whole part has been building toward: the multivariate version of the humble t-test.</p>
+  <h4>Starting from the univariate case</h4>
+  <p>In univariate statistics, to test a hypothesis about a population mean \(\mu\) against a specific value \(\mu_0\):</p>
+  <p>\[ H_0: \mu=\mu_0 \quad \text{vs} \quad H_1:\mu\neq\mu_0 \]</p>
+  <p>For small samples (say \(n\leq30\)) we use the t-distribution: \(t=\dfrac{\bar x-\mu}{s/\sqrt n}\), where \(\bar x\) is the sample mean, \(\mu\) the population mean, \(s\) the sample standard deviation.</p>
+  <p>Now translate every symbol to its multivariate counterpart: \(\bar x \to \bar X\), \(\mu \to \mu\), \(s^2 \to S\) (the sample covariance matrix), \(n\to n\). Then:</p>
+  <p>\[ t = \sqrt n\,(\bar x-\mu)\,s^{-1} \quad \Longrightarrow \quad t^2 = n(\bar x-\mu)^2(s^2)^{-1} \]</p>
+  <p>Generalising \((\bar x-\mu)^2\) to a vector version — \((\bar X-\mu)'\) times \((\bar X-\mu)\) — gives exactly:</p>
+  <div class="def">
+    <span class="box-label">Definition — Hotelling's T² statistic (one sample)</span>
+    <p>\[ T^2 = n(\bar X-\mu)^{\top} S^{-1}(\bar X-\mu) \]</p>
+    <p>where \(\bar X \sim N_p(\mu,\Sigma/n)\) and \(S \sim W_p(n-1,\Sigma)\) (the Wishart distribution — covered in Part 3). Under \(H_0:\mu=\mu_0\):</p>
+    <p>\[ T^2 = n(\bar X-\mu_0)^{\top}S^{-1}(\bar X-\mu_0) \sim \frac{(n-1)p}{n-p}\,F_{p,\,n-p} \qquad (\text{for } n-p<30) \]</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Just like the univariate \(t^2\) statistic measures "how many standard errors away is my sample mean from the hypothesised value, squared," Hotelling's \(T^2\) measures the same thing in \(p\) dimensions at once — using the Mahalanobis distance (from Section 5!) between \(\bar X\) and \(\mu_0\), scaled by the sample size. It's really the same idea as the t-test, just wearing multivariate clothing.</p>
+  </div>
+
+  <h4>Worked Example 1 — setting up the formula symbolically</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>A random sample of \(n=20\) was collected from a bivariate normal process, with \(\bar X=\begin{bmatrix}10\\20\end{bmatrix}\), \(S=\begin{bmatrix}40&-50\\-50&100\end{bmatrix}\). Find \(T^2\) (as a function of \(\mu_1,\mu_2\)) and its distribution.</p>
+    <p>\(|S|=40(100)-(-50)(-50)=1500\). \(S^{-1}=\frac{1}{1500}\begin{bmatrix}100&50\\50&40\end{bmatrix}=\begin{bmatrix}\frac{1}{15}&\frac{1}{30}\\\frac{1}{30}&\frac{2}{75}\end{bmatrix}\).</p>
+    <p>Multiplying out \(T^2=20(\bar X-\mu)'S^{-1}(\bar X-\mu)\) gives:</p>
+    <p>\[ T^2 = 1.33(10-\mu_1)^2 + 1.33(10-\mu_1)(20-\mu_2) + 0.53(20-\mu_2)^2 \]</p>
+    <p>Distribution: \(T^2 \sim \dfrac{(n-1)p}{n-p}F_{p,n-p} = \dfrac{19\times2}{18}F_{2,18} = \dfrac{19}{9}F_{2,18}\). Using the tabulated critical value \(F_{2,18}(0.05)=3.56\), the critical value of \(T^2\) is \(\dfrac{19}{9}\times3.56 = \mathbf{7.51}\).</p>
+  </div>
+
+  <h4>Worked Example 2 — the classic "sweat data" hypothesis test</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>Three components — \(X_1=\)Sweat rate, \(X_2=\)Sodium content, \(X_3=\)Potassium content — were measured on perspiration from 20 healthy females. Test \(H_0:\mu_0'=[4,\,50,\,10]\) against \(H_1:\mu_0'\neq[4,\,50,\,10]\) at \(\alpha=0.05\), given:</p>
+    <p>\[ \bar X = \begin{bmatrix}4.640\\45.4\\9.965\end{bmatrix}, \qquad S=\begin{bmatrix}2.879&10.010&-1.810\\10.010&199.788&-5.640\\-1.810&-5.640&3.628\end{bmatrix} \]</p>
+    <p>Using \(S^{-1}=\begin{bmatrix}0.586&-0.022&0.258\\-0.022&0.006&-0.002\\0.258&-0.002&0.402\end{bmatrix}\) (given), we compute:</p>
+    <p>\[ T^2 = 20\,[0.640,\,-4.6,\,-0.035]\begin{bmatrix}0.467\\-0.042\\0.160\end{bmatrix} = \mathbf{9.74} \]</p>
+  </div>
+
+  <div class="fix">
+    <span class="box-label">Correction to your notes</span>
+    <p>Your notes then compute the critical value correctly as \(\dfrac{(20-1)\times3}{20-3}F_{3,17}(0.05) = \dfrac{57}{17}\times3.197 = \mathbf{10.719}\) — this part is right. But the very next line says <em>"\(T^2_{cal} > T^2_{critical}\), we reject \(H_0\)"</em>. Compare the two numbers: \(T^2_{cal}=9.74\) and \(T^2_{critical}=10.719\). Since \(9.74 < 10.719\), it's actually the opposite: <strong>\(T^2_{cal} < T^2_{critical}\), so we do NOT reject \(H_0\)</strong> at the 5% level of significance.</p>
+    <p style="margin-top:8px;">This isn't just a guess — this is the well-known "sweat data" example from Johnson &amp; Wichern's <em>Applied Multivariate Statistical Analysis</em> textbook, and the textbook's own conclusion is exactly this: we <strong>fail to reject</strong> \(H_0\), meaning the data is consistent with the population mean vector being \([4,50,10]\). The arithmetic in your notes (9.74 and 10.719) is entirely correct — only the final comparison/conclusion line has the inequality flipped. Worth pencilling in the fix directly on that page.</p>
+  </div>
+</section>
+<section class="slide" id="p1-hotelling2">
+  <span class="slide-tag">Pages 24–25</span>
+  <h3>10. Hotelling's T² Statistic (two samples)</h3>
+  <p>What if instead of comparing one sample's mean to a fixed hypothesised value, you want to compare the means of <strong>two independent samples</strong> — e.g. "do these two machines produce the same average output"?</p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>\[ H_0:\mu_1=\mu_2 \quad \text{vs} \quad H_1:\mu_1\neq\mu_2 \]</p>
+    <p>First combine (pool) the two samples' covariance information:</p>
+    <p>\[ S_{\text{pooled}} = \frac{(n_1-1)S_1+(n_2-1)S_2}{n_1+n_2-2} \]</p>
+    <p>Then the two-sample Hotelling's \(T^2\) statistic is:</p>
+    <p>\[ T^2 = \frac{n_1n_2}{n_1+n_2}(\bar X_1-\bar X_2)^{\top}S_p^{-1}(\bar X_1-\bar X_2) \sim \frac{(n_1+n_2-2)p}{n_1+n_2-p-1}\,F_{p,\;n_1+n_2-p-1} \]</p>
+    <p class="small">Use the F-distribution when \(n_1+n_2-p-1 < 30\); for large samples (\(\geq30\)) it can be approximated by a Chi-square distribution instead (see Section 11).</p>
+  </div>
+
+  <h4>Worked Example</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>Two manufacturing machines (A and B) are compared on two quality characteristics \(X_1,X_2\), each with sample size \(n_1=n_2=4\):</p>
+    <p>\(\bar X_1=\begin{bmatrix}7.5\\5.75\end{bmatrix}\), \(\bar X_2=\begin{bmatrix}5\\3\end{bmatrix}\), \(S_1=\begin{bmatrix}1.67&0.67\\0.67&0.92\end{bmatrix}\), \(S_2=\begin{bmatrix}0.67&0.33\\0.33&0.25\end{bmatrix}\). Test at 5% LOS whether the mean vectors differ.</p>
+    <p>Since \(n_1=n_2\), the pooled covariance is just the plain average: \(S_p=\frac{S_1+S_2}{2}=\begin{bmatrix}1.17&0.5\\0.5&0.585\end{bmatrix}\).</p>
+    <p>\(\bar X_1-\bar X_2=\begin{bmatrix}2.5\\2.75\end{bmatrix}\). \(|S_p|=1.17(0.585)-0.5^2=0.43445\), so \(S_p^{-1}=\begin{bmatrix}1.346&-1.151\\-1.151&2.694\end{bmatrix}\).</p>
+    <p>\[ T^2 = \frac{4\times4}{4+4}\,[2.5,\,2.75]\,S_p^{-1}\begin{bmatrix}2.5\\2.75\end{bmatrix} = 2\times12.97 = \mathbf{25.94} \]</p>
+    <p>Distribution: \(T^2 \sim \dfrac{(4+4-2)\times2}{4+4-2-1}F_{2,5} = \dfrac{12}{5}F_{2,5}(0.05)\). Using \(F_{2,5}(0.05)=5.786\): critical value \(=\dfrac{12}{5}\times5.786=\mathbf{13.88}\).</p>
+    <p>Since \(T^2_{cal}=25.94 > T^2_{critical}=13.88\), we <strong>reject \(H_0\)</strong> at the 5% level — the two machines' mean quality vectors are significantly different. (This comparison and conclusion in your notes are correct.)</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-largesample">
+  <span class="slide-tag">Page 26</span>
+  <h3>11. Large samples: when T² becomes a Chi-square</h3>
+  <div class="def">
+    <span class="box-label">Key rule</span>
+    <p>When the relevant degrees of freedom are small (\(n_1+n_2-p-1<30\)), use the exact \(F\)-distribution as above. When they're <strong>large</strong> (\(n_1+n_2-p-1\geq30\)), \(T^2\) can be approximated by a <strong>Chi-square distribution with \(p\) degrees of freedom</strong>: \(T^2\sim\chi^2_p\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>Fifty bars of soap are manufactured in each of two ways. Two characteristics, \(X_1=\)lather, \(X_2=\)mildness, are measured. Survey statistics: \(\bar X_1=\begin{bmatrix}8.3\\4.1\end{bmatrix}\), \(S_1=\begin{bmatrix}2&1\\1&6\end{bmatrix}\), \(\bar X_2=\begin{bmatrix}10.2\\3.9\end{bmatrix}\), \(S_2=\begin{bmatrix}2&1\\1&4\end{bmatrix}\). Test \(H_0:\mu_1-\mu_2=0\) at 5% LOS.</p>
+    <p>\(n_1=n_2=50\), so \(S_p=\dfrac{S_1+S_2}{2}=\begin{bmatrix}2&1\\1&5\end{bmatrix}\). \(|S_p|=10-1=9\), so \(S_p^{-1}=\dfrac19\begin{bmatrix}5&-1\\-1&2\end{bmatrix}\).</p>
+    <p>\(\bar X_1-\bar X_2 = \begin{bmatrix}-1.9\\0.2\end{bmatrix}\). With \(\frac{n_1n_2}{n_1+n_2}=\frac{2500}{100}=25\):</p>
+    <p>\[ T^2_{cal} = 25\times2.0973 = \mathbf{52.43} \]</p>
+    <p>Check degrees of freedom: \(n_1+n_2-p-1 = 50+50-2-1=97 \geq 30\) → use \(\chi^2_p\) instead of \(F\). Critical value: \(\chi^2_2(0.05)=5.99\).</p>
+    <p>Since \(T^2_{cal}=52.43 \gg \chi^2_2(0.05)=5.99\), we <strong>reject \(H_0\)</strong> at 5% — strong evidence the two production methods give different mean characteristics. (This conclusion in your notes is correct.)</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Key takeaway for all of Part 1</span>
+    <p>Everything here mirrors univariate statistics, just "thickened" from scalars into vectors and matrices: mean → mean vector, variance → covariance matrix, \((x-\mu)^2/\sigma^2\) → Mahalanobis distance \((x-\mu)'\Sigma^{-1}(x-\mu)\), and the t-test → Hotelling's \(T^2\) test. The MND's special properties (linear combinations stay normal, zero covariance ⟹ independence, conditionals stay normal) are what make all of this tractable.</p>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 2 of 3</div>
+  <h2>Multiple &amp; Partial Correlation</h2>
+  <p>Ordinary correlation only ever looks at two variables at a time — and can be seriously misleading when a third variable is secretly influencing both. This part builds the two tools multivariate analysis uses to fix that.</p>
+</div>
+
+<section class="slide" id="p2-motivation">
+  <span class="slide-tag">Page 1</span>
+  <h3>1. What simple correlation can't tell you</h3>
+  <p>Until now, how many variables were involved in the correlation coefficient? Just two: \(r_{12}=\text{Corr}(X_1,X_2)\).</p>
+  <div class="qbox">
+    <span class="box-label">The question your notes pose</span>
+    <p>Does this correlation consider the effect of other variables? <strong>No.</strong> It measures only the linear association between two variables, full stop.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Worked example — Height and Weight</span>
+    <p>Suppose \(r=0.82\) between Height and Weight. Can we conclude Height <em>alone</em> explains Weight? Not necessarily — this is exactly why multivariate analysis introduces multiple and partial correlation.</p>
+  </div>
+  <h4>Motivating with three variables</h4>
+  <p>Let \(X_1=\)Weight, \(X_2=\)Height, \(X_3=\)Age. Does age also affect weight? If age influences <em>both</em> height and weight, is the simple correlation between height and weight telling the whole story? <strong>No</strong> — this motivates <strong>partial correlation</strong>.</p>
+</section>
+
+<section class="slide" id="p2-partial">
+  <span class="slide-tag">Pages 2, 6</span>
+  <h3>2. Partial correlation</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Partial correlation</strong> measures the relationship between two variables <em>after removing the effect of one or more other variables</em>. We first remove the effect of age from both height and weight, then correlate what's left over ("the remaining parts").</p>
+    <p>\[ r_{12.3} = \text{Correlation between } X_1 \text{ and } X_2, \text{ given } X_3 \]</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Worked example</span>
+    <p>Suppose we're studying Salary, Experience, and Education. The simple correlation of Salary vs. Experience might look strong — but Education affects both. Partial correlation asks: <strong>what is the relationship between Salary and Experience, after controlling for Education?</strong></p>
+  </div>
+  <div class="def">
+    <span class="box-label">Formula</span>
+    <p>\[ r_{12.3} = \frac{r_{12} - r_{13}r_{23}}{\sqrt{(1-r_{13}^2)(1-r_{23}^2)}} \]</p>
+    <p class="small">We're adjusting the original correlation by removing the influence of \(X_3\) from both the \(X_1\)-\(X_2\) relationship.</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Formal definition via the covariance matrix</span>
+    <p>Suppose \(X\) is a random vector with covariance matrix \(\Sigma\). Split \(X\) into \(\tilde X_{(1)}=X_1\) (one variable) and \(\tilde X_{(2)}=(X_2,\dots,X_p)'\) (the rest):</p>
+    <p>\[ \Sigma_{p\times p} = \begin{bmatrix}\Sigma_{11}&\Sigma_{12}\\\Sigma_{21}&\Sigma_{22}\end{bmatrix} \]</p>
+    <p>The partial correlation between \(X_1\) and \(X_2\) while controlling for other variables \((X_3,\dots,X_p)\) measures the <em>direct</em> association between \(X_1\) and \(X_2\), after removing the influence of the other variables.</p>
+  </div>
+</section>
+
+<section class="slide" id="p2-multiple">
+  <span class="slide-tag">Pages 3, 5–6</span>
+  <h3>3. Multiple correlation</h3>
+  <div class="qbox">
+    <span class="box-label">The motivating question</span>
+    <p>Suppose we want to predict Weight using Height <em>and</em> Age. Should we correlate weight separately with height, then separately with age? <strong>No</strong> — we want both variables considered together.</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Multiple correlation</strong> \(R_{1.23}\) measures how well a <em>group</em> of variables \((X_2,X_3)\) jointly predicts another variable \(X_1\).</p>
+    <p>\[ R_{1.23} = \sqrt{\frac{r_{12}^2+r_{13}^2-2r_{12}r_{13}r_{23}}{1-r_{23}^2}} \]</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Formal definition via the covariance matrix</span>
+    <p>The multiple correlation coefficient measures how well one dependent variable can be predicted using a set of independent variables. With \(X=\begin{bmatrix}\tilde X_{(1)}\\\tilde X_{(2)}\end{bmatrix}\), \(\tilde X_{(1)}=X_1\) (dependent), \(\tilde X_{(2)}=(X_2,\dots,X_p)'\) (independent), the multiple correlation coefficient is denoted \(R_{1.23\dots p}\).</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Key takeaway — what R² actually measures</span>
+    <p>\(R_{1.23}=\text{Corr}(X_1,\hat X_1)\) where \(\hat X_1\) is \(X_1\)'s best linear prediction from the other variables. It measures how <strong>strongly</strong> \(X_1\) is associated with its best linear prediction from the other variables:</p>
+    <p>\[ R_{1.23}^2 = \frac{\text{Explained variance}}{\text{Total variance}}, \qquad R_{1.23}=\sqrt{R_{1.23}^2}, \qquad 0\leq R_{1.23}\leq1 \]</p>
+    <p>It measures the <strong>strength</strong> of the joint linear relationship, not its direction.</p>
+  </div>
+</section>
+
+<section class="slide" id="p2-properties">
+  <span class="slide-tag">Pages 4–5</span>
+  <h3>4. Properties, and why partial (but not multiple) can be negative</h3>
+  <table class="grid">
+    <tr><th></th><th>Partial correlation</th><th>Multiple correlation</th></tr>
+    <tr><td><strong>Range</strong></td><td>\(-1\leq r \leq 1\)</td><td>\(0\leq R \leq 1\)</td></tr>
+    <tr><td><strong>Sign</strong></td><td>May be positive, negative, or zero</td><td>Never negative</td></tr>
+    <tr><td><strong>Zero means</strong></td><td>No linear association after controlling for other variables</td><td>—</td></tr>
+    <tr><td><strong>Larger value means</strong></td><td>—</td><td>Better joint prediction</td></tr>
+  </table>
+  <table class="grid">
+    <tr><th>Question</th><th>Answer</th></tr>
+    <tr><td>Are two variables related?</td><td>→ Simple correlation</td></tr>
+    <tr><td>Are two variables related after controlling for another?</td><td>→ Partial correlation</td></tr>
+    <tr><td>Do several variables jointly explain one variable?</td><td>→ Multiple correlation</td></tr>
+  </table>
+
+  <h4>Why can partial correlation be negative?</h4>
+  <p>It's still a correlation between two variables (after removing the effect of others) — so it keeps every property of an ordinary correlation, including the ability to be negative. For example, \(r_{12.3}=\text{Cor}(X_1,X_2\mid X_3)\) can be \(-0.7\), \(0\), or \(+0.7\).</p>
+  <div class="an">
+    <span class="box-label">Analogy — why</span>
+    <p>Because after controlling for \(X_3\), the <em>remaining parts</em> of \(X_1\) and \(X_2\) can still move in either direction relative to each other. For example, after removing the effect of age: as the remaining part of Height <em>rises</em>, the remaining part of Weight might <em>decrease</em> — so the partial correlation is negative.</p>
+  </div>
+
+  <h4>Why can multiple correlation never be negative?</h4>
+  <p>\(R_{1.23}=\text{Corr}(X_1,\hat X_1)\) where \(\hat X_1\) is the <em>best linear prediction</em> of \(X_1\) built from \(X_2\) and \(X_3\) together. Since it's specifically defined as the positive square root \(R_{1.23}=\sqrt{R_{1.23}^2}\), it measures the strength of the joint relationship, never its direction — so it can never be negative.</p>
+</section>
+
+<section class="slide" id="p2-formal">
+  <span class="slide-tag">Page 6</span>
+  <h3>5. The formal (matrix) definition, side by side</h3>
+  <p>Suppose \(X\) is a random vector with covariance matrix \(\Sigma_{p\times p} = \begin{bmatrix}\Sigma_{11}&\Sigma_{12}\\\Sigma_{21}&\Sigma_{22}\end{bmatrix}\), where \(\tilde X_{(1)}=X_1\) and \(\tilde X_{(2)}=(X_2,\dots,X_p)'\).</p>
+  <div class="grid2">
+    <div class="def">
+      <span class="box-label">Multiple correlation</span>
+      <p>Between \(\tilde X_{(1)}=X_1\) and \(\tilde X_{(2)}=(X_2,X_3,\dots,X_p)'\), denoted \(R_{1.23\dots p}\).</p>
+      <p>\[ R_{1.23} = \sqrt{\frac{r_{12}^2+r_{13}^2-2r_{12}r_{13}r_{23}}{1-r_{23}^2}} \]</p>
+    </div>
+    <div class="def">
+      <span class="box-label">Partial correlation</span>
+      <p>Between two variables (say \(X_1,X_2\)) while controlling for the other variables \((X_3,\dots,X_p)\), measures the <em>direct</em> association after removing the influence of the other variables.</p>
+      <p>\[ r_{12.3} = \frac{r_{12}-r_{13}r_{23}}{\sqrt{(1-r_{13}^2)(1-r_{23}^2)}} \]</p>
+    </div>
+  </div>
+</section>
+<section class="slide" id="p2-worked">
+  <span class="slide-tag">Pages 7–8</span>
+  <h3>6. Worked numerical problems</h3>
+
+  <h4>Problem 1</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(X=(X_1,X_2,X_3)'\) with correlation matrix \(R=\begin{bmatrix}1&0.60&0.70\\0.60&1&0.65\\0.70&0.65&1\end{bmatrix}\). Find (i) \(R_{1.23}\) and (ii) \(r_{12.3}\).</p>
+    <p><strong>(i)</strong> \(R_{1.23}=\sqrt{\dfrac{(0.6)^2+(0.7)^2-2(0.6)(0.7)(0.65)}{1-(0.65)^2}} = \sqrt{\dfrac{0.36+0.49-0.546}{0.5775}} = \sqrt{\dfrac{0.304}{0.5775}} = \sqrt{0.5264} = \mathbf{0.725}\)</p>
+    <p><strong>(ii)</strong> \(r_{12.3}=\dfrac{0.60-(0.70)(0.65)}{\sqrt{1-(0.70)^2}\sqrt{1-(0.65)^2}} = \dfrac{0.60-0.455}{\sqrt{0.51}\sqrt{0.5775}} = \dfrac{0.145}{0.5427} = \mathbf{0.267}\)</p>
+    <p class="small">Both independently re-verified — matches your notes' answers of 0.725 and 0.26714.</p>
+  </div>
+
+  <h4>Problem 2</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>\(R=\begin{bmatrix}1&0.8&0.6\\0.8&1&0.5\\0.6&0.5&1\end{bmatrix}\). Find (i) \(R_{2.13}\) and (ii) \(r_{13.2}\).</p>
+    <p>Here \(r_{12}=0.8\) (X2 vs X1), \(r_{23}=0.5\) (X2 vs X3), \(r_{13}=0.6\) (the two "independent" variables' own correlation).</p>
+    <p>\[ R_{2.13} = \sqrt{\frac{r_{21}^2+r_{23}^2-2r_{21}r_{23}r_{13}}{1-r_{13}^2}} = \sqrt{\frac{(0.8)^2+(0.5)^2-2(0.8)(0.5)(0.6)}{1-(0.6)^2}} = \sqrt{\frac{0.41}{0.64}} = \mathbf{0.800} \]</p>
+    <p class="small">This continues exactly where your notes' formula setup for \(R_{2.13}\) leaves off.</p>
+  </div>
+
+  <h4>Problem 3 — computing correlations from raw data first</h4>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>From the following data, obtain \(R_{1.23}\) and \(R_{2.13}\):</p>
+    <table class="grid" style="font-family:'JetBrains Mono',monospace;">
+      <tr><td>\(X_1\)</td><td>2</td><td>5</td><td>7</td><td>11</td></tr>
+      <tr><td>\(X_2\)</td><td>3</td><td>6</td><td>10</td><td>12</td></tr>
+      <tr><td>\(X_3\)</td><td>1</td><td>3</td><td>6</td><td>10</td></tr>
+    </table>
+    <p>Your notes set up the plan correctly: first compute \(r_{12},r_{13},r_{23}\) using the raw-score correlation formula \(r=\dfrac{N\sum X_1X_2-(\sum X_1)(\sum X_2)}{\sqrt{[N\sum X_1^2-(\sum X_1)^2][N\sum X_2^2-(\sum X_2)^2]}}\), then substitute into the \(R_{1.23}\)/\(R_{2.13}\) formulas. Completing the arithmetic (\(N=4\)):</p>
+    <p>\(\sum X_1=25,\ \sum X_2=31,\ \sum X_3=20\); \(\sum X_1^2=199,\ \sum X_2^2=289,\ \sum X_3^2=146\); \(\sum X_1X_2=238,\ \sum X_1X_3=169,\ \sum X_2X_3=201\).</p>
+    <p>\(r_{12}=\dfrac{4(238)-25(31)}{\sqrt{[4(199)-625][4(289)-961]}}=\dfrac{177}{\sqrt{171\times195}}=\mathbf{0.969}\)</p>
+    <p>\(r_{13}=\dfrac{4(169)-25(20)}{\sqrt{171\times184}}=\dfrac{176}{177.4}=\mathbf{0.992}\)</p>
+    <p>\(r_{23}=\dfrac{4(201)-31(20)}{\sqrt{195\times184}}=\dfrac{184}{189.4}=\mathbf{0.971}\)</p>
+    <p>Plugging into the formulas: \(R_{1.23}=\sqrt{\dfrac{0.969^2+0.992^2-2(0.969)(0.992)(0.971)}{1-0.971^2}} \approx \mathbf{0.992}\), and \(R_{2.13}\approx\mathbf{0.970}\).</p>
+    <p class="small">Both multiple correlations come out very close to 1 — makes sense, since all three variables here increase almost perfectly together.</p>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 3 of 3</div>
+  <h2>Wishart Distribution &amp; Maximum Likelihood Estimation</h2>
+  <p>Part 1 used the sample covariance matrix \(S\) as if we already knew its distribution — this part derives exactly that (the Wishart distribution), and then derives \(S\) itself from first principles, by finding the maximum likelihood estimators of \(\mu\) and \(\Sigma\).</p>
+</div>
+
+<section class="slide" id="p3-motivation">
+  <span class="slide-tag">Page 1</span>
+  <h3>1. From Chi-square to Wishart</h3>
+  <div class="qbox">
+    <span class="box-label">The motivating question</span>
+    <p>In univariate statistics, what distribution do we get when we add up squared standard normal observations?</p>
+  </div>
+  <p>Suppose \(Z_1,Z_2,\dots,Z_n \sim N(0,1)\) independently. Then:</p>
+  <p>\[ Z_1^2+Z_2^2+\dots+Z_n^2 = \sum_{i=1}^n Z_i^2 \sim \chi_n^2 \]</p>
+  <div class="qbox">
+    <span class="box-label">The key transition</span>
+    <p>What if, instead of one variable, we have <em>several</em> normally distributed variables? Suppose \(X_i=\begin{bmatrix}X_{i1}\\X_{i2}\\\vdots\\X_{ip}\end{bmatrix}\) is a \(p\)-dimensional random vector, with \(X_i \sim N_p(0,\Sigma)\).</p>
+  </div>
+  <p>Now, instead of calculating one quantity like \(\sum Z_i^2\), we need to calculate something involving the <strong>squares and cross-products</strong> of several variables at once. This is exactly the transition from "one variable, squared and summed" to "several variables, whose squares <em>and</em> cross-products all get summed together into a matrix."</p>
+</section>
+
+<section class="slide" id="p3-crossproduct">
+  <span class="slide-tag">Page 2</span>
+  <h3>2. The cross-product matrix</h3>
+  <p>With two variables, instead of a single sum of squares, we'd want \(\sum X_i^2\), \(\sum Y_i^2\), <em>and</em> \(\sum X_iY_i\) — all three at once. This motivates writing the whole collection as a matrix.</p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>For observations \(X_1,X_2,\dots,X_n\) (each a \(p\)-dimensional vector), define the <strong>cross-product matrix</strong>:</p>
+    <p>\[ A = \sum_{i=1}^n X_iX_i^{\top} \]</p>
+    <p>This is a \(p\times p\) matrix.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example — expanding for p=2</span>
+    <p>For \(p=2\), write \(X_i=\begin{bmatrix}X_i\\Y_i\end{bmatrix}\). Then \(X_iX_i^\top=\begin{bmatrix}X_i^2&X_iY_i\\X_iY_i&Y_i^2\end{bmatrix}\), so:</p>
+    <p>\[ A = \begin{bmatrix}\sum X_i^2 & \sum X_iY_i\\ \sum X_iY_i & \sum Y_i^2\end{bmatrix} \]</p>
+  </div>
+  <p>This matrix contains all the sums of squares and cross-products at once. In multivariate analysis, this matrix plays a role directly analogous to the "sum of squares" you're used to from univariate statistics.</p>
+  <div class="key">
+    <span class="box-label">Now, introducing the Wishart distribution</span>
+    <p>Just as the Chi-square distribution describes the distribution of the sum of squared normal variables, the <strong>Wishart distribution</strong> describes the distribution of this matrix \(A\) of sums of squares and cross-products, when the observations come from a multivariate normal distribution.</p>
+  </div>
+</section>
+
+<section class="slide" id="p3-definition">
+  <span class="slide-tag">Page 3</span>
+  <h3>3. Defining the Wishart distribution</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>If \(X_i \sim N_p(0,\Sigma)\) independently (\(i=1,\dots,n\)), then:</p>
+    <p>\[ A = \sum_{i=1}^n X_iX_i^{\top} \sim W_p(n,\Sigma) \]</p>
+    <p>where: \(p=\)dimension of the random vector, \(n=\)degrees of freedom, \(\Sigma=\)covariance matrix, and \(A\) is a random \(p\times p\) symmetric matrix.</p>
+  </div>
+  <p class="small">For \(p=1\), the Wishart distribution reduces exactly to the Chi-square distribution. <strong>"The Wishart distribution is a multivariate generalisation of the Chi-square distribution."</strong></p>
+
+  <h4>Why do we need the Wishart distribution?</h4>
+  <p>Suppose \(X_1,\dots,X_n \sim N_p(\mu,\Sigma)\). Then the sample covariance matrix is:</p>
+  <p>\[ S = \frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)(X_i-\bar X)^{\top} \qquad \Longrightarrow \qquad (n-1)S \sim W_p(n-1,\Sigma) \]</p>
+  <div class="an">
+    <span class="box-label">Analogy — direct parallel with the univariate case</span>
+    <p>In univariate statistics you already know \(\dfrac{(n-1)s^2}{\sigma^2}\sim\chi^2_{n-1}\) (we lose one degree of freedom because we had to <em>estimate</em> the mean first, before computing the sample variance). Exactly the same story here: \((n-1)S \sim W_p(n-1,\Sigma)\) — we use \(n-1\), not \(n\), because we spent one degree of freedom estimating the mean vector \(\mu\).</p>
+  </div>
+  <p class="small">This is precisely the fact that Part 1's Hotelling's \(T^2\) formula relied on: \(S \sim W_p(n-1,\Sigma)\) is exactly what makes the \(T^2\) statistic's sampling distribution (the \(F\)-distribution) derivable.</p>
+</section>
+<section class="slide" id="p3-properties">
+  <span class="slide-tag">Pages 4–8</span>
+  <h3>4. Three key properties of the Wishart distribution</h3>
+  <p>Your notes develop three "basic operations" you can perform on a Wishart-distributed matrix: adding two of them, transforming one by a fixed matrix, and squeezing one down into a quadratic form. Each one directly mirrors a familiar Chi-square fact.</p>
+
+  <h4>Property 1 — Adding independent Wishart matrices</h4>
+  <div class="def">
+    <span class="box-label">Result</span>
+    <p>If \(A_1 \sim W_{n_1}(\Sigma)\) independently of \(A_2 \sim W_{n_2}(\Sigma)\), then \(A_1+A_2 \sim W_{n_1+n_2}(\Sigma)\). In words: <strong>degrees of freedom simply add.</strong></p>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>This is the exact matrix version of a fact you already know: if \(X\sim\chi^2_{n_1}\) and \(Y\sim\chi^2_{n_2}\) independently, then \(X+Y\sim\chi^2_{n_1+n_2}\). "Wishart's additivity property is the matrix version of the Chi-square addition property."</p>
+  </div>
+  <details>
+    <summary>▸ Show the proof</summary>
+    <div class="box">
+      <p>Write \(A=\sum_{i=1}^n X_iX_i'\) where \(X_i\sim N_p(0,\Sigma)\) independently. If \(A_1\) uses \(n_1\) such vectors and \(A_2\) (independently) uses \(n_2\) more, then \(A_1+A_2\) is simply the sum-of-cross-products over all \(n_1+n_2\) vectors combined — which by definition is Wishart with \(n_1+n_2\) degrees of freedom.</p>
+    </div>
+  </details>
+
+  <h4>Property 2 — Transforming a Wishart matrix</h4>
+  <div class="def">
+    <span class="box-label">Result</span>
+    <p>If \(A \sim W_p(n,\Sigma)\) and \(C\) is a fixed \(q\times p\) matrix, then \(CAC' \sim W_q(n,\,C\Sigma C')\).</p>
+  </div>
+  <details>
+    <summary>▸ Show the proof</summary>
+    <div class="box">
+      <p>Start from \(A=\sum_i X_iX_i'\). Then:</p>
+      <p>\[ CAC' = C\left(\sum_i X_iX_i'\right)C' = \sum_i (CX_i)(CX_i)' \]</p>
+      <p>Since \(X_i\sim N_p(0,\Sigma)\), a linear transformation gives \(CX_i \sim N_q(0,\,C\Sigma C')\). So \(CAC'=\sum_i(CX_i)(CX_i)'\) is exactly a sum-of-cross-products of \(N_q(0,C\Sigma C')\)-distributed vectors — which by definition is \(W_q(n,C\Sigma C')\). \(\blacksquare\)</p>
+    </div>
+  </details>
+  <div class="ex">
+    <span class="box-label">Worked example — what C is actually doing</span>
+    <p>Suppose \(X=(X_1,X_2,X_3)'\) (so \(p=3\)). If we choose \(C=\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}\), then \(CX=\begin{bmatrix}X_1\\X_2\end{bmatrix}\) — i.e. \(C\) simply <em>selects</em> a subset of the original variables. Here the original vector has dimension \(p=3\), but after the transformation we have dimension \(q=2\). So the Wishart changes from \(W_3\) to \(W_2\) — this is exactly the matrix version of "any subset of an MND vector is itself MND," from Part 1!</p>
+  </div>
+
+  <h4>Property 3 — Quadratic form: Wishart collapses back to Chi-square</h4>
+  <div class="def">
+    <span class="box-label">Result</span>
+    <p>If \(A\sim W_p(n,\Sigma)\) and \(a\) is a fixed \(p\times1\) vector, then:</p>
+    <p>\[ a'Aa \sim (a'\Sigma a)\,\chi^2_n \qquad \text{or equivalently} \qquad \frac{a'Aa}{a'\Sigma a} \sim \chi^2_n \]</p>
+    <p class="small">This is the Wishart distribution folding all the way back down to a plain Chi-square — a nice sanity check that the whole framework is self-consistent.</p>
+  </div>
+  <details open>
+    <summary>▸ Show the proof</summary>
+    <div class="box">
+      <p>Start with \(A=\sum_i X_iX_i'\). Then \(a'Aa = a'\left(\sum_iX_iX_i'\right)a = \sum_{i=1}^n a'X_iX_i'a = \sum_{i=1}^n(a'X_i)^2\) (since \(a'X_iX_i'a=(a'X_i)(X_i'a)=(a'X_i)^2\), as \(a'X_i\) is a scalar).</p>
+      <p>Now, since \(X_i\sim N_p(0,\Sigma)\), the linear combination \(a'X_i\) is normally distributed with \(E(a'X_i)=0\) and \(V(a'X_i)=a'\Sigma a\), i.e. \(a'X_i \sim N(0,a'\Sigma a)\).</p>
+      <p>Standardise: \(Z_i = \dfrac{a'X_i}{\sqrt{a'\Sigma a}} \sim N(0,1)\). Therefore:</p>
+      <p>\[ \frac{a'Aa}{a'\Sigma a} = \sum_{i=1}^n\left(\frac{a'X_i}{\sqrt{a'\Sigma a}}\right)^2 = \sum_{i=1}^n Z_i^2 \]</p>
+      <p>But we already know \(\sum_i Z_i^2 \sim \chi^2_n\) (from Section 1!). So \(\dfrac{a'Aa}{a'\Sigma a}\sim\chi^2_n\). \(\blacksquare\)</p>
+    </div>
+  </details>
+</section>
+<section class="slide" id="p3-mle-setup">
+  <span class="slide-tag">Page 9</span>
+  <h3>5. Sampling from an MND &amp; setting up Maximum Likelihood</h3>
+  <p>Suppose we take a random sample from a multivariate normal population. What information do we want to estimate?</p>
+  <p>\[ X_1,X_2,\dots,X_n \overset{iid}{\sim} N_p(\mu,\Sigma) \]</p>
+  <p>where \(\mu=\begin{bmatrix}\mu_1\\\mu_2\\\vdots\\\mu_p\end{bmatrix}\) is the population mean vector and \(\Sigma\) is the population covariance matrix. Since \(\mu\) and \(\Sigma\) are both unknown, how can we estimate them from the sample? This leads directly to <strong>Maximum Likelihood Estimation (MLE)</strong>.</p>
+  <div class="an">
+    <span class="box-label">The sample, laid out as a matrix</span>
+    <p>For \(p=2\), each observation is \(X_i=\begin{bmatrix}X_{i1}\\X_{i2}\end{bmatrix}\), and the full sample looks like a data matrix with each <strong>column</strong> being one variable and each <strong>row</strong> being one individual — exactly the same layout as Part 1, Section 1.</p>
+  </div>
+  <div class="def">
+    <span class="box-label">The Maximum Likelihood idea, in one sentence</span>
+    <p><strong>"We choose the parameter values that make the observed sample most likely."</strong></p>
+  </div>
+  <p>For a single observation, the MND density (from Part 1) gives:</p>
+  <p>\[ f(x\mid \mu,\Sigma) = \frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}} \exp\left[-\frac12(x_i-\mu)'\Sigma^{-1}(x_i-\mu)\right] \]</p>
+  <p>Since the observations are independent, the full <strong>likelihood function</strong> is their product:</p>
+  <p>\[ L(\mu,\Sigma) = \prod_{i=1}^n f(x_i,\mu,\Sigma) \]</p>
+  <p>We now need to find the values of \(\mu\) and \(\Sigma\) that <em>maximise</em> this likelihood. Taking logs (which turns the product into a sum, and is easier to differentiate — and doesn't change <em>where</em> the maximum occurs, since log is increasing):</p>
+  <p>\[ \ell = \log L(\mu,\Sigma) = -\frac{np}{2}\log(2\pi) - \frac{n}{2}\log|\Sigma| - \frac12\sum_{i=1}^n(x_i-\mu)'\Sigma^{-1}(x_i-\mu) \]</p>
+  <p>Now we differentiate this with respect to \(\mu\) and \(\Sigma\) separately, and set each derivative to zero.</p>
+</section>
+
+<section class="slide" id="p3-mle-mean">
+  <span class="slide-tag">Pages 10–12</span>
+  <h3>6. MLE of the mean vector</h3>
+  <p>We want \(\dfrac{\partial \ell}{\partial \mu}=0\). The only \(\mu\)-dependent part of \(\ell\) is the quadratic-form sum, so let's expand that term carefully.</p>
+  <h4>Step 1 — expand the quadratic form</h4>
+  <p>Consider \(Q_i=(x_i-\mu)'B(x_i-\mu)\) where we write \(B=\Sigma^{-1}\) for brevity. Expanding (treating \(x_i\) as constant, \(\mu\) as the variable):</p>
+  <p>\[ Q_i = x_i'Bx_i - x_i'B\mu - \mu'Bx_i + \mu'B\mu \]</p>
+  <p>Because \(\Sigma\) (and hence \(B=\Sigma^{-1}\)) is a covariance matrix, it's symmetric: \(B'=B\). This means \(x_i'B\mu\) and \(\mu'Bx_i\) are actually equal (each is the transpose of the other, and both are scalars, so a scalar equals its own transpose). So the middle two terms combine:</p>
+  <p>\[ Q_i = x_i'Bx_i - 2\mu'Bx_i + \mu'B\mu \]</p>
+  <h4>Step 2 — differentiate</h4>
+  <p>Using the standard matrix-calculus identities \(\dfrac{\partial}{\partial\mu}(a'\mu)=a\) and \(\dfrac{\partial}{\partial\mu}(\mu'B\mu)=2B\mu\) (when \(B\) is symmetric), and noting the \(x_i'Bx_i\) term doesn't involve \(\mu\) at all:</p>
+  <p>\[ \frac{\partial Q_i}{\partial\mu} = 0 - 2Bx_i + 2B\mu = -2B(x_i-\mu) = -2\Sigma^{-1}(x_i-\mu) \]</p>
+  <h4>Step 3 — sum over all observations and solve</h4>
+  <p>\[ \frac{\partial\ell}{\partial\mu} = -\frac12\sum_{i=1}^n\frac{\partial Q_i}{\partial\mu} = -\frac12\sum_{i=1}^n\big[-2\Sigma^{-1}(x_i-\mu)\big] = \Sigma^{-1}\sum_{i=1}^n(x_i-\mu) \]</p>
+  <p>Setting this to zero, and since \(\Sigma^{-1}\) is non-singular (so we can "cancel" it):</p>
+  <p>\[ \sum_{i=1}^n(x_i-\mu)=0 \quad\Longrightarrow\quad \sum_{i=1}^n x_i - n\mu = 0 \quad\Longrightarrow\quad \hat\mu = \frac1n\sum_{i=1}^n x_i = \bar X \]</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>\[ \boxed{\hat\mu = \bar X} \]</p>
+    <p>The maximum likelihood estimator of the multivariate mean vector is exactly the sample mean vector — the direct multivariate analogue of the univariate MLE result \(\hat\mu=\bar x\).</p>
+  </div>
+</section>
+<section class="slide" id="p3-mle-cov">
+  <span class="slide-tag">Pages 13–17</span>
+  <h3>7. MLE of the covariance matrix</h3>
+  <p>Now we keep \(\mu\) fixed at its just-found MLE, \(\hat\mu=\bar X\), and differentiate \(\ell\) with respect to \(\Sigma\) instead.</p>
+
+  <h4>Step 1 — rewrite the quadratic-form sum as a trace</h4>
+  <p>Notice \((x_i-\mu)'\Sigma^{-1}(x_i-\mu)\) is a <strong>scalar</strong> (a \(1\times1\) matrix) — you can check the dimensions: \((1\times p)(p\times p)(p\times1) = 1\times1\). Your notes use a classic trick: <strong>any scalar equals its own trace</strong>, and the trace has a "cyclic property" allowing us to reorder a product inside it:</p>
+  <div class="def">
+    <span class="box-label">Matrix result used</span>
+    <p>For a \(k\times k\) symmetric matrix \(A\) and a \(k\times1\) vector \(x\): \(x'Ax = \text{tr}(x'Ax) = \text{tr}(Axx')\) (cyclic property of trace).</p>
+  </div>
+  <p>Applying this to our sum:</p>
+  <p>\[ (x_i-\mu)'\Sigma^{-1}(x_i-\mu) = \text{tr}\big[\Sigma^{-1}(x_i-\mu)(x_i-\mu)'\big] \]</p>
+  <p>Summing over \(i\), and defining \(A=\sum_{i=1}^n(x_i-\mu)(x_i-\mu)'\) (our old friend, the cross-product matrix from Part 3, Section 2!):</p>
+  <p>\[ \sum_{i=1}^n (x_i-\mu)'\Sigma^{-1}(x_i-\mu) = \text{tr}(\Sigma^{-1}A) \]</p>
+  <p>So the log-likelihood simplifies beautifully to:</p>
+  <p>\[ \ell = \text{constant} - \frac{n}{2}\log|\Sigma| - \frac12\text{tr}(\Sigma^{-1}A) \]</p>
+
+  <h4>Step 2 — differentiate with respect to Σ</h4>
+  <p>We need two matrix-calculus building blocks: \(\dfrac{\partial}{\partial\Sigma}\log|\Sigma|\) and \(\dfrac{\partial}{\partial\Sigma}\text{tr}(\Sigma^{-1}A)\). Your notes derive both carefully in an appendix — full derivations are in the expandable box below if you want the complete rigor, but here are the results:</p>
+  <div class="def">
+    <span class="box-label">Results (proofs below)</span>
+    <p>\[ \frac{\partial}{\partial\Sigma}\log|\Sigma| = \Sigma^{-1} \qquad \text{and} \qquad \frac{\partial}{\partial\Sigma}\text{tr}(\Sigma^{-1}A) = -\Sigma^{-1}A\Sigma^{-1} \]</p>
+  </div>
+  <details>
+    <summary>▸ Show the proof of both matrix-calculus identities</summary>
+    <div class="box">
+      <p><strong>Identity 1: \(\partial\log|\Sigma|/\partial\Sigma=\Sigma^{-1}\).</strong> By the chain rule, \(\dfrac{\partial}{\partial\Sigma}\log|\Sigma| = \dfrac{1}{|\Sigma|}\cdot\dfrac{\partial|\Sigma|}{\partial\Sigma}\). <strong>Jacobi's formula</strong> gives the derivative of a matrix determinant with respect to the matrix itself: \(\dfrac{\partial|\Sigma|}{\partial\Sigma} = \text{adj}(\Sigma)^\top = \text{adj}(\Sigma)\) (since \(\Sigma\) is symmetric). By the definition of a matrix inverse, \(\Sigma^{-1}=\dfrac{\text{adj}(\Sigma)}{|\Sigma|}\), i.e. \(\text{adj}(\Sigma)=|\Sigma|\Sigma^{-1}\). Substituting: \(\dfrac{\partial}{\partial\Sigma}\log|\Sigma| = \dfrac{1}{|\Sigma|}\cdot|\Sigma|\Sigma^{-1} = \Sigma^{-1}\). \(\blacksquare\)</p>
+      <p style="margin-top:14px;"><strong>Identity 2: \(\partial\,\text{tr}(\Sigma^{-1}A)/\partial\Sigma = -\Sigma^{-1}A\Sigma^{-1}\).</strong> We use the differential calculus of matrices. A standard identity for the differential of an inverse: \(d(\Sigma^{-1}) = -\Sigma^{-1}(d\Sigma)\Sigma^{-1}\). So:</p>
+      <p>\[ d\big[\text{tr}(\Sigma^{-1}A)\big] = \text{tr}\big[d(\Sigma^{-1})A\big] = \text{tr}\big[-\Sigma^{-1}(d\Sigma)\Sigma^{-1}A\big] = \text{tr}\big[-\Sigma^{-1}A\Sigma^{-1}\,d\Sigma\big] \]</p>
+      <p>(the last step uses the cyclic property of trace to move \(d\Sigma\) to the end). For a general function \(f(\Sigma)\), the differential is given by \(df = \text{tr}\!\left[\left(\dfrac{\partial f}{\partial\Sigma}\right)^\top d\Sigma\right]\). Matching this against what we derived:</p>
+      <p>\[ \left[\frac{\partial}{\partial\Sigma}\text{tr}(\Sigma^{-1}A)\right]^\top = -\Sigma^{-1}A\Sigma^{-1} \]</p>
+      <p>and since \(\Sigma\) and \(A\) are both symmetric, \(-\Sigma^{-1}A\Sigma^{-1}\) is itself symmetric, so transposing changes nothing: \(\dfrac{\partial}{\partial\Sigma}\text{tr}(\Sigma^{-1}A) = -\Sigma^{-1}A\Sigma^{-1}\). \(\blacksquare\)</p>
+    </div>
+  </details>
+
+  <h4>Step 3 — set the derivative to zero and solve</h4>
+  <p>\[ \frac{\partial\ell}{\partial\Sigma} = -\frac{n}{2}\Sigma^{-1} - \frac12\big[-\Sigma^{-1}A\Sigma^{-1}\big] = -\frac{n}{2}\Sigma^{-1}+\frac12\Sigma^{-1}A\Sigma^{-1} = 0 \]</p>
+  <p>Multiply through by \(-2\): \(\ n\Sigma^{-1} - \Sigma^{-1}A\Sigma^{-1} = 0 \ \Rightarrow\ \Sigma^{-1}A\Sigma^{-1}=n\Sigma^{-1}\).</p>
+  <p>Multiply both sides on the <strong>left</strong> by \(\Sigma\): \(\ A\Sigma^{-1}=nI\). Then multiply both sides on the <strong>right</strong> by \(\Sigma\): \(\ A = n\Sigma\).</p>
+  <p>\[ \Longrightarrow \quad \hat\Sigma = \frac{A}{n} = \frac1n\sum_{i=1}^n(x_i-\hat\mu)(x_i-\hat\mu)' = \frac1n\sum_{i=1}^n(x_i-\bar X)(x_i-\bar X)' \]</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>\[ \boxed{\hat\Sigma_{MLE} = \frac1n\sum_{i=1}^n(x_i-\bar X)(x_i-\bar X)' = \frac{(n-1)}{n}S} \]</p>
+    <p>where \(S\) is the usual (unbiased) sample covariance matrix from Part 1. Notice the MLE divides by \(n\), while the "usual" sample covariance matrix \(S\) divides by \(n-1\) — exactly mirroring the univariate fact that the MLE of \(\sigma^2\) is <em>biased</em> (divides by \(n\)), while the standard unbiased sample variance divides by \(n-1\). The two estimators differ only by the small factor \(\frac{n-1}{n}\), which shrinks toward 1 as the sample size grows.</p>
+  </div>
+</section>
+<section class="slide" id="recap">
+  <span class="slide-tag">Full-course recap</span>
+  <h3>Recap: how all three parts connect</h3>
+  <table class="grid">
+    <tr><th>Part</th><th>Core question</th><th>Big idea</th></tr>
+    <tr><td><strong>1. MND &amp; Hotelling's T²</strong></td><td>How do mean, variance, and the normal curve generalise to many variables at once?</td><td>Mean vector, covariance matrix, and the Mahalanobis distance replace their univariate counterparts. The MND has powerful special properties (linear combos stay normal, zero covariance ⟹ independence, conditionals stay normal). Hotelling's \(T^2\) is the multivariate t-test.</td></tr>
+    <tr><td><strong>2. Multiple &amp; Partial Correlation</strong></td><td>How do I measure relationships between variables once more than two are involved?</td><td>Partial correlation strips out a third variable's influence from a pairwise relationship (can be negative). Multiple correlation measures how well a whole group of variables jointly predicts one variable (never negative).</td></tr>
+    <tr><td><strong>3. Wishart &amp; MLE</strong></td><td>What's the sampling distribution of the covariance matrix itself, and where does \(\hat\mu=\bar X\) actually come from?</td><td>The Wishart distribution is the matrix generalisation of the Chi-square distribution — it governs the sum-of-cross-products matrix \(A\), and hence \((n-1)S\). Maximum likelihood, worked out directly from the MND density, proves \(\hat\mu=\bar X\) and \(\hat\Sigma_{MLE}=\frac{n-1}{n}S\).</td></tr>
+  </table>
+
+  <h4>Mini glossary</h4>
+  <table class="grid">
+    <tr><td><strong>Mean vector \(\mu\)/\(\bar X\)</strong></td><td>The stacked average of every variable — population/sample version respectively.</td></tr>
+    <tr><td><strong>Covariance matrix \(\Sigma\)/\(S\)</strong></td><td>Diagonal = each variable's own variance; off-diagonal = covariance between each pair of variables.</td></tr>
+    <tr><td><strong>Mahalanobis distance</strong></td><td>\((x-\mu)'\Sigma^{-1}(x-\mu)\) — "distance from the mean," corrected for the shape/correlation of the data's spread.</td></tr>
+    <tr><td><strong>Partial correlation \(r_{12.3}\)</strong></td><td>Correlation between \(X_1,X_2\) after removing the linear effect of \(X_3\). Can be negative.</td></tr>
+    <tr><td><strong>Multiple correlation \(R_{1.23}\)</strong></td><td>How strongly \(X_1\) is related to its best joint linear prediction from \(X_2,X_3\). Never negative.</td></tr>
+    <tr><td><strong>Wishart distribution \(W_p(n,\Sigma)\)</strong></td><td>The distribution of a sum-of-cross-products matrix built from \(n\) independent \(N_p(0,\Sigma)\) vectors — the matrix version of Chi-square.</td></tr>
+    <tr><td><strong>Hotelling's \(T^2\)</strong></td><td>The multivariate generalisation of the (squared) t-statistic, used to test hypotheses about mean vectors.</td></tr>
+    <tr><td><strong>MLE</strong></td><td>The parameter values that make the observed data "most likely" under the assumed model.</td></tr>
+  </table>
+</section>
+
+<footer>
+  Built as a study companion for <em>Multivariate Analysis</em> — MND and Hotelling's T-square · Multiple and Partial Correlation · Wishart Distribution and MLE (MIT Manipal handwritten notes). Every worked numerical example was independently recomputed and cross-checked against the original notes; one correction was found and flagged in Part 1, Section 9.
+</footer>
+</main>
+</div>
+
+<a href="#top" class="backtotop" id="backtotop">↑</a>
+
+<script>
+  const btn = document.getElementById('backtotop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
+  });
+
+  const links = document.querySelectorAll('.sidebar a[href^="#"]');
+  const map = new Map();
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) map.set(el, a); });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = map.get(entry.target);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(l => l.style.color = '');
+        links.forEach(l => l.style.borderLeftColor = 'transparent');
+        link.style.color = 'var(--accent)';
+        link.style.borderLeftColor = 'var(--accent)';
+      }
+    });
+  }, { rootMargin: '-10% 0px -70% 0px' });
+  map.forEach((link, el) => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to AI — A Beginner's Guide (Agents, Search & Local Search)</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{
+    --cream:#fbf6e9;
+    --paper:#fffdf7;
+    --ink:#2b2620;
+    --ink-soft:#5b5347;
+    --rule:#e4d9bd;
+    --accent:#a8632f;
+    --accent2:#5c7a5e;
+    --def-bg:#eef3fb; --def-line:#5b7fb5;
+    --ex-bg:#fdf3e3;  --ex-line:#c98a2c;
+    --an-bg:#eef6ee;  --an-line:#5c9a63;
+    --warn-bg:#fbeaea; --warn-line:#c0504d;
+    --key-bg:#f3edf9; --key-line:#8a63c9;
+    --code-bg:#2b2620; --code-ink:#f2ead9;
+    --sidebar-w:290px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'EB Garamond', Georgia, 'Times New Roman', serif;
+    font-size:19px; line-height:1.65;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  code, .mono, pre, .pseudocode, .kbd{ font-family:'JetBrains Mono', monospace; }
+
+  a{color:var(--accent);}
+  h1,h2,h3,h4{ font-family:'EB Garamond', serif; font-weight:700; color:#221e19; line-height:1.25; }
+
+  /* Layout */
+  .shell{ display:flex; max-width:1400px; margin:0 auto; }
+  .sidebar{
+    width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:22px 16px 40px 22px; border-right:1px solid var(--rule);
+    background:var(--paper);
+  }
+  .sidebar h3{ font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:22px 0 8px; }
+  .sidebar h3:first-child{ margin-top:0; }
+  .sidebar a{ display:block; text-decoration:none; color:var(--ink-soft); font-size:14.5px; padding:4px 0 4px 10px; border-left:2px solid transparent; }
+  .sidebar a:hover{ color:var(--accent); border-left-color:var(--accent); }
+  .sidebar .toc-title{ font-family:'EB Garamond',serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:4px;}
+  .sidebar .toc-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:14px; }
+  .main{ flex:1; min-width:0; padding:40px 56px 100px; }
+
+  .hero{ padding-bottom:28px; border-bottom:3px solid var(--accent); margin-bottom:36px; }
+  .hero .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); }
+  .hero h1{ font-size:42px; margin:8px 0 10px; }
+  .hero p.lead{ font-size:20px; color:var(--ink-soft); max-width:760px; }
+  .hero .badges{ margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; }
+  .badge{ font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--paper); border:1px solid var(--rule); padding:4px 10px; border-radius:20px; color:var(--ink-soft); }
+
+  .part-header{ margin-top:70px; padding:22px 26px; background:linear-gradient(120deg,#3a2f22,#5c4a34); color:#fbf6e9; border-radius:10px; }
+  .part-header .ptag{ font-family:'JetBrains Mono',monospace; font-size:13px; opacity:.75; letter-spacing:.06em; text-transform:uppercase;}
+  .part-header h2{ color:#fff; font-size:30px; margin:6px 0 8px; }
+  .part-header p{ margin:0; color:#f0e6d2; font-size:16.5px; max-width:800px;}
+
+  section.slide{ margin-top:46px; padding-top:8px; border-top:1px solid var(--rule); }
+  section.slide:first-of-type{ border-top:none; }
+  .slide-tag{ font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--accent2); background:#e9f0e9; display:inline-block; padding:2px 9px; border-radius:4px; margin-bottom:8px;}
+  .slide h3{ font-size:26px; margin:2px 0 14px; }
+  .slide h4{ font-size:19px; margin:22px 0 8px; color:var(--accent); }
+  .slide p{ margin:12px 0; }
+  .slide ul, .slide ol{ padding-left:26px; }
+  .slide li{ margin:6px 0; }
+
+  .box{ margin:18px 0; padding:14px 18px; border-radius:8px; border-left:5px solid; }
+  .box .box-label{ font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px; display:block;}
+  .def{ background:var(--def-bg); border-color:var(--def-line);} .def .box-label{color:var(--def-line);}
+  .ex{ background:var(--ex-bg); border-color:var(--ex-line);} .ex .box-label{color:var(--ex-line);}
+  .an{ background:var(--an-bg); border-color:var(--an-line);} .an .box-label{color:var(--an-line);}
+  .warn{ background:var(--warn-bg); border-color:var(--warn-line);} .warn .box-label{color:var(--warn-line);}
+  .key{ background:var(--key-bg); border-color:var(--key-line);} .key .box-label{color:var(--key-line);}
+
+  pre.pseudocode{ background:var(--code-bg); color:var(--code-ink); padding:16px 18px; border-radius:8px; overflow-x:auto; font-size:15px; line-height:1.6;}
+  pre.pseudocode .kw{ color:#e3b95c; } pre.pseudocode .cm{color:#9c9284; font-style:italic;}
+
+  table.grid{ width:100%; border-collapse:collapse; margin:16px 0; font-size:16.5px;}
+  table.grid th, table.grid td{ border:1px solid var(--rule); padding:8px 12px; text-align:left; vertical-align:top;}
+  table.grid th{ background:#f1e9d3; font-family:'JetBrains Mono',monospace; font-size:13px; text-transform:uppercase; letter-spacing:.03em;}
+  table.grid tr:nth-child(even) td{ background:#fffaf0; }
+  table.trace{ font-family:'JetBrains Mono',monospace; font-size:14.5px; }
+  table.trace th{ background:#3a2f22; color:#f0e6d2; }
+  .center{ text-align:center; }
+  .small{ font-size:14.5px; color:var(--ink-soft); }
+  .tag-node{ display:inline-block; min-width:24px; text-align:center; padding:1px 6px; border-radius:5px; background:#3a2f22; color:#fbf6e9; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .arrow{ color:var(--accent); font-weight:700; }
+
+  .step-badge{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; font-family:'JetBrains Mono',monospace; font-size:13px; margin-right:8px;}
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  @media(max-width:900px){ .grid2,.grid3{grid-template-columns:1fr;} }
+  .chip{ display:inline-block; background:#f1e9d3; border:1px solid var(--rule); padding:6px 12px; border-radius:6px; margin:4px 6px 4px 0; font-family:'JetBrains Mono',monospace; font-size:14px;}
+
+  .qbox{ background:#fff; border:2px dashed var(--accent2); border-radius:8px; padding:14px 18px; margin:18px 0;}
+  .qbox .box-label{ color:var(--accent2); font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; font-weight:700;}
+
+  footer{ margin-top:80px; padding-top:24px; border-top:1px solid var(--rule); color:var(--ink-soft); font-size:14px; text-align:center;}
+
+  .backtotop{ position:fixed; bottom:24px; right:24px; background:var(--accent); color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:18px; box-shadow:0 4px 12px rgba(0,0,0,.2); opacity:0; transition:opacity .2s; pointer-events:none;}
+  .backtotop.show{ opacity:1; pointer-events:auto; }
+
+  @media(max-width:1000px){
+    .shell{ flex-direction:column; }
+    .sidebar{ position:relative; width:100%; height:auto; border-right:none; border-bottom:1px solid var(--rule); }
+    .main{ padding:28px 20px 80px; }
+  }
+</style>
+</head>
+<body id="top">
+<a href="../../index.html" style="position:fixed;top:10px;left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
+<div class="shell">
+<nav class="sidebar">
+  <div class="toc-title">Intro to AI</div>
+  <div class="toc-sub">A slow, beginner-friendly walkthrough</div>
+
+  <h3>Part 1 · Agents &amp; Rationality</h3>
+  <a href="#p1-intro">1. The vacuum-cleaner puzzle</a>
+  <a href="#p1-history">2. A short history of AI</a>
+  <a href="#p1-agent">3. What is an "agent"?</a>
+  <a href="#p1-function">4. Agent Function vs Agent Program</a>
+  <a href="#p1-rational">5. Rational agents</a>
+  <a href="#p1-peas">6. The PEAS framework</a>
+  <a href="#p1-peas-examples">7. PEAS worked examples</a>
+  <a href="#p1-classify">8. Classifying task environments</a>
+  <a href="#p1-architectures">9. Five agent architectures</a>
+
+  <h3>Part 2 · Search Problems</h3>
+  <a href="#p2-intro">1. Formalising "finding a solution"</a>
+  <a href="#p2-define">2. The 5 parts of a search problem</a>
+  <a href="#p2-examples">3. Worked problems (route, 8-puzzle, vacuum)</a>
+  <a href="#p2-graph">4. State-space graphs</a>
+  <a href="#p2-bestfirst">5. Best-First Search (the master algorithm)</a>
+  <a href="#p2-tree">6. State space vs. search tree</a>
+  <a href="#p2-romania">7. Meet the Romania map</a>
+  <a href="#p2-ucs">8. Tracing Uniform-Cost Search</a>
+  <a href="#p2-efficiency">9. Turning UCS into BFS / DFS</a>
+  <a href="#p2-heuristic">10. Heuristic functions</a>
+  <a href="#p2-greedy">11. Tracing Greedy Best-First Search</a>
+  <a href="#p2-astar">12. Tracing A* Search</a>
+  <a href="#p2-admissible">13. Admissible heuristics</a>
+  <a href="#p2-consistent">14. Consistent heuristics</a>
+  <a href="#p2-summary">15. Putting it together + real heuristics</a>
+
+  <h3>Part 3 · Local Search</h3>
+  <a href="#p3-intro">1. A different kind of search</a>
+  <a href="#p3-landscape">2. The landscape picture</a>
+  <a href="#p3-hillclimb">3. Hill Climbing</a>
+  <a href="#p3-8queens">4. Hill Climbing on 8-Queens</a>
+  <a href="#p3-problem">5. Why hill climbing gets stuck</a>
+  <a href="#p3-sa">6. Simulated Annealing</a>
+  <a href="#p3-sa-run">7. A full annealing run</a>
+  <a href="#p3-ea">8. From one state to a population</a>
+  <a href="#p3-nasa">9. A real success story (NASA)</a>
+  <a href="#p3-ea-components">10. Evolutionary algorithms, piece by piece</a>
+  <a href="#p3-ga">11. Genetic Algorithms</a>
+  <a href="#p3-ga-worked">12. A full worked GA example</a>
+
+  <h3>&nbsp;</h3>
+  <a href="#recap">Full recap &amp; glossary</a>
+</nav>
+<main class="main">
+<div class="hero">
+  <div class="eyebrow">Study Guide · Introduction to Artificial Intelligence</div>
+  <h1>Agents, Search &amp; Local Search — Explained Slowly</h1>
+  <p class="lead">This guide walks through all three of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, and <em>Local Search Algorithms</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
+  <div class="badges">
+    <span class="badge">Dr Aishwarya S. — MIT Manipal</span>
+    <span class="badge">3 decks · 94 slides covered</span>
+    <span class="badge">Beginner pace</span>
+  </div>
+</div>
+
+<div class="qbox">
+  <span class="box-label">How to read this guide</span>
+  <p style="margin:6px 0 0;">Coloured boxes mean different things as you scroll:</p>
+  <p style="margin:8px 0 0;">
+    <span class="chip" style="background:var(--def-bg);border-color:var(--def-line);color:var(--def-line)">Definition</span>
+    <span class="chip" style="background:var(--ex-bg);border-color:var(--ex-line);color:var(--ex-line)">Worked Example</span>
+    <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Analogy</span>
+    <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Common Confusion</span>
+    <span class="chip" style="background:var(--key-bg);border-color:var(--key-line);color:var(--key-line)">Key Takeaway</span>
+  </p>
+</div>
+<div class="part-header">
+  <div class="ptag">Part 1 of 3</div>
+  <h2>Agents &amp; Rationality</h2>
+  <p>Before we can write any "intelligent" program, we need a precise, unambiguous way to talk about what a machine that "acts intelligently" even is. This part builds that vocabulary from a simple robot vacuum cleaner.</p>
+</div>
+
+<section class="slide" id="p1-intro">
+  <span class="slide-tag">Slides 1–2</span>
+  <h3>1. The vacuum-cleaner puzzle</h3>
+  <p>The lecture opens with a toy example that keeps coming back for the rest of this deck, so it's worth understanding really well.</p>
+  <div class="an">
+    <span class="box-label">Picture this</span>
+    <p>Imagine a tiny robot that lives in a house with just <strong>two rooms</strong>, room A and room B. The robot has one sensor: it can tell if the square it's currently standing on is dirty or clean. It has three possible moves: <strong>move left</strong>, <strong>move right</strong>, or <strong>suck up the dirt</strong> under it. That's it. That's the entire robot.</p>
+  </div>
+  <p>The lecture then asks a deceptively simple question: <em>how would you program this robot to behave well?</em> "Well" here just means: keep both rooms clean, without wasting moves.</p>
+  <p>This tiny example is used throughout the course because it's small enough to write out completely on one slide, yet it already contains every idea we need: sensing the world, choosing an action, and having some notion of "doing a good job."</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>The big question this entire subject is trying to answer is: <strong>what does it actually mean for a machine to "act well"?</strong> Everything else — agents, rationality, search algorithms — is really just different ways of making that question precise and then answering it.</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-history">
+  <span class="slide-tag">Slides 3–5 (approx.)</span>
+  <h3>2. A short history of AI (1940s → today)</h3>
+  <p>You don't need to memorise this timeline word-for-word, but it's genuinely useful context: it shows that "AI" has never been one fixed technique. It's a moving target — a name we give to whatever the current best approach for building rational agents happens to be.</p>
+  <table class="grid">
+    <tr><th>Decade</th><th>What happened</th></tr>
+    <tr><td><strong>1940s</strong></td><td>McCulloch &amp; Pitts built a mathematical model of a single brain cell (an artificial "neuron") in 1943. Alan Turing began thinking seriously about whether machines could "think."</td></tr>
+    <tr><td><strong>1950s</strong></td><td>Turing proposed his famous <strong>Turing Test</strong> (1950) — if a human chatting with a hidden machine can't tell it's a machine, maybe we should call it intelligent. In 1956, at the Dartmouth Workshop, John McCarthy literally coined the term "Artificial Intelligence."</td></tr>
+    <tr><td><strong>1960s</strong></td><td>ELIZA, the first chatbot, appeared. Researchers built "General Problem Solver" style programs that searched for solutions step by step — the direct ancestor of Part 2 of this course.</td></tr>
+    <tr><td><strong>1970s</strong></td><td>The <strong>first "AI Winter."</strong> Computers were too weak and problems grew too fast (this "explosion" of possibilities is exactly what search algorithms in Part 2 are built to fight) — funding dried up.</td></tr>
+    <tr><td><strong>1980s</strong></td><td>"Expert systems" (programs encoding a human expert's rules) revived funding. Hopfield networks (1982) and Boltzmann machines (1983, Geoffrey Hinton) laid early groundwork for neural networks.</td></tr>
+    <tr><td><strong>1990s</strong></td><td>A second AI Winter. But quietly, probability-based methods (Bayesian networks, Hidden Markov Models) and reinforcement learning (TD-learning, TD-Gammon) matured. In 1997, IBM's Deep Blue beat world chess champion Garry Kasparov.</td></tr>
+    <tr><td><strong>2000s</strong></td><td>"Big data" and much more powerful, cheaper computing hardware arrived.</td></tr>
+    <tr><td><strong>2010s</strong></td><td>IBM Watson won at <em>Jeopardy!</em> (2011). AlexNet kick-started the deep learning boom (2012). Word2vec (2013). AlphaGo beat Go champion Lee Sedol (2016). The <strong>Transformer</strong> architecture ("Attention is all you need," 2017) — the technology behind every modern LLM — was introduced. GPT-1, BERT and GPT-2 followed.</td></tr>
+    <tr><td><strong>2020s</strong></td><td>GPT-3, ChatGPT (2022), and the current wave of large language models (Claude, Llama, Gemini, DeepSeek, and so on), alongside a growing focus on AI safety and alignment.</td></tr>
+  </table>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>AI is <strong>not one fixed technique</strong> — it's an evolving set of approaches to building agents that act rationally. Symbolic reasoning, search, probability, neural networks, and today's LLMs are all just different tools aimed at the same underlying question this course is about.</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-agent">
+  <span class="slide-tag">Slide 6</span>
+  <h3>3. What is an "agent"?</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>An agent is anything that perceives its environment through sensors and acts upon that environment through actuators.</strong></p>
+  </div>
+  <p>Let's slow down and unpack every word in that sentence, since it's the single most important definition in this whole part.</p>
+  <ul>
+    <li><strong>Environment</strong> — the world the agent lives in. For our robot, that's the two rooms.</li>
+    <li><strong>Sensors</strong> — how the agent gets information <em>in</em> from the environment (this is called a <strong>percept</strong>). For our robot, that's the "is this square dirty?" sensor.</li>
+    <li><strong>Actuators</strong> — how the agent pushes information/effects back <em>out</em> onto the environment (an <strong>action</strong>). For our robot, that's "move left," "move right," "suck."</li>
+  </ul>
+  <p>So information flows in a loop: <span class="tag-node">ENVIRONMENT</span> <span class="arrow">→ percepts →</span> <span class="tag-node">AGENT</span> <span class="arrow">→ actions →</span> back to <span class="tag-node">ENVIRONMENT</span>, and this repeats forever.</p>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Think of <strong>you</strong> as an agent right now. Your environment is the room you're sitting in. Your sensors are your eyes and ears (percepts: what you see on this screen, what you hear around you). Your actuators are your hands and voice (actions: scrolling, typing, talking). A self-driving car works the same way — sensors are cameras/LIDAR, actuators are the steering wheel and pedals. A piece of software can be an agent too — its "sensors" might be reading keystrokes or files, and its "actuators" might be writing to a file or drawing something on screen.</p>
+  </div>
+  <p>Notice how general this definition is — it doesn't say anything about being "smart." A thermostat is technically an agent (sensor: temperature, actuator: turn heater on/off). Whether an agent behaves <em>well</em> is a completely separate question, which is exactly what "rational agents" (a bit later) is about.</p>
+</section>
+<section class="slide" id="p1-function">
+  <span class="slide-tag">Slides 7–9</span>
+  <h3>4. Agent Function vs. Agent Program</h3>
+  <p>This is a subtle distinction, but it's one of the more important ones in this deck, so let's take it very slowly with the vacuum robot as our running example.</p>
+  <div class="grid2">
+    <div class="def">
+      <span class="box-label">Agent Function</span>
+      <p>A <strong>mapping</strong> from every possible sequence of percepts the agent could ever receive, to an action.</p>
+      <p class="small">Think of it as an infinitely long lookup table: "if this is everything I've sensed so far, then do this action." It's a mathematical idea — it doesn't need to be something you could actually write down or run.</p>
+    </div>
+    <div class="def">
+      <span class="box-label">Agent Program</span>
+      <p>The actual, concrete piece of code that <strong>computes</strong> the agent function when you run it on real hardware.</p>
+      <p class="small">This is the thing you actually write and execute. Every AI algorithm you'll ever learn is really just a different way of <em>implementing</em> some agent function.</p>
+    </div>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Think of a maths function like \( f(x) = x^2 \). The <em>function</em> is the abstract rule "square the input" — it exists whether or not anyone ever calculates it. A <em>program</em> that computes \(x^2\) in Python is one particular way of actually carrying that rule out. Same idea here: the agent function is the abstract "what should I do given what I've seen," and the agent program is the code that actually does it.</p>
+  </div>
+
+  <h4>Worked example: the agent function for the two-room vacuum world</h4>
+  <p>Here percepts look like <code>[location, status]</code>, e.g. <code>[A, Dirty]</code> means "I am in room A and it is dirty." A full percept <em>sequence</em> is the entire history of everything sensed so far.</p>
+  <table class="grid">
+    <tr><th>Percept sequence</th><th>Action</th></tr>
+    <tr><td><code>[A, Clean]</code></td><td>Right</td></tr>
+    <tr><td><code>[A, Dirty]</code></td><td>Suck</td></tr>
+    <tr><td><code>[B, Clean]</code></td><td>Left</td></tr>
+    <tr><td><code>[B, Dirty]</code></td><td>Suck</td></tr>
+    <tr><td><code>[A, Clean], [A, Clean]</code></td><td>Right</td></tr>
+    <tr><td><code>[A, Clean], [A, Dirty]</code></td><td>Suck</td></tr>
+    <tr><td><code>[A, Dirty], [B, Clean]</code></td><td>Left</td></tr>
+    <tr><td><code>[A, Dirty], [B, Dirty]</code></td><td>Suck</td></tr>
+    <tr><td>… (this table is infinite — one row for every possible history) …</td><td>⋮</td></tr>
+  </table>
+  <p>This table <em>is</em> the agent function — every conceivable history gets an action. But we obviously can't code up an infinitely long table. That's where the agent <em>program</em> comes in: a short piece of pseudocode that produces the same behaviour without needing to store every row.</p>
+
+  <h4>Worked example: the agent program for the same robot</h4>
+  <pre class="pseudocode"><span class="kw">function</span> REFLEX-VACUUM-AGENT([location, status]) <span class="kw">returns</span> an action
+    <span class="kw">if</span> status = Dirty <span class="kw">then return</span> Suck
+    <span class="kw">else if</span> location = A <span class="kw">then return</span> Right
+    <span class="kw">else if</span> location = B <span class="kw">then return</span> Left</pre>
+  <p>Notice this tiny 4-line program produces <em>exactly</em> the infinite table above, for every possible input. That's the whole point: a short program can compute a function that would take infinite space to write out explicitly.</p>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>Students often think "agent function" and "agent program" are just two names for the same thing. They're not: the <strong>function</strong> is the abstract "correct" input→output behaviour (it only cares about percept history → action, nothing about lookup tables or how it's computed). The <strong>program</strong> is one specific implementation of it. Many different programs (or algorithms) could compute the exact same agent function.</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-rational">
+  <span class="slide-tag">Slide 10</span>
+  <h3>5. Rational agents</h3>
+  <p>We now have vocabulary for "an agent" and "how it's implemented." But we still haven't answered the core question from slide 1: what does it mean for an agent to act <strong>well</strong>?</p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>A <strong>rational agent</strong> is one that "does the right thing." More precisely: it's an agent that, at every step, <strong>selects the action expected to maximise its performance measure</strong>, given (a) the percepts it has seen so far, and (b) whatever built-in knowledge it starts with.</p>
+  </div>
+  <p>The new word here is <strong>performance measure</strong> — a score, decided by us (the designers), that tells us how good a whole sequence of actions turned out to be. For the vacuum robot, a performance measure might reward "amount of dirt cleaned" and penalise "electricity used" and "time taken."</p>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Think of a student writing an exam. "Rational" doesn't mean "always gets 100%" — it means, given what they've studied (their knowledge) and what's actually written on the paper (their percepts), they pick the answers that they expect will maximise their score (the performance measure). A rational agent can still be wrong if it's missing information — rationality is about making the <em>best decision given what you know</em>, not about being all-knowing.</p>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>"Rational" is not the same as "always successful" or "omniscient." A rational agent can still fail — for example, if a self-driving car's sensors simply can't see a pothole around a blind corner, swerving into it isn't irrational; the agent did the best it could with the percepts it had.</p>
+  </div>
+</section>
+<section class="slide" id="p1-peas">
+  <span class="slide-tag">Slide 11</span>
+  <h3>6. The PEAS framework</h3>
+  <p>If we want to design a rational agent for some real task, we first need to precisely pin down the "task environment" it operates in. <strong>PEAS</strong> is a checklist for doing exactly that — four questions you answer for any agent you're designing.</p>
+  <table class="grid">
+    <tr><th>Letter</th><th>Stands for</th><th>Question it answers</th></tr>
+    <tr><td><strong>P</strong></td><td>Performance measure</td><td>What criteria decide whether the agent is doing a good job?</td></tr>
+    <tr><td><strong>E</strong></td><td>Environment</td><td>What world does the agent operate inside?</td></tr>
+    <tr><td><strong>A</strong></td><td>Actuators</td><td>What mechanisms let it actually act?</td></tr>
+    <tr><td><strong>S</strong></td><td>Sensors</td><td>What mechanisms let it actually perceive?</td></tr>
+  </table>
+  <p class="small">Notice this is essentially the agent definition from earlier (Environment, Sensors, Actuators) plus one new piece — the Performance measure that turns "an agent" into a "rational agent" we can actually evaluate.</p>
+</section>
+
+<section class="slide" id="p1-peas-examples">
+  <span class="slide-tag">Slides 12–15</span>
+  <h3>7. PEAS worked examples</h3>
+  <p>Let's apply the PEAS checklist to three very different agents, so the pattern really sinks in.</p>
+
+  <h4>Vacuum-cleaning robot</h4>
+  <table class="grid">
+    <tr><td><strong>Performance</strong></td><td>Cleanliness, efficiency (time/battery used), minimal noise</td></tr>
+    <tr><td><strong>Environment</strong></td><td>Rooms, floor, furniture, obstacles, dirt</td></tr>
+    <tr><td><strong>Actuators</strong></td><td>Wheels (move), suction unit, brushes</td></tr>
+    <tr><td><strong>Sensors</strong></td><td>Dirt sensor, bump/obstacle sensor, camera</td></tr>
+  </table>
+
+  <h4>Self-driving car</h4>
+  <table class="grid">
+    <tr><td><strong>Performance</strong></td><td>Safety, speed, following traffic rules, comfort, progress toward destination</td></tr>
+    <tr><td><strong>Environment</strong></td><td>Roads, other vehicles, pedestrians, traffic signals, weather</td></tr>
+    <tr><td><strong>Actuators</strong></td><td>Steering, accelerator, brakes, signals</td></tr>
+    <tr><td><strong>Sensors</strong></td><td>Cameras, LIDAR, GPS, speedometer</td></tr>
+  </table>
+
+  <h4>Chess-playing program</h4>
+  <table class="grid">
+    <tr><td><strong>Performance</strong></td><td>Winning (checkmate), avoiding avoidable losses/draws, playing within time controls, elegance of play if being judged aesthetically</td></tr>
+    <tr><td><strong>Environment</strong></td><td>The chessboard, the pieces, the opponent, the game clock</td></tr>
+    <tr><td><strong>Actuators</strong></td><td>A mechanism to make a move — physically moving a piece (robot arm) or transmitting a move (software)</td></tr>
+    <tr><td><strong>Sensors</strong></td><td>Board state — a camera/sensor array for a physical board, or direct access to game state for a digital one</td></tr>
+  </table>
+
+  <div class="qbox">
+    <span class="box-label">Try it yourself (the exercise from the slide)</span>
+    <p>The slide leaves you an exercise: <em>design a PEAS description for the agent that decides which delivery rider gets assigned to your food order.</em> Have a go before reading on — then compare with a sketch below.</p>
+    <p class="small" style="margin-top:10px;"><strong>One reasonable answer:</strong> <strong>Performance</strong> — delivery speed, fairness of rider workload, distance/fuel efficiency, customer &amp; rider ratings. <strong>Environment</strong> — the city's road network, live traffic, restaurant locations, rider locations, other simultaneous orders. <strong>Actuators</strong> — sending the assignment notification to a rider's app. <strong>Sensors</strong> — GPS locations of riders and customers, order timestamps, restaurant prep-time estimates, live traffic data.</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-classify">
+  <span class="slide-tag">Slides 16–17</span>
+  <h3>8. Classifying task environments</h3>
+  <p>Once we know an agent's PEAS description, we can classify <em>what kind</em> of environment it's dealing with along six independent dimensions. This matters hugely in practice: harder categories on this list need much smarter (and often much more expensive) agents.</p>
+  <table class="grid">
+    <tr><th>Dimension</th><th>Meaning</th></tr>
+    <tr><td><strong>Fully vs. Partially Observable</strong></td><td>Can the agent's sensors see the <em>complete</em> state of the environment at every moment (fully), or only part of it (partially)?</td></tr>
+    <tr><td><strong>Deterministic vs. Non-deterministic</strong></td><td>Does the next state depend <em>completely</em> on the current state + the agent's action (deterministic), or can other unpredictable factors change the outcome (non-deterministic)?</td></tr>
+    <tr><td><strong>Episodic vs. Sequential</strong></td><td>Is each decision independent of past/future decisions (episodic), or do earlier actions affect what happens later (sequential)?</td></tr>
+    <tr><td><strong>Static vs. Dynamic</strong></td><td>Does the environment stay still while the agent is "thinking" (static), or can it change on its own in the meantime (dynamic)?</td></tr>
+    <tr><td><strong>Discrete vs. Continuous</strong></td><td>Is there a finite, countable set of states/actions (discrete), or an infinite continuum of possible values (continuous)?</td></tr>
+    <tr><td><strong>Single-Agent vs. Multi-Agent</strong></td><td>Is our agent the only actor in the environment, or are there other agents (competing or cooperating) too?</td></tr>
+  </table>
+
+  <h4>Worked comparison table</h4>
+  <table class="grid">
+    <tr><th>Environment</th><th>Observability</th><th>Deterministic?</th><th>Episodic/Sequential</th><th>Static/Dynamic</th><th>Discrete/Continuous</th><th>Agents</th></tr>
+    <tr><td>Vacuum world</td><td>Partial</td><td>Deterministic</td><td>Sequential</td><td>Static</td><td>Discrete</td><td>Single</td></tr>
+    <tr><td>Chess</td><td>Full</td><td>Deterministic</td><td>Sequential</td><td>Static</td><td>Discrete</td><td>Multi</td></tr>
+    <tr><td>Self-driving car</td><td>Partial</td><td>Non-deterministic</td><td>Sequential</td><td>Dynamic</td><td>Continuous</td><td>Multi</td></tr>
+    <tr><td>Spam filter</td><td>Partial</td><td>Non-deterministic</td><td>Episodic</td><td>Static</td><td>Discrete</td><td>Multi</td></tr>
+  </table>
+  <div class="an">
+    <span class="box-label">Analogy — why these matter</span>
+    <p>Chess sounds "hard" but it's actually one of the <em>friendlier</em> categories here: you can see the whole board (fully observable), a move always has the exact same result (deterministic), and the board doesn't move while you think (static). A self-driving car is brutal by comparison: it can't see around corners (partial), other drivers behave unpredictably (non-deterministic), and the world keeps changing while it computes (dynamic). This is precisely why self-driving cars are a vastly harder engineering problem than a chess engine, even though "driving" feels easier to a human than "chess."</p>
+  </div>
+</section>
+
+<section class="slide" id="p1-architectures">
+  <span class="slide-tag">Slide 18</span>
+  <h3>9. Five agent architectures</h3>
+  <p>Finally, the deck previews five broad "blueprints" for how an agent program can be built — each one strictly more capable (and more complex) than the last. You'll see these fleshed out with real algorithms later in the course; for now, just get the big picture.</p>
+  <table class="grid">
+    <tr><th>Architecture</th><th>How it decides an action</th></tr>
+    <tr><td><strong>Simple Reflex Agent</strong></td><td>Acts purely on the <em>current</em> percept — no memory at all. (This is exactly what our vacuum robot pseudocode did above!)</td></tr>
+    <tr><td><strong>Model-Based Reflex Agent</strong></td><td>Keeps an internal <em>model/state</em> of the world, so it can act sensibly even when its current percept alone isn't enough information.</td></tr>
+    <tr><td><strong>Goal-Based Agent</strong></td><td>Acts in order to reach some explicit <em>goal</em> — this is where the search algorithms in Part 2 of this course come in.</td></tr>
+    <tr><td><strong>Utility-Based Agent</strong></td><td>Doesn't just aim for "a" goal, but weighs different outcomes by how <em>preferable</em> they are (a utility/value), and picks the best one.</td></tr>
+    <tr><td><strong>Learning Agent</strong></td><td>Improves its own performance over time from experience, rather than being fully hand-programmed.</td></tr>
+  </table>
+  <div class="key">
+    <span class="box-label">Key takeaway — how Part 1 sets up the rest of the course</span>
+    <p>Everything from here on is really just: "here is one more clever way to build a rational, goal-based (or utility-based) agent." Part 2 (Search Problems) is entirely about the <strong>Goal-Based Agent</strong> row of this table — how do you find a sequence of actions that gets you from where you are to where you want to be? Part 3 (Local Search) tackles the same question when you only care about the <em>final</em> state, not the path you took to get there.</p>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 2 of 3</div>
+  <h2>Search Problems, Uninformed and Informed Search</h2>
+  <p>Part 1 told us that a Goal-Based Agent needs to find a path from where it is to where it wants to be. Part 2 makes that idea completely precise, and builds up the family of algorithms — BFS, DFS, Uniform-Cost Search, Greedy Search, and A* — that actually find that path.</p>
+</div>
+
+<section class="slide" id="p2-intro">
+  <span class="slide-tag">Slides 1–2</span>
+  <h3>1. Formalising "finding a solution"</h3>
+  <p>The deck opens with a very human question: <em>you want to drive to a city you've never visited before (no map app, from scratch) — what do you actually need to know to solve this?</em></p>
+  <p>If you think about it for a moment, you need exactly five things:</p>
+  <ul>
+    <li>Where you are <strong>now</strong></li>
+    <li>Where you want to <strong>end up</strong></li>
+    <li>What <strong>moves</strong> are available to you at each point</li>
+    <li>What each move <strong>costs</strong> you</li>
+    <li>How you'd <strong>recognise</strong> that you've arrived</li>
+  </ul>
+  <p>That's it — that ordinary, everyday list of five things turns out to be <em>exactly</em> the formal definition of a search problem that computer scientists use. Nothing about it is arbitrary or "extra mathematical machinery" — it's just precise language for the obvious things you already need to know to solve any "get from here to there" problem.</p>
+</section>
+
+<section class="slide" id="p2-define">
+  <span class="slide-tag">Slide 3</span>
+  <h3>2. The 5 parts of a search problem, made formal</h3>
+  <p>Here is the same five-item list, now given formal names and notation. Read the "plain English" column first each time, then look at the formal notation next to it — don't let the symbols scare you, each one is just shorthand for the plain-English idea.</p>
+  <table class="grid">
+    <tr><th>Formal name</th><th>Notation</th><th>Plain English</th></tr>
+    <tr><td><strong>State Space</strong></td><td>\(S\)</td><td>The set of <em>all</em> possible situations ("states") the problem could ever be in.</td></tr>
+    <tr><td><strong>Initial State</strong></td><td>\(s_0 \in S\)</td><td>The one state where the agent actually starts.</td></tr>
+    <tr><td><strong>Goal States</strong></td><td>a subset of \(S\)</td><td>The state(s) that count as "done" / a solution.</td></tr>
+    <tr><td><strong>Actions(s)</strong></td><td>\(S \to\) subsets of \(A\)</td><td>Given a state \(s\), which actions (from the full set \(A\) of all actions) are actually available there?</td></tr>
+    <tr><td><strong>Result(s, a)</strong></td><td>\(S \times A \to S\)</td><td>The "transition model" — if you take action \(a\) in state \(s\), which state do you land in?</td></tr>
+    <tr><td><strong>Action-Cost(s, a, s′)</strong></td><td>\(S \times A \times S \to \mathbb{R}\)</td><td>The numeric price of taking action \(a\) in state \(s\) and arriving at \(s'\).</td></tr>
+  </table>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>Every single search problem you will ever see — no matter how exotic — is just these six pieces filled in differently. Once you can identify "what's my state space, what's my start, what's my goal, what actions do I have, what do they do, what do they cost" for any puzzle, you've fully formalised it.</p>
+  </div>
+</section>
+
+<section class="slide" id="p2-examples">
+  <span class="slide-tag">Slides 4–6</span>
+  <h3>3. Three worked problems</h3>
+  <p>Let's fill in those six blanks for three very different problems, so the pattern becomes automatic.</p>
+
+  <h4>Route-Finding Problem</h4>
+  <table class="grid">
+    <tr><td><strong>State Space</strong></td><td>Cities on the map</td></tr>
+    <tr><td><strong>Initial State</strong></td><td>Starting city</td></tr>
+    <tr><td><strong>Goal States</strong></td><td>Destination city/cities</td></tr>
+    <tr><td><strong>Actions(s)</strong></td><td>Drive to any city directly connected to \(s\)</td></tr>
+    <tr><td><strong>Result(s, a)</strong></td><td>The city reached by taking action \(a\) from city \(s\)</td></tr>
+    <tr><td><strong>Action-Cost</strong></td><td>Road distance between \(s\) and \(s'\), in km</td></tr>
+  </table>
+
+  <h4>The 8-Puzzle</h4>
+  <p class="small">A 3×3 sliding-tile grid with tiles numbered 1–8 and one blank space, where you slide tiles into the blank to reach a target arrangement.</p>
+  <table class="grid">
+    <tr><td><strong>State Space</strong></td><td>All arrangements of the 8 tiles + blank on the 3×3 grid — there are \(9!/2 = 181{,}440\) reachable configurations</td></tr>
+    <tr><td><strong>Initial State</strong></td><td>Whatever arrangement the puzzle starts in</td></tr>
+    <tr><td><strong>Goal States</strong></td><td>The single arrangement with tiles in order (1–8, left-to-right, top-to-bottom, blank in the bottom-right)</td></tr>
+    <tr><td><strong>Actions(s)</strong></td><td>Move the blank Up / Down / Left / Right — whichever of these are physically possible from where the blank currently is</td></tr>
+    <tr><td><strong>Result(s, a)</strong></td><td>The arrangement after sliding the neighbouring tile into the blank's spot</td></tr>
+    <tr><td><strong>Action-Cost</strong></td><td>1 for every move — every slide costs the same</td></tr>
+  </table>
+
+  <h4>Vacuum Cleaner World (generalised to \(n\) rooms)</h4>
+  <table class="grid">
+    <tr><td><strong>State Space</strong></td><td>All \(n \cdot 2^n\) states — the robot can be in any of \(n\) rooms, and each of the \(n\) rooms can independently be Clean or Dirty</td></tr>
+    <tr><td><strong>Initial State</strong></td><td>Whatever the starting configuration is</td></tr>
+    <tr><td><strong>Goal States</strong></td><td>Any state where <em>all</em> \(n\) rooms are Clean (the robot can be in any room)</td></tr>
+    <tr><td><strong>Actions(s)</strong></td><td>Suck (S), MoveLeft (L), MoveRight (R)</td></tr>
+    <tr><td><strong>Result(s, a)</strong></td><td>The state after applying that action</td></tr>
+    <tr><td><strong>Action-Cost</strong></td><td>1 for every move, though a smarter cost function might charge slightly <em>more</em> for a move that changes nothing (e.g. moving Left when already leftmost) — this discourages the robot from wasting moves.</td></tr>
+  </table>
+</section>
+<section class="slide" id="p2-graph">
+  <span class="slide-tag">Slides 7–8</span>
+  <h3>4. State-space graphs</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>The <strong>State-Space Graph</strong> of a search problem is a graph where every <strong>node</strong> is a state, every <strong>edge</strong> is an action that takes you from one state to another, and every edge is labelled with its action's cost. (If moves are two-way, we just draw the edge as bidirectional.)</p>
+  </div>
+  <p>This is simply a way of <em>drawing</em> the six formal pieces from before: nodes = State Space, one special node = Initial State, some nodes highlighted = Goal States, edges = Actions/Result, edge labels = Action-Cost.</p>
+
+  <h4>Worked example: the 2-room vacuum world as a graph</h4>
+  <p>With 2 rooms, each Clean-or-Dirty, and the robot in one of the 2 rooms, there are \(2 \times 2 \times 2 = 8\) possible states in total. Here's a small piece of that graph to build intuition, showing just one room's worth of "Suck" and "Move" edges:</p>
+  <div style="text-align:center; margin:22px 0;">
+  <svg viewBox="0 0 560 190" width="100%" style="max-width:560px;">
+    <rect x="20" y="70" width="150" height="60" rx="8" fill="#fffaf0" stroke="#a8632f" stroke-width="2"/>
+    <text x="95" y="95" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#2b2620">Robot in A</text>
+    <text x="95" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#c0504d">Room A: Dirty</text>
+
+    <rect x="390" y="70" width="150" height="60" rx="8" fill="#fffaf0" stroke="#a8632f" stroke-width="2"/>
+    <text x="465" y="95" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#2b2620">Robot in A</text>
+    <text x="465" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#5c9a63">Room A: Clean</text>
+
+    <line x1="170" y1="100" x2="390" y2="100" stroke="#5b7fb5" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="280" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#5b7fb5">Suck, cost 1</text>
+
+    <path d="M 20 70 C -20 30, -20 10, 20 20 C 50 30, 50 55, 20 70" fill="none" stroke="#8a63c9" stroke-width="2" marker-end="url(#arrow2)"/>
+    <text x="35" y="15" font-family="JetBrains Mono" font-size="12" fill="#8a63c9">Move Left, cost 2 (already leftmost — wasted move)</text>
+
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#5b7fb5"/></marker>
+      <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a63c9"/></marker>
+    </defs>
+  </svg>
+  </div>
+  <p>The full graph repeats this pattern across all 8 states. Two patterns to notice, because they show up on the original slide's diagram:</p>
+  <ul>
+    <li><strong>Every "real" move costs 1</strong> — sucking dirt that's actually there, or moving to the other room.</li>
+    <li><strong>Every "wasted" move costs 2</strong> and loops back to the <em>same</em> state — e.g. trying to move further left when you're already in the leftmost room, or trying to suck a room that's already clean. Charging more for these self-loops is exactly the "better Action-Cost function" idea from the previous section — it nudges the agent away from pointless actions.</li>
+  </ul>
+</section>
+
+<section class="slide" id="p2-bestfirst">
+  <span class="slide-tag">Slide 9</span>
+  <h3>5. Best-First Search — the master algorithm</h3>
+  <p>Here's the single most important idea in this whole deck: <strong>almost every search algorithm you'll learn (BFS, DFS, Uniform-Cost Search, Greedy Search, A*) is actually the exact same algorithm</strong>, called <strong>Best-First Search</strong>, with just one small ingredient swapped out each time.</p>
+  <p>Best-First Search keeps two pieces of bookkeeping:</p>
+  <ul>
+    <li>A <strong>frontier</strong> — the "waiting room" of states we know about but haven't explored yet, kept sorted by how promising they look.</li>
+    <li>A <strong>reached</strong> table — the cheapest known path found so far to each state we've seen.</li>
+  </ul>
+  <p>"How promising a state looks" is measured by an <strong>evaluation function \(f(n)\)</strong>. Whichever node currently has the <em>smallest</em> \(f(n)\) is judged "best," and gets explored (expanded) next.</p>
+  <pre class="pseudocode"><span class="cm">Best-First Search — the general algorithm</span>
+1. Frontier ← priority queue containing only the initial state, ordered by f(n)
+2. Reached  ← table recording the cheapest known path to each state so far
+3. <span class="kw">if</span> Frontier is empty <span class="kw">then return</span> failure
+4. Remove the node with the lowest f(n) from Frontier  <span class="cm">← this is the "best" node</span>
+5. <span class="kw">if</span> that node is a goal state <span class="kw">then return</span> the solution
+6. <span class="kw">for each</span> child of that node:
+       <span class="kw">if</span> unseen OR reached with a smaller f(n) than before:
+           update Reached and Frontier
+7. Repeat from step 3</pre>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>Memorise this skeleton once, and every algorithm coming up (UCS, BFS, DFS, Greedy, A*) is just "Best-First Search, but with this particular \(f(n)\)." You'll see the exact table of substitutions in section 8 below.</p>
+  </div>
+</section>
+
+<section class="slide" id="p2-tree">
+  <span class="slide-tag">Slide 10</span>
+  <h3>6. State space vs. search tree — a distinction worth pausing on</h3>
+  <table class="grid">
+    <tr><th>State Space / State-Space Graph</th><th>Search Tree</th></tr>
+    <tr><td>A <strong>fixed</strong> mathematical object — the graph of all states and the actions connecting them. It does not change as the algorithm runs.</td><td><strong>What the algorithm builds</strong> while it explores. The same state can appear more than once in the tree, reached via different paths.</td></tr>
+  </table>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>The state-space graph is like the map of a whole city — it exists whether or not you ever visit it. The search tree is like the specific trail of footprints you personally leave as you explore that city, turn by turn — including any dead ends you doubled back from. Two different routes might both pass through the same intersection (state), so that intersection shows up as <em>two different nodes</em> in your trail (tree), even though it's only <em>one</em> place on the map (graph).</p>
+  </div>
+</section>
+<section class="slide" id="p2-romania">
+  <span class="slide-tag">Slides 11–12</span>
+  <h3>7. Meet the Romania map</h3>
+  <p>Before tracing any algorithm, the deck tells us exactly which "knob" of Best-First Search turns it into which classic algorithm:</p>
+  <table class="grid">
+    <tr><th>Choice of \(f(n)\)</th><th>Becomes...</th></tr>
+    <tr><td>\(f(n) = g(n)\), the path cost so far</td><td><strong>Uniform-Cost Search (UCS)</strong></td></tr>
+    <tr><td>\(f(n) = \text{depth}(n)\)</td><td><strong>Breadth-First Search (BFS)</strong> — a special case of UCS where every action costs the same</td></tr>
+    <tr><td>\(f(n) = -\text{depth}(n)\), and we <em>drop</em> the "reached with a smaller f(n)" check</td><td><strong>Depth-First Search (DFS)</strong></td></tr>
+  </table>
+  <p>To actually trace these algorithms on something concrete, the deck uses one of the most famous toy problems in all of AI teaching: <strong>driving between cities in Romania</strong>, from the textbook <em>Artificial Intelligence: A Modern Approach</em> by Russell &amp; Norvig. The map below is exactly that problem, re-drawn with the same city layout and distances used in the original slides (which label the cities with letters A–T instead of names).</p>
+
+  <div style="text-align:center; margin:20px 0;">
+  <svg viewBox="0 0 780 480" width="100%" style="max-width:780px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
+    <!-- edges -->
+    <g stroke="#a8632f" stroke-width="1.6" font-family="JetBrains Mono" font-size="12" fill="#5b5347">
+      <line x1="90" y1="220" x2="150" y2="130"/><text x="100" y="168">75</text>
+      <line x1="90" y1="220" x2="230" y2="240"/><text x="150" y="238">118</text>
+      <line x1="90" y1="220" x2="200" y2="330"/><text x="130" y="290">140</text>
+      <line x1="150" y1="130" x2="270" y2="80"/><text x="195" y="98">71</text>
+      <line x1="270" y1="80" x2="200" y2="330" stroke-dasharray="2 3"/>
+      <line x1="200" y1="330" x2="270" y2="80"/><text x="245" y="200">151</text>
+      <line x1="230" y1="240" x2="330" y2="270"/><text x="270" y="248">111</text>
+      <line x1="330" y1="270" x2="400" y2="300"/><text x="355" y="278">70</text>
+      <line x1="400" y1="300" x2="440" y2="360"/><text x="405" y="335">75</text>
+      <line x1="440" y1="360" x2="540" y2="360"/><text x="480" y="352">120</text>
+      <line x1="540" y1="360" x2="480" y2="270"/><text x="495" y="320">146</text>
+      <line x1="540" y1="360" x2="600" y2="300"/><text x="565" y="335">138</text>
+      <line x1="480" y1="270" x2="200" y2="330"/><text x="330" y="290">80</text>
+      <line x1="480" y1="270" x2="600" y2="300"/><text x="540" y="280">97</text>
+      <line x1="200" y1="330" x2="330" y2="410"/><text x="250" y="380">99</text>
+      <line x1="330" y1="410" x2="470" y2="440"/><text x="395" y="440">211</text>
+      <line x1="600" y1="300" x2="470" y2="440"/><text x="545" y="380">101</text>
+      <line x1="470" y1="440" x2="600" y2="450"/><text x="530" y="458">90</text>
+      <line x1="470" y1="440" x2="620" y2="400"/><text x="555" y="410">85</text>
+      <line x1="620" y1="400" x2="700" y2="420"/><text x="665" y="425">98</text>
+      <line x1="700" y1="420" x2="760" y2="400"/><text x="730" y="405">86</text>
+      <line x1="620" y1="400" x2="700" y2="330"/><text x="670" y="360">142</text>
+      <line x1="700" y1="330" x2="760" y2="280"/><text x="735" y="300">92</text>
+      <line x1="760" y1="280" x2="720" y2="220"/><text x="750" y="245">87</text>
+    </g>
+    <!-- nodes -->
+    <g font-family="JetBrains Mono" font-size="13" font-weight="700">
+      <g><circle cx="90" cy="220" r="16" fill="#5c7a5e"/><text x="90" y="225" text-anchor="middle" fill="#fff">A</text><text x="90" y="250" text-anchor="middle" fill="#5b5347" font-size="11">Arad</text></g>
+      <g><circle cx="150" cy="130" r="14" fill="#a8632f"/><text x="150" y="135" text-anchor="middle" fill="#fff">B</text><text x="150" y="112" text-anchor="middle" fill="#5b5347" font-size="11">Zerind</text></g>
+      <g><circle cx="270" cy="80" r="14" fill="#a8632f"/><text x="270" y="85" text-anchor="middle" fill="#fff">C</text><text x="270" y="62" text-anchor="middle" fill="#5b5347" font-size="11">Oradea</text></g>
+      <g><circle cx="230" cy="240" r="14" fill="#a8632f"/><text x="230" y="245" text-anchor="middle" fill="#fff">D</text><text x="230" y="222" text-anchor="middle" fill="#5b5347" font-size="11">Timisoara</text></g>
+      <g><circle cx="330" cy="270" r="14" fill="#a8632f"/><text x="330" y="275" text-anchor="middle" fill="#fff">E</text><text x="330" y="292" text-anchor="middle" fill="#5b5347" font-size="11">Lugoj</text></g>
+      <g><circle cx="400" cy="300" r="14" fill="#a8632f"/><text x="400" y="305" text-anchor="middle" fill="#fff">F</text><text x="400" y="322" text-anchor="middle" fill="#5b5347" font-size="11">Mehadia</text></g>
+      <g><circle cx="440" cy="360" r="14" fill="#a8632f"/><text x="440" y="365" text-anchor="middle" fill="#fff">G</text><text x="440" y="382" text-anchor="middle" fill="#5b5347" font-size="11">Drobeta</text></g>
+      <g><circle cx="200" cy="330" r="14" fill="#a8632f"/><text x="200" y="335" text-anchor="middle" fill="#fff">H</text><text x="192" y="312" text-anchor="middle" fill="#5b5347" font-size="11">Sibiu</text></g>
+      <g><circle cx="480" cy="270" r="14" fill="#a8632f"/><text x="480" y="275" text-anchor="middle" fill="#fff">I</text><text x="480" y="252" text-anchor="middle" fill="#5b5347" font-size="11">R. Vilcea</text></g>
+      <g><circle cx="540" cy="360" r="14" fill="#a8632f"/><text x="540" y="365" text-anchor="middle" fill="#fff">J</text><text x="540" y="385" text-anchor="middle" fill="#5b5347" font-size="11">Craiova</text></g>
+      <g><circle cx="600" cy="300" r="14" fill="#a8632f"/><text x="600" y="305" text-anchor="middle" fill="#fff">K</text><text x="605" y="282" text-anchor="middle" fill="#5b5347" font-size="11">Pitesti</text></g>
+      <g><circle cx="330" cy="410" r="14" fill="#a8632f"/><text x="330" y="415" text-anchor="middle" fill="#fff">L</text><text x="330" y="432" text-anchor="middle" fill="#5b5347" font-size="11">Fagaras</text></g>
+      <g><circle cx="470" cy="440" r="16" fill="#c0504d"/><text x="470" y="445" text-anchor="middle" fill="#fff">M</text><text x="470" y="465" text-anchor="middle" fill="#5b5347" font-size="11">Bucharest (Goal)</text></g>
+      <g><circle cx="600" cy="450" r="13" fill="#a8632f"/><text x="600" y="455" text-anchor="middle" fill="#fff">N</text><text x="600" y="470" text-anchor="middle" fill="#5b5347" font-size="10">Giurgiu</text></g>
+      <g><circle cx="620" cy="400" r="13" fill="#a8632f"/><text x="620" y="405" text-anchor="middle" fill="#fff">O</text><text x="618" y="388" text-anchor="middle" fill="#5b5347" font-size="10">Urziceni</text></g>
+      <g><circle cx="700" cy="330" r="13" fill="#a8632f"/><text x="700" y="335" text-anchor="middle" fill="#fff">P</text><text x="700" y="352" text-anchor="middle" fill="#5b5347" font-size="10">Vaslui</text></g>
+      <g><circle cx="760" cy="280" r="13" fill="#a8632f"/><text x="760" y="285" text-anchor="middle" fill="#fff">Q</text><text x="760" y="263" text-anchor="middle" fill="#5b5347" font-size="10">Iasi</text></g>
+      <g><circle cx="720" cy="220" r="13" fill="#a8632f"/><text x="720" y="225" text-anchor="middle" fill="#fff">R</text><text x="720" y="203" text-anchor="middle" fill="#5b5347" font-size="10">Neamt</text></g>
+      <g><circle cx="700" cy="420" r="13" fill="#a8632f"/><text x="700" y="425" text-anchor="middle" fill="#fff">S</text><text x="700" y="442" text-anchor="middle" fill="#5b5347" font-size="10">Hirsova</text></g>
+      <g><circle cx="760" cy="400" r="13" fill="#a8632f"/><text x="760" y="405" text-anchor="middle" fill="#fff">T</text><text x="765" y="385" text-anchor="middle" fill="#5b5347" font-size="10">Eforie</text></g>
+    </g>
+  </svg>
+  </div>
+  <p class="small">Green = start (Arad). Red = goal (Bucharest). Numbers on the roads are distances in km — these are the <strong>Action-Costs</strong> for the "drive to a directly connected city" action.</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>We'll now trace <strong>three</strong> algorithms on this exact same map and starting/goal city (A → M), so you can directly compare how UCS, Greedy Search, and A* each explore the map differently — and, crucially, which ones find the actual shortest route and which ones don't.</p>
+  </div>
+</section>
+<section class="slide" id="p2-ucs">
+  <span class="slide-tag">Slides 13–24</span>
+  <h3>8. Tracing Uniform-Cost Search, step by step</h3>
+  <p>Here \(f(n) = g(n)\) — the total path cost travelled <em>so far</em> to reach node \(n\). At each step we pop the cheapest-so-far node from the frontier, and expand it (look at its neighbours).</p>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Think of UCS like filling a bathtub from the lowest point upward — you always deal with whichever unexplored city is currently <em>cheapest to reach</em> before looking at anything further away, so by the time you first reach any city, you're guaranteed that's the cheapest possible way to get there.</p>
+  </div>
+  <table class="grid trace">
+    <tr><th>Step</th><th>Pop (node, g)</th><th>Expand → children with g(child)</th><th>Frontier after</th></tr>
+    <tr><td>①</td><td>A (g=0)</td><td>B=75, D=118, H=140</td><td>B75, D118, H140</td></tr>
+    <tr><td>②</td><td>B (g=75)</td><td>C=146 <span class="small">(A revisit=150, discard)</span></td><td>D118, H140, C146</td></tr>
+    <tr><td>③</td><td>D (g=118)</td><td>E=229 <span class="small">(A revisit=236, discard)</span></td><td>H140, C146, E229</td></tr>
+    <tr><td>④</td><td>H (g=140)</td><td>I=220, L=239 <span class="small">(C revisit=291, A revisit=280, both discard)</span></td><td>C146, I220, E229, L239</td></tr>
+    <tr><td>⑤</td><td>C (g=146)</td><td><span class="small">B revisit=217, H revisit=297 — both discard, nothing new</span></td><td>I220, E229, L239</td></tr>
+    <tr><td>⑥</td><td>I (g=220)</td><td>K=317, J=366 <span class="small">(H revisit=300, discard)</span></td><td>E229, L239, K317, J366</td></tr>
+    <tr><td>⑦</td><td>E (g=229)</td><td>F=299 <span class="small">(D revisit=340, discard)</span></td><td>L239, F299, K317, J366</td></tr>
+    <tr><td>⑧</td><td>L (g=239)</td><td>M=450 <span class="small">(H revisit=338, discard)</span></td><td>F299, K317, J366, M450</td></tr>
+    <tr><td>⑨</td><td>F (g=299)</td><td>G=374 <span class="small">(E revisit=369, discard)</span></td><td>K317, J366, G374, M450</td></tr>
+    <tr><td>⑩</td><td>K (g=317)</td><td><strong>M updated → 418</strong> <span class="small">(better than 450; I,J revisits discard)</span></td><td>J366, G374, M418</td></tr>
+    <tr><td>⑪</td><td>J (g=366)</td><td><span class="small">G, I, K revisits — all discard, nothing new</span></td><td>G374, M418</td></tr>
+    <tr><td>⑫</td><td>G (g=374)</td><td><span class="small">F, J revisits — discard</span></td><td>M418</td></tr>
+    <tr><td>⑬</td><td><strong>M (g=418)</strong></td><td colspan="2"><strong>M is the goal — stop!</strong></td></tr>
+  </table>
+  <div class="ex">
+    <span class="box-label">Result</span>
+    <p>UCS returns the path <strong>A → H → I → K → M</strong> (Arad → Sibiu → Râmnicu Vâlcea → Pitești → Bucharest), with total cost \(140 + 80 + 97 + 101 = \mathbf{418}\) km. Notice this path is <em>not</em> the one that pops up early (like A→D→...) — UCS patiently keeps exploring cheaper branches first, which is exactly what guarantees it finds the truly cheapest path.</p>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>Notice step ⑩: when we expand K, we discover a <em>cheaper</em> way to reach M (418, via K) than the one we already knew about (450, via L). UCS doesn't just ignore this — it <strong>updates</strong> M's entry in the frontier to the cheaper value. This "update if we find something cheaper" rule (step 6 of the algorithm) is exactly what guarantees UCS always finds the optimal path.</p>
+  </div>
+</section>
+
+<section class="slide" id="p2-efficiency">
+  <span class="slide-tag">Slide 25</span>
+  <h3>9. Turning UCS into BFS / DFS (efficiency tweaks)</h3>
+  <p>Since BFS and DFS are just special cases of Best-First Search (from section 7's table), a couple of small implementation shortcuts become possible:</p>
+  <div class="grid2">
+    <div class="def">
+      <span class="box-label">When f(n) = depth(n) — the BFS case</span>
+      <ul style="margin:6px 0;">
+        <li>Use a plain FIFO queue for the frontier instead of a full priority queue (much cheaper).</li>
+        <li>You can goal-test a node the moment it's <em>generated</em>, not only once it's popped — because no state will ever be revisited at a smaller depth later.</li>
+        <li>The "reached with a smaller f(n)" check in step 6 can be dropped entirely — it can never actually trigger.</li>
+      </ul>
+    </div>
+    <div class="def">
+      <span class="box-label">When f(n) = −depth(n) — the DFS case</span>
+      <ul style="margin:6px 0;">
+        <li>Use a LIFO stack for the frontier instead of a priority queue.</li>
+        <li>Goal-test as soon as a node is generated — DFS never promised an optimal path anyway, so there's nothing to lose.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="slide" id="p2-heuristic">
+  <span class="slide-tag">Slides 26–29</span>
+  <h3>10. Heuristic functions — giving search a sense of direction</h3>
+  <p>UCS, BFS and DFS are called <strong>uninformed (blind)</strong> searches — they have absolutely no sense of which unexplored node is "closer" to the goal; they only know what they've already paid to get somewhere. As the state space grows, exploring blindly becomes far too slow to be practical. The natural next idea: <em>what if the search could estimate how promising a state looks, before even expanding it?</em></p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>A <strong>heuristic function \(h(n)\)</strong> is an <em>estimate</em> of the cost from node \(n\) to the nearest goal. By definition \(h(\text{goal}) = 0\). It's problem-specific — you build it using whatever domain knowledge you have about the problem.</p>
+  </div>
+  <ul>
+    <li><strong>Route-finding:</strong> \(h(n)\) = straight-line ("as the crow flies") distance from city \(n\) to the destination.</li>
+    <li><strong>8-Puzzle:</strong> \(h(n)\) = number of tiles that are currently in the wrong position.</li>
+  </ul>
+  <p>Plugging a heuristic into \(f(n)\) gives us two new algorithms:</p>
+  <table class="grid">
+    <tr><th>Choice of \(f(n)\)</th><th>Becomes...</th></tr>
+    <tr><td>\(f(n) = h(n)\), the heuristic alone</td><td><strong>Greedy Best-First Search</strong></td></tr>
+    <tr><td>\(f(n) = g(n) + h(n)\), cost-so-far <em>plus</em> the estimate</td><td><strong>A* Search</strong></td></tr>
+  </table>
+  <p>Here are the straight-line distances to Bucharest (M) for every city on our Romania map — we'll use this exact table for both traces below:</p>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><td>h(A)=366</td><td>h(H)=253</td><td>h(O)=80</td></tr>
+    <tr><td>h(B)=374</td><td>h(I)=193</td><td>h(P)=199</td></tr>
+    <tr><td>h(C)=380</td><td>h(J)=160</td><td>h(Q)=226</td></tr>
+    <tr><td>h(D)=329</td><td>h(K)=100</td><td>h(R)=234</td></tr>
+    <tr><td>h(E)=244</td><td>h(L)=176</td><td>h(S)=151</td></tr>
+    <tr><td>h(F)=241</td><td>h(M)=0</td><td>h(T)=161</td></tr>
+    <tr><td>h(G)=242</td><td>h(N)=77</td><td></td></tr>
+  </table>
+</section>
+
+<section class="slide" id="p2-greedy">
+  <span class="slide-tag">Slides 30–33</span>
+  <h3>11. Tracing Greedy Best-First Search</h3>
+  <p>Here \(f(n) = h(n)\) only — the algorithm always jumps toward whichever unexplored city currently <em>looks</em> geographically closest to Bucharest, completely ignoring how much it has already spent getting there.</p>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Greedy Search is like a hiker who, at every fork in the trail, always picks whichever path <em>points most directly</em> at the mountain peak they can see in the distance — even if that path is steep, roundabout, or leads to a cliff. It's fast to decide, but it can easily be fooled.</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Note from the slide</span>
+    <p>Since \(h(n)\) never changes for a given node, Greedy Search doesn't need to check "reached with a better f(n)" the way UCS does — a node's \(f(n)=h(n)\) value is fixed forever, so there's nothing to update.</p>
+  </div>
+  <table class="grid trace">
+    <tr><th>Step</th><th>Pop (node, h)</th><th>Expand → children with h(child)</th><th>Frontier after</th></tr>
+    <tr><td>①</td><td>A (h=366)</td><td>B=374, D=329, H=253</td><td>H253, D329, B374</td></tr>
+    <tr><td>②</td><td>H (h=253)</td><td>C=380, I=193, L=176 <span class="small">(A revisit discarded)</span></td><td>L176, I193, D329, B374, C380</td></tr>
+    <tr><td>③</td><td>L (h=176)</td><td>M=0 <span class="small">(H revisit discarded)</span></td><td>M0, I193, D329, B374, C380</td></tr>
+    <tr><td>④</td><td><strong>M (h=0)</strong></td><td colspan="2"><strong>M is the goal — stop!</strong></td></tr>
+  </table>
+  <div class="ex">
+    <span class="box-label">Result</span>
+    <p>Greedy Search returns <strong>A → H → L → M</strong> (Arad → Sibiu → Fagaras → Bucharest), cost \(140+99+211=\mathbf{450}\) km.</p>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion — and the whole point of this trace</span>
+    <p>450 km is <strong>worse</strong> than UCS's 418 km! Greedy Search grabbed Fagaras because it "looked" closest to Bucharest in a straight line, but the actual road from Fagaras to Bucharest (211 km) turned out to be long. Greedy Search is fast and often reasonable, but it is <strong>not guaranteed to find the optimal (cheapest) path</strong> — this is precisely why A* exists.</p>
+  </div>
+</section>
+
+<section class="slide" id="p2-astar">
+  <span class="slide-tag">Slides 34–38</span>
+  <h3>12. Tracing A* Search</h3>
+  <p>Here \(f(n) = g(n) + h(n)\) — cost already paid, <em>plus</em> the estimated cost still remaining. This is the "best of both worlds" combination: it respects real cost like UCS, but also uses the heuristic to prioritise promising directions like Greedy.</p>
+  <table class="grid trace">
+    <tr><th>Step</th><th>Pop (node, f=g+h)</th><th>Expand → children with f(child)</th><th>Frontier after</th></tr>
+    <tr><td>①</td><td>A (f=0+366=366)</td><td>B: g75+h374=449, D: g118+h329=447, H: g140+h253=393</td><td>H393, D447, B449</td></tr>
+    <tr><td>②</td><td>H (f=393)</td><td>C: g291+h380=671, I: g220+h193=413, L: g239+h176=415 <span class="small">(A revisit f=646, discard)</span></td><td>I413, L415, D447, B449, C671</td></tr>
+    <tr><td>③</td><td>I (f=413)</td><td>K: g317+h100=417 <span class="small">(J=526, H-revisit=553, both worse — discard)</span></td><td>L415, K417, D447, B449, J526, C671</td></tr>
+    <tr><td>④</td><td>L (f=415)</td><td>M: g450+h0=450 <span class="small">(H revisit=592, discard)</span></td><td>K417, D447, B449, M450, J526, C671</td></tr>
+    <tr><td>⑤</td><td>K (f=417)</td><td><strong>M updated → g418+h0=418</strong> <span class="small">(better than 450; I,J revisits discard)</span></td><td>M418, D447, B449, J526, C671</td></tr>
+    <tr><td>⑥</td><td><strong>M (f=418)</strong></td><td colspan="2"><strong>M is the goal — stop!</strong></td></tr>
+  </table>
+  <div class="ex">
+    <span class="box-label">Result</span>
+    <p>A* returns <strong>A → H → I → K → M</strong>, cost \(140+80+97+101=\mathbf{418}\) km — <strong>the same optimal path UCS found</strong>, but A* got there having explored far fewer "hopeless" branches (it never even needed to fully explore the eastern half of the map, unlike UCS which touched E, F, G, J on the way). That's the payoff of combining real cost with a good heuristic.</p>
+  </div>
+</section>
+<section class="slide" id="p2-admissible">
+  <span class="slide-tag">Slides 39–41</span>
+  <h3>13. Admissible heuristics</h3>
+  <p>A* found the optimal path in our example above — but was that just luck, or does A* <em>always</em> find the optimal path? The answer: only if the heuristic satisfies one particular property.</p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>A heuristic \(h\) is <strong>admissible</strong> if, for every node \(n\): \[ h(n) \le p(n) \] where \(p(n)\) is the <em>true</em> optimal cost from \(n\) to the goal. In plain English: <strong>an admissible heuristic never overestimates</strong> — it might guess too low, but it can never promise a shorter remaining trip than what's actually possible.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Straight-line ("as the crow flies") distance is a perfect example of an admissible heuristic for driving distance — flying straight over hills and rivers can never be <em>longer</em> than actually driving the winding roads between two points. It might be a big underestimate, but it will never lie in the "overestimate" direction.</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Key result (why we care)</span>
+    <p><strong>If the heuristic \(h\) is admissible, then A* is guaranteed to return an optimal solution.</strong> This is the entire reason admissibility matters.</p>
+  </div>
+  <details>
+    <summary style="cursor:pointer; color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:14px; margin:14px 0;">▸ Show the full formal proof (optional — for when you want the rigor)</summary>
+    <div class="box" style="background:#f7f4ee;border-color:#a8632f;">
+      <p><strong>Setup:</strong> Let \(C^*\) be the true optimal cost from the initial state to the goal, achieved by the optimal path \( \text{Initial}=n_0 \to n_1 \to \cdots \to n_k = \text{Goal} \).</p>
+      <p><strong>Proof by contradiction:</strong> Suppose instead A* returns some <em>non-optimal</em> path \( \text{Initial}=n_0 \to n_1' \to \cdots \to n_l'=\text{Goal} \) with cost \(C > C^*\).</p>
+      <p>Since the optimal path exists but A* didn't return it, there must be some node \(n_i\) (with \(1 \le i \le k-1\)) on the <em>optimal</em> path that got <em>generated</em> but never <em>expanded</em> by A*. Why must such a node exist? Because A* returned a goal via a different, worse path — so somewhere along the true optimal path, A* stopped pursuing it.</p>
+      <p>Because \(n_l'\) (the goal on the returned path) was popped from the frontier with \(f(n_l') = C\), and A* always pops the smallest \(f\)-value available, every node still sitting in the frontier — including our \(n_i\) — must satisfy \(f(n_i) > C\). Since \(C > C^*\), this gives us \(f(n_i) > C^*\).</p>
+      <p>But now compute \(f(n_i)\) directly:</p>
+      <p>\[ f(n_i) = g(n_i) + h(n_i) \]</p>
+      <p>Since \(n_i\) lies <em>on</em> the optimal path, \(g(n_i) = g^*(n_i)\) (its cost-so-far already equals the true optimal cost to reach it). And because \(h\) is admissible, \(h(n_i) \le p(n_i)\) (the true remaining cost from \(n_i\)). So:</p>
+      <p>\[ f(n_i) = g^*(n_i) + h(n_i) \le g^*(n_i) + p(n_i) = C^* \]</p>
+      <p>So we've shown \(f(n_i) \le C^*\) — but two paragraphs ago we showed \(f(n_i) > C^*\). <strong>Contradiction.</strong> So our assumption was wrong: A* cannot return a non-optimal path when \(h\) is admissible. \(\blacksquare\)</p>
+    </div>
+  </details>
+</section>
+
+<section class="slide" id="p2-consistent">
+  <span class="slide-tag">Slides 42–46</span>
+  <h3>14. Consistent heuristics</h3>
+  <p>Admissibility guarantees A* finds the optimal answer, but proving a heuristic is admissible (comparing against the "true" cost) can be awkward. There's a second, stronger, easier-to-check property called <strong>consistency</strong>.</p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>A heuristic \(h\) is <strong>consistent</strong> if, for every node \(n\) and every successor \(n'\) reached via action \(a\): \[ h(n) \le c(n,a,n') + h(n') \]</p>
+    <p>This is exactly the <strong>triangle inequality</strong> you already know from geometry — "going directly can never be longer than going via a detour." Here, "going directly" is estimating from \(n\), and "going via a detour" is stepping to \(n'\) first (paying the real cost \(c\)) and then estimating the rest from there.</p>
+  </div>
+  <div style="text-align:center;margin:16px 0;">
+  <svg viewBox="0 0 340 140" width="100%" style="max-width:340px;">
+    <circle cx="40" cy="40" r="5" fill="#2b2620"/><text x="30" y="28" font-family="EB Garamond" font-style="italic" font-size="18">n</text>
+    <circle cx="180" cy="110" r="5" fill="#2b2620"/><text x="185" y="130" font-family="EB Garamond" font-style="italic" font-size="18">n′</text>
+    <circle cx="300" cy="30" r="5" fill="#c0504d"/><text x="305" y="20" font-family="EB Garamond" font-style="italic" font-size="18">g (Goal)</text>
+    <line x1="40" y1="40" x2="180" y2="110" stroke="#a8632f" stroke-width="1.6"/>
+    <text x="80" y="90" font-family="EB Garamond" font-style="italic" font-size="15">c(n, n′)</text>
+    <line x1="180" y1="110" x2="300" y2="30" stroke="#5b7fb5" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="230" y="90" font-family="EB Garamond" font-style="italic" font-size="15">h(n′)</text>
+    <line x1="40" y1="40" x2="300" y2="30" stroke="#5c9a63" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="150" y="20" font-family="EB Garamond" font-style="italic" font-size="15">h(n)</text>
+  </svg>
+  </div>
+  <div class="key">
+    <span class="box-label">Key result</span>
+    <p><strong>If \(h\) is consistent, then \(h\) is admissible</strong> (proof below) — and we already know admissible ⟹ A* is optimal. So put together: <strong>if a heuristic is consistent, A* is guaranteed to find the optimal solution.</strong> This is the version of the result you'll use most often in practice, because consistency is usually easier to verify.</p>
+  </div>
+  <details>
+    <summary style="cursor:pointer; color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:14px; margin:14px 0;">▸ Show the full formal proof that consistent ⟹ admissible (optional)</summary>
+    <div class="box" style="background:#f7f4ee;border-color:#a8632f;">
+      <p>We prove \(h(n) \le p(n)\) for every node \(n\), by induction on \(k\), the number of intermediate nodes on the cost-optimal path from \(n\) to the goal \(g\).</p>
+      <p><strong>Trivial case:</strong> if there's no path at all from \(n\) to \(g\), then \(p(n)=\infty\), so \(h(n)\le p(n)\) holds automatically.</p>
+      <p><strong>Base case (\(k=0\)):</strong> the goal \(g\) is a direct successor of \(n\). By consistency, \(h(n) \le c(n,g) + h(g)\). Since \(c(n,g)=p(n)\) (there are no intermediate nodes) and \(h(g)=0\) by definition, we get \(h(n) \le p(n)\).</p>
+      <p><strong>Inductive step:</strong> assume the claim holds for any node whose optimal path to the goal has \(k-1\) intermediate nodes. Let \(n\) be a node whose optimal path has \(k\) intermediate nodes: \(n \to a_1 \to a_2 \to \cdots \to a_k \to g\). By consistency, \(h(n) \le c(n,a_1) + h(a_1)\). By the induction hypothesis applied to \(a_1\) (which has \(k-1\) intermediate nodes to go), \(h(a_1) \le p(a_1)\). Combining: \(h(n) \le c(n,a_1) + p(a_1) = p(n)\) (since the whole path is cost-optimal). This completes the induction, so \(h(n) \le p(n)\) for every node, i.e. \(h\) is admissible. \(\blacksquare\)</p>
+    </div>
+  </details>
+
+  <h4>Admissible does not always mean consistent</h4>
+  <p>These two properties are related but not identical — admissibility is the weaker (more easily satisfied) condition. Here's the slide's counter-example:</p>
+  <div class="grid2">
+    <div>
+      <table class="grid">
+        <tr><th>Edge</th><th>Cost</th></tr>
+        <tr><td>A → B</td><td>5</td></tr>
+        <tr><td>A → G (direct)</td><td>11</td></tr>
+        <tr><td>B → G</td><td>5</td></tr>
+      </table>
+      <p class="small">So the true optimal cost from A to G is \(p(A) = \min(11, 5+5) = 10\) (via B), and \(p(B)=5\).</p>
+    </div>
+    <div>
+      <table class="grid">
+        <tr><th>Node</th><th>h(n)</th></tr>
+        <tr><td>A</td><td>9</td></tr>
+        <tr><td>B</td><td>3</td></tr>
+        <tr><td>G</td><td>0</td></tr>
+      </table>
+    </div>
+  </div>
+  <p>This \(h\) <strong>is admissible</strong>: \(h(A)=9\le p(A)=10\), \(h(B)=3\le p(B)=5\), \(h(G)=0\le p(G)=0\). ✔</p>
+  <p>But it's <strong>not consistent</strong>: check the triangle inequality on edge A→B: we'd need \(h(A) \le c(A,B)+h(B)\), i.e. \(9 \le 5+3=8\) — <strong>false</strong>. ✘</p>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>Don't assume "admissible" and "consistent" are interchangeable — they're not. Every consistent heuristic is admissible (we proved this above), but the reverse isn't true, as this example shows. In almost all heuristics you'll actually build by hand (like straight-line distance, or misplaced tiles), they do turn out to be both — but it's worth knowing they're logically different claims.</p>
+  </div>
+</section>
+<section class="slide" id="p2-summary">
+  <span class="slide-tag">Slides 47–48</span>
+  <h3>15. Putting it together, plus real heuristics you'll actually use</h3>
+  <div class="key">
+    <span class="box-label">The chain of logic, laid end to end</span>
+    <p>If \(h\) is admissible → A* returns an optimal solution. If \(h\) is consistent → \(h\) is admissible. Therefore: <strong>if \(h\) is consistent → A* returns an optimal solution.</strong></p>
+  </div>
+  <table class="grid">
+    <tr><th>Problem</th><th>Heuristic \(h(n)\)</th><th>Admissible? Consistent?</th></tr>
+    <tr><td>Route-finding</td><td>Straight-line distance from \(n\) to the goal city</td><td>Both ✔</td></tr>
+    <tr><td>8-Puzzle</td><td>Number of misplaced tiles in state \(n\)</td><td>Admissible always; consistent if every move costs 1</td></tr>
+    <tr><td>8-Puzzle</td><td>Sum of Manhattan distances of misplaced tiles from their correct spots</td><td>Admissible always; consistent if every move costs 1 (and this one is a <em>much</em> better/tighter estimate than plain misplaced-tile count)</td></tr>
+    <tr><td>N-Queens</td><td>Number of attacking pairs of queens</td><td><strong>Not admissible</strong> (and therefore not consistent either)</td></tr>
+  </table>
+  <div class="warn">
+    <span class="box-label">Why is the N-Queens heuristic not admissible?</span>
+    <p>Recall: admissible means "never overestimates the true remaining cost." In N-Queens, one single move (relocating one queen) can sometimes remove <em>several</em> attacking pairs at once, so the heuristic can be larger than the number of moves actually still needed — it can overestimate. That single possibility is enough to break admissibility (and this is exactly why this heuristic shows up again in Part 3, for <em>local</em> search rather than for A*, where the admissibility guarantee isn't needed).</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Key takeaway for all of Part 2</span>
+    <p>Every algorithm in this deck — BFS, DFS, UCS, Greedy, A* — is the same seven-line Best-First Search skeleton with one number, \(f(n)\), swapped out. UCS is always optimal but explores blindly. Greedy is fast but can be fooled. A* combines both ideas and is <strong>fast <em>and</em> optimal</strong>, as long as its heuristic is admissible (or, more strongly, consistent).</p>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 3 of 3</div>
+  <h2>Local Search Algorithms</h2>
+  <p>Part 2 was all about finding the best <em>path</em> from start to goal. Part 3 asks: what if you don't care about the path at all — only about ending up in a good final configuration? That question leads to a completely different family of algorithms.</p>
+</div>
+
+<section class="slide" id="p3-intro">
+  <span class="slide-tag">Slide 1</span>
+  <h3>1. A different kind of search</h3>
+  <table class="grid">
+    <tr><th>Path-finding search (Part 2)</th><th>Local search (Part 3)</th></tr>
+    <tr><td>UCS, BFS, DFS, Greedy, A* explore a space of <em>paths</em> — the goal is a sequence of actions from start to goal.</td><td>Local search works with a <strong>single current state</strong> and tries to <strong>improve</strong> it, without keeping track of paths or how it got there.</td></tr>
+  </table>
+  <div class="key">
+    <span class="box-label">Key idea</span>
+    <p>Start with a state — even a bad one — and keep moving to <em>better neighbouring states</em> until you can't improve any further.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Path-finding search is like planning an entire road trip itinerary in advance. Local search is more like being dropped somewhere in a hilly landscape in the fog, and simply always taking a step uphill whenever you can feel the ground rising — you don't care <em>how</em> you got to your current spot, only whether your next step is an improvement.</p>
+  </div>
+</section>
+
+<section class="slide" id="p3-landscape">
+  <span class="slide-tag">Slides 2–4</span>
+  <h3>2. Why use local search, and the "landscape" picture</h3>
+  <p>Local search is useful when:</p>
+  <ul>
+    <li>The problem only cares about the <strong>final configuration</strong>, not the path — e.g. job scheduling, robot path <em>planning</em> itself, hyperparameter tuning, circuit design, the Travelling Salesman Problem, puzzles like 8-Queens.</li>
+    <li>You have <strong>huge or even infinite</strong> state spaces where systematic search (Part 2's algorithms) would be far too slow or memory-hungry.</li>
+    <li>You want something that uses <strong>very little memory</strong> — just the current state (and maybe a couple of others).</li>
+  </ul>
+  <div class="warn">
+    <span class="box-label">The trade-off</span>
+    <p>Local search usually does <strong>not</strong> explore the state space completely, and so it may not return the true best (optimal) solution. In exchange, it's often much faster and more practical than exhaustive search.</p>
+  </div>
+
+  <h4>Visualising local search: the state-space landscape</h4>
+  <p>Picture every possible state as a single point on a landscape:</p>
+  <ul>
+    <li><strong>Location</strong> on the landscape = the state.</li>
+    <li><strong>Elevation</strong> at that point = the value of an objective/heuristic function there.</li>
+  </ul>
+  <p>Elevation can point two ways, depending on what we're optimising:</p>
+  <ul>
+    <li><strong>Objective function</strong> (to be <em>maximised</em>) → higher is better → think of climbing toward peaks.</li>
+    <li><strong>Heuristic/cost function</strong> (to be <em>minimised</em>) → lower is better → think of descending into valleys.</li>
+  </ul>
+  <p>The goal of local search is simply: <strong>find the highest peak (or lowest valley) — the global maximum (or minimum) — by repeatedly moving to better neighbouring states.</strong></p>
+  <div style="text-align:center;margin:18px 0;">
+  <svg viewBox="0 0 620 220" width="100%" style="max-width:620px;">
+    <path d="M0,200 C 60,190 90,60 150,55 C 200,50 210,150 270,140 C 320,132 340,20 400,15 C 460,10 480,120 540,110 C 580,104 600,150 620,160"
+          fill="none" stroke="#a8632f" stroke-width="3"/>
+    <circle cx="400" cy="15" r="5" fill="#c0504d"/><text x="400" y="8" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#c0504d">global max</text>
+    <circle cx="150" cy="55" r="5" fill="#5c7a5e"/><text x="150" y="45" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5c7a5e">local max</text>
+    <circle cx="540" cy="110" r="5" fill="#5c7a5e"/><text x="545" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5c7a5e">local max</text>
+    <text x="10" y="215" font-family="JetBrains Mono" font-size="12" fill="#5b5347">state space →</text>
+  </svg>
+  </div>
+</section>
+
+<section class="slide" id="p3-hillclimb">
+  <span class="slide-tag">Slide 5</span>
+  <h3>3. Hill Climbing (Greedy Local Search)</h3>
+  <p>The simplest possible local search algorithm: from the current state, look at all neighbouring states, and move to whichever neighbour is best. Stop once no neighbour is better than where you already are.</p>
+  <pre class="pseudocode"><span class="kw">function</span> HILL-CLIMBING(problem) <span class="kw">returns</span> a state that is a local maximum
+    current ← Initial state
+    <span class="kw">while</span> true <span class="kw">do</span>:
+        neighbour ← the highest-valued successor state of current
+        <span class="kw">if</span> VALUE(neighbour) ≤ VALUE(current) <span class="kw">then return</span> current
+        current ← neighbour</pre>
+  <p class="small">"Value" here means the objective function — higher is better, so we're climbing uphill. (If you're minimising a cost/heuristic instead, just flip every comparison.)</p>
+</section>
+<section class="slide" id="p3-8queens">
+  <span class="slide-tag">Slides 6–11</span>
+  <h3>4. Hill Climbing on the 8-Queens problem</h3>
+  <p>The 8-Queens problem: place 8 queens on an 8×8 chessboard so that <strong>no two queens attack each other</strong> (no two share a row, column, or diagonal). Let's set up the local-search version of this problem, piece by piece.</p>
+  <ul>
+    <li><strong>State space:</strong> every arrangement with exactly one queen per column — that's \(8^8 = 16{,}777{,}216\) possible states.</li>
+    <li><strong>Successors of a state \(n\):</strong> all states reachable by moving a <em>single</em> queen to a different row within its own column. Since each column has 7 other rows to move to, every state has \(7 \times 8 = 56\) successors.</li>
+    <li><strong>Heuristic \(h(n)\)</strong> = number of pairs of queens that attack each other (directly or diagonally). A perfect solution has \(h(n)=0\).</li>
+    <li><strong>Objective function</strong> = \(-h(n)\) (the negative of the heuristic). Maximising this objective is the same as minimising \(h(n)\) — the fewer attacking pairs, the better.</li>
+  </ul>
+
+  <h4>Representing a state as an array</h4>
+  <p>Instead of drawing a whole board every time, we write a state as an 8-element array where the \(i\)-th number is the row of the queen in column \(i\). Here's the example starting state, <code>[5,6,7,4,5,6,7,6]</code>, with \(h(n)=17\):</p>
+<div style="text-align:center;margin:16px 0;"><table style="border-collapse:collapse;margin:0 auto;">
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#c0504d;font-family:JetBrains Mono, monospace;">Q</td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+<tr>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#fffaf0;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+<td style="width:38px;height:38px;text-align:center;vertical-align:middle;background:#e4d9bd;border:1px solid #a8632f;font-weight:700;color:#000;font-family:JetBrains Mono, monospace;"></td>
+</tr>
+</table>
+<p class="small">Array representation: [5,6,7,4,5,6,7,6] &nbsp; h(n) = 17</p></div>
+  <h4>Looking at all 56 successors</h4>
+  <p>The slide lists all 56 successor states (each obtained by moving one queen within its column) along with their \(h(n)\) values. Rather than reproduce all 56 numbers (not a great use of your time to read!), here's what matters: among all 56 successors, the <strong>lowest</strong> \(h(n)\) value found is <strong>12</strong> — several different successors tie for this value. Hill climbing picks one of them, say the state <code>[5,3,7,4,5,6,7,6]</code> (moving the column-2 queen from row 6 to row 3), and moves there.</p>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>This is exactly like the "look at all your neighbouring squares of land and step to the highest one" idea from the landscape picture — except here a "neighbour" means "the board you'd get by nudging exactly one queen."</p>
+  </div>
+
+  <h4>The next few iterations</h4>
+  <p>The algorithm just repeats this "find the best neighbour, move there" process again and again. Here's the sequence of states chosen over five successive iterations in this run:</p>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><th>State</th><th>h(n)</th></tr>
+    <tr><td>[5,3,7,4,5,6,7,6]</td><td>12</td></tr>
+    <tr><td>[5,3,7,4,2,6,7,6]</td><td>7</td></tr>
+    <tr><td>[5,3,7,4,2,6,1,6]</td><td>4</td></tr>
+    <tr><td>[8,3,7,4,2,6,1,6]</td><td>3</td></tr>
+    <tr><td>[8,3,7,4,2,5,1,6]</td><td>1</td></tr>
+  </table>
+  <p>\(h(n)\) is dropping nicely — 17 → 12 → 7 → 4 → 3 → 1 — we seem to be closing in on a solution (\(h=0\)).</p>
+
+  <h4>...and then it gets stuck</h4>
+  <p>At state <code>[8,3,7,4,2,5,1,6]</code> with \(h=1\), the algorithm checks all 56 successors again. Their \(h\) values range between 2 and 5 — <strong>every single one is worse</strong> than the current \(h=1\). Hill climbing picks the best available anyway (say, \(h=2\)), but since that's <em>worse</em> than staying put, the algorithm's own stopping rule kicks in: it returns the <em>previous</em> state, <code>[8,3,7,4,2,5,1,6]</code>, and halts.</p>
+  <div class="warn">
+    <span class="box-label">Common confusion — this is not a bug, it's the defining weakness of hill climbing</span>
+    <p><code>[8,3,7,4,2,5,1,6]</code> has \(h=1\), not \(h=0\) — it is <strong>not</strong> an actual solution to 8-Queens (a real solution needs \(h=0\), zero attacking pairs). But every neighbouring state is worse, so hill climbing has no way to see that a true solution might be just a few more moves away, past this dip. This is called a <strong>local maximum</strong> (in objective-function terms) or <strong>local minimum</strong> (in heuristic terms) — a state that looks like the best option locally, but isn't the best option globally.</p>
+  </div>
+</section>
+
+<section class="slide" id="p3-problem">
+  <span class="slide-tag">Slide 12</span>
+  <h3>5. Why hill climbing gets stuck</h3>
+  <p>The worked example above wasn't a one-off unlucky run — it demonstrates hill climbing's fundamental weakness:</p>
+  <ul>
+    <li>Hill climbing <strong>only ever moves to a strictly better neighbour</strong> — it never accepts a move that makes things (even slightly) worse.</li>
+    <li>Because of this "greedy," never-look-back behaviour, it can easily get trapped in <strong>local optima</strong> (a bump that's locally the best, but not globally the best) or on <strong>plateaus</strong> (flat regions where no neighbour is strictly better, so it can't tell which way to go).</li>
+  </ul>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>Once hill climbing gets stuck, it has <strong>no way to escape</strong> — it simply stops. Everything in the rest of Part 3 (Simulated Annealing, Evolutionary Algorithms) exists specifically to fix this one weakness.</p>
+  </div>
+</section>
+<section class="slide" id="p3-sa">
+  <span class="slide-tag">Slides 13–16</span>
+  <h3>6. Simulated Annealing</h3>
+  <p><strong>The key idea:</strong> what if, instead of <em>always</em> rejecting a worse move, we sometimes allowed one? Occasionally accepting a "downhill" move gives the search a chance to walk <em>through</em> a local optimum or plateau, instead of getting permanently stuck there.</p>
+  <p>But how often should we accept a worse move?</p>
+  <ul>
+    <li><strong>Too often</strong> → the search behaves like a random walk and never settles down anywhere.</li>
+    <li><strong>Too rarely</strong> → it behaves just like plain hill climbing, and gets stuck just the same.</li>
+  </ul>
+  <p>Simulated annealing's balance: accept worse moves <strong>more freely early on</strong>, and <strong>less freely as time goes on</strong>. This is controlled by a gradually decreasing <strong>temperature</strong> parameter, \(T\).</p>
+  <div class="an">
+    <span class="box-label">Analogy — where the name comes from</span>
+    <p>This is directly inspired by <strong>annealing</strong> in metallurgy — slowly cooling a hot metal lets its atoms settle into a strong, stable, low-energy structure, whereas cooling it too fast traps it in a weak, disordered state. Here, "hot" = the search is free to explore widely and jump around (even into worse states); "cooling down" = the search gradually becomes stricter and settles into a good state.</p>
+  </div>
+  <pre class="pseudocode"><span class="kw">function</span> SIMULATED-ANNEALING(problem) <span class="kw">returns</span> a solution state
+    current ← Initial state
+    <span class="kw">for</span> t = 1 <span class="kw">to</span> ∞ <span class="kw">do</span>:
+        T ← schedule(t)                          <span class="cm">// T decreases over time</span>
+        <span class="kw">if</span> T = 0 <span class="kw">then return</span> current
+        next ← a randomly chosen successor of current
+        <span class="kw">if</span> VALUE(next) > VALUE(current) <span class="kw">then</span>
+            current ← next                       <span class="cm">// always take an uphill move</span>
+        <span class="kw">else</span>
+            ΔE ← VALUE(current) − VALUE(next)     <span class="cm">// how much worse is "next"?</span>
+            prob ← e^(−ΔE / T)
+            <span class="kw">if</span> random() < prob <span class="kw">then</span> current ← next   <span class="cm">// sometimes take it anyway</span></pre>
+  <p class="small"><code>schedule(t)</code> is any function that decreases over time \(t\). <code>random()</code> returns a random number in \([0,1)\).</p>
+
+  <h4>Making sense of the probability formula</h4>
+  <p>The heart of the algorithm is \( \text{prob} = e^{-\Delta E/T} \). Let's build intuition for it by checking three extreme cases:</p>
+  <table class="grid">
+    <tr><th>As...</th><th>prob →</th><th>In plain English</th></tr>
+    <tr><td>\(\Delta E \to 0\) (a tiny downhill step)</td><td>\(1\)</td><td>Small worsening moves are <strong>almost always accepted</strong> — barely worse, and worth risking to escape a shallow dip.</td></tr>
+    <tr><td>\(\Delta E \to \infty\) (a huge downhill step)</td><td>\(0\)</td><td>Big worsening moves are <strong>almost never accepted</strong> — jumping to a much worse state is rarely worth it.</td></tr>
+    <tr><td>\(T \to 0\) (late in the run)</td><td>\(0\)</td><td>As the "temperature" cools, the algorithm becomes increasingly reluctant to accept <em>any</em> downhill move — it gradually turns into plain hill climbing.</td></tr>
+  </table>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>Early on (\(T\) high) we <strong>explore freely</strong>; later on (\(T\) low) we <strong>settle down and exploit</strong> what we've found. This is the famous <strong>exploration–exploitation trade-off</strong> that shows up throughout AI, not just here.</p>
+  </div>
+  <p class="small">One practical tweak the slide mentions: if you already know the best possible value of the objective function in advance, you can simply stop the moment you reach it, instead of running through all remaining iterations.</p>
+</section>
+
+<section class="slide" id="p3-sa-run">
+  <span class="slide-tag">Slides 17–18</span>
+  <h3>7. A full annealing run, from start to solution</h3>
+  <p>Here's a real run of simulated annealing on the exact same 8-Queens local minimum that trapped hill climbing earlier — <code>[8,3,7,4,2,5,1,6]</code>, with \(h=1\).</p>
+  <table class="grid">
+    <tr><td><strong>Initial state</strong></td><td>[8,3,7,4,2,5,1,6], h=1 (the same local minimum hill climbing got stuck at)</td></tr>
+    <tr><td><strong>Cooling schedule</strong></td><td>\(T = 10 \times 0.99^t\)</td></tr>
+    <tr><td><strong>Max iterations allowed</strong></td><td>5000</td></tr>
+    <tr><td><strong>Iterations actually used</strong></td><td>515</td></tr>
+    <tr><td><strong>Worse moves accepted</strong></td><td>156</td></tr>
+    <tr><td><strong>Improving moves made</strong></td><td>71</td></tr>
+    <tr><td><strong>Final heuristic</strong></td><td><strong>h = 0 — a full solution found!</strong></td></tr>
+  </table>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>Simulated annealing is <strong>stochastic</strong> (randomised) — this is just one possible run. A different run, even starting from the exact same state, might take a completely different path, or need more or fewer iterations to converge. There's no guarantee of finding a solution in any fixed number of steps, only a good chance of it with a well-chosen schedule.</p>
+  </div>
+  <h4>The full trajectory</h4>
+  <p>Plotting \(h\) (attacking pairs) against iteration number shows the whole story at a glance:</p>
+  <div style="text-align:center;margin:18px 0;">
+  <svg viewBox="0 0 640 260" width="100%" style="max-width:640px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
+    <text x="320" y="22" text-anchor="middle" font-family="EB Garamond" font-size="15" font-weight="700" fill="#2b2620">h (attacking pairs) vs. iteration, with cooling temperature T</text>
+    <polyline points="30,150 60,90 90,70 120,110 150,60 180,120 210,80 240,50 270,140 300,150 330,160 360,175 390,185 420,205 450,215 480,220 510,222 540,224 570,226 600,230"
+      fill="none" stroke="#5b7fb5" stroke-width="2"/>
+    <polyline points="30,60 100,90 180,120 260,150 340,175 420,195 500,212 600,230"
+      fill="none" stroke="#c98a2c" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="35" y="55" font-family="JetBrains Mono" font-size="11" fill="#5b7fb5">h (heuristic)</text>
+    <text x="35" y="245" font-family="JetBrains Mono" font-size="11" fill="#c98a2c">T (temperature, cooling)</text>
+    <text x="150" y="105" font-family="JetBrains Mono" font-size="11" fill="#5b5347">early: h bounces around a lot (T is high — freely exploring, even accepting worse moves)</text>
+    <text x="430" y="245" font-family="JetBrains Mono" font-size="11" fill="#5b5347">late: h settles down toward 0 as T cools</text>
+    <line x1="30" y1="230" x2="600" y2="230" stroke="#a8632f" stroke-width="1"/>
+    <text x="600" y="15" font-family="JetBrains Mono" font-size="11" fill="#5c9a63" text-anchor="end">t=515: h=0, solved</text>
+  </svg>
+  </div>
+  <p class="small">This is a schematic redrawing of the shape described in the slide, not the exact original data points — but the story is the same: \(h\) fluctuates wildly while \(T\) is high (exploring, even accepting worse moves), then gradually settles down and converges to \(h=0\) as \(T\) cools toward zero.</p>
+</section>
+<section class="slide" id="p3-ea">
+  <span class="slide-tag">Slide 19</span>
+  <h3>8. From a single state to a whole population</h3>
+  <p>Simulated annealing improved on hill climbing, but it still keeps track of only <strong>one</strong> candidate state at a time. Even with tricks like random restarts, a single-solution search can still end up stuck exploring just one region of a huge landscape.</p>
+  <div class="key">
+    <span class="box-label">The next idea</span>
+    <p>What if, instead of one state, we searched with a whole <strong>population</strong> of states, all at once, in parallel?</p>
+  </div>
+  <ul>
+    <li>A diverse population gives much broader coverage of the search space.</li>
+    <li>Good "sub-solutions" discovered in one state could potentially be <strong>combined</strong> with good sub-solutions from a completely different state.</li>
+  </ul>
+  <p>This is the core idea behind <strong>Evolutionary Algorithms</strong>: borrowing the mechanics of biological evolution — variation and selection — and using them for optimisation.</p>
+</section>
+
+<section class="slide" id="p3-nasa">
+  <span class="slide-tag">Slide 20</span>
+  <h3>9. A real success story: the NASA ST5 antenna</h3>
+  <div class="ex">
+    <span class="box-label">Worked example — this is not a toy problem</span>
+    <p>In 2006, NASA needed an antenna for its Space Technology 5 (ST5) spacecraft with a very specific, hard-to-hand-design radiation pattern. Instead of a human engineer designing it, researchers used an <strong>evolutionary algorithm</strong> to "evolve" antenna shapes across many generations, scoring each candidate shape by how well it matched the desired radiation pattern. The winning shape looks like an oddly bent paperclip — nothing a human designer would likely have sketched by hand — and it flew on a real NASA spacecraft.</p>
+    <p class="small">Reference: Lohn, J.D., Hornby, G.S., Linden, D.S. (2005). <em>An Evolved Antenna for Deployment on NASA's Space Technology 5 Mission.</em> In Genetic Programming Theory and Practice II, Springer.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Why this example matters</span>
+    <p>It's easy to think of these algorithms as "just for puzzles like 8-Queens." This example shows the exact same core idea — maintain a population, keep the fitter ones, mix and mutate them — solving a genuinely hard real-world engineering design problem, and outperforming human intuition.</p>
+  </div>
+</section>
+
+<section class="slide" id="p3-ea-components">
+  <span class="slide-tag">Slides 21–22</span>
+  <h3>10. Evolutionary algorithms, piece by piece</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>An <strong>evolutionary algorithm</strong> is a population-based, stochastic optimisation/search method inspired by natural selection.</p>
+  </div>
+  <h4>The core loop (repeated once per "generation")</h4>
+  <ol>
+    <li>Initialise a <strong>population</strong> of candidate solutions (states).</li>
+    <li>Evaluate the <strong>fitness</strong> of every state in the population.</li>
+    <li><strong>Select</strong> the fitter candidates to reproduce.</li>
+    <li>Apply <strong>variation operators</strong> (recombination/crossover, mutation) to produce offspring.</li>
+    <li>Form the next generation from these offspring.</li>
+  </ol>
+  <p>This loop repeats until some stopping criterion is met. With a reasonably large initial population (at least 100–200 for medium-difficulty problems) run over many generations (typically 500–1000), the process tries to ensure "survival of the fittest," gradually driving the population toward better solutions.</p>
+
+  <h4>Key components you need to define</h4>
+  <table class="grid">
+    <tr><th>Component</th><th>What it means</th></tr>
+    <tr><td><strong>Representation</strong></td><td>How you encode a candidate solution/state — a string, a real-valued vector, a tree, etc.</td></tr>
+    <tr><td><strong>Fitness function</strong></td><td>A function measuring how good a solution is (e.g. the negative of a heuristic function, so "lower heuristic" becomes "higher fitness").</td></tr>
+    <tr><td><strong>Selection mechanism</strong></td><td>How you decide which individuals get to reproduce — common choices are <em>Weighted-Random-Choices</em> (a.k.a. Roulette Wheel Selection) and <em>Tournament Selection</em>.</td></tr>
+    <tr><td><strong>Variation operators</strong></td><td>Crossover/Recombination (mixing two parents) and Mutation (small random tweaks).</td></tr>
+  </table>
+</section>
+<section class="slide" id="p3-ga">
+  <span class="slide-tag">Slides 23–24</span>
+  <h3>11. Genetic Algorithms — a specific kind of evolutionary algorithm</h3>
+  <p>A <strong>Genetic Algorithm</strong> is one particular type of evolutionary algorithm, where each state is represented as a <strong>string over a finite alphabet</strong> — directly inspired by genetics (genes, crossover, mutation).</p>
+  <p>Before running a genetic algorithm, you need to choose several settings up front, called <strong>hyperparameters</strong>:</p>
+  <table class="grid">
+    <tr><th>#</th><th>Hyperparameter</th><th>What it controls</th></tr>
+    <tr><td>1</td><td><strong>Population size</strong></td><td>How many candidate states you keep per generation.</td></tr>
+    <tr><td>2</td><td><strong>Fitness function</strong></td><td>How you score each candidate.</td></tr>
+    <tr><td>3</td><td><strong>Mixing number</strong></td><td>How many parent states combine to produce one successor (usually 2).</td></tr>
+    <tr><td>4</td><td><strong>Selection mechanism</strong></td><td>Roulette Wheel Selection or Tournament Selection are the common choices.</td></tr>
+    <tr><td>5</td><td><strong>Crossover point</strong></td><td>A randomly chosen split-point (between 1 and \(n\), the length of the state string) where two parent strings get spliced together.</td></tr>
+    <tr><td>6</td><td><strong>Mutation rate</strong></td><td>A small probability (commonly 0.05–0.1) that any given character in an offspring gets randomly changed — this keeps diversity alive across many generations.</td></tr>
+  </table>
+</section>
+
+<section class="slide" id="p3-ga-worked">
+  <span class="slide-tag">Slides 25–28</span>
+  <h3>12. A full worked Genetic Algorithm example (8-Queens)</h3>
+  <p>Let's trace through one complete generation of a genetic algorithm solving 8-Queens, exactly as the slides do, with these chosen hyperparameters:</p>
+  <div class="grid3">
+    <div class="chip">Population size: 4</div>
+    <div class="chip">Mixing number: 2</div>
+    <div class="chip">Crossover point: 4</div>
+    <div class="chip">Fitness = non-attacking pairs</div>
+    <div class="chip">Selection: Roulette Wheel</div>
+    <div class="chip">Mutation rate: 0.1</div>
+  </div>
+  <p class="small">Note the fitness function here is the <strong>opposite</strong> convention from earlier: instead of counting <em>attacking</em> pairs (which we want to minimise), we now count <strong>non-attacking</strong> pairs (which we want to maximise) — higher fitness = better state.</p>
+
+  <h4>Step 1 — the initial population and its fitness</h4>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><th>Initial population (string)</th><th>Fitness score</th><th>Probability of being chosen</th></tr>
+    <tr><td>S1 = [1,2,3,4,5,6,7,8]</td><td>0</td><td>0/58 = 0</td></tr>
+    <tr><td>S2 = [2,4,7,4,8,5,5,2]</td><td>24</td><td>24/58 = 0.41</td></tr>
+    <tr><td>S3 = [3,2,7,5,2,4,1,1]</td><td>23</td><td>23/58 = 0.39</td></tr>
+    <tr><td>S4 = [3,2,5,4,3,2,1,3]</td><td>11</td><td>11/58 = 0.18</td></tr>
+  </table>
+  <p class="small">Total fitness = 0+24+23+11 = 58, so each individual's chance of being picked in Roulette Wheel Selection is simply its own fitness ÷ 58. Average fitness of this population = 14.5.</p>
+  <div class="warn">
+    <span class="box-label">Common confusion — S1 has fitness 0</span>
+    <p>S1 = [1,2,3,4,5,6,7,8] places one queen in every row and every column in strict order — which sounds neat, but along the main diagonal, <em>every single pair</em> of queens attacks each other diagonally. Zero fitness means it has essentially no chance of being selected to reproduce — exactly as intended.</p>
+  </div>
+
+  <h4>Step 2 — Selection (Roulette Wheel)</h4>
+  <p>We need 4 parents (2 mating pairs, since the mixing number is 2). Selection is random, but <em>weighted</em> by the probabilities above — so fitter strings (S2, S3) are more likely to be picked, possibly more than once, while the unfit S1 is unlikely to be picked at all. In this run, the wheel lands on:</p>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><th>Selected (Pair A)</th><th>Selected (Pair B)</th></tr>
+    <tr><td>S2 = [2,4,7,4,8,5,5,2]</td><td>S2 = [2,4,7,4,8,5,5,2]</td></tr>
+    <tr><td>S3 = [3,2,7,5,2,4,1,1]</td><td>S4 = [3,2,5,4,3,2,1,3]</td></tr>
+  </table>
+  <p class="small">Notice S1 (fitness 0) wasn't picked at all, while S2 (the fittest) got picked twice — exactly what we'd expect from weighted random selection.</p>
+
+  <h4>Step 3 — Crossover (splice at position 4)</h4>
+  <p>For each pair, child 1 = (first 4 characters of parent 1) + (last 4 characters of parent 2); child 2 = (first 4 of parent 2) + (last 4 of parent 1).</p>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><th>Pair</th><th>Parents</th><th>Children after crossover at point 4</th></tr>
+    <tr><td>A</td><td>S2=[2,4,7,4 | 8,5,5,2] × S3=[3,2,7,5 | 2,4,1,1]</td><td>[2,4,7,4,<strong>2,4,1,1</strong>] and [3,2,7,5,<strong>8,5,5,2</strong>]</td></tr>
+    <tr><td>B</td><td>S2=[2,4,7,4 | 8,5,5,2] × S4=[3,2,5,4 | 3,2,1,3]</td><td>[2,4,7,4,<strong>3,2,1,3</strong>] and [3,2,5,4,<strong>8,5,5,2</strong>]</td></tr>
+  </table>
+
+  <h4>Step 4 — Mutation (rate 0.1)</h4>
+  <p>Each offspring character has a small (here, 0.1) chance of randomly changing. In this run, only <strong>one</strong> mutation actually happened: in the first child, position 7 flipped from 1 to 2.</p>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><th>Before mutation</th><th>After mutation</th></tr>
+    <tr><td>[2,4,7,4,2,4,<span style="color:#c0504d;">1</span>,1]</td><td>[2,4,7,4,2,4,<span style="color:#c0504d;">2</span>,1] ← mutated</td></tr>
+    <tr><td>[3,2,7,5,8,5,5,2]</td><td>[3,2,7,5,8,5,5,2] (unchanged)</td></tr>
+    <tr><td>[2,4,7,4,3,2,1,3]</td><td>[2,4,7,4,3,2,1,3] (unchanged)</td></tr>
+    <tr><td>[3,2,5,4,8,5,5,2]</td><td>[3,2,5,4,8,5,5,2] (unchanged)</td></tr>
+  </table>
+
+  <h4>Step 5 — the new generation</h4>
+  <table class="grid" style="font-family:'JetBrains Mono',monospace; font-size:14.5px;">
+    <tr><th>New generation</th><th>Fitness score</th></tr>
+    <tr><td>[2,4,7,4,2,4,2,1]</td><td>20</td></tr>
+    <tr><td>[3,2,7,5,8,5,5,2]</td><td>22</td></tr>
+    <tr><td>[2,4,7,4,3,2,1,3]</td><td>19</td></tr>
+    <tr><td>[3,2,5,4,8,5,5,2]</td><td>20</td></tr>
+  </table>
+  <div class="ex">
+    <span class="box-label">Result</span>
+    <p>Average fitness of the new generation = <strong>20.25</strong>, up from <strong>14.5</strong> in the initial population. In just one generation, the population as a whole got noticeably better. Repeat this whole loop (selection → crossover → mutation) for hundreds of generations, and the population keeps trending toward better and better solutions — potentially reaching a full solution with fitness 28 (all 28 pairs of queens non-attacking, i.e. \(h=0\)).</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Key takeaway for all of Part 3</span>
+    <p>Hill Climbing (one state, always improve, gets stuck) → Simulated Annealing (one state, sometimes accept worse moves, escapes local optima using a cooling schedule) → Genetic/Evolutionary Algorithms (a whole population, mixing good partial solutions together via crossover, adding fresh randomness via mutation). Each step trades a bit more complexity for a much better ability to escape local optima and thoroughly explore a huge state space.</p>
+  </div>
+</section>
+<section class="slide" id="recap">
+  <span class="slide-tag">Full-course recap</span>
+  <h3>Recap: how all three parts connect</h3>
+  <table class="grid">
+    <tr><th>Part</th><th>Core question</th><th>Big idea</th></tr>
+    <tr><td><strong>1. Agents &amp; Rationality</strong></td><td>What does it mean for a machine to act well?</td><td>An agent perceives &amp; acts (P-E-A-S); a <em>rational</em> agent maximises a performance measure; task environments differ in difficulty along 6 dimensions; agents range from simple reflex to learning-based.</td></tr>
+    <tr><td><strong>2. Search Problems</strong></td><td>How do I find the best sequence of actions from start to goal?</td><td>Every search problem = state space + start + goal + actions + results + costs. Almost every algorithm (BFS/DFS/UCS/Greedy/A*) is Best-First Search with a different \(f(n)\). A* with an admissible/consistent heuristic is both fast <em>and</em> optimal.</td></tr>
+    <tr><td><strong>3. Local Search</strong></td><td>What if I only care about the final state, not the path?</td><td>Hill Climbing greedily improves one state but gets stuck. Simulated Annealing escapes local optima by sometimes accepting worse moves, cooling over time. Genetic/Evolutionary Algorithms evolve a whole population via selection, crossover, and mutation.</td></tr>
+  </table>
+
+  <h4>Mini glossary</h4>
+  <table class="grid">
+    <tr><td><strong>Percept</strong></td><td>A single piece of sensory input an agent receives.</td></tr>
+    <tr><td><strong>Frontier</strong></td><td>The set of discovered-but-not-yet-explored nodes in a search.</td></tr>
+    <tr><td><strong>g(n)</strong></td><td>The actual cost paid so far to reach node \(n\).</td></tr>
+    <tr><td><strong>h(n)</strong></td><td>The estimated cost still remaining from \(n\) to the goal.</td></tr>
+    <tr><td><strong>f(n)</strong></td><td>The evaluation function used to rank nodes in Best-First Search (e.g. \(g\), \(g+h\), or \(h\) alone).</td></tr>
+    <tr><td><strong>Admissible</strong></td><td>A heuristic that never overestimates the true remaining cost.</td></tr>
+    <tr><td><strong>Consistent</strong></td><td>A stronger, triangle-inequality-style version of admissibility.</td></tr>
+    <tr><td><strong>Local optimum</strong></td><td>A state that's better than all its neighbours, but not the best possible state overall.</td></tr>
+    <tr><td><strong>Fitness</strong></td><td>In evolutionary algorithms, a score measuring how good a candidate solution is.</td></tr>
+  </table>
+</section>
+
+<footer>
+  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality · Search Problems, Uninformed and Informed Search · Local Search Algorithms (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides.
+</footer>
+</main>
+</div>
+
+<a href="#top" class="backtotop" id="backtotop">↑</a>
+
+<script>
+  const btn = document.getElementById('backtotop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
+  });
+
+  // Highlight the sidebar link matching the section currently in view
+  const links = document.querySelectorAll('.sidebar a[href^="#"]');
+  const map = new Map();
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) map.set(el, a); });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = map.get(entry.target);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(l => l.style.color = '');
+        links.forEach(l => l.style.borderLeftColor = 'transparent');
+        link.style.color = 'var(--accent)';
+        link.style.borderLeftColor = 'var(--accent)';
+      }
+    });
+  }, { rootMargin: '-10% 0px -70% 0px' });
+  map.forEach((link, el) => observer.observe(el));
+</script>
+</body>
+</html>

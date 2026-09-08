@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algorithms and Computational Complexity — Complete Lecture Guide</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]'],['$$','$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{
+    --cream:#faf7f0;
+    --paper:#ffffff;
+    --ink:#20242b;
+    --ink-soft:#565f6b;
+    --rule:#dde3ea;
+    --accent:#2b5d6b;      /* teal-ish, CS/math feel */
+    --accent2:#a1522f;     /* warm rust for highlights */
+    --def-bg:#eef4fb; --def-line:#3b6ea5;
+    --ex-bg:#fdf6e8;  --ex-line:#c98a2c;
+    --proof-bg:#eef7f0; --proof-line:#3f8a5c;
+    --story-bg:#f6eef8; --story-line:#8a5cb8;
+    --result-bg:#fdeeee; --result-line:#b8493f;
+    --warn-bg:#fff4e5; --warn-line:#c9762c;
+    --code-bg:#1e2530; --code-ink:#e8edf3;
+    --sidebar-w:300px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'Source Serif 4','EB Garamond',Georgia,serif;
+    font-size:18.5px; line-height:1.65;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+  code,.mono,pre{ font-family:'JetBrains Mono',monospace; }
+  a{color:var(--accent);}
+  h1,h2,h3,h4{ font-family:'Source Serif 4',serif; font-weight:700; color:#151a20; line-height:1.25; }
+
+  .shell{ display:flex; max-width:1440px; margin:0 auto; }
+  .sidebar{
+    width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:22px 14px 40px 22px; border-right:1px solid var(--rule);
+    background:var(--paper);
+  }
+  .sidebar h3{ font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin:20px 0 6px; }
+  .sidebar h3:first-child{ margin-top:0; }
+  .sidebar a{ display:block; text-decoration:none; color:var(--ink-soft); font-size:13.8px; padding:3.5px 0 3.5px 10px; border-left:2px solid transparent; }
+  .sidebar a:hover{ color:var(--accent); border-left-color:var(--accent); }
+  .sidebar a.lec{ font-weight:700; color:var(--ink); font-size:14.5px; margin-top:10px;}
+  .sidebar .toc-title{ font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:2px;}
+  .sidebar .toc-sub{ font-size:12.5px; color:var(--ink-soft); margin-bottom:14px; }
+  .main{ flex:1; min-width:0; padding:40px 58px 110px; }
+
+  .hero{ padding-bottom:26px; border-bottom:3px solid var(--accent); margin-bottom:34px; }
+  .hero .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); }
+  .hero h1{ font-size:38px; margin:8px 0 10px; }
+  .hero p.lead{ font-size:19px; color:var(--ink-soft); max-width:780px; }
+  .hero .badges{ margin-top:14px; display:flex; gap:9px; flex-wrap:wrap; }
+  .badge{ font-family:'JetBrains Mono',monospace; font-size:11.5px; background:var(--cream); border:1px solid var(--rule); padding:4px 10px; border-radius:20px; color:var(--ink-soft); }
+
+  .lecture-header{ margin-top:64px; padding:20px 26px; background:linear-gradient(120deg,#1e2530,#2b3846); color:#f2f5f8; border-radius:10px; }
+  .lecture-header .ltag{ font-family:'JetBrains Mono',monospace; font-size:12.5px; opacity:.75; letter-spacing:.06em; text-transform:uppercase;}
+  .lecture-header h2{ color:#fff; font-size:27px; margin:6px 0 6px; }
+  .lecture-header p{ margin:0; color:#dde5ec; font-size:15.5px; max-width:820px;}
+
+  section.topic{ margin-top:42px; padding-top:6px; border-top:1px solid var(--rule); }
+  section.topic:first-of-type{ border-top:none; }
+  .topic h3{ font-size:23px; margin:2px 0 12px; }
+  .topic h4{ font-size:18px; margin:20px 0 8px; color:var(--accent); }
+  .topic p{ margin:11px 0; }
+  .topic ul, .topic ol{ padding-left:24px; }
+  .topic li{ margin:5px 0; }
+
+  .box{ margin:16px 0; padding:13px 18px; border-radius:8px; border-left:5px solid; }
+  .box .lbl{ font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px; display:block;}
+  .def{ background:var(--def-bg); border-color:var(--def-line);} .def .lbl{color:var(--def-line);}
+  .ex{ background:var(--ex-bg); border-color:var(--ex-line);} .ex .lbl{color:var(--ex-line);}
+  .proof{ background:var(--proof-bg); border-color:var(--proof-line);} .proof .lbl{color:var(--proof-line);}
+  .story{ background:var(--story-bg); border-color:var(--story-line);} .story .lbl{color:var(--story-line);}
+  .result{ background:var(--result-bg); border-color:var(--result-line);} .result .lbl{color:var(--result-line);}
+  .warn{ background:var(--warn-bg); border-color:var(--warn-line);} .warn .lbl{color:var(--warn-line);}
+
+  pre.pseudo{ background:var(--code-bg); color:var(--code-ink); padding:15px 18px; border-radius:8px; overflow-x:auto; font-size:14.5px; line-height:1.65;}
+  pre.pseudo .ln{ color:#7d8ba0; display:inline-block; width:1.6em; user-select:none;}
+  pre.pseudo .kw{ color:#eab676; } pre.pseudo .cm{color:#8a97a8; font-style:italic;}
+
+  table.grid{ width:100%; border-collapse:collapse; margin:15px 0; font-size:15.8px;}
+  table.grid th, table.grid td{ border:1px solid var(--rule); padding:7px 11px; text-align:left; vertical-align:top;}
+  table.grid th{ background:#eef1f5; font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:.03em;}
+  table.grid tr:nth-child(even) td{ background:#fbfcfd; }
+  table.trace{ font-family:'JetBrains Mono',monospace; font-size:14px; text-align:center;}
+  .small{ font-size:14px; color:var(--ink-soft); }
+  .qed{ text-align:right; font-weight:700; }
+
+  .chip{ display:inline-block; background:#eef1f5; border:1px solid var(--rule); padding:5px 11px; border-radius:6px; margin:3px 5px 3px 0; font-family:'JetBrains Mono',monospace; font-size:13px;}
+
+  footer{ margin-top:76px; padding-top:22px; border-top:1px solid var(--rule); color:var(--ink-soft); font-size:13.5px; text-align:center;}
+  .backtotop{ position:fixed; bottom:24px; right:24px; background:var(--accent); color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:18px; box-shadow:0 4px 12px rgba(0,0,0,.2); opacity:0; transition:opacity .2s; pointer-events:none;}
+  .backtotop.show{ opacity:1; pointer-events:auto; }
+  details summary{ cursor:pointer; color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:13.5px; margin:12px 0; }
+  details .box{ background:#f3f5f7; border-color:var(--accent); }
+
+  @media(max-width:1000px){
+    .shell{ flex-direction:column; }
+    .sidebar{ position:relative; width:100%; height:auto; border-right:none; border-bottom:1px solid var(--rule); }
+    .main{ padding:26px 18px 80px; }
+  }
+</style>
+</head>
+<body id="top">
+<a href="../../index.html" style="position:fixed;top:10px;left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
+<div class="shell">
+<nav class="sidebar">
+  <div class="toc-title">Algorithms &amp; Computational Complexity</div>
+  <div class="toc-sub">Complete lecture-by-lecture guide</div>
+
+  <a class="lec" href="#L1">Lecture 1 &middot; Foundations</a>
+  <a href="#L1-1">What is an algorithm?</a>
+  <a href="#L1-2">Bubble Sort, worked</a>
+  <a href="#L1-3">Analysis: comparisons &amp; exchanges</a>
+  <a href="#L1-4">Big-O, Big-Ω, Big-Θ</a>
+
+  <a class="lec" href="#L2">Lecture 2 &middot; Growth Rates</a>
+  <a href="#L2-1">Proving Bubble Sort is Θ(n²)</a>
+  <a href="#L2-2">Comparing growth rates &amp; Tower of Hanoi</a>
+  <a href="#L2-3">Bubble Sort — formal pseudocode</a>
+
+  <a class="lec" href="#L3">Lecture 3 &middot; Selection Sort &amp; Lower Bounds</a>
+  <a href="#L3-1">log(n!) ∈ Θ(n log n), in full</a>
+  <a href="#L3-2">Selection Sort</a>
+  <a href="#L3-3">Finding max: a lower-bound proof</a>
+
+  <a class="lec" href="#L4">Lecture 4 &middot; Tower of Hanoi</a>
+  <a href="#L4-1">Rules and small cases</a>
+  <a href="#L4-2">The recurrence, solved</a>
+  <a href="#L4-3">How long would it really take?</a>
+
+  <a class="lec" href="#L5">Lecture 5 &middot; Merge Sort</a>
+  <a href="#L5-1">Merging two sorted arrays</a>
+  <a href="#L5-2">Merge Sort, and its recurrence</a>
+  <a href="#L5-3">Solving by unrolling and by tree</a>
+  <a href="#L5-4">The decision-tree model</a>
+
+  <a class="lec" href="#L6">Lecture 6 &middot; Quicksort</a>
+  <a href="#L6-1">Partitioning in place</a>
+  <a href="#L6-2">Quicksort, worked example</a>
+  <a href="#L6-3">Worst-case: Θ(n²)</a>
+
+  <a class="lec" href="#L7">Lecture 7 &middot; Quicksort's Average Case</a>
+  <a href="#L7-1">Best case, and the 10/90 split</a>
+  <a href="#L7-2">Indicator random variables</a>
+
+  <a class="lec" href="#L8">Lecture 8 &middot; Sorting Lower Bounds</a>
+  <a href="#L8-1">Finishing the average-case proof</a>
+  <a href="#L8-2">The decision-tree lower bound</a>
+
+  <a class="lec" href="#L9">Lecture 9 &middot; Counting &amp; Radix Sort</a>
+  <a href="#L9-1">Counting Sort</a>
+  <a href="#L9-2">Radix Sort, worked example</a>
+
+  <a class="lec" href="#L10">Lecture 10 &middot; Radix Sort, Optimized</a>
+  <a href="#L10-1">Radix Sort in general</a>
+  <a href="#L10-2">Choosing the digit size optimally</a>
+
+  <a class="lec" href="#L11">Lecture 11 &middot; Insertion &amp; Bucket Sort</a>
+  <a href="#L11-1">Insertion Sort</a>
+  <a href="#L11-2">Bucket Sort</a>
+
+  <a class="lec" href="#L12">Lecture 12 &middot; Fast Multiplication</a>
+  <a href="#L12-1">Bucket Sort's average case, finished</a>
+  <a href="#L12-2">Linear-time sorts: a summary</a>
+  <a href="#L12-3">Karatsuba's algorithm</a>
+
+  <a class="lec" href="#L13">Lecture 13 &middot; Strassen's Algorithm</a>
+  <a href="#L13-1">Karatsuba's time complexity</a>
+  <a href="#L13-2">Strassen's matrix multiplication</a>
+
+  <h3>&nbsp;</h3>
+  <a href="#recap">Full course recap &amp; glossary</a>
+</nav>
+<main class="main">
+<div class="hero">
+  <div class="eyebrow">Complete Study Guide &middot; Algorithms and Computational Complexity</div>
+  <h1>Every Lecture, Every Proof, Every Worked Example</h1>
+  <p class="lead">This guide transcribes and explains all 13 lectures of your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too.</p>
+  <div class="badges">
+    <span class="badge">Prof. Kedukodi Babushri Srinivas &middot; MIT Manipal</span>
+    <span class="badge">13 lectures &middot; 260 pages</span>
+    <span class="badge">Introduction &rarr; Strassen's Algorithm</span>
+  </div>
+</div>
+
+<div class="box def">
+<span class="lbl">How this guide is organised</span>
+<p>Each lecture keeps its own numbering (L1, L2, ...) exactly as your notes do, broken into the same topic chunks your instructor moved through. Colour-coded boxes tell you what kind of content you're reading:</p>
+<p style="margin-top:8px">
+<span class="chip" style="background:var(--def-bg);border-color:var(--def-line);color:var(--def-line)">Definition</span>
+<span class="chip" style="background:var(--ex-bg);border-color:var(--ex-line);color:var(--ex-line)">Worked Example</span>
+<span class="chip" style="background:var(--proof-bg);border-color:var(--proof-line);color:var(--proof-line)">Proof</span>
+<span class="chip" style="background:var(--result-bg);border-color:var(--result-line);color:var(--result-line)">Key Result</span>
+<span class="chip" style="background:var(--story-bg);border-color:var(--story-line);color:var(--story-line)">Story / Motivation</span>
+<span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Common Confusion</span>
+</p>
+<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" through to Strassen's matrix multiplication — the syllabus's later topics (heaps, hashing, dynamic programming, greedy algorithms, graphs, complexity theory, and cryptography) aren't in these 13 lectures, so they aren't in this guide yet either.</p>
+</div>
+
+<div class="lecture-header" id="L1">
+  <div class="ltag">Lecture 1</div>
+  <h2>Foundations — What Is an Algorithm, and How Do We Measure One?</h2>
+  <p>This opening lecture does three things: it defines "algorithm" precisely (with a detour into where the word itself comes from), walks through Bubble Sort as a first concrete example, and introduces the three symbols — Big-O, Big-Ω, Big-Θ — that will describe every algorithm's running time for the rest of the course.</p>
+</div>
+
+<section class="topic" id="L1-1">
+<h3>1.1 &middot; What is an algorithm?</h3>
+
+<div class="box story">
+<span class="lbl">Story — where the word "algorithm" comes from</span>
+<p>The word traces back to <strong>Al-Khwārizmī</strong>, a 9th-century Persian mathematician. His name, Latinized, became "Algorithmi." One of his works was titled (in its Latin form) <em>Algorithmi de Numero Indorum</em> — "Al-Khwārizmī on the numbers of the Indians" — referring to the Hindu–Arabic numeral system he helped popularize. Over centuries, "Algorithmi" drifted into the modern word "algorithm."</p>
+</div>
+
+<p>Before writing down a formal definition, think about what any procedure needs, in the most general possible terms:</p>
+<ul>
+<li><strong>Input</strong> — something to work on.</li>
+<li><strong>Process</strong> — a well-defined instruction, or sequence of well-defined instructions, applied to that input.</li>
+<li><strong>Output</strong> — the result once the process finishes.</li>
+</ul>
+<p>Putting these together gives an informal description: <em>a sequence of well-defined instructions, with an input and an output.</em> Drawn as a flow, this is simply:</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--ink-soft)">Input &rarr; Process &rarr; Output</p>
+<p>One subtlety worth sitting with: the input and output can each be finite or infinite in principle, but the <strong>process itself is only allowed to take a finite amount of time</strong>. That restriction is what turns "a sequence of instructions" into something we'd actually call an algorithm.</p>
+
+<div class="box def">
+<span class="lbl">Definition — Algorithm</span>
+<p>An <strong>algorithm</strong> is a sequence of well-defined operations, taking an input, processing it, to give an output, in finite time.</p>
+</div>
+
+<p>Two requirements are packed into this definition, and both matter:</p>
+<ul>
+<li>An algorithm <strong>must be correct</strong> — it has to actually produce the right output.</li>
+<li>An algorithm must run for a <strong>finite number of steps</strong> — it must <em>terminate</em>.</li>
+</ul>
+
+<h4>The central question: how long does it take?</h4>
+<p>Once we accept that an algorithm always finishes, the natural next question is: <em>how long does it take, and does that depend on how much data we feed it?</em> Write \(n\) for the <strong>size of the input</strong>. Then the running time is some function of \(n\):</p>
+<p>$$T(n) = \,?$$</p>
+<p><strong>Time complexity is a function of \(n\), the input size.</strong> This single idea — that running time should be measured as a function of input size, not as a fixed number of seconds on one particular machine — is the foundation the entire course is built on.</p>
+
+<p>This naturally splits the study of algorithms, which we call <strong>Analysis</strong>, into two branches:</p>
+<div class="box def">
+<span class="lbl">Analysis has two branches</span>
+<ul style="margin:4px 0 0">
+<li><strong>Time Complexity</strong> — how many basic operations does the algorithm perform, as a function of \(n\)?</li>
+<li><strong>Space Complexity</strong> — how much extra memory does it use, as a function of \(n\)?</li>
+</ul>
+</div>
+<div class="box warn">
+<span class="lbl">Common confusion — which case are we analysing?</span>
+<p>By default, "the" analysis of an algorithm means its <strong>worst-case</strong> behaviour — <em>not</em> the best case. When we later ask "how many comparisons does this algorithm make?" without further qualification, we mean: what is the largest number of comparisons it could possibly be forced to make, over every input of size \(n\)?</p>
+</div>
+
+<div class="box story">
+<span class="lbl">Story — Donald Knuth and the father of the field</span>
+<p><strong>Donald Knuth</strong> wrote mathematical volumes about algorithms — <em>The Art of Computer Programming</em> — rather than an ordinary programming textbook. He is often called the father of the analysis of algorithms; he is also the creator of TeX (the typesetting system much of mathematical writing still relies on today), a theoretical computer scientist and mathematician, and a Turing Award winner.</p>
+</div>
+
+<div class="box story">
+<span class="lbl">Story — a question posed to Barack Obama</span>
+<p>President Obama was once asked, in a lighthearted interview: <em>"How do you sort 10 million numbers in a good way?"</em> His answer, memorably: <em>"I'm sure Bubble Sort is not a good way to go about it."</em> It's a fun anecdote — but it's also exactly the right instinct, and Bubble Sort is precisely where this course starts, so we can see concretely <strong>why</strong> it isn't a good way, before moving to algorithms that are.</p>
+</div>
+</section>
+
+<section class="topic" id="L1-2">
+<h3>1.2 &middot; Bubble Sort, worked by hand</h3>
+<p>Bubble Sort is the simplest sorting algorithm there is: repeatedly step through the array, and whenever two neighbouring elements are in the wrong order, swap them. Do enough passes, and the array ends up sorted.</p>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>Input: <code>5, 3, 6, 23, 12, 25</code> (\(n=6\)). Track the array through every step of every pass:</p>
+<table class="grid trace">
+<tr><th>Input</th><th>Step 1</th><th>Step 2</th><th>Step 3</th><th>Step 4</th><th>Step 5 = Output</th></tr>
+<tr><td>5</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+<tr><td>3</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td></tr>
+<tr><td>6</td><td>6</td><td>6</td><td>6</td><td>6</td><td>6</td></tr>
+<tr><td>23</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td></tr>
+<tr><td>12</td><td>23</td><td>23</td><td>23</td><td>23</td><td>23</td></tr>
+<tr><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+</table>
+<p class="small">Step 1 compares 5 of the pairs (5&harr;3, 3&harr;6, 6&harr;23, 23&harr;12, 12&harr;25 — bubbling the largest correctly-placed value to the end); step 2 needs only 4 comparisons, since the last position is now guaranteed correct; and so on, down to a single comparison in step 5.</p>
+</div>
+
+<p>With \(n=6\), the output appears after exactly \(n-1=5\) steps — and this number is <strong>finite</strong>, exactly as the definition of an algorithm requires.</p>
+
+<h4>Analysis: what actually gets counted?</h4>
+<div class="box warn">
+<span class="lbl">A ground rule for all analysis</span>
+<p>The analysis of an algorithm must be <strong>independent of hardware and software</strong> (independent of the programming language used). We can't measure "how many seconds" — that depends on the machine. Instead, we count <strong>operations</strong>.</p>
+</div>
+<p>So: what operations does Bubble Sort actually perform?</p>
+<ol>
+<li><strong>Comparisons</strong> (the basic operation — deciding whether to swap)</li>
+<li><strong>Exchanges</strong> (the swaps themselves)</li>
+</ol>
+
+<h4>Counting the comparisons</h4>
+<p>From the trace above: step 1 makes 5 comparisons, step 2 makes 4, step 3 makes 3, step 4 makes 2, step 5 makes 1. In general, for input size \(n\), the pattern is \((n-1) + (n-2) + \cdots + 1\).</p>
+
+<div class="box story">
+<span class="lbl">Story — young Gauss and the sum 1 + 2 + ... + 100</span>
+<p>This is exactly the sum famously posed to <strong>Carl Friedrich Gauss</strong> as a schoolboy: add up 1 through 100. His trick: pair the first and last term, the second and second-last, and so on.</p>
+<p>$$5+4+3+2+1 = 15$$</p>
+<p>For 1 through 100: write the sum forwards and backwards, and add:</p>
+<p>$$\underbrace{100+99+\cdots+2+1}_{\text{50 pairs}}$$</p>
+<p>Each of the 50 pairs (100&amp;1, 99&amp;2, ..., 51&amp;50) adds to 101, so the sum is \(101\times50=5050\). A slightly different pairing makes the general pattern clearer: write \(101+100+\cdots+1+0\) — that's <strong>51 pairs</strong>, each summing to 101 (e.g. \(101+0\), \(100+1\), ...), giving \(101\times51=5151\) — and this trick "repeats itself" for any such sum, which is exactly what lets us write down the general formula \(\dfrac{n(n+1)}{2}\).</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Deriving the general sum \(S = 1+2+\cdots+(n-1)\)</span>
+<p>Write the sum \(S\) forwards and backwards, then add the two copies term by term:</p>
+<p>$$S = 1+2+\cdots+(n-1)$$</p>
+<p>$$S = (n-1)+(n-2)+\cdots+1$$</p>
+<p>Adding vertically, every column sums to \(n\), and there are \((n-1)\) columns:</p>
+<p>$$2S = (n-1)\cdot n \quad\Longrightarrow\quad S = \frac{n(n-1)}{2}$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Key result — comparisons in Bubble Sort</span>
+<p>$$T(n) = \frac{n(n-1)}{2} = \text{number of comparisons, given input of size } n$$</p>
+<p>This is exactly what "time complexity" means in practice: a formula, in terms of \(n\), for how much work the algorithm does.</p>
+</div>
+</section>
+
+<section class="topic" id="L1-3">
+<h3>1.3 &middot; Exchanges, and the shape of the answer</h3>
+<p>The same style of argument handles the number of exchanges. In the worst case, the number of exchanges made during step \(i\) is precisely \((n-i)\), for \(i=1,\dots,n-1\) — exactly mirroring the comparison count. So:</p>
+<p>$$\text{Total exchanges (worst case)} = (n-1)+(n-2)+\cdots+1 = \frac{n(n-1)}{2}$$</p>
+<p>Comparing algorithms means analysing the <strong>total</strong> time complexity found this way. Here, both quantities — comparisons and exchanges — come out to \(\dfrac{n(n-1)}{2}\), a <strong>polynomial of degree 2</strong> in \(n\). This is why Bubble Sort is described as having <strong>quadratic growth</strong>: double the input, and the work roughly quadruples.</p>
+
+<h4>Why a whole new notation is worth having</h4>
+<p>We now have an exact formula, \(\frac{n(n-1)}{2}\). So why would we ever want anything <em>less</em> precise than this? Because exact formulas get unwieldy fast (later algorithms won't have such clean closed forms), and because what we usually care about is the <em>shape</em> of the growth — is it linear, quadratic, exponential? — not the exact constant. This motivates comparing a function \(f(x)\) against a simpler reference function \(g(x)\), asking only whether \(f\) is <strong>bounded above</strong> or <strong>bounded below</strong> by some constant multiple of \(g\), from some point onward.</p>
+<div style="text-align:center;margin:18px 0;">
+<svg viewBox="0 0 420 220" width="100%" style="max-width:420px;">
+<line x1="20" y1="180" x2="400" y2="180" stroke="#565f6b" stroke-width="1"/>
+<line x1="210" y1="20" x2="210" y2="200" stroke="#565f6b" stroke-width="1"/>
+<path d="M 60,60 C 120,90 160,120 400,60" fill="none" stroke="#3b6ea5" stroke-width="2.5"/>
+<text x="405" y="60" font-family="JetBrains Mono" font-size="13" fill="#3b6ea5">cg(x)</text>
+<path d="M 60,130 C 140,110 180,105 400,175" fill="none" stroke="#151a20" stroke-width="2.5"/>
+<text x="405" y="178" font-family="JetBrains Mono" font-size="13" fill="#151a20">f(x)</text>
+<line x1="210" y1="20" x2="210" y2="200" stroke="#a1522f" stroke-dasharray="4 3"/>
+<text x="196" y="212" font-family="JetBrains Mono" font-size="12" fill="#a1522f">x&#8320; (cutoff)</text>
+</svg>
+</div>
+</section>
+
+<section class="topic" id="L1-4">
+<h3>1.4 &middot; Big-O, Big-Ω, Big-Θ</h3>
+
+<div class="box def">
+<span class="lbl">Definition 1 — Big-O (bounded above)</span>
+<p>\(f(x)\) is bounded above by \(g(x)\), written \(f(x)\in O(g(x))\), if there exist constants \(c>0\) and \(x_0\) such that</p>
+<p>$$f(x)\le c\,g(x) \qquad \text{for all } x\ge x_0.$$</p>
+</div>
+
+<div class="box def">
+<span class="lbl">Definition 2 — Big-Ω (bounded below)</span>
+<p>\(f(x)\) is bounded below by \(g(x)\), written \(f(x)\in\Omega(g(x))\), if there exist constants \(c>0\) and \(x_0\) such that</p>
+<p>$$c\,g(x)\le f(x) \qquad \text{for all } x\ge x_0.$$</p>
+</div>
+
+<div class="box def">
+<span class="lbl">Definition 3 — Big-Θ (bounded both ways)</span>
+<p>If \(f(x)\in O(g(x))\) <em>and</em> \(f(x)\in\Omega(g(x))\), then \(f(x)\in\Theta(g(x))\) — read "theta" — meaning \(f(x)\) and \(g(x)\) have the <strong>same</strong> time complexity (the same growth rate, up to constants).</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Worked proof — show that \(\dfrac{n(n-1)}{2}\in\Theta(n^2)\)</span>
+<p><strong>Let</strong> \(f(n)=\dfrac{n(n-1)}{2}\) and \(g(n)=n^2\).</p>
+<p><strong>Part 1 — show \(f(n)\in O(g(n))\).</strong> We need \(f(n)\le c\,g(n)\) for some \(c>0\):</p>
+<p>$$f(n) = \frac{n(n-1)}{2} = \frac{n^2}{2}-\frac{n}{2} \;\le\; \frac{n^2}{2} = c\,g(n), \quad \text{where } c=\frac12$$</p>
+<p>(the inequality holds because we're only <em>removing</em> the non-negative quantity \(\frac{n}{2}\), which can only make the left side smaller — "at most" \(\frac{n^2}{2}\)). This holds for all \(n\ge n_0=1\) — i.e. for every natural number — so</p>
+<p>$$f(n)\in O(n^2) \qquad \text{—— (1)}$$</p>
+<p><strong>Part 2 — show \(f(n)\in\Omega(g(n))\).</strong> We need \(c\,g(n)\le f(n)\) for some \(c>0\) and all \(n\ge n_0\):</p>
+<p>$$f(n) = \frac{n^2}{2}-\frac{n}{2}\cdot 1 \;\ge\; \frac{n^2}{2}-\frac{n}{2}\cdot\frac{n}{2}, \quad \text{take } n\ge 2$$</p>
+<p>This step substitutes \(1\) with \(\dfrac{n}{2}\) in the subtracted term — valid because \(n\ge2\) means \(\dfrac{n}{2}\ge1\), and substituting a <em>larger</em> value into a term being subtracted can only make the whole expression smaller or equal, so the inequality direction is preserved. Simplifying the right-hand side:</p>
+<p>$$= \frac{n^2}{2}-\frac{n^2}{4} = \frac{n^2}{4} = c\cdot g(n), \quad \text{where } c=\frac14$$</p>
+<p>So choosing \(n_0=2\) and \(c=\frac14\) makes \(f(n)\ge c\,g(n)\) true for every \(n\ge n_0\). So:</p>
+<p>$$f(n)\in\Omega(n^2) \qquad \text{—— (2)}$$</p>
+<p><strong>Conclusion.</strong> By (1) and (2) together:</p>
+<p>$$f(n) = \frac{n(n-1)}{2} \in \Theta(n^2)$$</p>
+<p class="qed">∎ &nbsp; <span class="small" style="font-weight:400">Bubble Sort has quadratic growth.</span></p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Common confusion — the constants aren't unique</span>
+<p>Notice \(c=\frac12\) worked for the Big-O half and \(c=\frac14\) worked for the Big-Ω half — these don't need to match, and in fact <strong>the choice of \(c\) and \(n_0\) is never unique</strong>. Definitions 1 and 2 only ask that <em>some</em> valid choice exists — there's flexibility of choice allowed for equal numbers (i.e. many different \((c,n_0)\) pairs can all correctly witness the same bound). Proving a bound means <em>exhibiting one working choice</em>, not finding "the" choice.</p>
+</div>
+
+<div class="box ex">
+<span class="lbl">Homework left in the lecture — and its solution, shown above</span>
+<p>The lecture actually poses this as homework at the end of L1: <strong>prove</strong> \(f(n)\in\Omega(g(n))\) where \(f(n)=\dfrac{n^2}{2}-\dfrac{n}{2}\), \(g(n)=n^2\) — find explicit constants \(c\) and \(n_0\) such that \(f(n)\ge c\,n^2\) for all \(n\ge n_0\). The worked proof above <em>is</em> that solution — it's exactly what Lecture 2 opens with, confirming \(c=\frac14,\,n_0=2\) work, before moving on to new material.</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Where Lecture 1 leaves us</span>
+<p>Algorithms must be correct and must terminate in finite time. We measure them by counting operations as a function of input size \(n\) — this is time (and space) complexity. Big-O, Big-Ω, and Big-Θ give us a rigorous, hardware-independent language for describing that growth, and Bubble Sort is our first example: it makes \(\Theta(n^2)\) comparisons and \(\Theta(n^2)\) exchanges in the worst case.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L2">
+  <div class="ltag">Lecture 2</div>
+  <h2>Growth Rates — Why Exponential Is a Different World</h2>
+  <p>This lecture finishes off Lecture 1's homework, then builds a complete mental map of every growth rate you'll meet in this course — from \(\log n\) up to \(n^n\) — using one simple technique (limits) to compare any two of them. It closes with a formal, line-by-line pseudocode for Bubble Sort and a rigorous derivation of its time complexity.</p>
+</div>
+
+<section class="topic" id="L2-1">
+<h3>2.1 &middot; Finishing Lecture 1's homework</h3>
+<p>Recall the task: show \(f(n)=\dfrac{n^2}{2}-\dfrac{n}{2}\in\Omega(n^2)\), i.e. find \(c>0\) and \(n_0\) with \(f(n)\ge c\,n^2\) for all \(n\ge n_0\).</p>
+<div class="box proof">
+<span class="lbl">Proof</span>
+<p>Start from \(f(n)\) and, for \(n\ge2\), replace the "\(1\)" being subtracted with the larger quantity \(\dfrac{n}{2}\) (valid since \(n\ge2\Rightarrow\dfrac{n}{2}\ge1\), and substituting a larger value into a subtracted term can only shrink the whole expression, preserving the \(\ge\)):</p>
+<p>$$f(n) = \frac{n^2}{2}-\frac{n}{2}\cdot1 \;\ge\; \frac{n^2}{2}-\frac{n}{2}\cdot\frac{n}{2} = \frac{n^2}{2}-\frac{n^2}{4} = \frac{n^2}{4}$$</p>
+<p>So \(f(n)\ge\dfrac14n^2\) for every \(n\ge2\) — take \(c=\dfrac14\), \(n_0=2\). Hence \(f(n)\in\Omega(n^2)\), and combined with Lecture 1's \(O(n^2)\) result:</p>
+<p style="text-align:center">$$f(n)\in\Theta(n^2)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Bubble Sort has quadratic growth — confirmed.</span></p>
+</div>
+</section>
+
+<section class="topic" id="L2-2">
+<h3>2.2 &middot; A map of every growth rate</h3>
+<p>Lay out the growth rates you'll meet, slowest to fastest:</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:14.5px;margin:16px 0;overflow-x:auto;white-space:nowrap;padding:8px 0;">
+\(\log n\) &nbsp;|&nbsp; \(\sqrt n\) &nbsp;|&nbsp; \(n\) &nbsp;|&nbsp; \(\log n! \equiv n\log n\) &nbsp;|&nbsp; \(n^2\) &nbsp;|&nbsp; \(n^3\) &nbsp;|&nbsp; \(\cdots\) &nbsp;|&nbsp; \(2^n\) &nbsp;|&nbsp; \(n!\) &nbsp;|&nbsp; \(n^n\)
+</div>
+<table class="grid">
+<tr><th>Category</th><th>Members</th></tr>
+<tr><td>Sub-linear</td><td>\(\log n\), \(\sqrt n\)</td></tr>
+<tr><td>Linear</td><td>\(n\)</td></tr>
+<tr><td>Polynomial</td><td>\(n\log n\), \(n^2\), \(n^3\), ...</td></tr>
+<tr><td>Exponential</td><td>\(2^n\), \(n!\), \(n^n\)</td></tr>
+</table>
+
+<h4>The technique: compare via a limit</h4>
+<div class="box def">
+<span class="lbl">The comparison rule</span>
+<p>To decide whether \(f(n)\le g(n)\) asymptotically, compute \(\displaystyle\lim_{n\to\infty}\frac{f(n)}{g(n)}\). If this limit is \(0\), then \(f(n)\) is eventually dominated by \(g(n)\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example — confirm \(n^2\le n^3\)</span>
+<p>$$\lim_{n\to\infty}\frac{n^2}{n^3} = \lim_{n\to\infty}\frac1n = 0 \quad\Longrightarrow\quad n^2\le n^3$$</p>
+<p>The same trivial argument gives \(\sqrt n\le n\), since \(\sqrt n\cdot1\le\sqrt n\cdot\sqrt n=n\).</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — \(\log n \le \sqrt n\)</span>
+<p>Compute \(\displaystyle\lim_{n\to\infty}\frac{\log n}{\sqrt n}\), an \(\frac{\infty}{\infty}\) form — apply L'Hôpital's rule (differentiate top and bottom; assume \(\log\) is natural log throughout):</p>
+<p>$$\lim_{n\to\infty}\frac{\log n}{\sqrt n} = \lim_{n\to\infty}\frac{1/n}{\frac12 n^{-1/2}} = \lim_{n\to\infty}\ 2\cdot\frac1n\cdot\sqrt n = \lim_{n\to\infty}\frac{2}{\sqrt n} = 0$$</p>
+<p>So \(\log n\le\sqrt n\).</p>
+<p class="qed">∎</p>
+</div>
+
+<h4>Where does exponential growth actually come from? Recall Tower of Hanoi</h4>
+<div class="box story">
+<span class="lbl">Recall — Tower of Hanoi, previewed</span>
+<p>Tower of Hanoi with \(n\) disks takes \(2^n-1\) steps (this count is derived properly from a recurrence in Lecture 4 — for now, just take it as a known fact worth comparing against). Since \(2\le n\) for \(n\ge2\), trivially \(2^n\le n^n\). But how does \(2^n\) compare to \(n!\), and to \(n^n\)?</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — \(n! \le n^n\)</span>
+<p>$$n! = n\times(n-1)\times\cdots\times2\times1 \;\le\; n\times n\times\cdots\times n = n^n$$</p>
+<p>(every one of the \(n\) factors in \(n!\) is at most \(n\)). So \(n!\le n^n\).</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — \(2^n \le n!\) (eventually)</span>
+<p>We first need a lower bound on \(\log(n!)\). Here's a clean way to get one: drop the smaller half of the factors in \(n!\), keeping only the larger ones, each of which is at least \(\dfrac n2\):</p>
+<p>$$n! = 1\cdot2\cdots\Big(\frac n2\Big)\Big(\frac n2+1\Big)\cdots n \;\ge\; \Big(\frac n2\Big)\Big(\frac n2\Big)\cdots\Big(\frac n2\Big) = \Big(\frac n2\Big)^{n/2}$$</p>
+<p>(there are \(n/2\) surviving factors, and every one of them has been shrunk down to exactly \(n/2\), so the product can only have gotten smaller — the inequality direction is safe). Taking logs:</p>
+<p>$$\log(n!) \ge \frac n2\log\frac n2 \qquad\text{—— (a lower bound we'll reuse in Lecture 3)}$$</p>
+<p>Now compare \(2^n\) against \(n!\) via the same limit technique, using \(\log(n!)\approx n\log n\) as a stand-in for the denominator's growth:</p>
+<p>$$\lim_{n\to\infty}\frac{n\log2}{\log(n!)} = \lim_{n\to\infty}\frac{n\log2}{n\log n} = \lim_{n\to\infty}\frac{\log2}{\log n} = 0$$</p>
+<p>Since the ratio of the <em>logs</em> of \(2^n\) and \(n!\) goes to 0, \(2^n\) is eventually dominated by \(n!\):</p>
+<p style="text-align:center">$$2^n \le n!$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Common confusion — why compare the logs at all?</span>
+<p>Comparing \(\log(2^n)\) against \(\log(n!)\) instead of comparing \(2^n\) and \(n!\) directly is just a convenience: logs turn the unwieldy factorial and exponential into more manageable expressions (\(n\log2\) and roughly \(n\log n\)) without changing which one is bigger — \(\log\) is an increasing function, so it preserves order. This is the exact same reason logs show up constantly throughout this topic.</p>
+</div>
+
+<h4>Putting real numbers to the growth-rate table</h4>
+<p>To make these abstract comparisons tangible, here is every growth rate evaluated at \(n=100\):</p>
+<table class="grid">
+<tr><th>n</th><th>log n</th><th>√n</th><th>n</th><th>n log n</th><th>n²</th><th>n³</th><th>2ⁿ</th><th>n!</th><th>nⁿ</th></tr>
+<tr><td>100</td><td>4.61</td><td>10</td><td>10²</td><td>461</td><td>10⁴</td><td>10⁶</td><td>1.27×10³⁰</td><td>9.3×10¹⁵⁷</td><td>10²⁰⁰</td></tr>
+</table>
+<p>Look at the jump from \(n^3=10^6\) to \(2^n\approx1.27\times10^{30}\) — that's not a bigger number in the way \(10^6\) is bigger than \(10^3\); it's a difference in <em>kind</em>. This is exactly why the boundary between polynomial and exponential matters so much in this field: it's the boundary between "solvable in practice" and "not solvable in practice," no matter how fast computers get.</p>
+
+<div class="box ex">
+<span class="lbl">Worked example — how long would 100-disk Tower of Hanoi actually take?</span>
+<p>Suppose a computer can perform \(10^{12}\) operations per second (a very generous estimate — a typical single CPU core runs at roughly 2.44 GHz, i.e. about \(2.44\times10^9\) cycles per second). Tower of Hanoi with 100 disks takes \(2^{100}-1\approx2^{100}\) steps. How long does that take?</p>
+<p>$$\frac{2^{100}}{10^{12}}\text{ seconds} = \frac{2^{100}}{60\times10^{12}}\text{ minutes} = \frac{1.27\times10^{30}}{60\times60\times10^{12}}\text{ hours}$$</p>
+<p>$$= \frac{1.27\times10^{30}}{60\times60\times24\times10^{12}}\text{ days} = \frac{1.27\times10^{30}}{365\times60\times60\times24\times10^{12}}\text{ years}$$</p>
+<div class="box result">
+<span class="lbl">Result</span>
+<p>$$\approx 4.03\times10^{10}\text{ years}$$</p>
+<p>A computer performing a trillion operations every second would still need about <strong>40 billion years</strong> to finish — roughly <strong>nine times the age of the Earth</strong> (\(4.5\times10^9\) years, or 4.5 billion years). This is the real, physical meaning of "exponential time": no realistic amount of hardware speed rescues you from it.</p>
+</div>
+</div>
+</section>
+
+<section class="topic" id="L2-3">
+<h3>2.3 &middot; Bubble Sort, written as formal pseudocode</h3>
+<p>Having built the language of growth rates, return to Bubble Sort and write it precisely — array-indexed, ready to analyse line by line.</p>
+<div class="box def">
+<span class="lbl">Input &amp; setup</span>
+<p>Input: an array of \(n\) elements, \(A[1,\dots,n]\). Number of (outer) steps involved: \(n-1\).</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  <span class="kw">for</span> i &larr; 1 <span class="kw">to</span> n-1
+<span class="ln">2</span>      <span class="kw">for</span> j &larr; 1 <span class="kw">to</span> n-i
+<span class="ln">3</span>          <span class="kw">if</span> A[j+1] &lt; A[j] <span class="kw">then</span>
+<span class="ln">4</span>              A[j+1] &harr; A[j]     <span class="cm">// swap — this comparison is the basic operation</span></pre>
+<div class="box warn">
+<span class="lbl">Verifying the loop bounds don't overrun the array</span>
+<p>It's worth checking this carefully rather than trusting it by eye. When \(i=1\), the inner loop runs \(j=1\) to \(n-1\), and the largest index touched is \(A[j+1]\) at \(j=n-1\), i.e. \(A[n]\) — exactly the last valid index, not one past it. So the bound \(j\le n-i\) is exactly right, not off by one.</p>
+<p class="small">Concrete check from the running example: with \(A=[\dots,7,25,\dots]\), the test "\(25 < 10\)?" is false (nothing happens), while "\(7 < 25\)?" is true, triggering a swap — exactly matching the algorithm's line 3–4 logic.</p>
+</div>
+
+<h4>Deriving the time complexity from the pseudocode directly</h4>
+<div class="box proof">
+<span class="lbl">Calculating time complexity / number of comparisons</span>
+<p>Each pass of the inner loop performs exactly one comparison, so counting comparisons means counting how many times the inner loop body runs, summed over every outer iteration — a double sum (the worst case is taken, since every comparison happens regardless of the data):</p>
+<p>$$T(n) = \sum_{i=1}^{n-1}\sum_{j=1}^{n-i} 1 = \sum_{i=1}^{n-1}(n-i) = (n-1)+(n-2)+\cdots+1 = \frac{n(n-1)}{2} \in \Theta(n^2)$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Two questions left open, for you to think about</span>
+<ul style="margin:4px 0 0">
+<li>What about the number of <em>exchanges</em> (not comparisons)? In the worst case, this is also \(\Theta(n^2)\) — can you see why, from the pseudocode?</li>
+<li>Can you make the number of exchanges <strong>linear</strong>, \(\Theta(n)\), with a small modification to the algorithm? (Think about what information you'd need to track instead of swapping immediately.)</li>
+</ul>
+</div>
+
+<div class="box result">
+<span class="lbl">Where Lecture 2 leaves us</span>
+<p>Every growth rate you'll meet in this course can be placed on one scale — sub-linear, linear, polynomial, exponential — and any two can be compared with a single limit computation. Exponential growth (\(2^n\), \(n!\), \(n^n\)) isn't just "big," it's a different category of big, one that stays out of reach no matter how fast computers get. And Bubble Sort's \(\Theta(n^2)\) time complexity, guessed informally in Lecture 1, now has a fully rigorous derivation straight from its pseudocode.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L3">
+  <div class="ltag">Lecture 3</div>
+  <h2>Selection Sort, and Proving a Lower Bound Is Actually a Lower Bound</h2>
+  <p>This lecture completes the \(\log(n!)\in\Theta(n\log n)\) result in full rigor, introduces Selection Sort as an algorithm that fixes one of Bubble Sort's weaknesses, and then does something new: it doesn't just find an algorithm's running time, it <strong>proves no algorithm could possibly do better</strong> — using a genuinely beautiful graph-theoretic argument.</p>
+</div>
+
+<section class="topic" id="L3-1">
+<h3>3.1 &middot; \(\log(n!)\in\Theta(n\log n)\), the complete proof</h3>
+<p>Recall the growth-rate line from Lecture 2 placed \(n\log n\) and \(\log(n!)\) at the same point. Here is the full, careful proof of that claim, revisiting the pairing technique from Lecture 2 more rigorously.</p>
+
+<div class="box proof">
+<span class="lbl">Proof — the lower bound, \(\log(n!)\in\Omega(n\log n)\)</span>
+<p>Expand \(\log(n!)\) as a sum, then pair the terms from the outside in — first with last, second with second-last, and so on:</p>
+<p>$$\log n! = \log\big(n\cdot(n-1)\cdots2\cdot1\big) = \log n+\log(n-1)+\cdots+\log2+\log1$$</p>
+<p>$$= \big(\log n+\log1\big)+\big(\log(n-1)+\log2\big)+\cdots+\left(\log\frac n2+\log\Big(\frac n2-1\Big)\right)$$</p>
+<p>Every single pair-sum here is at least \(\log\dfrac n2+\log\dfrac n2\)... actually, more simply, each individual term in every pair is at least \(\log\frac{n}{2}\) once we're past the halfway point, so bounding every pair below by \(2\log\frac{n}{2}\) and summing across the \(n/2\) pairs:</p>
+<p>$$\log n! \;>\; \underbrace{\log\frac n2+\log\frac n2+\cdots+\log\frac n2}_{n/2\text{ copies}} \;=\; \frac n2\log\frac n2$$</p>
+<p>Now expand and split this bound to isolate a clean \(n\log n\) term:</p>
+<p>$$\frac n2\log\frac n2 = \frac n2\log n-\frac n2\log2 = \left(\frac n4\log n+\frac n4\log n\right)-\frac n2\log2 = \frac n4\log n + n\left(\frac14\log n-\frac12\log2\right)$$</p>
+<p><strong>When does the bracketed term become non-negative?</strong> We need \(\frac14\log n-\frac12\log2\ge0\):</p>
+<p>$$\frac14\log n\ge\frac12\log2 \;\Longleftrightarrow\; \log n\ge2\log2=\log4 \;\Longleftrightarrow\; n\ge4$$</p>
+<p>So, choosing \(n_0=4\), the bracketed term is \(\ge0\) for all \(n\ge n_0\), which means:</p>
+<p>$$\log n! \;\ge\; \frac n4\log n \qquad\text{for all } n\ge4$$</p>
+<p>Take \(c=\dfrac14\), \(n_0=4\): this proves \(\log n!\in\Omega(n\log n)\).</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">— (result 1)</span></p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — the upper bound, \(\log(n!)\in O(n\log n)\)</span>
+<p>This direction is much shorter. Every one of the \(n\) factors in \(n!\) is at most \(n\):</p>
+<p>$$n! = n\cdot(n-1)\cdots2\cdot1 \;\le\; \underbrace{n\cdot n\cdots n}_{n\text{ times}} = n^n$$</p>
+<p>Taking logs of both sides (log is increasing, so the inequality direction is preserved):</p>
+<p>$$\log n! \le \log(n^n) = n\log n$$</p>
+<p>This holds with \(c=1\) for every \(n\ge1\) — no threshold needed at all. So \(\log n!\in O(n\log n)\).</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">— (result 2)</span></p>
+</div>
+
+<div class="box result">
+<span class="lbl">Key result</span>
+<p>By results 1 and 2 together:</p>
+<p style="text-align:center">$$\log(n!) \in \Theta(n\log n)$$</p>
+</div>
+
+<div class="box def">
+<span class="lbl">A useful shortcut for future comparisons — the limit test, summarised</span>
+<p>Lecture 2's limit technique generalises into one clean rule you can reuse for the rest of the course. To compare \(f(n)\) against \(g(n)\), compute \(\displaystyle\lim_{n\to\infty}\frac{f(n)}{g(n)}\):</p>
+<ul style="margin:6px 0 0">
+<li>If the limit is \(0\), then \(f(n) < g(n)\) asymptotically, so \(f(n)\in O(g(n))\).</li>
+<li>If the limit is a finite, nonzero constant \(k\), then \(f(n)\) and \(g(n)\) grow at the <em>same</em> rate, so \(f(n)\in\Theta(g(n))\).</li>
+<li>If the limit is \(\infty\), then \(f(n)>g(n)\) asymptotically, so \(f(n)\in\Omega(g(n))\).</li>
+</ul>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example — a quick check that \(n-1\in\Theta(n)\)</span>
+<p>$$\lim_{n\to\infty}\frac{n-1}{n} = \lim_{n\to\infty}\left(1-\frac1n\right) = 1\ne0 \quad\Longrightarrow\quad n-1\in\Theta(n)$$</p>
+<p>Worth having in your pocket: this exact fact — that "\(n-1\)" and "\(n\)" have the same order of growth — quietly justifies writing \(\Theta(n)\) instead of the more cumbersome \(\Theta(n-1)\) whenever an algorithm's count comes out to something like \(n-1\).</p>
+</div>
+</section>
+
+<section class="topic" id="L3-2">
+<h3>3.2 &middot; Selection Sort</h3>
+<p>Bubble Sort's real weakness isn't its comparison count — Selection Sort will match it exactly — it's the number of <em>swaps</em>, which can be as bad as \(\Theta(n^2)\) in the worst case. Selection Sort fixes this by deciding on <em>one</em> swap per pass, no matter what.</p>
+
+<table class="grid">
+<tr><th></th><th>Comparisons</th><th>Swaps</th></tr>
+<tr><td>Bubble Sort</td><td>\(\Theta(n^2)\)</td><td>\(\Theta(n^2)\)</td></tr>
+<tr><td>Selection Sort</td><td>\(\Theta(n^2)\)</td><td>\(\Theta(n)\)</td></tr>
+</table>
+
+<div class="box def">
+<span class="lbl">Selection Sort — pseudocode</span>
+<p>Input: \(A[1,\dots,n]\). The variable \(i\) walks through columns/passes; on each pass, \(j\) scans through the elements of the remaining unsorted portion, tracking \(pos\), the position of the largest element found so far in that portion. At the end of the pass, that largest element is swapped into its correct final slot at the <em>end</em> of the unsorted portion.</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  <span class="kw">for</span> i &larr; 1 <span class="kw">to</span> n-1
+<span class="ln">2</span>      pos &larr; 1
+<span class="ln">3</span>      <span class="kw">for</span> j &larr; 1 <span class="kw">to</span> n-i
+<span class="ln">4</span>          <span class="kw">if</span> A[j] &gt; A[pos] <span class="kw">then</span> pos &larr; j
+<span class="ln">5</span>          A[pos] &harr; A[n-i+1]     <span class="cm">// the largest found is placed at the end</span></pre>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>Trace \(A=[5,2,9,1]\) (\(n=4\)):</p>
+<table class="grid trace">
+<tr><th>Pass (i)</th><th>Unsorted portion scanned</th><th>Largest found</th><th>Swapped with position</th><th>Array after pass</th></tr>
+<tr><td>1</td><td>5, 2, 9, 1</td><td>9 (pos 3)</td><td>A[4]</td><td>5, 2, 1, <u>9</u></td></tr>
+<tr><td>2</td><td>5, 2, 1</td><td>5 (pos 1)</td><td>A[3]</td><td>1, 2, <u>5</u>, 9</td></tr>
+<tr><td>3</td><td>1, 2</td><td>2 (pos 2)</td><td>A[2]</td><td>1, <u>2</u>, 5, 9</td></tr>
+</table>
+<p class="small">Three passes (\(n-1=3\)) fully sort a 4-element array, each pass fixing exactly one element in its final place with exactly one swap.</p>
+</div>
+
+<h4>Analysis: comparisons and swaps</h4>
+<div class="box proof">
+<span class="lbl">Number of comparisons</span>
+<p>The comparison on line 4 runs once per inner-loop iteration — a double sum, exactly like Bubble Sort's:</p>
+<p>$$T(n) = \sum_{i=1}^{n-1}\sum_{j=1}^{n-i}1 = \sum_{i=1}^{n-1}(n-i) = (n-1)+(n-2)+\cdots+1 = \frac{n(n-1)}2 \in\Theta(n^2)$$</p>
+<p class="qed">∎</p>
+</div>
+<div class="box proof">
+<span class="lbl">Number of swaps</span>
+<p>Exactly one swap (line 5) happens per outer-loop pass, and there are \(n-1\) passes:</p>
+<p>$$S(n) = \sum_{i=1}^{n-1}1 = n-1 \in\Theta(n)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">This directly answers Lecture 2's open question: yes, the number of swaps can be made linear.</span></p>
+</div>
+</section>
+
+<section class="topic" id="L3-3">
+<h3>3.3 &middot; Finding the maximum: a genuine lower-bound proof</h3>
+<p>Every algorithm so far has come with an <em>upper</em> bound on its running time — "this algorithm takes at most this much time." This section asks a fundamentally different question: is it possible to prove that <strong>no</strong> algorithm, however cleverly designed, could ever do better?</p>
+
+<div class="box result">
+<span class="lbl">Result — the claim to be proved</span>
+<p>Finding the maximum (or minimum) in an array of size \(n\) takes \(n-1\) comparisons.</p>
+</div>
+
+<h4>First, an algorithm that achieves n − 1</h4>
+<div class="box def">
+<span class="lbl">Code to find the max</span>
+<p>Input: \(A[1,2,\dots,n]\).</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  pos &larr; 1
+<span class="ln">2</span>  <span class="kw">for</span> i &larr; 2 <span class="kw">to</span> n
+<span class="ln">3</span>      <span class="kw">if</span> A[pos] &lt; A[i] <span class="kw">then</span> pos &larr; i
+<span class="ln">4</span>  <span class="kw">print</span> A[pos]</pre>
+<p>The loop runs once for every \(i=2,\dots,n\), making one comparison each time:</p>
+<p>$$T(n) = \sum_{i=2}^{n}1 = n-1 \in\Theta(n)$$</p>
+<p>So <strong>an</strong> algorithm exists using exactly \(n-1\) comparisons. That settles the upper bound. The much harder, more interesting question: could some other, cleverer algorithm possibly do it in <em>fewer</em>?</p>
+
+<h4>Now, the lower bound: no algorithm can do better</h4>
+<div class="box proof">
+<span class="lbl">Proof by contradiction</span>
+<p><strong>Suppose</strong>, for contradiction, that some algorithm \(A\) exists which finds the maximum using <strong>fewer than \(n-1\)</strong> comparisons. We will show that \(A\) must then be <em>incorrect</em> on some input — contradicting the assumption that \(A\) correctly finds the maximum.</p>
+
+<p><strong>Step 1 — build a graph from \(A\)'s comparisons.</strong> Create a graph \(G\) with one vertex per array element. Every time algorithm \(A\) compares \(A[i]\) with \(A[j]\), draw an edge connecting those two vertices.</p>
+
+<p><strong>Step 2 — too few comparisons means a disconnected graph.</strong> Recall: a <strong>tree</strong> on \(n\) vertices has exactly \(n-1\) edges and is connected with no cycles — the <em>minimally</em> connected graph on \(n\) vertices. If \(G\) has fewer than \(n-1\) edges (because \(A\) made fewer than \(n-1\) comparisons), \(G\) cannot be a tree, and in particular <strong>cannot be connected</strong>. So \(G\) splits into at least two disconnected components, call them \(C_1\) and \(C_2\).</p>
+
+<p><strong>Step 3 — the true maximum lives in one component.</strong> The maximum value \(M\) of the whole array sits at some vertex, which must belong to either \(C_1\) or \(C_2\). Without loss of generality, say \(M\) is in \(C_1\).</p>
+
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 400 150" width="100%" style="max-width:400px;">
+<g stroke="#151a20" stroke-width="1.5" fill="none">
+<line x1="40" y1="40" x2="80" y2="70"/><line x1="80" y1="70" x2="50" y2="100"/><line x1="80" y1="70" x2="110" y2="50"/>
+</g>
+<circle cx="40" cy="40" r="4" fill="#a1522f"/><text x="20" y="30" font-family="JetBrains Mono" font-size="12" fill="#a1522f">M (max)</text>
+<circle cx="80" cy="70" r="4"/><circle cx="50" cy="100" r="4"/><circle cx="110" cy="50" r="4"/>
+<text x="70" y="120" font-family="JetBrains Mono" font-size="13">C&#8321;</text>
+<line x1="200" y1="20" x2="200" y2="130" stroke="#a1522f" stroke-dasharray="4 3"/>
+<text x="205" y="20" font-family="JetBrains Mono" font-size="11" fill="#a1522f">no connection</text>
+<g stroke="#151a20" stroke-width="1.5" fill="none">
+<line x1="280" y1="50" x2="320" y2="70"/><line x1="320" y1="70" x2="300" y2="100"/><line x1="320" y1="70" x2="350" y2="45"/>
+</g>
+<circle cx="280" cy="50" r="4"/><circle cx="320" cy="70" r="4"/><circle cx="300" cy="100" r="4"/><circle cx="350" cy="45" r="4"/>
+<text x="310" y="120" font-family="JetBrains Mono" font-size="13">C&#8322;</text>
+</svg>
+</div>
+
+<p><strong>Step 4 — the adversarial trick.</strong> Since \(A\) never once compared any element of \(C_1\) with any element of \(C_2\) (there are no edges between the two components), algorithm \(A\)'s entire sequence of decisions — every comparison outcome — depends only on the elements <em>within</em> each component, never on any relationship between them. Now construct a new input: take the original array, and <strong>add \(M\) to every element in \(C_2\)</strong>, leaving \(C_1\) untouched, and feed <em>this</em> as the input to \(A\).</p>
+
+<div class="box ex">
+<span class="lbl">Concrete numeric illustration</span>
+<p>Suppose \(C_1=\{15,25,16,4\}\) (so \(M=25\)) and \(C_2=\{2,6,5,14,1\}\). Add \(M=25\) to every element of \(C_2\), giving \(C_2'=\{27,31,30,39,26\}\). The <em>true</em> maximum of this new array is now \(39\) — but algorithm \(A\), having made exactly the same comparisons as before (none of them touching \(C_2\)), still outputs \(M=25\).</p>
+</div>
+
+<p><strong>Step 5 — contradiction.</strong> Since \(A\) makes no comparisons involving \(C_2\), its behaviour — and therefore its output — is <em>identical</em> to what it was on the original input: it still reports \(M\) as the maximum. But the actual maximum of the new array is now some element of \(C_2'\) (strictly greater than \(M\), since every element of \(C_2\) was some positive-contributing value before \(M\) was added to it). So \(A\) outputs the wrong answer on this input.</p>
+<p>This contradicts our assumption that \(A\) is a <em>correct</em> algorithm for finding the maximum. Hence, no algorithm using fewer than \(n-1\) comparisons can correctly find the maximum of every input.</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Key result — a tight algorithm</span>
+<p>Since an algorithm achieving exactly \(n-1\) comparisons exists (the upper bound), and no algorithm can do it in fewer than \(n-1\) (the lower bound just proved), finding the max/min in an array is settled completely:</p>
+<p style="text-align:center">$$\Theta(n) \text{ comparisons — and this is optimal, not just achievable.}$$</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Why this proof technique matters beyond this one problem</span>
+<p>This is your first example of a genuine <strong>lower-bound</strong> proof — a proof that no clever trick, no matter how sophisticated, can beat a certain running time. Notice the strategy: assume a better algorithm exists, build a structure (here, a graph) from its behaviour, and then construct an adversarial input that exploits a gap in that structure to force a wrong answer. This exact style of argument — build a comparison graph, exploit disconnection — reappears in a much bigger way in Lecture 8, to prove that <em>no comparison-based sorting algorithm</em> can beat \(\Omega(n\log n)\).</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L4">
+  <div class="ltag">Lecture 4</div>
+  <h2>Tower of Hanoi — Deriving Exponential Growth From Scratch</h2>
+  <p>Lecture 2 asked you to simply recall that Tower of Hanoi takes \(2^n-1\) steps. This lecture proves it — building the recurrence relation from the puzzle's actual structure, solving it completely by unrolling, and then confirming just how real "exponential time" is with a concrete timing estimate.</p>
+</div>
+
+<section class="topic" id="L4-1">
+<h3>4.1 &middot; The puzzle, its rules, and small cases</h3>
+<div class="box def">
+<span class="lbl">Setup</span>
+<p>Tower of Hanoi consists of 3 pegs (A, B, C) and \(n\) disks of different sizes, all initially stacked on peg A in decreasing order of size (largest at the bottom).</p>
+</div>
+<div class="box def">
+<span class="lbl">Rules</span>
+<ol style="margin:4px 0 0">
+<li>Move one disk at a time.</li>
+<li>Never place a larger disk onto a smaller one ("no bullying").</li>
+</ol>
+</div>
+<p><strong>Question:</strong> can you move all \(n\) disks from Tower A to Tower B (using Tower C as a spare), obeying both rules? And if so — how many moves does it take, at minimum?</p>
+
+<h4>Building intuition from the smallest cases</h4>
+<div class="box ex">
+<span class="lbl">n = 1 disk</span>
+<p>Trivial: move the single disk directly from A to B. <strong>1 step.</strong></p>
+</div>
+<div class="box ex">
+<span class="lbl">n = 2 disks</span>
+<p><strong>Question first:</strong> can it be done in fewer than 3 steps? As there are \(n=2\) disks, at least 2 moves are required just to relocate them — but check: can it be done in exactly 2? Attempting it shows no arrangement of 2 moves obeys rule 2 while finishing the job. It takes exactly 3 steps: move the small disk A&rarr;C, the large disk A&rarr;B, then the small disk C&rarr;B. <strong>3 is the optimum number of moves for \(n=2\).</strong> (Note: none of the pegs are allowed to have any disks on them initially besides Tower A's full stack — the other two start empty.)</p>
+</div>
+<div class="box ex">
+<span class="lbl">n = 3 disks</span>
+<p>Working it through by hand, disk by disk, takes exactly <strong>7 steps</strong>.</p>
+</div>
+
+<table class="grid">
+<tr><th>Number of disks (n)</th><th>Minimum number of moves</th></tr>
+<tr><td>1</td><td>1</td></tr>
+<tr><td>2</td><td>3</td></tr>
+<tr><td>3</td><td>7</td></tr>
+<tr><td>&vellip;</td><td>&vellip;</td></tr>
+<tr><td>n</td><td>? &nbsp;<span class="small">— good guess: \(2^n-1\), to be proved</span></td></tr>
+</table>
+</section>
+
+<section class="topic" id="L4-2">
+<h3>4.2 &middot; The recurrence, derived and solved</h3>
+<p>Rather than guess-and-check for every \(n\), notice the <em>structure</em> hiding in the \(n=3\) solution. Moving 3 disks from A to B breaks cleanly into three phases:</p>
+<ol>
+<li><strong>Move the top \(n-1\) disks</strong> from A to the spare peg C (ignoring the bottom disk entirely) — this is itself a Tower-of-Hanoi problem of size \(n-1\), taking \(T(n-1)\) steps.</li>
+<li><strong>Move the single largest disk</strong> from A to B — 1 step.</li>
+<li><strong>Move the \(n-1\) disks</strong> now sitting on C over to B, on top of the largest disk — again a size-\((n-1)\) sub-problem, taking \(T(n-1)\) steps.</li>
+</ol>
+<p class="small">Steps 5–7 of the \(n=3\) solve, for instance, are exactly phase 3: the two smaller disks, sitting on the spare peg, get moved on top of the (already-placed) largest disk — a symmetric mirror of phase 1.</p>
+
+<div class="box def">
+<span class="lbl">The recurrence for Tower of Hanoi</span>
+<p>Phases 1 and 3 are symmetric — both are the identical sub-problem of moving \(n-1\) disks, so both cost exactly \(T(n-1)\):</p>
+<p>$$T(n) = T(n-1)+1+T(n-1) = 2T(n-1)+1, \qquad T(1)=1$$</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Solving the recurrence, by unrolling</span>
+<p>Substitute the recurrence into itself, repeatedly, tracking the pattern:</p>
+<p>$$T(n) = 2T(n-1)+1$$</p>
+<p>$$= 2\big\{2T(n-2)+1\big\}+1 = 2^2T(n-2)+2+1$$</p>
+<p>$$= 2^2\big\{2T(n-3)+1\big\}+2+1 = 2^3T(n-3)+2^2+2+1$$</p>
+<p>The pattern emerging: after \(k\) substitutions, \(T(n)=2^kT(n-k)+2^{k-1}+\cdots+2+1\). Push this all the way to \(k=n-1\), where the recursion bottoms out at the known base case \(T(1)=1\):</p>
+<p>$$T(n) = 2^{n-1}T\big(n-(n-1)\big)+2^{n-2}+2^{n-3}+\cdots+2+1 = 2^{n-1}T(1)+2^{n-2}+\cdots+2+1$$</p>
+<p>$$= 2^{n-1}+2^{n-2}+2^{n-3}+\cdots+2+1$$</p>
+<p>This is a <strong>geometric series</strong> with first term \(a=1\) and common ratio \(r=2\), summed to \(n\) terms:</p>
+<p>$$T(n) = \frac{2^n-1}{2-1} = 2^n-1$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Confirming \(2^n-1\in\Theta(2^n)\)</span>
+<p>Using the limit technique from Lectures 2–3:</p>
+<p>$$\lim_{n\to\infty}\frac{2^n-1}{2^n} = \lim_{n\to\infty}\left(1-\frac1{2^n}\right) = 1 \ne 0 \quad\Longrightarrow\quad 2^n-1\in\Theta(2^n)$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Key result</span>
+<p>Tower of Hanoi with \(n\) disks requires exactly \(2^n-1\) moves — an exponential-time problem, now fully derived rather than merely observed.</p>
+</div>
+</section>
+
+<section class="topic" id="L4-3">
+<h3>4.3 &middot; How long would 100 disks really take?</h3>
+<p>The lecture revisits exactly the timing calculation from Lecture 2, now that \(2^n-1\) is a proven fact rather than a recalled one. Assume a computer performing \(10^{12}\) operations/second, and \(n=100\) disks, needing \(2^{100}-1\approx2^{100}\) operations:</p>
+<p>$$\frac{2^{100}}{10^{12}} = 1.29\times10^{18}\text{ seconds} = 2.1\times10^{16}\text{ minutes} = 3.5\times10^{14}\text{ hours} = 1.4\times10^{13}\text{ days}$$</p>
+<div class="box result">
+<span class="lbl">Result</span>
+<p>$$\frac{1.4\times10^{13}}{365}\text{ years} \approx 4.0\times10^{10}\text{ years}$$</p>
+<p>Compare this to the <strong>age of the Earth: \(4.5\times10^9\) years (4.5 billion years)</strong>. A 100-disk Tower of Hanoi would take roughly <strong>nine Earth-lifetimes</strong> to finish, even at a trillion operations per second — the exact same conclusion reached in Lecture 2, now backed by a fully derived formula rather than an assumed one.</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Note — exponential algorithms aren't always useless</span>
+<ul style="margin:4px 0 0">
+<li>Exponential algorithms are actually <strong>useful in cryptography and encryption</strong> — there, you often <em>want</em> a problem to be prohibitively expensive to solve without the right key (see the RSA algorithm, previewed in this course's syllabus).</li>
+<li>For other purposes, exponential algorithms may only be practical for <strong>small cases</strong> of \(n\) — exactly what the 100-disk calculation above illustrates.</li>
+</ul>
+</div>
+
+<div class="box result">
+<span class="lbl">Where Lecture 4 leaves us, and where we're headed</span>
+<p>With the recurrence-unrolling technique now established, the lecture pivots to a new question that will occupy the next several lectures: <strong>can we sort an array faster than Bubble/Selection Sort's \(\Theta(n^2)\)?</strong> The lecture poses this concretely: given two already-sorted arrays, can they be <em>combined</em> into one sorted array in linear time? That question is exactly where Lecture 5 — Merge Sort — begins.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L5">
+  <div class="ltag">Lecture 5</div>
+  <h2>Merge Sort — Breaking Θ(n²)</h2>
+  <p>Every algorithm so far has been quadratic. This lecture finally breaks that barrier: first by showing that merging two <em>already-sorted</em> arrays takes only linear time, then by building an entire sorting algorithm — Merge Sort — around that one fast operation, and proving its running time is \(\Theta(n\log n)\) two completely different ways.</p>
+</div>
+
+<section class="topic" id="L5-1">
+<h3>5.1 &middot; Merging two sorted arrays</h3>
+<div class="box result">
+<span class="lbl">Result</span>
+<p>Merging two already-sorted arrays into a single sorted array takes <strong>linear time</strong>.</p>
+</div>
+
+<div class="box def">
+<span class="lbl">Merge — pseudocode</span>
+<p>Input: two sorted arrays \(A[1,\dots,p]\) and \(B[1,\dots,q]\); output: \(C[1,\dots,p+q]\).</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  i &larr; 1,  j &larr; 1,  k &larr; 1
+<span class="ln">2</span>  <span class="kw">while</span> i &le; p <span class="kw">and</span> j &le; q
+<span class="ln">3</span>      <span class="kw">if</span> A[i] &le; B[j]
+<span class="ln">4</span>          C[k] &larr; A[i];  i &larr; i+1        <span class="cm">// basic operation: the comparison</span>
+<span class="ln">5</span>      <span class="kw">else</span>
+<span class="ln">6</span>          C[k] &larr; B[j];  j &larr; j+1
+<span class="ln">7</span>      k &larr; k+1
+<span class="ln">8</span>  <span class="kw">if</span> i = p+1 <span class="kw">then</span> copy B[j&hellip;q] to C[k&hellip;p+q]     <span class="cm">// A ran out first</span>
+<span class="ln">9</span>  <span class="kw">if</span> j = q+1 <span class="kw">then</span> copy A[i&hellip;p] to C[k&hellip;p+q]     <span class="cm">// B ran out first</span></pre>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>\(A=[2,7,11]\) (\(p=3\)), \(B=[5,9]\) (\(q=2\)). Trace the merge:</p>
+<table class="grid trace">
+<tr><th>k</th><th>Compare</th><th>Winner &rarr; C[k]</th></tr>
+<tr><td>1</td><td>2 vs 5</td><td>2</td></tr>
+<tr><td>2</td><td>7 vs 5</td><td>5</td></tr>
+<tr><td>3</td><td>7 vs 9</td><td>7</td></tr>
+<tr><td>4</td><td>11 vs 9</td><td>9</td></tr>
+<tr><td>5</td><td>&mdash; (B exhausted, copy remainder of A)</td><td>11</td></tr>
+</table>
+<p>Result: \(C=[2,5,7,9,11]\), using just <strong>4 comparisons</strong> — one fewer than the 5 total elements, because the very last element never needs comparing; once one array is exhausted, the rest of the other array is simply copied over.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Analysis — number of comparisons</span>
+<p>Every value of \(k\) involves exactly one comparison, <em>except</em> the very last, \((p+q)\)-th value (which is handled by the copy-the-remainder steps, lines 8–9, with no comparison needed):</p>
+<p>$$\text{Total comparisons} = p+q-1$$</p>
+<p>Setting \(p=q=n\) (merging two equal-sized halves, as Merge Sort will do):</p>
+<p style="text-align:center">$$T(n) = 2n-1 \in \Theta(n)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Merging is linear — the key fact the rest of this lecture is built on.</span></p>
+</div>
+</section>
+
+<section class="topic" id="L5-2">
+<h3>5.2 &middot; Merge Sort, and its recurrence</h3>
+<p>The idea: split the array in half, recursively sort each half, then merge the two sorted halves together using the fast linear-time merge above. Split \([7,17,12,5,1,6,4]\) all the way down to single elements (each trivially "sorted"), then merge pairs back up.</p>
+
+<div class="box def">
+<span class="lbl">Merge Sort — pseudocode</span>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  MergeSort(A[1&hellip;n])
+<span class="ln">2</span>      <span class="kw">if</span> n &gt; 1
+<span class="ln">3</span>          copy A[1&hellip;&lfloor;n/2&rfloor;-1] to B[1&hellip;&lfloor;n/2&rfloor;-1]
+<span class="ln">4</span>          copy A[&lfloor;n/2&rfloor;&hellip;n] to C[1&hellip;&lceil;n/2&rceil;-1]
+<span class="ln">5</span>          MergeSort(B[1&hellip;&lfloor;n/2&rfloor;-1])
+<span class="ln">6</span>          MergeSort(C[1&hellip;&lceil;n/2&rceil;-1])
+<span class="ln">7</span>          Merge(B, C, A)</pre>
+
+<div class="box ex">
+<span class="lbl">Worked example — counting every comparison</span>
+<p>Sort \([7,17,12,5,1,6,4]\) (odd-sized, so one element sits out a level):</p>
+<table class="grid">
+<tr><th>Merge level</th><th>Pairs merged</th><th>Comparisons</th></tr>
+<tr><td>1st</td><td>[7]+[17]&rarr;[7,17]; [5]+[12]&rarr;[5,12]; [1]+[6]&rarr;[1,6]; [4] alone</td><td>1+1+1 = 3</td></tr>
+<tr><td>2nd</td><td>[7,17]+[5,12]&rarr;[5,7,12,17]; [1,6]+[4]&rarr;[1,4,6]</td><td>3+2 = 5</td></tr>
+<tr><td>3rd</td><td>[5,7,12,17]+[1,4,6]&rarr;[1,4,5,6,7,12,17]</td><td>4</td></tr>
+</table>
+<p><strong>Total: \(3+5+4=12\) comparisons</strong> to fully sort 7 elements.</p>
+</div>
+
+<div class="box def">
+<span class="lbl">The recurrence for Merge Sort</span>
+<p class="small">"These divide-and-conquer algorithms are often analysed using recurrence relations."</p>
+<p>$$T(n) = \begin{cases}\Theta(1) & n=1\\[4pt] 2T(n/2)+\Theta(n) & n>1\end{cases}$$</p>
+<p>Each recursive call gets a problem of half the size ("each time we get 2 problems, each half the size of the initial one"), and the \(\Theta(n)\) term is exactly the linear merging time just proved above.</p>
+</div>
+</section>
+
+<section class="topic" id="L5-3">
+<h3>5.3 &middot; Solving the recurrence, two different ways</h3>
+
+<div class="box proof">
+<span class="lbl">Method 1 — solving by unrolling</span>
+<p>Write \(T(n)=2T(n/2)+cn\), and substitute the recurrence into itself repeatedly:</p>
+<p>$$T(n) = 2T\Big(\frac n2\Big)+cn = 2\left(2T\Big(\frac n4\Big)+\frac{cn}2\right)+cn = 2^2T\Big(\frac n4\Big)+cn+cn$$</p>
+<p>$$= 2^2\left(2T\Big(\frac n8\Big)+\frac{cn}4\right)+cn+cn = 2^3T\Big(\frac n8\Big)+cn+cn+cn = 2^3T\Big(\frac n8\Big)+c(3n)$$</p>
+<p>The pattern: after \(x\) substitutions, \(T(n)=2^xT(n/2^x)+c(xn)\). This bottoms out once \(n/2^x=1\), i.e. \(x=\log_2n\):</p>
+<p>$$T(n) = 2^{\log_2n}T(1) + c(\log n)\,n = n\cdot T(1) + cn\log n = n + c(n\log n)$$</p>
+<p>Since \(n\log n\) dominates the lone \(n\) term (\(n\log n\) is greater than \(n\) for \(n>1\)):</p>
+<p style="text-align:center">$$T(n)\in O(n\log n)$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Method 2 — solving via the recursion tree</span>
+<p>Draw the recursion as a tree: the root does \(cn\) work (the merge at the top level), splitting into two children each doing \(c\cdot\frac n2\) work, splitting again into four children each doing \(c\cdot\frac n4\), and so on, down to leaves \(T(1)\).</p>
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 460 190" width="100%" style="max-width:460px;">
+<g font-family="JetBrains Mono" font-size="13" text-anchor="middle" fill="#151a20">
+<text x="230" y="15">cn</text>
+<text x="115" y="55">cn/2</text><text x="345" y="55">cn/2</text>
+<text x="60" y="95">cn/4</text><text x="170" y="95">cn/4</text><text x="290" y="95">cn/4</text><text x="400" y="95">cn/4</text>
+<text x="230" y="130">&#8942;</text>
+<text x="30" y="160" font-size="11">T(1)</text><text x="90" y="160" font-size="11">T(1)</text><text x="370" y="160" font-size="11">T(1)</text><text x="430" y="160" font-size="11">T(1)</text>
+</g>
+<g stroke="#565f6b" stroke-width="1">
+<line x1="230" y1="20" x2="115" y2="45"/><line x1="230" y1="20" x2="345" y2="45"/>
+<line x1="115" y1="50" x2="60" y2="85"/><line x1="115" y1="50" x2="170" y2="85"/>
+<line x1="345" y1="50" x2="290" y2="85"/><line x1="345" y1="50" x2="400" y2="85"/>
+</g>
+</svg>
+</div>
+<p><strong>Key observation: the horizontal sum at every level is exactly \(cn\)</strong> — each level has twice as many nodes as the one above, but each node does half the work, so the products cancel and every level contributes the same total, \(cn\).</p>
+<p>So \(T(n) = h\cdot(cn)\), where \(h\) is the height of the tree. Now find \(h\): a binary tree of height \(h\) has at most \(2^h\) leaves (check small cases: \(h=0\to1=2^0\) leaf, \(h=1\to2=2^1\) leaves, \(h=2\to4=2^2\) leaves — doubling at each level, confirming \(2^h\) by induction). Since the input has \(n\) elements, and in Merge Sort every input element must eventually become its own leaf (a single sorted number), we need enough leaves to cover all of them:</p>
+<p>$$2^h \ge n \;\Longrightarrow\; \log(2^h)\ge\log n \;\Longrightarrow\; h\ge\log n \quad(\text{log is monotonic, so the inequality survives})$$</p>
+<p>Take \(h=\lceil\log n\rceil\). Substituting back:</p>
+<p style="text-align:center">$$T(n) = \lceil\log n\rceil\cdot cn \in O(n\log n)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Two independent methods, same answer — good evidence the result is right.</span></p>
+</div>
+
+<div class="box result">
+<span class="lbl">Key result</span>
+<p>Merge Sort runs in \(\Theta(n\log n)\) time — a genuine improvement over Bubble Sort and Selection Sort's \(\Theta(n^2)\). For large \(n\), this is the difference between "usable" and "not usable," exactly as the growth-rate table from Lecture 2 would predict.</p>
+</div>
+</section>
+
+<section class="topic" id="L5-4">
+<h3>5.4 &middot; A puzzle to end on: the decision-tree model</h3>
+<p>Having found <em>an</em> algorithm that sorts in \(\Theta(n\log n)\), a natural question follows: could something even faster exist? The lecture poses a puzzle, to be fully resolved in Lecture 8: model every comparison-based sorting algorithm as a <strong>decision tree</strong>.</p>
+<div class="box story">
+<span class="lbl">A puzzle — sorting three elements as a decision tree</span>
+<p>To sort \(\langle a_1,a_2,a_3\rangle\), the first comparison might be "\(a_1\) vs \(a_2\)?" Depending on the outcome, a different second comparison follows, and so on — each internal node of the tree is a comparison, and each leaf is a fully determined sorted order (a permutation of the input), such as \(a_1a_2a_3\), \(a_2a_1a_3\), \(a_2a_3a_1\), \(a_3a_2a_1\), etc.</p>
+<p class="small"><strong>Hint left for you to think about:</strong> how many leaves must such a tree have, at minimum, to correctly sort <em>every possible</em> input ordering of 3 elements? (This is exactly the question Lecture 8 answers in full, and it leads to a genuine lower bound — just like Lecture 3's max-finding proof — for every comparison-based sorting algorithm that could ever be written.)</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L6">
+  <div class="ltag">Lecture 6</div>
+  <h2>Quicksort — Sorting Without Auxiliary Arrays</h2>
+  <p>Merge Sort reaches \(\Theta(n\log n)\), but it pays for that speed with extra memory — two auxiliary arrays, \(B\) and \(C\), at every level of recursion. This lecture asks: can the same \(\Theta(n\log n)\) speed be reached <em>in place</em>, using no extra arrays at all? The answer is Quicksort, built around one clever subroutine: Partition.</p>
+</div>
+
+<section class="topic" id="L6-1">
+<h3>6.1 &middot; Partitioning in place</h3>
+<div class="box warn">
+<span class="lbl">The motivating question</span>
+<p>Can you sort in \(\Theta(n\log n)\) time <strong>without using auxiliary arrays</strong>? <strong>Yes</strong> — using divide-and-conquer, but with no auxiliary arrays at all.</p>
+</div>
+<p>The core idea: pick a <strong>pivot</strong> (here, always the first element), then rearrange the array so that every element \(\le\) the pivot ends up on its left, and every element \(>\) the pivot ends up on its right — with the pivot itself dropped into its final, correct sorted position, right at the boundary. This is called putting the pivot "in its proper place."</p>
+
+<div class="box def">
+<span class="lbl">Partition — pseudocode (Hoare/Lomuto-style, 1962)</span>
+<p>Input: \(A[p,\dots,q]\); rearranges \(A\) in place and returns the pivot's final index.</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  Partition(A, p, q)
+<span class="ln">2</span>      x &larr; A[p]                       <span class="cm">// pivot</span>
+<span class="ln">3</span>      i &larr; p
+<span class="ln">4</span>      <span class="kw">for</span> j &larr; p+1 <span class="kw">to</span> q
+<span class="ln">5</span>          <span class="kw">if</span> A[j] &le; x
+<span class="ln">6</span>              i &larr; i+1
+<span class="ln">7</span>              A[i] &harr; A[j]
+<span class="ln">8</span>      A[p] &harr; A[i]                   <span class="cm">// drop the pivot into its final place</span>
+<span class="ln">9</span>      <span class="kw">return</span> i</pre>
+
+<div class="box ex">
+<span class="lbl">Worked example — Partition(A, 1, 8)</span>
+<p>\(A=[5,8,7,1,6,4,2,3]\), pivot \(x=A[1]=5\), \(i=1\). Scan \(j\) from 2 to 8:</p>
+<table class="grid trace">
+<tr><th>j</th><th>A[j]</th><th>≤ 5?</th><th>Action</th><th>Array after</th></tr>
+<tr><td>2</td><td>8</td><td>No</td><td>&mdash;</td><td>5, 8, 7, 1, 6, 4, 2, 3</td></tr>
+<tr><td>3</td><td>7</td><td>No</td><td>&mdash;</td><td>5, 8, 7, 1, 6, 4, 2, 3</td></tr>
+<tr><td>4</td><td>1</td><td>Yes</td><td>i&larr;2, swap A[2]&harr;A[4]</td><td>5, <u>1</u>, 7, 8, 6, 4, 2, 3</td></tr>
+<tr><td>5</td><td>6</td><td>No</td><td>&mdash;</td><td>5, 1, 7, 8, 6, 4, 2, 3</td></tr>
+<tr><td>6</td><td>4</td><td>Yes</td><td>i&larr;3, swap A[3]&harr;A[6]</td><td>5, 1, <u>4</u>, 8, 6, 7, 2, 3</td></tr>
+<tr><td>7</td><td>2</td><td>Yes</td><td>i&larr;4, swap A[4]&harr;A[7]</td><td>5, 1, 4, <u>2</u>, 6, 7, 8, 3</td></tr>
+<tr><td>8</td><td>3</td><td>Yes</td><td>i&larr;5, swap A[5]&harr;A[8]</td><td>5, 1, 4, 2, <u>3</u>, 7, 8, 6</td></tr>
+</table>
+<p>Loop ends. Final step: swap the pivot into place, \(A[1]\leftrightarrow A[5]\):</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace">[3, 1, 4, 2, <strong>5</strong>, 7, 8, 6]</p>
+<p><strong>Return \(i=5\)</strong> — the pivot 5 now sits at index 5, with every element to its left (\(3,1,4,2\)) \(\le5\), and every element to its right (\(7,8,6\)) \(>5\). Neither side is sorted yet — only the pivot's position is finalized.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Partition's running time</span>
+<p>The loop runs once for every \(j=p+1,\dots,q\) — a single pass:</p>
+<p>$$T(n) = \sum_{i=1}^{n}1 = n \in \Theta(n)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Partitioning is linear — and crucially, it uses no auxiliary array; every rearrangement happens inside A itself.</span></p>
+</div>
+</section>
+
+<section class="topic" id="L6-2">
+<h3>6.2 &middot; Quicksort itself</h3>
+<div class="box def">
+<span class="lbl">Quicksort — pseudocode</span>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  Quicksort(A, p, q)
+<span class="ln">2</span>      <span class="kw">if</span> p &lt; q
+<span class="ln">3</span>          <span class="kw">then</span> r &larr; Partition(A, p, q)
+<span class="ln">4</span>          Quicksort(A, p, r-1)
+<span class="ln">5</span>          Quicksort(A, r+1, q)</pre>
+<p class="small">Initial call: <code>Quicksort(A, 1, n)</code>.</p>
+<p>Partition does all the real work of placing one element correctly; Quicksort's job is simply to call Partition, then recurse on the two pieces that result — left of the pivot, and right of the pivot. Unlike Merge Sort, there's no separate "merge" step at the end: once every element has been placed by some call to Partition, the array is already fully sorted.</p>
+</section>
+
+<section class="topic" id="L6-3">
+<h3>6.3 &middot; Worst-case analysis: Θ(n²)</h3>
+<div class="box warn">
+<span class="lbl">Worst-case input</span>
+<p>Give Quicksort an already-sorted array (ascending or descending order). Since the pivot is always the first element, and the array is already ordered, every Partition call splits the array as unevenly as possible: one side gets everything, the other side gets nothing.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Illustration</span>
+<p>\(A=[10,8,7,5,4,3]\): pivot 10 is already the maximum, so Partition places it correctly at the very last position with <em>everything else</em> ending up on the left — the split is \((n-1, 0)\), the most unbalanced possible.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Solving the worst-case recurrence</span>
+<p>With a \((n-1,0)\) split every time, plus \(\Theta(n)\) partitioning work, plus the (trivial, \(\Theta(1)\)) recursive call on the empty side:</p>
+<p>$$T(n) = T(n-1)+T(1)+cn$$</p>
+<p>Unroll exactly as in earlier lectures:</p>
+<p>$$T(n) = T(n-2)+T(1)+c(n-1)+T(1)+cn = T(n-3)+T(1)+c(n-2)+T(1)+c(n-1)+T(1)+cn$$</p>
+<p>$$\;\vdots$$</p>
+<p>$$= T(1) + \underbrace{(n-1)T(1)}_{n-1\text{ copies of }T(1)} + c\big[n+(n-1)+(n-2)+\cdots+2+1\big]$$</p>
+<p>$$= n\cdot T(1) + c\left(\frac{n(n-1)}2\right) \in \Theta(n^2)$$</p>
+<p class="qed">∎</p>
+</div>
+<div class="box result">
+<span class="lbl">Key result</span>
+<p><strong>Quicksort is quadratic-time under its worst case</strong> — exactly as bad as Bubble Sort or Selection Sort, if the input happens to be adversarial (or simply already sorted) and the pivot is always chosen as the first element.</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Common confusion — so is Quicksort actually good, or not?</span>
+<p>A \(\Theta(n^2)\) worst case sounds damning — but "worst case" means the single most adversarial input, not a typical one. The next lecture asks the more useful question: what happens on a <em>typical</em> input, or even a fairly unbalanced but not maximally-bad one? The answer is the entire reason Quicksort is used constantly in practice despite this worst case.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L7">
+  <div class="ltag">Lecture 7</div>
+  <h2>Quicksort's Average Case — Why It's Fast in Practice</h2>
+  <p>Lecture 6 ended on a worrying note: Quicksort is \(\Theta(n^2)\) in the worst case. This lecture rebuilds confidence in two stages — first an intuitive stress-test (what if the split is wildly unbalanced, say 10:90?), then a fully rigorous probabilistic analysis using indicator random variables, proving the <em>average</em> running time is \(\Theta(n\log n)\).</p>
+</div>
+
+<section class="topic" id="L7-1">
+<h3>7.1 &middot; Recap, and a robustness stress-test</h3>
+<table class="grid">
+<tr><th>Case</th><th>Recurrence</th><th>Result</th></tr>
+<tr><td>Worst</td><td>\(T(n)=T(n-1)+T(1)+\Theta(n)\)</td><td>\(O(n^2)\)</td></tr>
+<tr><td>Best</td><td>\(T(n)=2T(n/2)+\Theta(n)\)</td><td>\(O(n\log n)\)</td></tr>
+</table>
+
+<div class="box ex">
+<span class="lbl">Stress test — what if the split is only 10:90, every single time?</span>
+<p>Not perfectly balanced (50:50, the best case), and not maximally unbalanced (\((n-1):0\), the worst case) — what if Partition <em>always</em> splits the array into a 10% piece and a 90% piece?</p>
+<p>$$T(n) = T\Big(\frac{n}{10}\Big)+T\Big(\frac{9n}{10}\Big)+cn$$</p>
+<p>Draw this as a recursion tree. As before, <strong>every horizontal level sums to exactly \(cn\)</strong> (the same cancellation as Merge Sort's tree). The only difference: the tree is no longer symmetric — the "10%" branch shrinks to size 1 much faster than the "90%" branch does, so the two sides of the tree have <em>different</em> heights:</p>
+<p>$$\text{Left height} = \lceil\log_{10}n\rceil \qquad \text{Right height} = \lceil\log_{10/9}n\rceil$$</p>
+<p>Since the tree's <em>overall</em> height must accommodate the longer of the two paths, the relevant height is the right side's, \(H=\log_{10/9}n\). By the change-of-base formula, \(\log_{10/9}n\) is just \(\log n\) scaled by the constant \(\dfrac{1}{\log(10/9)}\) — so it's still \(\Theta(\log n)\).</p>
+<div class="box result">
+<span class="lbl">Result</span>
+<p>$$T(n) = H\cdot cn \in \Theta(n\log n) \quad\text{— even with a 10:90 split, every single time.}$$</p>
+</div>
+</div>
+<div class="box warn">
+<span class="lbl">The takeaway</span>
+<p>Quicksort doesn't need a <em>perfectly</em> balanced split to achieve \(\Theta(n\log n)\) — even a very lopsided 10:90 split still gives \(\Theta(n\log n)\), because both pieces still shrink <em>geometrically</em> (by a constant factor) at every level. Only a split that leaves one side with a <em>fixed</em> amount of work removed each time (like the worst case's \((n-1):0\) — where the "0" side never grows, and the "\(n-1\)" side only shrinks by exactly 1 each time) breaks this. This is a strong hint that "bad" splits are actually quite rare in a random or typical input — which motivates the fully rigorous average-case analysis that follows.</p>
+</div>
+</section>
+
+<section class="topic" id="L7-2">
+<h3>7.2 &middot; The rigorous average case — indicator random variables</h3>
+<p>Assume every possible split position is equally likely — i.e. the pivot ends up at each rank with uniform probability \(\dfrac1n\) (this holds, for instance, if the input is a uniformly random permutation, or if the pivot is chosen randomly rather than always as the first element).</p>
+
+<div class="box def">
+<span class="lbl">Setting up an indicator random variable for each possible split</span>
+<p>Define, for \(k=0,1,\dots,n-1\):</p>
+<p>$$X_k = \begin{cases}1 & \text{if the } k:(n-k-1) \text{ split occurs}\\0&\text{otherwise}\end{cases}$$</p>
+<p>Then the running time itself can be written as a sum over every <em>possible</em> split, weighted by whether that split actually happened:</p>
+<p>$$T(n) = \sum_{k=0}^{n-1}X_k\Big(T(k)+T(n-k-1)+\Theta(n)\Big)$$</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Step 1 — find \(E[X_k]\)</span>
+<p>By the definition of expectation for an indicator variable:</p>
+<p>$$E[X_k] = 1\cdot P(k:(n-k-1)\text{ split occurs}) + 0\cdot P(\text{does not occur}) = 1\cdot\frac1n+0\cdot\left(1-\frac1n\right) = \frac1n$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">(using the uniform-split assumption)</span></p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Step 2 — take the expectation of the whole recurrence</span>
+<p>Apply \(E[\cdot]\) to both sides. Since \(X_k\) is independent of the sub-problem sizes it selects, \(E[X_k\cdot(\cdots)]=E[X_k]\cdot E[\cdots]\):</p>
+<p>$$E[T(n)] = \sum_{k=0}^{n-1}E[X_k]\Big(E[T(k)]+E[T(n-k-1)]+\Theta(n)\Big) = \sum_{k=0}^{n-1}\frac1n\Big(E[T(k)]+E[T(n-k-1)]\Big)+\Theta(n)$$</p>
+<p>Now, as \(k\) ranges over \(0,1,\dots,n-1\), the quantity \(n-k-1\) <em>also</em> ranges over \(0,1,\dots,n-1\) — just in reverse order. So \(\displaystyle\sum_{k=0}^{n-1}E[T(k)]\) and \(\displaystyle\sum_{k=0}^{n-1}E[T(n-k-1)]\) are the exact same sum, and can be combined:</p>
+<p style="text-align:center">$$E[T(n)] = \frac2n\sum_{k=0}^{n-1}E[T(k)]+\Theta(n)$$</p>
+</div>
+
+<div class="box def">
+<span class="lbl">The plan — prove this by induction</span>
+<p>We now have a clean recurrence for \(E[T(n)]\). The claim to prove: \(E[T(n)]=O(n\log n)\). As always with induction on a Big-O claim, this means proving the sharper, constant-explicit statement \(E[T(n)]\le cn\log n\) for a well-chosen \(c\) and all \(n\) past some base case — with the inductive hypothesis assuming the bound already holds for every value less than \(n\). This proof is completed in Lecture 8.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L8">
+  <div class="ltag">Lecture 8</div>
+  <h2>Finishing the Average-Case Proof, and the Ultimate Sorting Lower Bound</h2>
+  <p>This lecture completes the induction begun in Lecture 7 — using a neat discrete-to-continuous trick (bounding a sum by an integral) — and then delivers the capstone result of the entire sorting unit: a proof that <strong>no</strong> comparison-based sorting algorithm, ever, can beat \(\Omega(n\log n)\). Merge Sort and randomized Quicksort aren't just fast — they're provably optimal.</p>
+</div>
+
+<section class="topic" id="L8-1">
+<h3>8.1 &middot; Finishing the average-case induction</h3>
+<div class="box proof">
+<span class="lbl">Proof by induction — \(E[T(n)]\le cn\log n\)</span>
+<p><strong>Base case.</strong> Choose \(c\) large enough that the bound holds trivially for a small base case (e.g. \(n=1\)).</p>
+<p><strong>Inductive hypothesis.</strong> Assume \(E[T(k)]\le ck\log k\) for every \(k<n\).</p>
+<p><strong>Inductive step.</strong> Substitute the hypothesis into Lecture 7's recurrence. The \(k=0\) and \(k=1\) terms are degenerate (\(0\log0\) and \(1\log1\) both vanish or are handled as constants), so fold them into the \(\Theta(n)\) term and start the sum from \(k=2\):</p>
+<p>$$E[T(n)] = \frac2n\sum_{k=2}^{n-1}k\log k+\Theta(n)$$</p>
+<p><strong>The key trick: convert the discrete sum into a continuous integral.</strong> Let \(f(x)=x\log x\) — an increasing function for \(x\) large. Since \(f\) is increasing, each rectangle of height \(f(k)\) and width 1 sits entirely below the curve \(f(x)\) on that same interval, so the sum of rectangle areas is bounded above by the area under the curve:</p>
+<p>$$\sum_{k=m}^{n-1}f(k) \;\le\; \int_m^n f(x)\,dx$$</p>
+<p>Apply this with \(m=2\):</p>
+<p>$$E[T(n)] \le \frac{2c}n\int_2^n x\log x\,dx+\Theta(n)$$</p>
+<p><strong>Evaluate the integral by parts</strong> (\(u=\log x\), \(dv=x\,dx\), so \(du=\frac1x dx\), \(v=\frac{x^2}2\)):</p>
+<p>$$\int x\log x\,dx = \log x\cdot\frac{x^2}2-\int\frac1x\cdot\frac{x^2}2\,dx = \frac{x^2}2\log x-\frac{x^2}4$$</p>
+<p>Evaluating from 2 to \(n\):</p>
+<p>$$\int_2^n x\log x\,dx = \left(\frac{n^2}2\log n-\frac{n^2}4\right)-\Big(2\log2-1\Big)$$</p>
+<p>The subtracted constant \(2\log2-1\) is <strong>positive</strong>, and it's being subtracted, so dropping it can only make the bound larger — safe to discard for an upper bound:</p>
+<p>$$\le \frac{n^2}2\log n-\frac{n^2}4$$</p>
+<p>Substituting back:</p>
+<p>$$E[T(n)] \le \frac{2c}n\left[\frac{n^2}2\log n-\frac{n^2}4\right]+\Theta(n) = cn\log n-\frac{cn}2+\Theta(n) = cn\log n+\left(\Theta(n)-\frac{cn}2\right)$$</p>
+<p><strong>Final move:</strong> choose \(c\) large enough that \(\dfrac{cn}2\) dominates the \(\Theta(n)\) term — i.e. large enough that \(\Theta(n)-\dfrac{cn}2\) is negative. Then:</p>
+<p style="text-align:center">$$E[T(n)] \le cn\log n$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">completing the induction.</span></p>
+</div>
+<div class="box result">
+<span class="lbl">Key result</span>
+<p style="text-align:center">$$E[T(n)] \in O(n\log n)$$</p>
+<p>Randomized/average-case Quicksort matches Merge Sort's speed — its notorious \(\Theta(n^2)\) worst case is genuinely a <em>worst</em> case, not typical behaviour.</p>
+</div>
+</section>
+
+<section class="topic" id="L8-2">
+<h3>8.2 &middot; The decision-tree lower bound: no comparison sort beats n log n</h3>
+<p>Recall Lecture 5's puzzle: model any comparison-based sorting algorithm as a <strong>decision tree</strong>, where every internal node is a single comparison, and every leaf is a fully-determined sorted output.</p>
+
+<div class="box result">
+<span class="lbl">Result (to be proved)</span>
+<p>Any decision tree sorting \(n\) elements has height \(\Omega(n\log n)\) — equivalently, <strong>any comparison sort algorithm requires \(\Omega(n\log n)\) comparisons in the worst case.</strong></p>
+</div>
+
+<div class="box ex">
+<span class="lbl">Concrete illustration — sorting 3 elements</span>
+<p>Take \(\{a_1,a_2,a_3\}\) with, say, values 9, 11, 21. There are \(3!=6\) possible orderings (permutations): \(a_1a_2a_3\), \(a_1a_3a_2\), \(a_2a_1a_3\), \(a_2a_3a_1\), \(a_3a_1a_2\), \(a_3a_2a_1\) — and <strong>each one must appear as a leaf somewhere in the decision tree</strong>, since the algorithm needs to be able to correctly output every possible sorted arrangement, depending on the input.</p>
+<div style="text-align:center;margin:14px 0;">
+<svg viewBox="0 0 480 210" width="100%" style="max-width:480px;">
+<g font-family="JetBrains Mono" font-size="12" text-anchor="middle">
+<text x="220" y="15">1 : 2</text>
+<text x="110" y="60">2 : 3</text><text x="330" y="60">1 : 3</text>
+<text x="60" y="105">leaf</text><text x="175" y="105">1 : 3</text><text x="270" y="105" fill="#a1522f">&#10007;</text><text x="400" y="105">2 : 3</text>
+<text x="60" y="145" font-size="11">1 2 3</text>
+<text x="145" y="145" font-size="11">1 3 2</text><text x="210" y="145" font-size="11">3 1 2</text>
+<text x="270" y="145" font-size="11">2 1 3</text>
+<text x="370" y="145" font-size="11">2 3 1</text><text x="435" y="145" font-size="11">3 2 1</text>
+</g>
+<g stroke="#565f6b" stroke-width="1" fill="none">
+<line x1="220" y1="20" x2="110" y2="45"/><line x1="220" y1="20" x2="330" y2="45"/>
+<line x1="110" y1="50" x2="60" y2="90"/><line x1="110" y1="50" x2="175" y2="90"/>
+<line x1="330" y1="50" x2="270" y2="90"/><line x1="330" y1="50" x2="400" y2="90"/>
+<line x1="175" y1="95" x2="145" y2="130"/><line x1="175" y1="95" x2="210" y2="130"/>
+<line x1="400" y1="95" x2="370" y2="130"/><line x1="400" y1="95" x2="435" y2="130"/>
+</g>
+</svg>
+</div>
+<p class="small">Every comparison-based algorithm you've studied — Bubble Sort, Selection Sort, Merge Sort, Quicksort — "basically follows the framework given by this decision-tree model," whether or not it's drawn out explicitly.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof</span>
+<p><strong>Step 1 — connect worst case to tree height.</strong> The worst-case running time of any comparison sort equals the <em>longest</em> path from root to leaf in its decision tree — i.e. the height of the tree, \(h\).</p>
+<p><strong>Step 2 — count the leaves needed.</strong> The tree's height must be large enough to accommodate every possible outcome — there must be at least \(n!\) leaves (one per permutation of the input). A binary tree of height \(h\) has at most \(2^h\) leaves (if some of that capacity is unused, imagine padding the remaining leaf slots with dummy outcomes — the capacity bound \(2^h\) still applies regardless). So:</p>
+<p>$$2^h \ge n!$$</p>
+<p><strong>Step 3 — solve for \(h\).</strong> Take logs (log is monotonic, preserving the inequality):</p>
+<p>$$h \ge \log(n!)$$</p>
+<p><strong>Step 4 — bound \(\log(n!)\) from below</strong>, reusing the exact technique from Lectures 2–3 (dropping the smaller half of the factors in \(n!\), keeping only the \(n/2\) largest, each \(\ge n/2\)):</p>
+<p>$$n! \ge \Big(\frac n2\Big)\Big(\frac n2+1\Big)\cdots n \ge \Big(\frac n2\Big)^{n/2} \quad\Longrightarrow\quad \log(n!)\ge\frac n2\log\frac n2$$</p>
+<p>And exactly as in Lecture 3's proof, splitting and bounding the threshold term shows this is \(\Omega(n\log n)\):</p>
+<p>$$\frac n2\log\frac n2 = \frac n4\log n+\left(\frac n4\log n-\frac n2\log2\right) \ge \frac n4\log n \quad\text{for } n\ge4$$</p>
+<p>So \(\log(n!)\in\Omega(n\log n)\) — this is <em>literally the same result</em> as Lecture 3's \(\log(n!)\in\Theta(n\log n)\), just reused here for a new purpose.</p>
+<p><strong>Conclusion:</strong></p>
+<p style="text-align:center">$$h \ge \log(n!) \in \Omega(n\log n)$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box result">
+<span class="lbl">The headline result</span>
+<p>Any decision tree sorting \(n\) elements has height \(\Omega(n\log n)\) — equivalently, <strong>any comparison sort algorithm requires \(\Omega(n\log n)\) comparisons in the worst case.</strong></p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Why this is the capstone of the entire sorting unit</span>
+<p>Since Quicksort, Merge Sort, Insertion Sort, Bubble Sort, and every other algorithm covered so far all work by <em>comparing</em> elements, their minimum possible running time is bounded below by \(n\log n\) — no comparison-based algorithm, however cleverly designed, could ever beat this. Combined with Lecture 5's and Lecture 8's <strong>upper</strong> bounds — Merge Sort's \(\Theta(n\log n)\) worst case, and randomized Quicksort's \(\Theta(n\log n)\) average case — this proves that <strong>Merge Sort and randomized Quicksort are asymptotically optimal</strong>: we have matching upper and lower bounds, both \(\Theta(n\log n)\), so no comparison sort can ever fundamentally beat them.</p>
+</div>
+
+<div class="box story">
+<span class="lbl">So how could anything possibly sort faster than n log n?</span>
+<p>This lower bound applies only to <em>comparison-based</em> algorithms — ones whose only source of information is "is this element bigger or smaller than that one?" It says nothing about algorithms that exploit extra structure in the input (for instance, knowing the elements are integers within some limited range). That escape hatch is exactly where Lecture 9 goes next: <strong>sorting in linear time, without comparisons.</strong></p>
+</div>
+</section>
+
+<div class="lecture-header" id="L9">
+  <div class="ltag">Lecture 9</div>
+  <h2>Sorting in Linear Time — Without Comparisons</h2>
+  <p>Lecture 8 proved comparison-based sorting can never beat \(\Omega(n\log n)\). This lecture finds the escape hatch: if you're willing to exploit some extra structure in the input — instead of only asking "which is bigger?" — you can sort in genuinely linear time. Counting Sort and Radix Sort are the first two such algorithms.</p>
+</div>
+
+<section class="topic" id="L9-1">
+<h3>9.1 &middot; Two ways to overcome the Ω(n log n) barrier</h3>
+<div class="box result">
+<span class="lbl">Recall</span>
+<p>Any comparison sort will take \(\Omega(n\log n)\) time — a genuine lower bound.</p>
+</div>
+<div class="box def">
+<span class="lbl">Overcoming strategies</span>
+<ol style="margin:4px 0 0">
+<li><strong>Do not use comparison</strong> — extract information about elements some other way.</li>
+<li><strong>Put some conditions on the input</strong> — the algorithm only needs to work correctly under a reasonable assumption about what the data looks like.</li>
+</ol>
+</div>
+
+<h4>Counting Sort</h4>
+<div class="box def">
+<span class="lbl">Setup</span>
+<p>Input: \(A[1,\dots,n]\), where every \(A[i]\in\{1,\dots,k\}\) for some \(k\in\mathbb{N}\) — i.e. the elements are integers within a known, limited range. Output: \(B[1,\dots,n]\), sorted. Auxiliary storage: \(C[0,\dots,k]\).</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  <span class="kw">for</span> i &larr; 0 <span class="kw">to</span> k
+<span class="ln">2</span>      C[i] &larr; 0                              <span class="cm">// Θ(k)</span>
+<span class="ln">3</span>  <span class="kw">for</span> j &larr; 1 <span class="kw">to</span> n
+<span class="ln">4</span>      C[A[j]] &larr; C[A[j]] + 1                 <span class="cm">// Θ(n) — tally each value's frequency</span>
+<span class="ln">5</span>  <span class="kw">for</span> i &larr; 1 <span class="kw">to</span> k
+<span class="ln">6</span>      C[i] &larr; C[i] + C[i-1]                  <span class="cm">// Θ(k) — running (cumulative) total</span>
+<span class="ln">7</span>  <span class="kw">for</span> j &larr; n <span class="kw">downto</span> 1
+<span class="ln">8</span>      B[C[A[j]]] &larr; A[j]                     <span class="cm">// Θ(n) — place each element in its final slot</span>
+<span class="ln">9</span>      C[A[j]] &larr; C[A[j]] - 1</pre>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>\(A=[7_a,2_a,5_a,7_b,2_b,2_c,5_b]\) (\(n=7\), \(k=7\)) — subscripts just track each element's original position, to make stability visible.</p>
+<p><strong>Step 1 &amp; 2 — frequency count</strong> (line 4): value 2 occurs 3 times, value 5 occurs twice, value 7 occurs twice, everything else 0.</p>
+<table class="grid trace"><tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr><tr><td>C[i]</td><td>0</td><td>0</td><td>3</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td></tr></table>
+<p><strong>Step 3 — cumulative distribution</strong> (line 6): running total, so \(C[i]\) now tells us the index a value \(i\) should be placed <em>up to</em>:</p>
+<table class="grid trace"><tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr><tr><td>C[i]</td><td>0</td><td>0</td><td>3</td><td>3</td><td>3</td><td>5</td><td>5</td><td>7</td></tr></table>
+<p class="small">Notice \(C[7]=7=n\) — a useful sanity check, since all \(n\) elements must be accounted for by the last value.</p>
+<p><strong>Step 4 — place each element</strong> (lines 7–9), scanning \(A\) from the <em>end</em> (this is what preserves stability — placing later-appearing equal elements first would break it):</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace">B = [2<sub>a</sub>, 2<sub>b</sub>, 2<sub>c</sub>, 5<sub>a</sub>, 5<sub>b</sub>, 7<sub>a</sub>, 7<sub>b</sub>]</p>
+<p>Sorted — and every group of equal values keeps its original relative order (\(2_a\) before \(2_b\) before \(2_c\); \(5_a\) before \(5_b\); \(7_a\) before \(7_b\)).</p>
+</div>
+
+<div class="box def">
+<span class="lbl">Note — stability</span>
+<p>The order of repeated numbers in the input is maintained in the output by Counting Sort. Such a sort is called a <strong>stable sort</strong>.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Analysis</span>
+<p>$$T(n) = \Theta(k)+\Theta(n)+\Theta(k)+\Theta(n) = \Theta(n+k)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">The algorithm takes \(\Theta(n+k)\) time — genuinely <strong>linear</strong> whenever \(k\in O(n)\) (the range of values isn't too much bigger than the array itself).</span></p>
+</div>
+</section>
+
+<section class="topic" id="L9-2">
+<h3>9.2 &middot; Radix Sort</h3>
+<p>Counting Sort needs \(k\) to be small. What if the numbers can be large — say, arbitrary integers — but still have a fixed number of digits? Radix Sort's idea: apply a stable sort (Counting Sort will do nicely) <strong>one digit position at a time</strong>, starting from the <em>least</em> significant digit.</p>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>Sort the 3-digit numbers \(941, 176, 257, 146, 478, 972, 110\) (7 numbers, so 3 passes — one per digit column).</p>
+<p><strong>Pass 1 — stable-sort by the units digit</strong> (rightmost):</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace">110, 941, 972, 176, 146, 257, 478</p>
+<p class="small">(units digits, in this order: 0, 1, 2, 6, 6, 7, 8 — note 176 comes before 146 among the two "6"s, preserving their original relative order from the input.)</p>
+<p><strong>Pass 2 — stable-sort the result of Pass 1 by the tens digit:</strong></p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace">110, 941, 146, 257, 972, 176, 478</p>
+<p class="small">(tens digits: 1, 4, 4, 5, 7, 7, 7 — again, ties preserve their order from Pass 1.)</p>
+<p><strong>Pass 3 — stable-sort the result of Pass 2 by the hundreds digit:</strong></p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace"><strong>110, 146, 176, 257, 478, 941, 972</strong></p>
+<p>Fully sorted, after exactly 3 passes.</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Common confusion — why start from the least significant digit?</span>
+<p>Sorting by the <em>most</em> significant digit first would seem more natural, but it doesn't work cleanly with a simple repeated stable sort — you'd need to recursively re-sort within each group. Sorting from the <strong>least</strong> significant digit first works because stability guarantees that once you sort by a more significant digit, ties are automatically broken correctly by whatever order the less-significant-digit sort already established. This is the entire reason Radix Sort <em>needs</em> a stable sort as its subroutine at each pass.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L10">
+  <div class="ltag">Lecture 10</div>
+  <h2>Radix Sort, Generalized — and Pushed All the Way to Linear Time</h2>
+  <p>Lecture 9 sorted decimal digits one column at a time. This lecture generalizes the idea to <em>any</em> base — including binary — and then asks the natural optimization question: given a fixed number of bits per number, what's the best possible digit-group size to sort with? The answer, chosen correctly, makes Radix Sort run in genuinely linear time.</p>
+</div>
+
+<section class="topic" id="L10-1">
+<h3>10.1 &middot; When Counting Sort alone isn't enough</h3>
+<div class="box warn">
+<span class="lbl">Recall, and a weak spot</span>
+<p>Counting Sort takes \(\Theta(n+k)\) time — linear only when \(k\in O(n)\). But consider \(A=[5,2,10^{10}]\): here \(n=3\), yet \(k=10^{10}\gg n^2=9\). Counting Sort would need an auxiliary array of size \(10^{10}\) — hugely wasteful. This is exactly the situation Radix Sort is built for: numbers that are large in value, but still made of a bounded number of digits.</p>
+</div>
+
+<div class="box def">
+<span class="lbl">Radix Sort — the abstract algorithm</span>
+<p>Input: array \(A\), number of digits \(d\).</p>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  RadixSort(A, d)
+<span class="ln">2</span>      <span class="kw">for</span> i &larr; 1 <span class="kw">to</span> d
+<span class="ln">3</span>          <span class="kw">do</span> use a stable sort to sort array A on digit i</pre>
+<p class="small">Written abstractly — any stable sort can fill the role (Counting Sort is the natural choice, as in Lecture 9).</p>
+
+<div class="box result">
+<span class="lbl">Result 1</span>
+<p>Given \(n\)-digit numbers in which each digit can take \(k\) possible values, Radix Sort sorts these numbers in \(\Theta(d(n+k))\) time.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof</span>
+<p>A good stable sort (e.g. Counting Sort) takes \(\Theta(n+k)\) time to process every column (every digit position). There are \(d\) passes (one per column). Multiplying:</p>
+<p style="text-align:center">$$\Theta(d(n+k))$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box ex">
+<span class="lbl">Worked example — sorting in a different base entirely</span>
+<p>Radix Sort works in <em>any</em> base, not just base-10 — including binary. Given 9-bit binary numbers, group each into 3-bit chunks and read them as <strong>octal</strong> digits (base 8): e.g. \(001100010\) becomes \(1\,4\,2\) in octal. Radix-sort the octal representations digit by digit (this is a smaller, more manageable digit-alphabet than sorting bit-by-bit would be), then convert back to binary once fully sorted. This flexibility — choosing how many bits to group into one "digit" — is exactly what the rest of this lecture optimizes.</p>
+</div>
+</section>
+
+<section class="topic" id="L10-2">
+<h3>10.2 &middot; Choosing the digit size optimally</h3>
+<p>Suppose every number in the array is a fixed-width <strong>\(b\)-bit</strong> integer, and we choose to group bits into digits of \(r\) bits each. Two quantities depend on \(r\):</p>
+<ul>
+<li><strong>Number of passes</strong>: \(d=\left\lceil\dfrac br\right\rceil\) (total bits, divided into groups of size \(r\)).</li>
+<li><strong>Range per digit</strong>: with \(r\) bits, the largest representable digit is \(k=2^r-1\in\Theta(2^r)\) (a geometric series: \(2^{r-1}+2^{r-2}+\cdots+2^0=2^r-1\)).</li>
+</ul>
+
+<div class="box result">
+<span class="lbl">Result 2</span>
+<p>Given \(n\) \(b\)-bit numbers and any positive integer \(r\le b\), Radix Sort sorts these numbers in</p>
+<p style="text-align:center">$$\Theta\!\left(\left\lceil\frac br\right\rceil(n+2^r)\right)\text{ time.}$$</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof</span>
+<p>Directly from Result 1, substituting \(d=\lceil b/r\rceil\) and \(k=2^r-1\in\Theta(2^r)\):</p>
+<p>$$\Theta(d(n+k)) = \Theta\!\left(\left\lceil\frac br\right\rceil(n+2^r-1)\right) = \Theta\!\left(\left\lceil\frac br\right\rceil(n+2^r)\right)$$</p>
+<p class="qed">∎</p>
+</div>
+
+<h4>Now — which r makes this fastest?</h4>
+<div class="box proof">
+<span class="lbl">Choosing r to achieve Θ(n)</span>
+<p><strong>Aim:</strong> choose \(r\) so that \(\Theta\!\left(\dfrac br(n+2^r)\right)\in\Theta(n)\) — i.e. make the \((n+2^r)\) factor itself no bigger than \(\Theta(n)\):</p>
+<p>$$n+2^r\in\Theta(n) \;\Longleftrightarrow\; 2^r\le n \;\Longleftrightarrow\; r=\lceil\log_2n\rceil$$</p>
+<p>Substitute this choice of \(r\) back into Result 2 (using \(2^{\log_2n}=n\)):</p>
+<p>$$\Theta\!\left(\frac{b}{\log_2n}\big(n+2^{\log_2n}\big)\right) = \Theta\!\left(\frac{b}{\log_2n}(n+n)\right) = \Theta\!\left(\frac{b}{\log_2n}\cdot n\right)$$</p>
+<p>This collapses all the way to \(\Theta(n)\) <strong>whenever \(\dfrac{b}{\log_2n}\in\Theta(1)\)</strong> — i.e. whenever the bit-width \(b\) is itself proportional to \(\log n\), which is the ordinary, realistic case (an array of \(n\) distinct integers naturally needs on the order of \(\log n\) bits to represent each index/value distinctly).</p>
+<p style="text-align:center">$$\boxed{T(n)\in\Theta(n)} \quad\text{— genuinely linear-time sorting.}$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box ex">
+<span class="lbl">Worked numeric check</span>
+<p>\(n=10\), \(b=9\) bits. Choose \(r=\lfloor\log_2 10\rfloor=3\) (a "good choice," since \(2^3=8\) is close to \(n=10\)). Then \(\dfrac{b}{\log_2n}=\dfrac{9}{\log_2 10}\le\dfrac93=3\in\Theta(1)\) — bounded by a small constant, confirming the linear-time regime.</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Making this precise — two cases for how b compares to log n</span>
+<p><strong>Case 1: \(b<\log_2n\)</strong> (the number of bits is small). Here, simply take \(r=b\) — use <em>all</em> the bits as a single digit, needing just one pass (\(d=b/r=1\)):</p>
+<p>$$T(n) = \Theta\!\left(\frac bb(n+2^b)\right) = \Theta(n+2^b)$$</p>
+<p>Since \(b<\log_2n\), we get \(2^b<2^{\log_2n}=n\) — so the \(2^b\) term is dominated by \(n\), giving \(T(n)=\Theta(n)\). Linear, in a single pass.</p>
+<p><strong>Case 2: \(b\ge\log_2n\)</strong> (the more typical case for arrays of \(n\) distinct values). Here, take \(r=\log_2n\) as derived above, giving \(T(n)=\Theta(n)\) whenever \(\dfrac{b}{\log_2n}\in\Theta(1)\) — exactly the derivation just shown.</p>
+<p>Either way, a good choice of \(r\) reaches linear time.</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Where Lecture 10 leaves us</span>
+<p>With the right choice of digit size, Radix Sort achieves genuinely linear \(\Theta(n)\) time — beating the \(\Omega(n\log n)\) comparison-sort barrier entirely, exactly as promised at the start of Lecture 9, by simply refusing to play the comparison game at all.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L11">
+  <div class="ltag">Lecture 11</div>
+  <h2>Insertion Sort, and Bucket Sort's Beautiful Average Case</h2>
+  <p>This lecture introduces one more familiar sort — Insertion Sort, the "sorting a hand of playing cards" algorithm — and then returns to the linear-time theme with Bucket Sort, whose average-case analysis is one of the most satisfying probability arguments in the whole course.</p>
+</div>
+
+<section class="topic" id="L11-1">
+<h3>11.1 &middot; Insertion Sort</h3>
+<div class="box story">
+<span class="lbl">The card-game analogy</span>
+<p>Imagine sorting a hand of playing cards by picking them up one at a time. At every moment, the cards already in your hand are sorted; you take the next card from the table and slide it into its correct position among the cards you're already holding.</p>
+</div>
+
+<div class="box def">
+<span class="lbl">Insertion Sort — pseudocode</span>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  <span class="kw">for</span> j &larr; 2 <span class="kw">to</span> n
+<span class="ln">2</span>      key &larr; A[j]
+<span class="ln">3</span>      i &larr; j-1
+<span class="ln">4</span>      <span class="kw">while</span> i &gt; 0 <span class="kw">and</span> A[i] &gt; key
+<span class="ln">5</span>          A[i+1] &larr; A[i]
+<span class="ln">6</span>          i &larr; i-1
+<span class="ln">7</span>      A[i+1] &larr; key</pre>
+<p>The already-sorted portion is \(A[1,\dots,j-1]\); each iteration picks up \(A[j]\) as the "key" card and shifts every larger element in the sorted portion one step right, opening a gap for the key to drop into.</p>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>\(A=[5,4,1,10,2,18]\):</p>
+<table class="grid trace">
+<tr><th>j</th><th>key</th><th>Array after this pass</th></tr>
+<tr><td>2</td><td>4</td><td>4, 5, 1, 10, 2, 18</td></tr>
+<tr><td>3</td><td>1</td><td>1, 4, 5, 10, 2, 18</td></tr>
+<tr><td>4</td><td>10</td><td>1, 4, 5, 10, 2, 18 &nbsp;<span class="small">(already in place)</span></td></tr>
+<tr><td>5</td><td>2</td><td>1, 2, 4, 5, 10, 18</td></tr>
+<tr><td>6</td><td>18</td><td>1, 2, 4, 5, 10, 18 &nbsp;<span class="small">(already in place)</span></td></tr>
+</table>
+<p>Final: fully sorted in 5 passes (\(n-1\)).</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Worst-case analysis</span>
+<p>Worst case: the array is in descending order, so every element must shift all the way past everything already placed. This is a double sum, exactly like Bubble Sort and Selection Sort's:</p>
+<p>$$T(n) = \sum_{j=2}^{n}\sum_{i=j-1}^{n-1}1 = \sum_{j=2}^{n}\big(n-1-(j-1)+1\big) = \sum_{j=2}^n(n-j+1)$$</p>
+<p>$$= (n-1)+(n-2)+\cdots+1 = \frac{(n-1)n}2 \in \Theta(n^2)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Since the worst-case time complexity of Insertion Sort is \(\Theta(n^2)\), Bucket Sort — which uses Insertion Sort as a subroutine — inherits this same worst case, as the next section shows.</span></p>
+</div>
+
+<div class="box story">
+<span class="lbl">A tangent — the Collatz conjecture</span>
+<p>The lecture takes a fun detour into an unrelated but famous open problem: pick any positive integer \(n\). If it's even, halve it; if it's odd, compute \(3n+1\). Repeat. The conjecture ("\(3n+1\) conjecture," or Collatz conjecture) is that this process always eventually reaches 1, no matter which number you start with — e.g. \(19\to58\to29\to88\to44\to22\to11\to34\to17\to52\to26\to13\to40\to20\to10\to5\to16\to8\to4\to2\to1\), and \(74\to37\to\cdots\to1\). Despite being trivial to state, nobody has ever proven it true for <em>every</em> starting number.</p>
+</div>
+</section>
+
+<section class="topic" id="L11-2">
+<h3>11.2 &middot; Bucket Sort</h3>
+<div class="box def">
+<span class="lbl">Assumption</span>
+<p>The elements are <strong>uniformly distributed over \([0,1)\)</strong>.</p>
+</div>
+<div class="box def">
+<span class="lbl">Bucket Sort — pseudocode</span>
+</div>
+<pre class="pseudo"><span class="ln">1</span>  BucketSort(A)
+<span class="ln">2</span>      n &larr; length(A)
+<span class="ln">3</span>      <span class="kw">for</span> j &larr; 1 <span class="kw">to</span> n
+<span class="ln">4</span>          <span class="kw">do</span> insert A[j] into auxiliary array B of linked lists, at B[&lfloor;nA[j]&rfloor;]
+<span class="ln">5</span>      <span class="kw">for</span> i &larr; 0 <span class="kw">to</span> n-1
+<span class="ln">6</span>          <span class="kw">do</span> sort list B[i] with Insertion Sort
+<span class="ln">7</span>      concatenate the lists B[0], B[1], &hellip;, B[n-1], in order</pre>
+<p>The idea: split \([0,1)\) into \(n\) equal-width "buckets," toss every element into the bucket its value falls into, sort each (small) bucket individually, then read the buckets off in order.</p>
+
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>\(A=[0.1,\,0.72,\,0.5,\,0.3,\,0.01,\,0.75,\,0.35,\,0.78,\,0.6,\,0.9]\) (\(n=10\)). Bucket \(i\) covers \(\left[\frac{i}{10},\frac{i+1}{10}\right)\):</p>
+<table class="grid trace">
+<tr><th>Bucket</th><th>Range</th><th>Contents</th></tr>
+<tr><td>B[0]</td><td>[0, 0.1)</td><td>0.01</td></tr>
+<tr><td>B[1]</td><td>[0.1, 0.2)</td><td>0.1</td></tr>
+<tr><td>B[2]</td><td>[0.2, 0.3)</td><td>&mdash;</td></tr>
+<tr><td>B[3]</td><td>[0.3, 0.4)</td><td>0.3, 0.35</td></tr>
+<tr><td>B[5]</td><td>[0.5, 0.6)</td><td>0.5</td></tr>
+<tr><td>B[6]</td><td>[0.6, 0.7)</td><td>0.6</td></tr>
+<tr><td>B[7]</td><td>[0.7, 0.8)</td><td>0.72, 0.75, 0.78</td></tr>
+<tr><td>B[9]</td><td>[0.9, 1)</td><td>0.9</td></tr>
+</table>
+<p>Concatenating: \(0.01,\,0.1,\,0.3,\,0.35,\,0.5,\,0.6,\,0.72,\,0.75,\,0.78,\,0.9\) — sorted.</p>
+</div>
+
+<div class="box warn">
+<span class="lbl">Note — the uniform-distribution assumption is essential</span>
+<p>If the input isn't uniformly distributed, elements can pile up into one or a few buckets, and Bucket Sort degrades toward the worst case of whatever sort runs inside each bucket (Insertion Sort). E.g. if every element lands in bucket \([0.7,0.8)\), that one bucket alone does all the work.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Worst-case analysis</span>
+<p>Worst case: <strong>all \(n\) numbers fall inside a single bucket</strong> — then that bucket's Insertion Sort call does all the work, and since Insertion Sort's worst case is \(\Theta(n^2)\):</p>
+<p style="text-align:center">$$\text{Bucket Sort's worst case} \in \Theta(n^2)$$</p>
+<p class="qed">∎</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L12">
+  <div class="ltag">Lecture 12</div>
+  <h2>Bucket Sort's Average Case, and Fast Integer Multiplication</h2>
+  <p>This lecture finishes the rigorous probability argument for Bucket Sort — proving it's linear on average — then completely changes gears: multiplying two large numbers, and Karatsuba's surprising trick for doing it faster than the method you learned in school.</p>
+</div>
+
+<section class="topic" id="L12-1">
+<h3>12.1 &middot; Bucket Sort's average case, completed</h3>
+<div class="box def">
+<span class="lbl">Setup, recalled from Lecture 11</span>
+<p>\(X_{ij}=1\) if \(A[j]\) falls in bucket \(B[i]\), else \(0\). Then \(n_i=\displaystyle\sum_{j=1}^nX_{ij}\) is the number of elements landing in bucket \(i\), and since each bucket is sorted with Insertion Sort:</p>
+<p>$$T(n) = \sum_{i=0}^{n-1}O(n_i^2)+\Theta(n)$$</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — finding \(E[n_i^2]\)</span>
+<p>Expand \(n_i^2\) as a squared sum, splitting into "matching" terms (\(j=k\)) and "cross" terms (\(j\ne k\)):</p>
+<p>$$E[n_i^2] = E\left[\left(\sum_{j=1}^nX_{ij}\right)^2\right] = E\left[\sum_{j=1}^nX_{ij}^2+\sum_{j=1}^n\sum_{\substack{k=1\\k\ne j}}^nX_{ij}X_{ik}\right] = \sum_{j=1}^nE[X_{ij}^2]+\sum_{j=1}^n\sum_{\substack{k=1\\k\ne j}}^nE[X_{ij}]E[X_{ik}]$$</p>
+<p class="small">(the cross terms factor as \(E[X_{ij}]E[X_{ik}]\) because different array elements land in their buckets independently of one another)</p>
+<p>Since \(X_{ij}\) only ever takes values \(0\) or \(1\), \(X_{ij}^2=X_{ij}\), so \(E[X_{ij}^2]=E[X_{ij}]\). And under the uniform-distribution assumption, each element has probability exactly \(\frac1n\) of landing in any particular bucket, so \(E[X_{ij}]=\frac1n\) for every \(i,j\). Substituting:</p>
+<p>$$E[n_i^2] = \sum_{j=1}^n\frac1n+\sum_{j=1}^n\sum_{\substack{k=1\\k\ne j}}^n\frac1n\cdot\frac1n = \frac1n(n)+\frac1{n^2}\big(n^2-n\big)$$</p>
+<p class="small">(there are \(n^2-n\) ordered pairs \((j,k)\) with \(j\ne k\), out of \(n^2\) total pairs)</p>
+<p>$$= 1+\frac{n(n-1)}{n^2} = 1+1-\frac1n = 2-\frac1n$$</p>
+<p style="text-align:center">$$\boxed{E[n_i^2] = 2-\frac1n}$$</p>
+<p class="qed">∎</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — substituting back to find \(E[T(n)]\)</span>
+<p>$$E[T(n)] = \sum_{i=1}^nO\Big(2-\frac1n\Big)+\Theta(n) = n\cdot O\Big(2-\frac1n\Big)+\Theta(n)$$</p>
+<p>Since \(2\) is a constant and \(0<\frac1n<1\), the quantity \(2-\frac1n\) is itself bounded by a constant, so \(n\cdot O\big(2-\tfrac1n\big)\in O(n)\) — this term is small compared to the \(\Theta(n)\) concatenation cost, which dominates:</p>
+<p style="text-align:center">$$E[T(n)] \in \Theta(n)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Hence, Bucket Sort runs in \(\Theta(n)\) time on average.</span></p>
+</div>
+</section>
+
+<section class="topic" id="L12-2">
+<h3>12.2 &middot; A summary of linear-time sorting</h3>
+<table class="grid">
+<tr><th>Algorithm</th><th>Condition required</th></tr>
+<tr><td>Radix Sort / Counting Sort</td><td>\(k=\text{Range}[A]\in O(n)\) — the value range isn't too much bigger than the array</td></tr>
+<tr><td>Bucket Sort</td><td>\(A[i]\)'s are uniformly distributed</td></tr>
+</table>
+<p>Both algorithms escape the \(\Omega(n\log n)\) comparison-sort barrier the exact same way: by refusing to rely purely on comparisons, and instead exploiting some known structure in the input.</p>
+</section>
+
+<section class="topic" id="L12-3">
+<h3>12.3 &middot; Karatsuba's Algorithm — multiplying large numbers faster</h3>
+<div class="box def">
+<span class="lbl">The naive method</span>
+<p>Multiplying two \(n\)-digit numbers by hand (the method taught in school) needs \(n\) multiplications for each digit of the second number against the first — \(n\times n=n^2\) single-digit multiplications in total.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example — the naive method</span>
+<p>\(34\times21\): \(34\times1=34\), \(34\times2=68\) (shifted one place), sum \(34+680=714\). Two 2-digit numbers &rarr; \(2\times2=4\) single-digit multiplications, plus one addition.</p>
+</div>
+
+<div class="box story">
+<span class="lbl">The idea — do it with only 3 multiplications</span>
+<p>For 2-digit numbers, write \(34=3\times10+4\) and \(21=2\times10+1\). Naively, \((3\times10+4)(2\times10+1)\) needs 4 multiplications (\(3\times2\), \(3\times1\), \(4\times2\), \(4\times1\)). Karatsuba's trick: compute \((3+4)(2+1)=7\times3=21\) — one extra multiplication that, combined with just <strong>two</strong> of the four originally needed products, recovers everything:</p>
+<p>$$(a+b)(c+d) = ac+ad+bc+bd \quad\Longrightarrow\quad ad+bc = (a+b)(c+d)-ac-bd$$</p>
+<p>So if you've already computed \(ac\) and \(bd\) separately, the <em>middle</em> term \(ad+bc\) can be recovered from just <strong>one more</strong> multiplication, \((a+b)(c+d)\), instead of two (\(ad\) and \(bc\) separately) — <strong>3 multiplications total instead of 4.</strong></p>
+</div>
+
+<div class="box def">
+<span class="lbl">Karatsuba's algorithm, set up in general</span>
+<p>To multiply \(a\times b\), split each number in half (by digit count), with \(n/2\) digits per half:</p>
+<p>$$a = a_1\cdot10^{n/2}+a_0, \qquad b = b_1\cdot10^{n/2}+b_0$$</p>
+<p>$$a\times b = (a_1\cdot10^{n/2}+a_0)(b_1\cdot10^{n/2}+b_0) = a_1b_1\cdot10^n+(a_1b_0+a_0b_1)\cdot10^{n/2}+a_0b_0$$</p>
+<p>Write \(c=a\times b=c_2\cdot10^n+c_1\cdot10^{n/2}+c_0\), where:</p>
+<p>$$c_2=a_1b_1, \qquad c_0=a_0b_0, \qquad c_1=(a_1+a_0)(b_1+b_0)-c_2-c_0$$</p>
+<p>Only <strong>3</strong> multiplications are needed: \(a_1b_1\), \(a_0b_0\), and \((a_1+a_0)(b_1+b_0)\) — never \(a_1b_0\) or \(a_0b_1\) individually.</p>
+</div>
+
+<div class="box ex">
+<span class="lbl">Worked example — \(345\times217\)</span>
+<p>Pad to an even digit count if needed (here already 3 digits each is fine conceptually, but pad the split evenly: \(n=4\), treating as \(0345\times0217\)): \(a_1=03,\,a_0=45,\,b_1=02,\,b_0=17\).</p>
+<p>$$c_2 = a_1b_1 = 03\times02 = 6$$</p>
+<p>$$c_0 = a_0b_0 = 45\times17 = 765$$</p>
+<p>$$c_1 = (a_1+a_0)(b_1+b_0)-c_2-c_0 = (48)(19)-6-765 = 912-6-765 = 141$$</p>
+<p>$$c = c_2\cdot10^4+c_1\cdot10^2+c_0 = 6\times10^4+141\times10^2+765 = 60000+14100+765 = 74865$$</p>
+<p><strong>Check against direct multiplication:</strong> \(345\times217=74865\)</p>
+<div class="ans" style="background:var(--proof-bg);border-left:5px solid var(--proof-line);border-radius:8px;padding:10px 16px;"><strong>Match confirmed.</strong></div>
+</div>
+
+<div class="box ex">
+<span class="lbl">A smaller worked example, for extra intuition — 34 × 21</span>
+<p>\(a=34\): \(a_1=3,\,a_0=4\). \(b=21\): \(b_1=2,\,b_0=1\).</p>
+<p>$$c_2=a_1b_1=3\times2=6, \qquad c_0=a_0b_0=4\times1=4$$</p>
+<p>$$c_1=(a_1+a_0)(b_1+b_0)-c_2-c_0=(7)(3)-6-4=21-10=11$$</p>
+<p>$$c = c_2\cdot10^2+c_1\cdot10+c_0 = 600+110+4 = 714$$</p>
+<p><strong>Check:</strong> \(34\times21=714\). &nbsp;Match confirmed — and notice this is exactly the "3 multiplications instead of 4" trick from the introduction, now expressed in the algorithm's general notation.</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Where Lecture 12 leaves us</span>
+<p>Karatsuba's algorithm replaces one \(n\)-digit multiplication with three \((n/2)\)-digit multiplications, plus some cheap additions — a genuine divide-and-conquer algorithm. Its time complexity, and whether 3 recursive calls of half the size actually beats the naive \(\Theta(n^2)\), is exactly where Lecture 13 begins.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L13">
+  <div class="ltag">Lecture 13</div>
+  <h2>Karatsuba's Complexity, and Strassen's Matrix Multiplication</h2>
+  <p>The final lecture of this collection finishes what Lecture 12 started — proving Karatsuba's algorithm is genuinely faster than the schoolbook method — and then applies the exact same "fewer multiplications, more additions" idea to a completely different problem: multiplying matrices.</p>
+</div>
+
+<section class="topic" id="L13-1">
+<h3>13.1 &middot; Karatsuba's time complexity</h3>
+<div class="box def">
+<span class="lbl">Setting the baseline</span>
+<p>Brute-force multiplication takes \(\Theta(n^2)\) time for \(n\)-digit multiplicands. Even the "obvious" divide-and-conquer approach — split each number in half and do <strong>4</strong> separate half-size multiplications (\(a_1b_1\), \(a_1b_0\), \(a_0b_1\), \(a_0b_0\)) — doesn't actually help:</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof — the "obvious" 4-multiplication approach gains nothing</span>
+<p>$$T(n) = 4T\Big(\frac n2\Big)$$</p>
+<p>Unrolling: \(T(n)=4^kT(n/2^k)\), and with \(2^k=n\) (so \(k=\log_2n\)) and \(T(1)=1\):</p>
+<p>$$T(n) = 4^{\log_2n} = \big(2^{\log_2n}\big)^2 = n^2 \in \Theta(n^2)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">— exactly matching brute force. Splitting the problem alone doesn't help; you need to actually reduce the <em>number</em> of multiplications.</span></p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — Karatsuba's 3-multiplication recurrence, solved</span>
+<p>$$T(n) = 3T\Big(\frac n2\Big)$$</p>
+<p>Unrolling exactly as before: \(T(n)=3^kT(n/2^k)\), with \(2^k=n\), \(T(1)=1\):</p>
+<p>$$T(n) = 3^{\log_2n}$$</p>
+<p>To express this as a power of \(n\), write \(3^{\log_2n}=n^x\) and solve for \(x\) by taking \(\log_3\) of both sides:</p>
+<p>$$\log_3\big(3^{\log_2n}\big) = \log_3(n^x) \;\Longrightarrow\; \log_2n\cdot\log_33 = x\log_3n \;\Longrightarrow\; \log_2n = x\log_3n$$</p>
+<p>$$\Longrightarrow\; x = \frac{\log_2n}{\log_3n}$$</p>
+<p>Converting both logs to a common base (natural log) and simplifying via the change-of-base formula:</p>
+<p>$$x = \frac{\log_en/\log_e2}{\log_en/\log_e3} = \frac{\log_e3}{\log_e2} = \log_23 \approx 1.58$$</p>
+<div class="box result" style="margin-top:10px">
+<span class="lbl">Key result</span>
+<p style="text-align:center">$$T(n) \in \Theta\big(n^{\log_23}\big) = \Theta(n^{1.585\ldots})$$</p>
+</div>
+<p class="qed">∎</p>
+</div>
+<div class="box warn">
+<span class="lbl">Why this matters</span>
+<p>\(n^{1.585}\) is genuinely smaller than \(n^2\) for large \(n\) — Karatsuba's algorithm really is asymptotically faster than the schoolbook method, purely by trading one multiplication for a few extra additions at every level of recursion. This is the same "reduce the branching factor of the recursion" idea that will now be applied to matrix multiplication.</p>
+</div>
+</section>
+
+<section class="topic" id="L13-2">
+<h3>13.2 &middot; Strassen's Matrix Multiplication</h3>
+<div class="box def">
+<span class="lbl">The baseline — ordinary 2×2 matrix multiplication</span>
+<p>$$\begin{bmatrix}a_{00}&a_{01}\\a_{10}&a_{11}\end{bmatrix}\begin{bmatrix}b_{00}&b_{01}\\b_{10}&b_{11}\end{bmatrix} = \begin{bmatrix}a_{00}b_{00}+a_{01}b_{10} & a_{00}b_{01}+a_{01}b_{11}\\a_{10}b_{00}+a_{11}b_{10} & a_{10}b_{01}+a_{11}b_{11}\end{bmatrix}$$</p>
+<p>Each of the 4 output entries needs 2 multiplications: <strong>\(2\times4=8\) multiplications</strong> in total, the brute-force way.</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — brute-force matrix multiplication is Θ(n³)</span>
+<p>Recursively, splitting an \(n\times n\) matrix product into four \((n/2)\times(n/2)\) quadrant-products, each needing 2 sub-multiplications: \(T(n)=8T(n/2)\). Unrolling exactly as before (\(2^k=n\), \(T(1)=1\)):</p>
+<p>$$T(n) = 8^{\log_2n} = \big(2^{\log_2n}\big)^3 = n^3 \in \Theta(n^3)$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">The usual (brute-force) matrix multiplication time complexity is \(\Theta(n^3)\).</span></p>
+</div>
+
+<div class="box def">
+<span class="lbl">Strassen's trick — the same product, using only 7 multiplications</span>
+<p>Define seven products:</p>
+<p>$$m_1=(a_{00}+a_{11})(b_{00}+b_{11}) \qquad m_2=(a_{10}+a_{11})b_{00} \qquad m_3=a_{00}(b_{01}-b_{11})$$</p>
+<p>$$m_4=a_{11}(b_{10}-b_{00}) \qquad m_5=(a_{00}+a_{01})b_{11} \qquad m_6=(a_{10}-a_{00})(b_{00}+b_{01})$$</p>
+<p>$$m_7=(a_{01}-a_{11})(b_{10}+b_{11})$$</p>
+<p>Then the product matrix is recovered entirely from additions and subtractions of these seven values:</p>
+<p>$$C = \begin{bmatrix}m_1+m_4-m_5+m_7 & m_3+m_5\\m_2+m_4 & m_1+m_3-m_2+m_6\end{bmatrix}$$</p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Verifying this is correct — the homework, completed</span>
+<p>The lecture verifies one entry and leaves the rest as an exercise. Here, all four are checked against the brute-force formula above.</p>
+<p><strong>Entry (1,2):</strong> \(m_3+m_5 = a_{00}b_{01}-a_{00}b_{11}+a_{00}b_{11}+a_{01}b_{11} = a_{00}b_{01}+a_{01}b_{11}\) ✓ &nbsp;<span class="small">(matches directly)</span></p>
+<p><strong>Entry (2,1):</strong> \(m_2+m_4 = a_{10}b_{00}+a_{11}b_{00}+a_{11}b_{10}-a_{11}b_{00} = a_{10}b_{00}+a_{11}b_{10}\) ✓</p>
+<p><strong>Entry (1,1):</strong> expand \(m_1+m_4-m_5+m_7\) fully and collect like terms — every term cancels except \(a_{00}b_{00}\) and \(a_{01}b_{10}\):</p>
+<p style="font-size:.92em">$$m_1+m_4-m_5+m_7 = a_{00}b_{00}+\cancel{a_{00}b_{11}}+\cancel{a_{11}b_{00}}+\cancel{a_{11}b_{11}}+\cancel{a_{11}b_{10}}-\cancel{a_{11}b_{00}}-\cancel{a_{00}b_{11}}-a_{01}b_{11}+a_{01}b_{10}+a_{01}b_{11}-\cancel{a_{11}b_{10}}-\cancel{a_{11}b_{11}}$$</p>
+<p>$$= a_{00}b_{00}+a_{01}b_{10} \quad\checkmark$$</p>
+<p><strong>Entry (2,2):</strong> expand \(m_1+m_3-m_2+m_6\) the same way — everything cancels except \(a_{11}b_{11}\) and \(a_{10}b_{01}\):</p>
+<p>$$m_1+m_3-m_2+m_6 = a_{11}b_{11}+a_{10}b_{01} \quad\checkmark$$</p>
+<p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">All four entries match brute-force multiplication exactly — Strassen's algorithm is correct, and it needed only 7 multiplications, not 8.</span></p>
+</div>
+
+<div class="box proof">
+<span class="lbl">Proof — Strassen's time complexity</span>
+<p>$$T(n) = 7T\Big(\frac n2\Big)$$</p>
+<p>Following the identical method used for Karatsuba: unroll to \(T(n)=7^{\log_2n}\), write \(7^{\log_2n}=n^x\), and solve by taking \(\log_7\) of both sides:</p>
+<p>$$\log_2n = x\log_7n \;\Longrightarrow\; x = \frac{\log_2n}{\log_7n} = \log_27$$</p>
+<div class="box result" style="margin-top:10px">
+<span class="lbl">Key result</span>
+<p style="text-align:center">$$T(n) \in \Theta\big(n^{\log_27}\big) = \Theta(n^{2.807\ldots})$$</p>
+</div>
+<p class="qed">∎</p>
+</div>
+
+<div class="box result">
+<span class="lbl">Where this course's uploaded material ends</span>
+<p>Strassen's algorithm beats brute-force matrix multiplication's \(\Theta(n^3)\) with \(\Theta(n^{2.807})\) — the exact same "buy a few extra additions, save a multiplication" trade that made Karatsuba's algorithm faster than the schoolbook method. Both results are genuinely surprising the first time you see them: multiplication, which feels like the "expensive" primitive operation, turns out to be the very thing worth economizing on, even at the cost of noticeably messier bookkeeping.</p>
+</div>
+</section>
+
+<section class="topic" id="recap" style="margin-top:56px;border-top:3px solid var(--accent);padding-top:30px;">
+<h3 style="font-size:26px;">Full Course Recap</h3>
+<p>Thirteen lectures, one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
+
+<table class="grid">
+<tr><th>Lectures</th><th>The question</th><th>The answer</th></tr>
+<tr><td>1&ndash;3</td><td>How do we even talk rigorously about "how fast" an algorithm is?</td><td>Big-O/Ω/Θ notation, built from Bubble Sort and Selection Sort — plus a first taste of <em>proving</em> a lower bound (finding max needs \(\ge n-1\) comparisons).</td></tr>
+<tr><td>4</td><td>What does genuinely exponential growth look like, derived from scratch?</td><td>Tower of Hanoi: \(T(n)=2T(n-1)+1\), solved to \(2^n-1\).</td></tr>
+<tr><td>5&ndash;6</td><td>Can we sort faster than \(\Theta(n^2)\)?</td><td>Merge Sort (\(\Theta(n\log n)\), using auxiliary arrays) and Quicksort (in-place, but \(\Theta(n^2)\) worst case).</td></tr>
+<tr><td>7&ndash;8</td><td>Is Quicksort's bad case actually typical? And is \(n\log n\) truly the best any comparison sort can do?</td><td>A rigorous average-case proof (\(\Theta(n\log n)\)) via indicator random variables, and the decision-tree lower bound proving \(\Omega(n\log n)\) is unavoidable for <em>any</em> comparison-based sort.</td></tr>
+<tr><td>9&ndash;11</td><td>Can we escape the \(n\log n\) barrier entirely?</td><td>Yes — by not comparing at all: Counting Sort, Radix Sort (tuned to run in \(\Theta(n)\)), and Bucket Sort (\(\Theta(n)\) on average, proven rigorously).</td></tr>
+<tr><td>12&ndash;13</td><td>Does "fewer multiplications, more additions" work as a speed-up trick anywhere else?</td><td>Karatsuba's integer multiplication (\(\Theta(n^{1.585})\)) and Strassen's matrix multiplication (\(\Theta(n^{2.807})\)) — the same idea, twice.</td></tr>
+</table>
+
+<h4>Techniques that kept reappearing</h4>
+<ul>
+<li><strong>Unrolling a recurrence by hand</strong> until a pattern emerges, then solving via a geometric series or by matching \(n^x\) to a power — used for Tower of Hanoi, Merge Sort, Quicksort, Karatsuba, and Strassen alike.</li>
+<li><strong>The recursion-tree method</strong> — draw the recursion, notice every level sums to the same total, multiply by the height.</li>
+<li><strong>The limit-comparison test</strong> — the single tool used to compare literally any two growth rates in this course.</li>
+<li><strong>Bounding a discrete sum by a continuous integral</strong> — the trick that finished both the \(\log(n!)\) proof and Quicksort's average-case proof.</li>
+<li><strong>Indicator random variables</strong> — turning "did this random event happen?" into a 0/1 variable you can take the expectation of, used identically for Quicksort and Bucket Sort.</li>
+<li><strong>Proof by contradiction against an adversarially-constructed input</strong> — the technique behind both the max-finding lower bound (Lecture 3) and the sorting lower bound (Lecture 8).</li>
+</ul>
+
+<h4>Mini glossary</h4>
+<table class="grid">
+<tr><td><strong>Algorithm</strong></td><td>A sequence of well-defined operations, taking an input, processing it, to give an output, in finite time.</td></tr>
+<tr><td><strong>\(O(g(n))\), \(\Omega(g(n))\), \(\Theta(g(n))\)</strong></td><td>Bounded above by, bounded below by, and bounded both ways by (i.e. same growth rate as) \(g(n)\), up to a constant factor.</td></tr>
+<tr><td><strong>Recurrence relation</strong></td><td>An equation defining \(T(n)\) in terms of \(T\) at smaller inputs — the standard way to describe a divide-and-conquer algorithm's running time.</td></tr>
+<tr><td><strong>Stable sort</strong></td><td>A sort that preserves the original relative order of equal elements.</td></tr>
+<tr><td><strong>Decision tree model</strong></td><td>Modelling a comparison-based algorithm as a binary tree, where each internal node is one comparison and each leaf is one possible final answer.</td></tr>
+<tr><td><strong>Indicator random variable</strong></td><td>A variable that is 1 if some event occurs and 0 otherwise — makes counting random occurrences via expectation straightforward.</td></tr>
+<tr><td><strong>Lower bound (Ω result)</strong></td><td>A proof that <em>no</em> algorithm (of some class) can possibly do better than a stated running time — stronger than just describing one algorithm's performance.</td></tr>
+</table>
+
+<div class="box warn" style="margin-top:20px;">
+<span class="lbl">What's not in this guide (yet)</span>
+<p>The course syllabus continues well beyond Lecture 13 — into heaps and priority queues, hashing and amortized analysis, dynamic programming (LCS, matrix chain multiplication, edit distance), greedy algorithms (Huffman coding, MST), graph algorithms (BFS/DFS, shortest paths, PageRank), complexity theory (P, NP, NP-completeness, Turing machines), and cryptographic algorithms (RSA, Diffie-Hellman). None of that material is in the 13 lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
+</div>
+</section>
+
+<footer>
+  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) — Lectures 1&ndash;13, covering the introduction through Strassen's matrix multiplication algorithm. Every proof and worked example was checked line by line against the original handwritten lecture notes; a small number of ambiguous transcriptions (noted where they occur) were independently re-derived and verified for correctness.
+</footer>
+</main>
+</div>
+
+<a href="#top" class="backtotop" id="backtotop">&uarr;</a>
+
+<script>
+  const btn = document.getElementById('backtotop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
+  });
+
+  const links = document.querySelectorAll('.sidebar a[href^="#"]');
+  const map = new Map();
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) map.set(el, a); });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = map.get(entry.target);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(l => l.style.color = '');
+        links.forEach(l => l.style.borderLeftColor = 'transparent');
+        link.style.color = 'var(--accent)';
+        link.style.borderLeftColor = 'var(--accent)';
+      }
+    });
+  }, { rootMargin: '-10% 0px -70% 0px' });
+  map.forEach((link, el) => observer.observe(el));
+</script>
+</body>
+</html>
