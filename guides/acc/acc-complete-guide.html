@@ -296,7 +296,7 @@
 <tr><td>12</td><td>23</td><td>23</td><td>23</td><td>23</td><td>23</td></tr>
 <tr><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
 </table>
-<p class="small">Step 1 compares 5 of the pairs (5&harr;3, 3&harr;6, 6&harr;23, 23&harr;12, 12&harr;25 — bubbling the largest correctly-placed value to the end); step 2 needs only 4 comparisons, since the last position is now guaranteed correct; and so on, down to a single comparison in step 5.</p>
+<p class="small">Step 1 compares 5 pairs, using the array <em>as it's updated in place</em> — not the original static values. After swapping 5&harr;3, position 2 now holds 5, so the next comparison is 5&harr;6 (not "3&harr;6"); after later swapping 23&harr;12, position 5 now holds 23, so the last comparison is 23&harr;25 (not "12&harr;25"). In order: 5&harr;3, 5&harr;6, 6&harr;23, 23&harr;12, 23&harr;25 — bubbling the largest correctly-placed value to the end. Step 2 needs only 4 comparisons, since the last position is now guaranteed correct; and so on, down to a single comparison in step 5.</p>
 </div>
 
 <p>With \(n=6\), the output appears after exactly \(n-1=5\) steps — and this number is <strong>finite</strong>, exactly as the definition of an algorithm requires.</p>

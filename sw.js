@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const SHELL_CACHE = `sgl-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `sgl-runtime-${CACHE_VERSION}`;
 

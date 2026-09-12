@@ -229,7 +229,14 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
     <a href="#s6-1">The Future Worth criterion</a>
     <a href="#s6-2">Worked problems — equal lives</a>
 
-    <a href="#s7" class="top">7 · Revision Summary</a>
+    <a href="#s7" class="top">7 · Annual Worth Method</a>
+    <a href="#s7-1">What is Annual Worth?</a>
+    <a href="#s7-2">The AW advantage for unequal lives</a>
+    <a href="#s7-3">Capital Recovery (CR)</a>
+    <a href="#s7-4">Selection guidelines</a>
+    <a href="#s7-5">Worked problems</a>
+
+    <a href="#s8" class="top">8 · Revision Summary</a>
     <a href="#s4a">Master formula table</a>
     <a href="#s4b">Which formula when?</a>
     <a href="#s4c">Exam traps</a>
@@ -244,7 +251,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 
 <div class="box k">
 <span class="lbl">How to use this guide</span>
-<p>Everything in this subject's numerical portion reduces to one question: <strong>"I have money at time A, I want its equivalent at time B — which factor moves it?"</strong> There are only seven factors. Section 1 teaches you to draw the picture; Section 2 gives you the seven tools with every problem from your slides worked line by line; Section 3 shows what happens when one tool isn't enough; Section 4 adds the one remaining wrinkle — rates that don't compound the way they're stated; Sections 5 and 6 turn the same toolkit on <em>comparing alternatives</em> — present worth, then future worth; Section 7 is your night-before revision sheet.</p>
+<p>Everything in this subject's numerical portion reduces to one question: <strong>"I have money at time A, I want its equivalent at time B — which factor moves it?"</strong> There are only seven factors. Section 1 teaches you to draw the picture; Section 2 gives you the seven tools with every problem from your slides worked line by line; Section 3 shows what happens when one tool isn't enough; Section 4 adds the one remaining wrinkle — rates that don't compound the way they're stated; Sections 5, 6, and 7 turn the same toolkit on <em>comparing alternatives</em> — present worth, future worth, then annual worth; Section 8 is your night-before revision sheet.</p>
 <p>Answers marked <strong>“slide value”</strong> are what your faculty wrote using 4-decimal factor tables. My computed values sometimes differ in the last rupee or two — that is table rounding, not an error. <strong>In the exam, use the table values you are given.</strong></p>
 </div>
 
@@ -4855,8 +4862,535 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <div class="box k"><span class="lbl">What Section 6 adds to your toolkit</span><p>Future Worth is Present Worth's mirror image — same sign conventions, same seven formulas, same care needed around unequal lives and annuity-due timing (Q8's lease is a perfect example of Section 1's end-of-period convention mattering again). The one habit worth building here: when a problem explicitly says "future worth," resist the urge to solve for PW and convert at the end — set every term up as an \((F/P)\) or \((F/A)\) factor from the start, aimed directly at the valuation date. It's the same arithmetic, but organising it this way catches timing errors (like Q8's lease) far more reliably.</p></div>
 
 
+
 <!-- ============================================================ -->
-<h2 class="sec" id="s7"><span class="num">Section 7</span>Revision Summary</h2>
+<h2 class="sec" id="s7"><span class="num">Section 7</span>Annual Worth Method</h2>
+
+<h3 id="s7-1">7.1 &middot; What is Annual Worth?</h3>
+<p>Present Worth collapses a whole cash flow down to a single value <em>today</em>. Future Worth collapses it down to a single value at the <em>end</em>. Annual Worth does the third natural thing: it spreads everything into a single, equivalent, uniform amount recurring <strong>every year</strong> of the alternative's life.</p>
+
+<div class="box d">
+<span class="lbl">Other names for the same idea</span>
+<p>Annual Worth (AW) is also known as: <strong>equivalent annual worth (EAW)</strong>, <strong>equivalent annual cost (EAC)</strong>, <strong>annual equivalent (AE)</strong>, and <strong>equivalent uniform annual cost (EUAC)</strong>. All five names describe exactly the same computation — expect any of them to show up in a problem statement.</p>
+</div>
+
+<div class="box k">
+<span class="lbl">AW, PW, and FW are three views of the same number</span>
+<p>$$AW = PW(A/P,i,n) = FW(A/F,i,n)$$</p>
+<p>Since all three are simply equivalent restatements of one another, <strong>the alternative selected by the AW method will always agree with the alternative selected by the PW or FW method</strong> — provided all three are carried out correctly. Nothing new is being decided here; AW is simply a more convenient <em>lens</em> for certain problems, as the next section shows.</p>
+</div>
+
+<h3 id="s7-2">7.2 &middot; Why AW is the easiest method when lives are unequal</h3>
+<p>Recall from Section 5.5 that comparing Present Worths across unequal-life alternatives forces a choice: extend everything to the <strong>LCM</strong> of the lives (assuming repeated purchases), or fix a <strong>study period</strong> and estimate market values at that cutoff. Annual Worth sidesteps this entirely.</p>
+
+<div class="box result">
+<span class="lbl">The key computational advantage</span>
+<p>The \(n\) in the AW factors is the number of years for equal-service comparison — normally the LCM, or a stated study period, exactly as in the PW method. <strong>But</strong> once cash flows are converted to an AW value, <em>that value applies to every year of the life cycle, and to every future life cycle identically.</em> The AW computed over just <strong>one</strong> life cycle already <em>is</em> the AW for the LCM, for two life cycles, for ten — for as long as the pattern keeps repeating.</p>
+<p style="text-align:center;font-weight:700">Therefore, it is <em>never</em> necessary to find the LCM of the lives to satisfy the equal-service requirement when using AW.</p>
+</div>
+<div class="box t">
+<span class="lbl">Why this works — the intuition</span>
+<p>Think of AW as "the flat annual rent this alternative effectively costs (or earns) forever, at this rate." If a machine and its exact replacement cost you a flat $10,000/year in perpetuity, it makes no difference whether you're comparing 4 years of it or 40 — the flat annual figure is identical either way. Contrast this with PW, where the total lump sum obviously depends on how many years you tally up.</p>
+</div>
+
+<h3 id="s7-3">7.3 &middot; Capital Recovery — the two-part structure of AW</h3>
+<div class="box def">
+<span class="lbl">The pieces</span>
+<ul style="margin:4px 0 0">
+<li><strong>P</strong> — initial investment / first cost: the total first cost of all assets and services required to initiate the alternative.</li>
+<li><strong>S</strong> — salvage value at the end of the useful life.</li>
+<li><strong>A</strong> — the annual amount (annual operating cost, AOC, or M&amp;O cost).</li>
+</ul>
+<p>The AW value for an alternative is comprised of two components: <strong>capital recovery</strong> for the initial investment \(P\) at a stated interest rate (usually the MARR), and the equivalent annual amount \(A\). The symbol \(CR\) denotes the capital recovery component:</p>
+<p style="text-align:center;font-size:1.15rem">$$AW = CR + A$$</p>
+</div>
+
+<div class="box proof" style="background:var(--cream2);border:1px solid var(--rule);border-radius:8px;padding:14px 20px;">
+<span class="lbl" style="color:var(--blue)">Deriving the CR formula</span>
+<p>The \((A/P)\) factor converts \(P\) into an equivalent annual cost. If the asset has a positive salvage value \(S\) at the end of its life, that value's equivalent annual worth — recovered via the \((A/F)\) factor — <em>reduces</em> the equivalent annual cost. So:</p>
+<p>$$CR = P(A/P,i,n) - S(A/F,i,n)$$</p>
+<p>There is a standard relation between the \((A/P)\) and \((A/F)\) factors (both recover the same principal, but one accounts for interest along the way and the other doesn't):</p>
+<p>$$(A/F,i,n) = (A/P,i,n) - i$$</p>
+<p>Substitute this into the CR equation to eliminate \((A/F)\) entirely:</p>
+<p>$$CR = P(A/P,i,n) - S\big[(A/P,i,n)-i\big] = (P-S)(A/P,i,n) + Si$$</p>
+<div class="box result" style="margin-top:10px">
+<span class="lbl">The working formula used throughout this section</span>
+<p style="text-align:center;font-size:1.1rem">$$CR = (P-S)(A/P,i,n) + S(i)$$</p>
+</div>
+</div>
+
+<h3 id="s7-4">7.4 &middot; Selection guidelines</h3>
+<p>The Annual Worth method is typically the <strong>easiest to apply</strong> of all the evaluation techniques once the MARR is specified — each alternative's AW is computed over its <em>own</em> life, and the guidelines mirror the PW method exactly:</p>
+<div class="box k">
+<ul style="margin:4px 0 0">
+<li><strong>One alternative:</strong> if \(AW\ge0\), the MARR is met or exceeded — the alternative is economically justified.</li>
+<li><strong>Two or more (mutually exclusive) alternatives:</strong> select the alternative whose AW is <strong>numerically largest</strong> — i.e. least negative or most positive. For cost-dominated alternatives this means the lowest AW of cost; for revenue-dominated alternatives it means the largest AW of net cash flow.</li>
+</ul>
+</div>
+
+<h3 id="s7-5">7.5 &middot; Worked problems</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q1 — a cold-storage expansion, three site proposals</span><p>A food &amp; beverage company is expanding its cold storage facility, at \(i=10\%\) and a 10-year analysis life. Plans A and B require ₹35,00,000 for land; Plan C requires ₹45,00,000. Income increase (all plans): ₹24,80,000/year.</p>
+<table><thead><tr><th>In ₹</th><th>Proposal A</th><th>Proposal B</th><th>Proposal C</th></tr></thead><tbody>
+<tr><td>Building &amp; installation</td><td>60,00,000</td><td>70,00,000</td><td>40,00,000</td></tr>
+<tr><td>Compressor</td><td>10,00,000</td><td>13,50,000</td><td>8,50,000</td></tr>
+<tr><td>Energy cost, year 1</td><td>6,50,000</td><td>4,80,000</td><td>6,50,000</td></tr>
+<tr><td>Energy cost increase/yr</td><td>30,000</td><td>20,000</td><td>35,000</td></tr>
+<tr><td>Annual maintenance</td><td>2,00,000</td><td>1,50,000</td><td>5,00,000</td></tr>
+<tr><td>Salvage value</td><td>3,50,000</td><td>4,30,000</td><td>1,80,000</td></tr>
+</tbody></table></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 10% per year, n = 10 years (all three proposals)</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="122.0" y="130">1</text>
+  <line class="tick" x1="126.0" y1="105" x2="126.0" y2="115"/>
+  <text x="626.0" y="130">10</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="152"/>
+  <polygon points="70.0,160 65.0,148 75.0,148" fill="#8c3b2e"/>
+  <text class="lbldn" x="-14.0" y="176">P (land+building+compressor)</text>
+  <line class="up" x1="350.0" y1="110" x2="350.0" y2="78"/>
+  <polygon points="350.0,70 345.0,82 355.0,82" fill="#1f5f4f"/>
+  <text class="lblup" x="293.0" y="64">Income 24,80,000/yr</text>
+  <line class="dn" x1="350.0" y1="110" x2="350.0" y2="127"/>
+  <polygon points="350.0,135 345.0,123 355.0,123" fill="#8c3b2e"/>
+  <text class="lbldn" x="296.0" y="151">Maintenance (flat)</text>
+  <line class="dn" x1="462.0" y1="110" x2="462.0" y2="132"/>
+  <polygon points="462.0,140 457.0,128 467.0,128" fill="#8c3b2e"/>
+  <text class="lbldn" x="381.0" y="156">Energy cost, rising by G/yr</text>
+  <line class="up" x1="630.0" y1="110" x2="630.0" y2="100"/>
+  <polygon points="630.0,92 625.0,104 635.0,104" fill="#1f5f4f"/>
+  <text class="lblup" x="603.0" y="86">Salvage S</text>
+</svg>
+<p class="cap">Same shape for A, B, and C — only the dollar figures differ per the table.</p>
+</div><div class="body">
+<p><strong>Total first cost</strong> for each proposal is land + building + compressor:</p>
+<p>$$P_A = 35{,}00{,}000+60{,}00{,}000+10{,}00{,}000 = \text{₹}1{,}05{,}00{,}000$$</p>
+<p>$$P_B = 35{,}00{,}000+70{,}00{,}000+13{,}50{,}000 = \text{₹}1{,}18{,}50{,}000$$</p>
+<p>$$P_C = 45{,}00{,}000+40{,}00{,}000+8{,}50{,}000 = \text{₹}93{,}50{,}000$$</p>
+<p><strong>Each proposal's AW</strong> sums: the capital-recovery-style cost of \(P\) (using \((A/P)\)), minus the annual income, plus maintenance, minus the salvage recovered via \((A/F)\), plus the rising energy-cost gradient (base + \(G\cdot(A/G,10\%,10)\)):</p>
+<p>$$AW_A = 1{,}05{,}00{,}000(A/P,10\%,10) - 24{,}80{,}000+2{,}00{,}000-3{,}50{,}000(A/F,10\%,10)+\big[6{,}50{,}000+30{,}000(A/G,10\%,10)\big]$$</p>
+<div class="ans"><span class="lbl">AW_A</span><p><strong>₹1,68,630</strong> (matches the source's ₹1,68,170 to table rounding)</p></div>
+<p>$$AW_B = 1{,}18{,}50{,}000(A/P,10\%,10) - 24{,}80{,}000+1{,}50{,}000-4{,}30{,}000(A/F,10\%,10)+\big[4{,}80{,}000+20{,}000(A/G,10\%,10)\big]$$</p>
+<div class="ans"><span class="lbl">AW_B</span><p><strong>₹1,26,062</strong> (matches ₹1,25,544 to rounding)</p></div>
+<p>$$AW_C = 93{,}50{,}000(A/P,10\%,10) - 24{,}80{,}000+5{,}00{,}000-1{,}80{,}000(A/F,10\%,10)+\big[6{,}50{,}000+35{,}000(A/G,10\%,10)\big]$$</p>
+<div class="ans"><span class="lbl">AW_C</span><p><strong>₹3,10,766</strong> (matches ₹3,10,351.5 to rounding)</p></div>
+<div class="ans"><span class="lbl">Answer</span><p>This is framed as a <strong>cost-dominated</strong> calculation (the first cost is added, income subtracted) — so the <em>smallest</em> AW represents the least net annual cost after accounting for income. <strong>Proposal B is preferred</strong> — its ₹1,26,062 is the lowest of the three, meaning it leaves the most net value once the heavy annualized building/compressor investment is weighed against its income and running costs.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q2 — sludge dewatering: centrifuge vs. belt press</span><p>A textile company compares two sludge dewatering systems at \(i=10\%\)/year.</p>
+<table><thead><tr><th></th><th>Centrifuge</th><th>Belt Press</th></tr></thead><tbody>
+<tr><td>First cost</td><td>$250,000</td><td>$170,000</td></tr>
+<tr><td>Annual operating cost</td><td>$31,000</td><td>$35,000</td></tr>
+<tr><td>Overhaul in year 2</td><td>&mdash;</td><td>$26,000</td></tr>
+<tr><td>Salvage value</td><td>$40,000</td><td>$10,000</td></tr>
+<tr><td>Life</td><td>6 years</td><td>4 years</td></tr>
+</tbody></table></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 10% per year (each system evaluated over its own life)</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="159.33333333333331" y="130">1</text>
+  <line class="tick" x1="163.3" y1="105" x2="163.3" y2="115"/>
+  <text x="252.66666666666663" y="130">2</text>
+  <line class="tick" x1="256.7" y1="105" x2="256.7" y2="115"/>
+  <text x="439.3333333333333" y="130">4</text>
+  <line class="tick" x1="443.3" y1="105" x2="443.3" y2="115"/>
+  <text x="626.0" y="130">6</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="-35.0" y="171">Centrifuge: 250,000 / Belt: 170,000</text>
+  <line class="dn" x1="350.0" y1="110" x2="350.0" y2="127"/>
+  <polygon points="350.0,135 345.0,123 355.0,123" fill="#8c3b2e"/>
+  <text class="lbldn" x="305.0" y="151">Annual op. cost</text>
+  <line class="dn" x1="256.7" y1="110" x2="256.7" y2="120"/>
+  <polygon points="256.7,128 251.7,116 261.7,116" fill="#8c3b2e"/>
+  <text class="lbldn" x="178.7" y="144">Belt only: overhaul 26,000</text>
+  <line class="up" x1="630.0" y1="110" x2="630.0" y2="103"/>
+  <polygon points="630.0,95 625.0,107 635.0,107" fill="#1f5f4f"/>
+  <text class="lblup" x="558.0" y="89">Centrifuge salvage (yr6)</text>
+  <line class="up" x1="443.3" y1="110" x2="443.3" y2="106"/>
+  <polygon points="443.3,98 438.3,110 448.3,110" fill="#1f5f4f"/>
+  <text class="lblup" x="389.3" y="92">Belt salvage (yr4)</text>
+</svg>
+<p class="cap">Centrifuge: 6-yr life. Belt press: 4-yr life, plus a one-time overhaul in year 2.</p>
+</div><div class="body">
+<p><strong>The AW method's advantage is on full display here</strong> — the two systems have genuinely different lives (6 vs. 4 years), yet each is evaluated entirely on its own life, no LCM required:</p>
+<p>$$AW_{centrifuge} = -250{,}000(A/P,10\%,6) - 31{,}000 + 40{,}000(A/F,10\%,6)$$</p>
+<div class="ans"><span class="lbl">AW (centrifuge)</span><p><strong>-$83,218</strong></p></div>
+<p>The belt press's one-time overhaul needs its own \((P/F)\) to bring it to year 0, then the whole thing is annualized together with \((A/P)\):</p>
+<p>$$AW_{belt} = -170{,}000(A/P,10\%,4) - 35{,}000 - 26{,}000(P/F,10\%,2)(A/P,10\%,4) + 10{,}000(A/F,10\%,4)$$</p>
+<div class="ans"><span class="lbl">AW (belt press)</span><p><strong>-$93,254</strong> (matches the source's -$93,549 to rounding)</p></div>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Select the centrifuge</strong> — its annual cost (-$83,218) is less negative than the belt press's (-$93,254), despite the centrifuge's much larger first cost.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q3 — two robots, a fixed 3-year study period</span><p>An industrial engineer compares two robots at \(i=12\%\)/year, using a 3-year study period. Robot X: first cost $85,000, annual M&amp;O $30,000, salvage $40,000. Robot Y: first cost $97,000, annual M&amp;O $27,000, salvage $48,000.</p></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 12% per year, 3-year study period (both robots)</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="252.66666666666663" y="130">1</text>
+  <line class="tick" x1="256.7" y1="105" x2="256.7" y2="115"/>
+  <text x="626.0" y="130">3</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="7.0" y="171">X: 85,000 / Y: 97,000</text>
+  <line class="dn" x1="443.3" y1="110" x2="443.3" y2="127"/>
+  <polygon points="443.3,135 438.3,123 448.3,123" fill="#8c3b2e"/>
+  <text class="lbldn" x="413.3" y="151">Annual M&O</text>
+  <line class="up" x1="630.0" y1="110" x2="630.0" y2="100"/>
+  <polygon points="630.0,92 625.0,104 635.0,104" fill="#1f5f4f"/>
+  <text class="lblup" x="549.0" y="86">Salvage (3-yr study period)</text>
+</svg>
+<p class="cap">Both robots are cut off at the same 3-year study period, regardless of true useful life.</p>
+</div><div class="body">
+<p>Both robots are simply evaluated over the stated 3-year window, using the given salvage figures directly as the study-period market values:</p>
+<p>$$AW_X = -85{,}000(A/P,12\%,3) - 30{,}000 + 40{,}000(A/F,12\%,3)$$</p>
+<div class="ans"><span class="lbl">AW_X</span><p><strong>-$53,536</strong></p></div>
+<p>$$AW_Y = -97{,}000(A/P,12\%,3) - 27{,}000 + 48{,}000(A/F,12\%,3)$$</p>
+<div class="ans"><span class="lbl">AW_Y</span><p><strong>-$53,161</strong></p></div>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Select Robot Y — by a small margin.</strong> The two robots are remarkably close (within $375/year of each other), so in practice a decision-maker would weigh non-cost factors just as heavily as this thin economic edge.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q4 — Case A: two machines with different lives, the easy way</span><p>Type A machine: low initial cost ₹95,000, operating cost ₹19,000/year <em>more</em> than Type B, life 4 years. Type B machine: costs ₹2,51,000, usable for 8 years. Scrap value from either machine barely covers its removal cost (i.e. \(S\approx0\)). Which is preferred at MARR = 8%?</p></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 8% per year — Type A life = 4 yrs, Type B life = 8 yrs</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="136.0" y="130">1</text>
+  <line class="tick" x1="140.0" y1="105" x2="140.0" y2="115"/>
+  <text x="346.0" y="130">4</text>
+  <line class="tick" x1="350.0" y1="105" x2="350.0" y2="115"/>
+  <text x="626.0" y="130">8</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="-95.0" y="171">Type A: 95,000 (repeats every 4 yrs) / Type B: 2,51,000</text>
+  <line class="dn" x1="210.0" y1="110" x2="210.0" y2="122"/>
+  <polygon points="210.0,130 205.0,118 215.0,118" fill="#8c3b2e"/>
+  <text class="lbldn" x="93.0" y="146">Type A extra O&M: 19,000/yr more than B</text>
+</svg>
+<p class="cap">Type A's AW is computed over just ITS OWN 4-year cycle — no need to extend to the 8-year LCM.</p>
+</div><div class="body">
+<p>This is precisely the scenario Section 7.2 was built for: lives of 4 and 8 years, but <strong>no LCM is needed</strong> — just find each machine's AW over its own life:</p>
+<p>$$AW_{TypeA} = 95{,}000(A/P,8\%,4) + 19{,}000$$</p>
+<div class="ans"><span class="lbl">AW (Type A)</span><p><strong>₹47,682</strong></p></div>
+<p>$$AW_{TypeB} = 2{,}51{,}000(A/P,8\%,8)$$</p>
+<div class="ans"><span class="lbl">AW (Type B)</span><p><strong>₹43,678</strong></p></div>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Type B is preferred</strong> — its lower annual cost (₹43,678 vs ₹47,682) applies for as long as the pattern repeats, without ever needing to align the two machines onto a common 8-year timeline by hand.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q5 — Case B: what if Type A gets a mid-life upgrade?</span><p>Suppose, at the end of Type A's first 4-year cycle, a <em>modified</em> replacement unit becomes available: cost ₹1,15,000, but reducing the operating cost premium to just ₹4,000/year (instead of ₹19,000/year) for the next 4 years. Find the new annual worth for Type A.</p></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 8% per year — now an 8-year comparison for Type A too</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="136.0" y="130">1</text>
+  <line class="tick" x1="140.0" y1="105" x2="140.0" y2="115"/>
+  <text x="346.0" y="130">4</text>
+  <line class="tick" x1="350.0" y1="105" x2="350.0" y2="115"/>
+  <text x="626.0" y="130">8</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="28.0" y="171">Type A: 95,000</text>
+  <line class="dn" x1="210.0" y1="110" x2="210.0" y2="124"/>
+  <polygon points="210.0,132 205.0,120 215.0,120" fill="#8c3b2e"/>
+  <text class="lbldn" x="150.0" y="148">19,000/yr, years 1-4</text>
+  <line class="dn" x1="350.0" y1="110" x2="350.0" y2="137"/>
+  <polygon points="350.0,145 345.0,133 355.0,133" fill="#8c3b2e"/>
+  <text class="lbldn" x="281.0" y="161">Modified unit: 1,15,000</text>
+  <line class="dn" x1="490.0" y1="110" x2="490.0" y2="117"/>
+  <polygon points="490.0,125 485.0,113 495.0,113" fill="#8c3b2e"/>
+  <text class="lbldn" x="433.0" y="141">4,000/yr, years 5-8</text>
+</svg>
+<p class="cap">At year 4, Type A is replaced by a cheaper-to-run modified unit, extending its own cycle to 8 years.</p>
+</div><div class="body">
+<p><strong>Now Type A's cycle is no longer uniform</strong> — it must genuinely be evaluated over the full 8 years to capture the mid-life switch. Each piece is annualized separately, at the <em>same</em> 8-year horizon as Type B, so all the pieces can simply be added:</p>
+<p>$$AW_{TypeA} = 95{,}000(A/P,8\%,8) + \big[19{,}000(P/A,8\%,4)\big](A/P,8\%,8) + \big[1{,}15{,}000(P/F,8\%,4)\big](A/P,8\%,8) + \big[4{,}000(F/A,8\%,4)\big](A/F,8\%,8)$$</p>
+<p class="small" style="font-size:.86rem;color:var(--ink-soft)">Reading each bracket: the original ₹95,000 purchase, annualized over 8 years directly; the ₹19,000/year premium for the first 4 years only, brought to an 8-year annual equivalent; the ₹1,15,000 modified-unit cost at year 4, discounted to year 0 then annualized over 8 years; and the ₹4,000/year premium for years 5–8, first rolled forward to year 8 with \((F/A)\), then converted to an 8-year annual equivalent with \((A/F)\).</p>
+<div class="ans"><span class="lbl">AW (Type A, modified)</span><p><strong>₹43,885</strong> (matches the source's ₹43,881.45 to rounding)</p></div>
+<div class="ans"><span class="lbl">Answer</span><p>Type B's AW is unchanged at ₹43,678. The two are now nearly identical (₹43,885 vs ₹43,678) — the modification narrows Type A's disadvantage to almost nothing, though <strong>Type B remains very marginally preferred.</strong></p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q6 — routing a power line around or under a lake</span><p>Two routes are compared at \(i=15\%\)/year:</p>
+<table><thead><tr><th></th><th>Around the lake</th><th>Under the lake</th></tr></thead><tbody>
+<tr><td>Length</td><td>15 km</td><td>5 km</td></tr>
+<tr><td>First cost</td><td>₹1,50,000/km</td><td>₹7,50,000/km</td></tr>
+<tr><td>Useful life</td><td>15 years</td><td>15 years</td></tr>
+<tr><td>Maintenance cost</td><td>₹6,000/km/yr</td><td>₹12,000/km/yr</td></tr>
+<tr><td>Salvage value</td><td>₹90,000/km</td><td>₹1,50,000/km</td></tr>
+<tr><td>Yearly power loss</td><td>₹15,000/km</td><td>₹15,000/km</td></tr>
+</tbody></table></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 15% per year, n = 15 years (both routes)</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="103.33333333333334" y="130">1</text>
+  <line class="tick" x1="107.3" y1="105" x2="107.3" y2="115"/>
+  <text x="626.0" y="130">15</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="152"/>
+  <polygon points="70.0,160 65.0,148 75.0,148" fill="#8c3b2e"/>
+  <text class="lbldn" x="4.0" y="176">First cost (per route)</text>
+  <line class="dn" x1="331.3" y1="110" x2="331.3" y2="127"/>
+  <polygon points="331.3,135 326.3,123 336.3,123" fill="#8c3b2e"/>
+  <text class="lbldn" x="250.3" y="151">Maintenance + power loss/yr</text>
+  <line class="up" x1="630.0" y1="110" x2="630.0" y2="100"/>
+  <polygon points="630.0,92 625.0,104 635.0,104" fill="#1f5f4f"/>
+  <text class="lblup" x="609.0" y="86">Salvage</text>
+</svg>
+<p class="cap">Same shape for both routes; only the per-km costs and route length differ.</p>
+</div><div class="body">
+<p><strong>Scale every per-km figure by the route's actual length first:</strong></p>
+<p><strong>Alternative 1 — around the lake (15 km):</strong></p>
+<p>First cost \(=1{,}50{,}000\times15=\)₹22,50,000. Maintenance/yr \(=6{,}000\times15=\)₹90,000. Power loss/yr \(=15{,}000\times15=\)₹2,25,000 (combined: ₹3,15,000/yr). Salvage \(=90{,}000\times15=\)₹13,50,000.</p>
+<p>$$AE_1 = 22{,}50{,}000(A/P,15\%,15) + 3{,}15{,}000 - 13{,}50{,}000(A/F,15\%,15)$$</p>
+<div class="ans"><span class="lbl">AE₁ (around the lake)</span><p><strong>₹6,71,415</strong> (matches the source's ₹6,71,400 to rounding)</p></div>
+<p><strong>Alternative 2 — under the lake (5 km):</strong></p>
+<p>First cost \(=7{,}50{,}000\times5=\)₹37,50,000. Maintenance/yr \(=12{,}000\times5=\)₹60,000. Power loss/yr \(=15{,}000\times5=\)₹75,000 (combined: ₹1,35,000/yr). Salvage \(=1{,}50{,}000\times5=\)₹7,50,000.</p>
+<p>$$AE_2 = 37{,}50{,}000(A/P,15\%,15) + 1{,}35{,}000 - 7{,}50{,}000(A/F,15\%,15)$$</p>
+<div class="ans"><span class="lbl">AE₂ (under the lake)</span><p><strong>₹7,60,551</strong> (matches ₹7,60,500 to rounding)</p></div>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Route the power line around the lake</strong> — despite three times the length, its annual cost (₹6,71,415) is lower than tunnelling under the lake (₹7,60,551). The under-lake route's much higher first cost per km outweighs the saving from a shorter route.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q7 — should the self-inspection training program be hired?</span><p>A consulting firm's "self-inspection" training program runs 1 year, costing ₹20,000/month. Savings start at ₹8,000 the first month, growing ₹4,000/month. But clerical costs are expected to rise by ₹12,000 the first month, then <em>decline</em> ₹1,000/month for the rest of the year. Required return: 12% compounded monthly. Should the firm be hired if the program must pay for itself within 1 year?</p></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 1% per month (nominal 12% compounded monthly), n = 12 months</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="112.66666666666666" y="130">1</text>
+  <line class="tick" x1="116.7" y1="105" x2="116.7" y2="115"/>
+  <text x="346.0" y="130">6</text>
+  <line class="tick" x1="350.0" y1="105" x2="350.0" y2="115"/>
+  <text x="626.0" y="130">12</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="up" x1="163.3" y1="110" x2="163.3" y2="93"/>
+  <polygon points="163.3,85 158.3,97 168.3,97" fill="#1f5f4f"/>
+  <text class="lblup" x="79.3" y="79">Savings: 8000 rising 4000/mo</text>
+  <line class="dn" x1="490.0" y1="110" x2="490.0" y2="137"/>
+  <polygon points="490.0,145 485.0,133 495.0,133" fill="#8c3b2e"/>
+  <text class="lbldn" x="403.0" y="161">Program fee: 20,000/mo (flat)</text>
+  <line class="dn" x1="303.3" y1="110" x2="303.3" y2="120"/>
+  <polygon points="303.3,128 298.3,116 308.3,116" fill="#8c3b2e"/>
+  <text class="lbldn" x="174.3" y="144">Extra clerical cost: 12,000 falling 1000/mo</text>
+</svg>
+<p class="cap">Two opposing gradients — savings rising, extra clerical cost falling — netted against a flat monthly fee.</p>
+</div><div class="body">
+<p>CP = PP = monthly, so \(i_{eff}=12\%/12=1\%\)/month — no conversion drama. Three pieces, each a straightforward gradient or flat amount over \(n=12\) months:</p>
+<p>$$A = \big[8{,}000+4{,}000(A/G,1\%,12)\big] - 20{,}000 - \big[12{,}000-1{,}000(A/G,1\%,12)\big]$$</p>
+<p class="small" style="font-size:.86rem;color:var(--ink-soft)">Reading term by term: rising savings (base $8,000, \(G=+\$4{,}000\)), minus the flat $20,000/month fee, minus the falling extra clerical cost (base $12,000, \(G=-\$1{,}000\), so it's subtracted as \(-[12{,}000-1000(A/G)]\)).</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(A = \) <strong>$2,907.27/month</strong> — positive, so the program pays for itself within the year and then some. <strong>The consultant should be hired.</strong></p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q8 — Luby's Cafeterias: two temperature-retention units</span><p>Choose between two mobile food-temperature units at MARR = 8%/year:</p>
+<table><thead><tr><th></th><th>Hamilton (H)</th><th>Infinity Care (IC)</th></tr></thead><tbody>
+<tr><td>Initial cost P</td><td>$15,000</td><td>$20,000</td></tr>
+<tr><td>Annual M&amp;O</td><td>$6,000</td><td>$9,000</td></tr>
+<tr><td>Refurbishment cost</td><td>&mdash;</td><td>$2,000 every 4 years</td></tr>
+<tr><td>Trade-in value S (% of P)</td><td>20%</td><td>40%</td></tr>
+<tr><td>Life</td><td>4 years</td><td>12 years</td></tr>
+</tbody></table></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 8% per year — Hamilton life=4yr, Infinity Care life=12yr</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="112.66666666666666" y="130">1</text>
+  <line class="tick" x1="116.7" y1="105" x2="116.7" y2="115"/>
+  <text x="252.66666666666663" y="130">4</text>
+  <line class="tick" x1="256.7" y1="105" x2="256.7" y2="115"/>
+  <text x="439.3333333333333" y="130">8</text>
+  <line class="tick" x1="443.3" y1="105" x2="443.3" y2="115"/>
+  <text x="626.0" y="130">12</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="-116.0" y="171">Hamilton: 15,000 (repeats/4yr) / IC: 20,000 (once, 12-yr life)</text>
+  <line class="dn" x1="163.3" y1="110" x2="163.3" y2="124"/>
+  <polygon points="163.3,132 158.3,120 168.3,120" fill="#8c3b2e"/>
+  <text class="lbldn" x="133.3" y="148">Annual M&O</text>
+  <line class="dn" x1="350.0" y1="110" x2="350.0" y2="120"/>
+  <polygon points="350.0,128 345.0,116 355.0,116" fill="#8c3b2e"/>
+  <text class="lbldn" x="227.0" y="144">IC only: refurbishment 2,000, every 4 yrs</text>
+</svg>
+<p class="cap">Hamilton's AW, found over just its own 4-year cycle, is directly comparable to Infinity Care's 12-year AW.</p>
+</div><div class="body">
+<p><strong>Another textbook case for Section 7.2's advantage</strong> — lives of 4 and 12 years (LCM would be 12), but each unit is simply evaluated over its own cycle.</p>
+<p><strong>Hamilton</strong> (\(S=20\%\times15{,}000=\$3{,}000\)):</p>
+<p>$$AW_H = \big[(15{,}000-3{,}000)(A/P,8\%,4)+3{,}000(0.08)\big] + 6{,}000$$</p>
+<div class="ans"><span class="lbl">AW_H</span><p><strong>$9,863</strong></p></div>
+<p><strong>Infinity Care</strong> (\(S=40\%\times20{,}000=\$8{,}000\)) — the refurbishment happens at years 4 and 8 within its own 12-year cycle (not at year 12, since that's the cycle's endpoint):</p>
+<p>$$AW_{IC} = \big[(20{,}000-8{,}000)(A/P,8\%,12)+8{,}000(0.08)\big] + \Big\{9{,}000+\big[2{,}000(P/F,8\%,4)+2{,}000(P/F,8\%,8)\big](A/P,8\%,12)\Big\}$$</p>
+<div class="ans"><span class="lbl">AW_IC</span><p><strong>$11,571</strong></p></div>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Select the Hamilton unit</strong> — its annual cost ($9,863) is lower than Infinity Care's ($11,571), even though Hamilton must be replaced three times over the same 12-year span that Infinity Care runs just once.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q9 — plant operation: Method I vs. Method II</span><p>At MARR = 15%, compare two operating methods:</p>
+<table><thead><tr><th></th><th>Method I</th><th>Method II</th></tr></thead><tbody>
+<tr><td>Initial investment</td><td>$10,000</td><td>$40,000</td></tr>
+<tr><td>Labor</td><td>$12,000</td><td>$4,000</td></tr>
+<tr><td>Power</td><td>$250</td><td>$300</td></tr>
+<tr><td>Rent</td><td>$1,000</td><td>$500</td></tr>
+<tr><td>Maintenance</td><td>$500</td><td>$200</td></tr>
+<tr><td>Property taxes &amp; insurance</td><td>$400</td><td>$2,000</td></tr>
+<tr><td>Salvage value</td><td>$1,000</td><td>$5,000</td></tr>
+<tr><td>Life</td><td>5 years</td><td>10 years</td></tr>
+</tbody></table>
+<p>All other expenses are equal for the two methods, and income is unaffected by the choice.</p></div>
+<div class="body">
+<p><strong>Total the annual disbursements</strong> for each method first:</p>
+<p>$$A_I = 12{,}000+250+1{,}000+500+400 = \$14{,}150/\text{yr} \qquad A_{II} = 4{,}000+300+500+200+2{,}000 = \$7{,}000/\text{yr}$$</p>
+<p>$$AW_I = \big[(10{,}000-1{,}000)(A/P,15\%,5)+1{,}000(0.15)\big]+14{,}150$$</p>
+<div class="ans"><span class="lbl">AW (Method I)</span><p><strong>$16,984.70</strong></p></div>
+<p>$$AW_{II} = \big[(40{,}000-5{,}000)(A/P,15\%,10)+5{,}000(0.15)\big]+7{,}000$$</p>
+<div class="ans"><span class="lbl">AW (Method II)</span><p><strong>$14,725.50</strong></p></div>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Method II is the better choice</strong> — its annual cost ($14,725.50) is lower than Method I's ($16,984.70), again compared directly despite the 5-year vs. 10-year life difference.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q10 — three investment proposals, a monthly MARR, and unequal lives</span><p>A firm has three investment proposals, MARR = 1.53095% <em>per month</em>:</p>
+<table><thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead><tbody>
+<tr><td>Initial investment</td><td>$200,000</td><td>$300,000</td><td>$150,000</td></tr>
+<tr><td>Annual receipts</td><td>$160,000</td><td>$190,000</td><td>$200,000</td></tr>
+<tr><td>Annual costs</td><td>$100,000</td><td>$110,000</td><td>$150,000</td></tr>
+<tr><td>Salvage value</td><td>$50,000</td><td>$100,000</td><td>$50,000</td></tr>
+<tr><td>Life</td><td>8 years</td><td>11 years</td><td>7 years</td></tr>
+</tbody></table>
+<p>(a) Using annual worth analysis, determine the preferred proposal. (b) If the projects are independent, which should be selected?</p></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">MARR = 1.53095% per MONTH (effective) — convert first!</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="116.9090909090909" y="130">1</text>
+  <line class="tick" x1="120.9" y1="105" x2="120.9" y2="115"/>
+  <text x="422.3636363636364" y="130">7</text>
+  <line class="tick" x1="426.4" y1="105" x2="426.4" y2="115"/>
+  <text x="473.2727272727273" y="130">8</text>
+  <line class="tick" x1="477.3" y1="105" x2="477.3" y2="115"/>
+  <text x="626.0" y="130">11</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="-50.0" y="171">P (A:2,00,000 / B:3,00,000 / C:1,50,000)</text>
+  <line class="up" x1="273.6" y1="110" x2="273.6" y2="88"/>
+  <polygon points="273.6,80 268.6,92 278.6,92" fill="#1f5f4f"/>
+  <text class="lblup" x="174.6" y="74">Net (Receipts - Costs), each year</text>
+  <line class="up" x1="426.4" y1="110" x2="426.4" y2="103"/>
+  <polygon points="426.4,95 421.4,107 431.4,107" fill="#1f5f4f"/>
+  <text class="lblup" x="327.4" y="89">Salvage (A: yr8, C: yr7, B: yr11)</text>
+</svg>
+<p class="cap">Three unequal lives (A=8, B=11, C=7 yrs) compared directly via AW, no LCM needed.</p>
+</div><div class="body">
+<p><strong>Step 1 — the MARR is quoted per month, but every cash flow is annual.</strong> Convert to an effective annual rate first:</p>
+<p>$$i_{eff} = (1+0.0153095)^{12}-1 = 20.00\%$$</p>
+<p class="small" style="font-size:.86rem;color:var(--ink-soft)">That suspiciously precise "1.53095%" is simply a clean 20% effective annual rate, expressed per month — worth recognising this pattern when a monthly figure looks oddly specific.</p>
+<p><strong>Step 2 — find each proposal's AW over its own life</strong> (revenue-dominated: investment negative, net receipts and salvage positive), at \(i=20\%\):</p>
+<p>$$AW_A = -2{,}00{,}000(A/P,20\%,8) + (1{,}60{,}000-1{,}00{,}000) + 50{,}000(A/F,20\%,8)$$</p>
+<div class="ans"><span class="lbl">AW_A</span><p><strong>$10,909</strong></p></div>
+<p>$$AW_B = -3{,}00{,}000(A/P,20\%,11) + (1{,}90{,}000-1{,}10{,}000) + 1{,}00{,}000(A/F,20\%,11)$$</p>
+<div class="ans"><span class="lbl">AW_B</span><p><strong>$13,779</strong></p></div>
+<p>$$AW_C = -1{,}50{,}000(A/P,20\%,7) + (2{,}00{,}000-1{,}50{,}000) + 50{,}000(A/F,20\%,7)$$</p>
+<div class="ans"><span class="lbl">AW_C</span><p><strong>$12,258</strong></p></div>
+<div class="ans"><span class="lbl">Answer (a) — mutually exclusive</span><p>All three unequal lives (8, 11, 7 years) are compared directly, no LCM needed. <strong>Proposal B is preferred</strong> — its AW ($13,779) is the numerically largest of the three.</p></div>
+<div class="ans"><span class="lbl">Answer (b) — independent projects</span><p>When projects are independent (not mutually exclusive), the rule changes: accept <em>every</em> proposal with \(AW\ge0\), since each one that clears the MARR adds value on its own. All three proposals have a positive AW here — <strong>accept A, B, and C.</strong></p></div>
+<div class="box t"><span class="lbl">Why the decision rule changes between (a) and (b)</span><p>Mutually exclusive means picking one <em>precludes</em> the others (e.g. only one site can be built) — so the comparison is relative, and only the single best option matters. Independent means each proposal stands alone (e.g. three unrelated equipment purchases, budget permitting) — so the comparison is absolute, against the MARR itself, and there's no reason to reject a perfectly good project just because another one happens to be even better.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">AW Method &middot; Q11 — Heavenly Pizza's delivery systems (a three-part capstone)</span><p>Heavenly Pizza plans to buy 5 portable in-car delivery systems. Each costs $4,600, has a 5-year life, salvage $300. Total operating cost for all 5 systems: $1,000 in year 1, rising $100/year thereafter. MARR = 10%.</p>
+<p><strong>(a)</strong> How much new annual net income is necessary just to recover the investment at MARR? <strong>(b)</strong> If Jerry estimates increased net income of $6,000/year, is the project financially viable? <strong>(c)</strong> If not, how much net income would actually be needed?</p></div>
+<div class="cfd">
+<svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
+  <text x="290" y="24" style="font-size:12px;font-weight:700">i = 10% per year, n = 5 years</text>
+  <text x="66.0" y="130">0</text>
+  <line class="tick" x1="70.0" y1="105" x2="70.0" y2="115"/>
+  <text x="178.0" y="130">1</text>
+  <line class="tick" x1="182.0" y1="105" x2="182.0" y2="115"/>
+  <text x="290.0" y="130">2</text>
+  <line class="tick" x1="294.0" y1="105" x2="294.0" y2="115"/>
+  <text x="402.0" y="130">3</text>
+  <line class="tick" x1="406.0" y1="105" x2="406.0" y2="115"/>
+  <text x="514.0" y="130">4</text>
+  <line class="tick" x1="518.0" y1="105" x2="518.0" y2="115"/>
+  <text x="626.0" y="130">5</text>
+  <line class="tick" x1="630.0" y1="105" x2="630.0" y2="115"/>
+  <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
+  <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
+  <text class="lbldn" x="-11.0" y="171">23,000 (5 systems x $4,600)</text>
+  <line class="dn" x1="182.0" y1="110" x2="182.0" y2="120"/>
+  <polygon points="182.0,128 177.0,116 187.0,116" fill="#8c3b2e"/>
+  <text class="lbldn" x="170.0" y="144">1000</text>
+  <line class="dn" x1="294.0" y1="110" x2="294.0" y2="124"/>
+  <polygon points="294.0,132 289.0,120 299.0,120" fill="#8c3b2e"/>
+  <text class="lbldn" x="282.0" y="148">1100</text>
+  <line class="dn" x1="406.0" y1="110" x2="406.0" y2="128"/>
+  <polygon points="406.0,136 401.0,124 411.0,124" fill="#8c3b2e"/>
+  <text class="lbldn" x="394.0" y="152">1200</text>
+  <line class="dn" x1="518.0" y1="110" x2="518.0" y2="132"/>
+  <polygon points="518.0,140 513.0,128 523.0,128" fill="#8c3b2e"/>
+  <text class="lbldn" x="506.0" y="156">1300</text>
+  <line class="dn" x1="585.2" y1="110" x2="585.2" y2="136"/>
+  <polygon points="585.2,144 580.2,132 590.2,132" fill="#8c3b2e"/>
+  <text class="lbldn" x="573.2" y="160">1400</text>
+  <line class="up" x1="630.0" y1="110" x2="630.0" y2="100"/>
+  <polygon points="630.0,92 625.0,104 635.0,104" fill="#1f5f4f"/>
+  <text class="lblup" x="567.0" y="86">1500 salvage (5x$300)</text>
+  <line class="up" x1="350.0" y1="110" x2="350.0" y2="78"/>
+  <polygon points="350.0,70 345.0,82 355.0,82" fill="#1f5f4f"/>
+  <text class="lblup" x="248.0" y="64">Income? ($6000 assumed for part b)</text>
+</svg>
+<p class="cap">Total operating cost for all 5 systems: $1,000 in year 1, rising $100/year — a gradient.</p>
+</div><div class="body">
+<p><strong>Part (a) — capital recovery only.</strong> "Recovering the investment" is precisely what the \(CR\) component of \(AW=CR+A\) measures — the annual cost of just the capital committed, ignoring operating costs for a moment. Total first cost for all 5 systems \(=5\times4{,}600=\$23{,}000\); total salvage \(=5\times300=\$1{,}500\):</p>
+<p>$$CR = -5\big[4{,}600(A/P,10\%,5)\big] + 5\big[300(A/F,10\%,5)\big] = -5[4600(0.26380)]+5[300(0.16380)]$$</p>
+<div class="ans"><span class="lbl">Answer (a)</span><p>\(CR = \) <strong>-$5,822/year</strong> — this is the minimum new annual net income needed just to recover the capital investment at 10%, before even covering operating costs.</p></div>
+
+<p><strong>Part (b) — check viability at the assumed $6,000/year income.</strong> Now bring in the operating-cost gradient (base $1,000, \(G=\$100\)) and the assumed income:</p>
+<p>$$AW = CR + A = -5{,}822 + \big[6{,}000-1{,}000-100(A/G,10\%,5)\big] = -5{,}822+5{,}000-100(1.8101)$$</p>
+<div class="ans"><span class="lbl">Answer (b)</span><p>\(AW = \) <strong>-$1,003</strong> — negative. <strong>The system is not financially justified</strong> at the assumed net income level of $6,000/year.</p></div>
+
+<p><strong>Part (c) — find the breakeven income.</strong> Let the required income equal \(R\), and set the AW relation to zero:</p>
+<p>$$0 = -5{,}822 + (R-1{,}000) - 100(A/G,10\%,5)$$</p>
+<p>$$R = 5{,}822+1{,}000+100(1.8101)$$</p>
+<div class="ans"><span class="lbl">Answer (c)</span><p>\(R = \) <strong>$7,003/year</strong> — Heavenly Pizza needs at least this much new net income (about $1,000/year more than Jerry's original $6,000 estimate) for the project to clear the 10% MARR.</p></div>
+</div></div>
+
+<div class="box k"><span class="lbl">What Section 7 adds to your toolkit</span><p>Annual Worth is Present Worth and Future Worth's third sibling — same underlying equivalence, same seven factors, same selection rule (largest AW wins) — but with one genuine practical advantage: because an AW value computed over one life cycle automatically holds for every future cycle, <strong>unequal-life comparisons never require an LCM or a study period</strong>. Q4/Q5, Q8, and Q10 all showed this directly: lives of 4 vs 8, 4 vs 12, and 8 vs 11 vs 7, all compared with no extra bookkeeping beyond each alternative's own \((A/P)\) and \((A/F)\) factors.</p></div>
+
+
+<!-- ============================================================ -->
+<h2 class="sec" id="s8"><span class="num">Section 8</span>Revision Summary</h2>
 
 <h3 id="s4a">Master formula table</h3>
 <p>Everything in this subject, on one page. Read the "lands at" column as carefully as the formula column — that is where marks are actually lost.</p>
