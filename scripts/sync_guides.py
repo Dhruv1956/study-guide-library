@@ -21,13 +21,13 @@ REPO = Path(__file__).resolve().parent.parent
 # mobile menu button, etc). Empty string if the guide has none.
 GUIDES = [
     {
-        "source": "~/Desktop/ACC/HTML Explanations/ACC_Complete_Guide.html",
+        "source": "~/Desktop/ACC/HTML Explanations/ACC.html",
         "dest": "guides/acc/acc-complete-guide.html",
         "accent_bg": "rgba(21,26,32,0.85)",
         "extra_css": "    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }\n",
     },
     {
-        "source": "~/Desktop/EEFM/HTML explanations/EEFM_explanation.html",
+        "source": "~/Desktop/EEFM/HTML explanations/EEFM.html",
         "dest": "guides/eefm/eefm-explanation.html",
         "accent_bg": "rgba(31,95,79,0.9)",
         "extra_css": (
@@ -36,19 +36,19 @@ GUIDES = [
         ),
     },
     {
-        "source": "~/Desktop/AI/HTML explanations/Intro to AI - Beginner Guide (Agents, Search, Local Search).html",
+        "source": "~/Downloads/ALL_HTML/AI.html",
         "dest": "guides/ai/intro-to-ai-guide.html",
         "accent_bg": "rgba(21,26,32,0.85)",
         "extra_css": "    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }\n",
     },
     {
-        "source": "~/Desktop/MVA/HTML explanations/Multivariate Analysis - Beginner Guide (MND, Hotelling, Correlation, Wishart).html",
+        "source": "~/Desktop/MVA/HTML explanations/MVA.html",
         "dest": "guides/mva/mva-beginner-guide.html",
         "accent_bg": "rgba(21,26,32,0.85)",
         "extra_css": "    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }\n",
     },
     {
-        "source": "~/Desktop/FML/HTML Explanations/ML_Numerical_IA_Prep.html",
+        "source": "~/Desktop/FML/HTML Explanations/FML.html",
         "dest": "guides/fml/ml-numerical-ia-prep.html",
         "accent_bg": "rgba(21,26,32,0.85)",
         "extra_css": "",

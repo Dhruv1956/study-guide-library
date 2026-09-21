@@ -1,37 +1,37 @@
 [
   {
-    "title": "Algorithms and Computational Complexity — Complete Lecture Guide",
+    "title": "Algorithms and Computational Complexity \u2014 Complete Lecture Guide",
     "course": "ACC",
     "courseName": "Algorithms and Computational Complexity",
     "path": "guides/acc/acc-complete-guide.html",
     "dateAdded": "2026-09-10"
   },
   {
-    "title": "EEFM — Explanation Guide",
+    "title": "EEFM \u2014 Explanation Guide",
     "course": "EEFM",
     "courseName": "Engineering Economics and Financial Management",
     "path": "guides/eefm/eefm-explanation.html",
     "dateAdded": "2026-09-12"
   },
   {
-    "title": "Intro to AI — Beginner Guide (Agents, Search, Local Search)",
+    "title": "Intro to AI \u2014 Beginner Guide (Agents, Search, Local Search)",
     "course": "AI",
     "courseName": "Artificial Intelligence",
     "path": "guides/ai/intro-to-ai-guide.html",
-    "dateAdded": "2026-09-08"
+    "dateAdded": "2026-09-21"
   },
   {
-    "title": "Multivariate Analysis — Beginner Guide (MND, Hotelling, Correlation, Wishart)",
+    "title": "Multivariate Analysis \u2014 Beginner Guide (MND, Hotelling, Correlation, Wishart)",
     "course": "MVA",
     "courseName": "Multivariate Analysis",
     "path": "guides/mva/mva-beginner-guide.html",
-    "dateAdded": "2026-09-08"
+    "dateAdded": "2026-09-21"
   },
   {
     "title": "ML Numerical IA Prep",
     "course": "FML",
     "courseName": "Foundations of Machine Learning",
     "path": "guides/fml/ml-numerical-ia-prep.html",
-    "dateAdded": "2026-09-08"
+    "dateAdded": "2026-09-21"
   }
 ]

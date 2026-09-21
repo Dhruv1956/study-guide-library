@@ -177,6 +177,25 @@
   <a href="#p3-ga">11. Genetic Algorithms</a>
   <a href="#p3-ga-worked">12. A full worked GA example</a>
 
+  <h3>Part 4 &middot; Adversarial Search</h3>
+  <a href="#p4-intro">1. Multi-agent decision making</a>
+  <a href="#p4-minimax-def">2. The Minimax value</a>
+  <a href="#p4-minimax-worked">3. Worked examples: Minimax by hand</a>
+  <a href="#p4-minimax-properties">4. Why plain Minimax isn't enough</a>
+  <a href="#p4-alphabeta-intro">5. Alpha-Beta pruning</a>
+  <a href="#p4-alphabeta-worked">6. Worked example: tracing Alpha-Beta</a>
+  <a href="#p4-move-ordering">7. Move ordering</a>
+  <a href="#p4-beyond-alphabeta">8. Beyond Alpha-Beta</a>
+
+  <h3>Part 5 &middot; Constraint Satisfaction</h3>
+  <a href="#p5-intro">1. Why CSPs? Three examples</a>
+  <a href="#p5-graph">2. The Constraint Graph</a>
+  <a href="#p5-backtracking">3. Backtracking Search</a>
+  <a href="#p5-arcconsistency">4. Arc Consistency &amp; AC-3</a>
+  <a href="#p5-inference">5. Backtracking with INFERENCE</a>
+  <a href="#p5-ac3-limits">6. Where AC-3 falls short</a>
+  <a href="#p5-kconsistency">7. Generalising: k-Consistency</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full recap &amp; glossary</a>
 </nav>
@@ -184,10 +203,10 @@
 <div class="hero">
   <div class="eyebrow">Study Guide · Introduction to Artificial Intelligence</div>
   <h1>Agents, Search &amp; Local Search — Explained Slowly</h1>
-  <p class="lead">This guide walks through all three of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, and <em>Local Search Algorithms</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
+  <p class="lead">This guide walks through all five of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, and <em>Constraint Satisfaction Problems</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
   <div class="badges">
     <span class="badge">Dr Aishwarya S. — MIT Manipal</span>
-    <span class="badge">3 decks · 94 slides covered</span>
+    <span class="badge">5 decks · 159 slides covered</span>
     <span class="badge">Beginner pace</span>
   </div>
 </div>
@@ -204,7 +223,7 @@
   </p>
 </div>
 <div class="part-header">
-  <div class="ptag">Part 1 of 3</div>
+  <div class="ptag">Part 1 of 5</div>
   <h2>Agents &amp; Rationality</h2>
   <p>Before we can write any "intelligent" program, we need a precise, unambiguous way to talk about what a machine that "acts intelligently" even is. This part builds that vocabulary from a simple robot vacuum cleaner.</p>
 </div>
@@ -430,7 +449,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 2 of 3</div>
+  <div class="ptag">Part 2 of 5</div>
   <h2>Search Problems, Uninformed and Informed Search</h2>
   <p>Part 1 told us that a Goal-Based Agent needs to find a path from where it is to where it wants to be. Part 2 makes that idea completely precise, and builds up the family of algorithms — BFS, DFS, Uniform-Cost Search, Greedy Search, and A* — that actually find that path.</p>
 </div>
@@ -908,7 +927,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 3 of 3</div>
+  <div class="ptag">Part 3 of 5</div>
   <h2>Local Search Algorithms</h2>
   <p>Part 2 was all about finding the best <em>path</em> from start to goal. Part 3 asks: what if you don't care about the path at all — only about ending up in a good final configuration? That question leads to a completely different family of algorithms.</p>
 </div>
@@ -1338,6 +1357,826 @@
     <p>Hill Climbing (one state, always improve, gets stuck) → Simulated Annealing (one state, sometimes accept worse moves, escapes local optima using a cooling schedule) → Genetic/Evolutionary Algorithms (a whole population, mixing good partial solutions together via crossover, adding fresh randomness via mutation). Each step trades a bit more complexity for a much better ability to escape local optima and thoroughly explore a huge state space.</p>
   </div>
 </section>
+
+<div class="part-header">
+  <div class="ptag">Part 4 of 5</div>
+  <h2>Adversarial Search &amp; Games</h2>
+  <p>Every search algorithm in Part 2 assumed a passive environment — the world just sat there while you planned. This part drops that assumption: now there's an opponent, actively trying to make things go badly for you. That single change is what turns "search" into "game-playing," and it's the subject of this final part.</p>
+</div>
+
+<section class="slide" id="p4-intro">
+<span class="slide-tag">Slides 1–3</span>
+<h3>1. Multi-Agent Decision Making, and Zero-Sum Games</h3>
+<div class="an">
+<span class="box-label">Why games need a new kind of search</span>
+<p>Many decision-making problems involve <strong>multiple intelligent agents with conflicting objectives.</strong> Unlike classical search problems, where the environment is passive, game-playing problems require an agent to consider the actions of an opponent. The success of a move depends not only on the agent's own decision, but also on how other players respond. Games provide a convenient framework for studying strategic reasoning, because their rules, states, and possible actions are usually well defined. Popular examples studied in AI include Tic-Tac-Toe, Chess, Checkers, and Go.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Definition — Two-Player Zero-Sum Games</span>
+<p>Two-player zero-sum games are games with two players who take turns and play against each other, where <strong>what is good for one player is equally bad for the other.</strong> Examples: Tic-Tac-Toe, Chess.</p>
+</div>
+
+<div class="warn">
+<span class="box-label">A naming subtlety worth knowing</span>
+<p>In a general two-player zero-sum game, the sum of the payoffs to both players is <em>constant</em> for all possible outcomes — more precisely, these are <strong>constant-sum</strong> games. The term "zero-sum" is used anyway, because it's always possible to redefine the payoffs so that the sum is zero, without changing the strategic structure of the game at all.</p>
+</div>
+
+<h4>The formal definition of a game</h4>
+<div class="def">
+<span class="box-label">A game, as seven precise pieces</span>
+<p>A game can be defined with the following components:</p>
+<ul>
+<li><strong>\(S\)</strong> — the set of states; <strong>\(P\)</strong> — the set of players; <strong>\(A\)</strong> — the set of actions. For a two-player zero-sum game, \(P=\{\text{MAX},\text{MIN}\}\), where MAX is the player who plays first.</li>
+<li><strong>\(s_0\)</strong> — the initial state, specifying how the game is set up at the start.</li>
+<li><strong>To-Move(\(s\))</strong> — a function from \(S\) to \(P\): whose turn it is to move in state \(s\).</li>
+<li><strong>Actions(\(s\))</strong> — the set of legal moves in state \(s\), a subset of \(A\).</li>
+<li><strong>Result(\(s,a\))</strong> — a function from \(S\times A\) to \(S\): the transition model, defining the state that results from taking action \(a\) in state \(s\).</li>
+<li><strong>Is-Terminal(\(s\))</strong> — a terminal test, true when the game is over. States where the game has ended are called <strong>terminal states.</strong></li>
+<li><strong>Utility(\(s,p\))</strong> — a function from \(S\times P\) to \(\mathbb{R}\) (also called an objective or payoff function): the final numeric value to player \(p\) when the game ends in terminal state \(s\).</li>
+</ul>
+</div>
+<div class="key">
+<span class="box-label">Key takeaway — this is the same skeleton as Part 2, with one new piece</span>
+<p>Compare this to a Part 2 search problem: states, actions, a transition model, and a goal/terminal test are all exactly the same idea. The genuinely new ingredients are <strong>To-Move(\(s\))</strong> (because now more than one agent takes turns acting) and <strong>Utility</strong> replacing a single "cost" (because now two players disagree about what's good). Everything built in this part is really just Part 2's search machinery, adapted for an opponent.</p>
+</div>
+</section>
+
+<section class="slide" id="p4-minimax-def">
+<span class="slide-tag">Slides 5–7</span>
+<h3>2. Optimal Decisions: The Minimax Value</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>Given a game, the optimal strategy can be determined using the <strong>minimax value</strong> of each state \(s\), denoted \(\text{Minimax}(s)\). It is the utility of being in state \(s\) <em>for MAX</em>, assuming that <strong>both players play optimally</strong> from there to the end of the game.</p>
+</div>
+
+<div class="an">
+<span class="box-label">The intuition, in plain words</span>
+<p>MAX wants the biggest possible outcome; MIN wants the smallest possible outcome (for MAX — which, since it's zero-sum, is the same as MIN wanting the <em>biggest</em> outcome for itself). So when it's MAX's turn to move, MAX will pick whichever next state has the <strong>highest</strong> minimax value. When it's MIN's turn, MIN will pick whichever next state has the <strong>lowest</strong> minimax value. "Minimax" is just this tug-of-war, computed all the way down the tree.</p>
+</div>
+
+<div class="def">
+<span class="box-label">The recursive definition</span>
+<p>For a terminal state \(s\): \(\text{Minimax}(s)=\text{Utility}(s,\text{MAX})\).</p>
+<p>For a non-terminal state: MAX prefers to move to a state of <strong>maximum</strong> value when it's MAX's turn; MIN prefers to move to a state of <strong>minimum</strong> value when it's MIN's turn. (Minimum value for MAX is equivalent to maximum value for MIN.) So:</p>
+<p>\[ \text{Minimax}(s) = \begin{cases}\text{Utility}(s,\text{MAX}) & \text{if } s \text{ is terminal}\\[4pt] \displaystyle\max_{a\in\text{Actions}(s)}\text{Minimax}(\text{Result}(s,a)) & \text{if To-Move}(s)=\text{MAX}\\[8pt] \displaystyle\min_{a\in\text{Actions}(s)}\text{Minimax}(\text{Result}(s,a)) & \text{if To-Move}(s)=\text{MIN}\end{cases} \]</p>
+</div>
+
+<div class="key">
+<span class="box-label">How to actually use this to pick a move</span>
+<p>At a state \(s\), the <strong>best action</strong> is the one that leads to a state of: maximum Minimax value among all successor states, if To-Move(\(s\))=MAX; or minimum Minimax value, if To-Move(\(s\))=MIN.</p>
+<p>Note that the computation of the minimax value of a state \(s\) <strong>starts at terminal states and works backward</strong> all the way to state \(s\) — you can only know if a move is good by first knowing how the game plays out after it.</p>
+</div>
+
+<h4>The Minimax Search algorithm</h4>
+<div class="def">
+<span class="box-label">Pseudocode — MINIMAX-SEARCH</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.6;"><b>function</b> MINIMAX-SEARCH(state) <b>returns</b> an action
+    player &larr; TO-MOVE(state)
+    value, move &larr; MAX-VALUE(state)
+    <b>return</b> move
+
+<b>function</b> MAX-VALUE(state) <b>returns</b> a (utility, move) pair
+    <b>if</b> IS-TERMINAL(state) <b>then return</b> UTILITY(state, player), null
+    v &larr; &minus;&infin;
+    <b>for each</b> a <b>in</b> ACTIONS(state) <b>do</b>
+        v&prime;, a&prime; &larr; MIN-VALUE(RESULT(state, a))
+        <b>if</b> v&prime; &gt; v <b>then</b> v, move &larr; v&prime;, a
+    <b>return</b> v, move
+
+<b>function</b> MIN-VALUE(state) <b>returns</b> a (utility, move) pair
+    <b>if</b> IS-TERMINAL(state) <b>then return</b> UTILITY(state, player), null
+    v &larr; +&infin;
+    <b>for each</b> a <b>in</b> ACTIONS(state) <b>do</b>
+        v&prime;, a&prime; &larr; MAX-VALUE(RESULT(state, a))
+        <b>if</b> v&prime; &lt; v <b>then</b> v, move &larr; v&prime;, a
+    <b>return</b> v, move</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Notice MAX-VALUE and MIN-VALUE call <em>each other</em>, recursively — exactly mirroring the definition above: to evaluate a MAX state, ask MIN-VALUE about each successor; to evaluate a MIN state, ask MAX-VALUE about each successor. The recursion bottoms out at IS-TERMINAL, where the true utility is simply read off.</p>
+</div>
+</section>
+
+<section class="slide" id="p4-minimax-worked">
+<span class="slide-tag">Slides 9–14</span>
+<h3>3. Worked Examples — Computing Minimax by Hand</h3>
+
+<div class="ex">
+<span class="box-label">Setting up utility for Tic-Tac-Toe</span>
+<p>Tic-Tac-Toe with players MAX(X) and MIN(O). For a terminal state \(s\):</p>
+<p>\[ \text{Utility}(s,\text{MAX}) = \begin{cases}1 & \text{if X wins}\\-1 & \text{if O wins}\\0 & \text{if it's a draw}\end{cases} \]</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Example 1 — one move from the end</span>
+<p>Find the minimax value of the state below; it's O's turn (To-Move(\(s\))=O):</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:.95em;margin:12px 0;">
+<table style="margin:0 auto;border-collapse:collapse;">
+<tr><td style="border:1px solid #999;width:34px;height:34px;text-align:center;">&nbsp;</td><td style="border:1px solid #999;width:34px;height:34px;text-align:center;">X</td><td style="border:1px solid #999;width:34px;height:34px;text-align:center;">O</td></tr>
+<tr><td style="border:1px solid #999;text-align:center;">O</td><td style="border:1px solid #999;text-align:center;">X</td><td style="border:1px solid #999;text-align:center;">X</td></tr>
+<tr><td style="border:1px solid #999;text-align:center;">X</td><td style="border:1px solid #999;text-align:center;">&nbsp;</td><td style="border:1px solid #999;text-align:center;">O</td></tr>
+</table>
+</div>
+<p>O has two legal moves — call them \(a\) (top-left) and \(b\) (bottom-middle):</p>
+<ul>
+<li><strong>Move a:</strong> O plays top-left. Only one cell remains, X takes it — a <strong>terminal</strong> state where X gets three-in-a-row down the middle column. Minimax = Utility = <strong>1</strong>.</li>
+<li><strong>Move b:</strong> O plays bottom-middle. One cell remains, X takes it — <strong>terminal</strong>, no three-in-a-row anywhere: a draw. Minimax = Utility = <strong>0</strong>.</li>
+</ul>
+<p>Since it's O's turn (MIN), O picks the <strong>smaller</strong> value:</p>
+<p>\[ \text{Minimax}(s) = \min\{1,0\} = 0 \]</p>
+<span class="box-label" style="display:block;margin-top:8px;">Best action = b (O steers the game toward a draw rather than a loss)</span>
+</div>
+
+<div class="ex">
+<span class="box-label">Example 2 — a full 3-ply tree (two empty cells)</span>
+<p>Find the minimax value of the state below; it's X's turn (To-Move(\(s\))=X):</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:.95em;margin:12px 0;">
+<table style="margin:0 auto;border-collapse:collapse;">
+<tr><td style="border:1px solid #999;width:34px;height:34px;text-align:center;">&nbsp;</td><td style="border:1px solid #999;width:34px;height:34px;text-align:center;">X</td><td style="border:1px solid #999;width:34px;height:34px;text-align:center;">O</td></tr>
+<tr><td style="border:1px solid #999;text-align:center;">O</td><td style="border:1px solid #999;text-align:center;">X</td><td style="border:1px solid #999;text-align:center;">&nbsp;</td></tr>
+<tr><td style="border:1px solid #999;text-align:center;">X</td><td style="border:1px solid #999;text-align:center;">&nbsp;</td><td style="border:1px solid #999;text-align:center;">O</td></tr>
+</table>
+</div>
+<p>X has three legal moves: \(a\) (top-left), \(b\) (middle-right), \(c\) (bottom-middle).</p>
+<table class="grid" style="font-size:.9em">
+<tr><th>X's move</th><th>Then O's best reply</th><th>Result</th></tr>
+<tr><td><strong>a</strong> (top-left)</td><td>O can reply at middle-right (→ terminal, O wins the right column, value &minus;1) or bottom-middle (→ X forced to fill last cell → terminal draw, value 0)</td><td>MIN picks the smaller: \(\min\{-1,0\}=-1\)</td></tr>
+<tr><td><strong>b</strong> (middle-right)</td><td>O can reply at top-left (→ X forced to fill last cell → terminal, X wins the middle column, value 1) or bottom-middle (→ X forced to fill last cell → terminal draw, value 0)</td><td>MIN picks the smaller: \(\min\{1,0\}=0\)</td></tr>
+<tr><td><strong>c</strong> (bottom-middle)</td><td>This move itself completes three-in-a-row for X down the middle column — already terminal.</td><td>Minimax = Utility = <strong>1</strong></td></tr>
+</table>
+<p>Since it's X's turn (MAX), X picks the <strong>largest</strong> value among its three options:</p>
+<p>\[ \text{Minimax}(s) = \max\{-1,0,1\} = 1 \]</p>
+<span class="box-label" style="display:block;margin-top:8px;">Best move = c (X wins immediately)</span>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway from both Tic-Tac-Toe examples</span>
+<p>Notice the pattern in Example 2: at the MIN level, each of O's two possible replies had to be evaluated all the way to a terminal state <em>before</em> O's node could get a value, and only then could X's node (the root) be evaluated. This backward flow — terminal states first, then working back up — is exactly the recursive structure of MAX-VALUE and MIN-VALUE calling each other.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Example 3 — an abstract game tree (the example reused throughout the rest of this part)</span>
+<p>Find the minimax value of state A, given the game tree below (MAX at the root, MIN at the next level, terminal utilities as the leaves):</p>
+<div style="text-align:center; margin:16px 0;">
+<svg viewBox="0 0 520 260" width="100%" style="max-width:520px;">
+<g font-family="EB Garamond" font-size="15">
+<text x="10" y="15" fill="#a8632f" font-weight="700">MAX</text>
+<text x="130" y="15" fill="#a8632f" font-weight="700">MIN</text>
+</g>
+<polygon points="20,120 45,105 45,135" fill="none" stroke="#2b2620" stroke-width="1.5"/>
+<text x="27" y="124" font-size="13">A</text>
+<polygon points="150,45 175,30 175,60" fill="none" stroke="#2b2620" stroke-width="1.5"/>
+<text x="157" y="49" font-size="13">B</text>
+<polygon points="150,120 175,105 175,135" fill="none" stroke="#2b2620" stroke-width="1.5"/>
+<text x="157" y="124" font-size="13">C</text>
+<polygon points="150,195 175,180 175,210" fill="none" stroke="#2b2620" stroke-width="1.5"/>
+<text x="157" y="199" font-size="13">D</text>
+<g stroke="#2b2620" stroke-width="1.2" fill="none">
+<line x1="45" y1="120" x2="150" y2="45"/>
+<line x1="45" y1="120" x2="150" y2="120"/>
+<line x1="45" y1="120" x2="150" y2="195"/>
+</g>
+<text x="85" y="70" font-size="12">a&#8321;</text><text x="90" y="118" font-size="12">a&#8322;</text><text x="85" y="168" font-size="12">a&#8323;</text>
+<g font-family="JetBrains Mono" font-size="12">
+<text x="350" y="15" font-weight="700" fill="#a8632f">Utility</text>
+<text x="320" y="20" font-size="10">T1..T9</text>
+</g>
+<g stroke="#2b2620" stroke-width="1" fill="none">
+<line x1="175" y1="45" x2="290" y2="15"/><line x1="175" y1="45" x2="290" y2="45"/><line x1="175" y1="45" x2="290" y2="75"/>
+<line x1="175" y1="120" x2="290" y2="95"/><line x1="175" y1="120" x2="290" y2="125"/><line x1="175" y1="120" x2="290" y2="155"/>
+<line x1="175" y1="195" x2="290" y2="175"/><line x1="175" y1="195" x2="290" y2="205"/><line x1="175" y1="195" x2="290" y2="235"/>
+</g>
+<g font-family="JetBrains Mono" font-size="12">
+<text x="295" y="18">T1 = 3</text><text x="295" y="48">T2 = 12</text><text x="295" y="78">T3 = 8</text>
+<text x="295" y="98">T4 = 2</text><text x="295" y="128">T5 = 4</text><text x="295" y="158">T6 = 6</text>
+<text x="295" y="178">T7 = 14</text><text x="295" y="208">T8 = 5</text><text x="295" y="238">T9 = 4</text>
+</g>
+</g>
+</svg>
+</div>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p><strong>MIN nodes evaluate first</strong> (they're closer to the terminal leaves):</p>
+<p>\[ B=\min\{3,12,8\}=3 \qquad C=\min\{2,4,6\}=2 \qquad D=\min\{14,5,4\}=4 \]</p>
+<p><strong>Then the MAX root:</strong></p>
+<p>\[ \text{Minimax}(A) = \max\{3,2,4\} = 4 \]</p>
+</div>
+<span class="box-label" style="display:block;margin-top:8px;">Best move = a₃ (leading to D, value 4 — the largest of MAX's three options)</span>
+</div>
+</section>
+
+<section class="slide" id="p4-minimax-properties">
+<span class="slide-tag">Slide 15</span>
+<h3>4. Why Plain Minimax Isn't Enough</h3>
+<div class="def">
+<span class="box-label">The Minimax Search algorithm's cost</span>
+<p>Minimax Search performs a <strong>depth-first search</strong> of the game tree, starting from the node corresponding to the input state. If there are \(b\) legal moves from each node and the maximum depth of the tree is \(m\), the time complexity of minimax-search is \(O(b^m)\) — exponential in the depth of the tree.</p>
+</div>
+<div class="warn">
+<span class="box-label">Why this actually matters — chess as a worked-out example</span>
+<p>The exponential time complexity makes minimax-search <strong>practically infeasible</strong> for complex games. The game tree for chess has an average branching factor of about \(b=35\) and an average depth of about \(m=80\). So the total number of states in an average game tree is about \(35^{80}\approx10^{123}\) — nowhere close to feasible to search, on any computer that could ever be built.</p>
+</div>
+<div class="key">
+<span class="box-label">Key takeaway</span>
+<p>Minimax is <strong>correct</strong> — it always finds the true optimal move — but it's <strong>useless in practice</strong> for any game complex enough to be interesting. The rest of this part is entirely about fixing this, first exactly (Alpha-Beta pruning) and then approximately (heuristic techniques).</p>
+</div>
+</section>
+
+<section class="slide" id="p4-alphabeta-intro">
+<span class="slide-tag">Slides 16–17</span>
+<h3>5. Alpha-Beta Pruning</h3>
+<div class="an">
+<span class="box-label">The key question</span>
+<p><strong>Can we find the minimax values in a cleverer way?</strong> Yes — by skipping the nodes that are <em>irrelevant</em> to the minimax value of the input state. This is known as <strong>alpha-beta pruning</strong> of the game tree. The ALPHA-BETA-SEARCH algorithm is the improvement over MINIMAX-SEARCH obtained by incorporating this pruning.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Pseudocode — ALPHA-BETA-SEARCH</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.84em;line-height:1.6;"><b>function</b> ALPHA-BETA-SEARCH(state) <b>returns</b> an action
+    player &larr; TO-MOVE(state)
+    value, move &larr; MAX-VALUE(state, &minus;&infin;, +&infin;)
+    <b>return</b> move
+
+<b>function</b> MAX-VALUE(state, &alpha;, &beta;) <b>returns</b> a (utility, move) pair
+    <b>if</b> IS-TERMINAL(state) <b>then return</b> UTILITY(state, player), null
+    v &larr; &minus;&infin;
+    <b>for each</b> a <b>in</b> ACTIONS(state) <b>do</b>
+        v&prime;, a&prime; &larr; MIN-VALUE(RESULT(state, a), &alpha;, &beta;)
+        <b>if</b> v&prime; &gt; v <b>then</b>
+            v, move &larr; v&prime;, a
+            &alpha; &larr; max{&alpha;, v}
+        <b>if</b> v &ge; &beta; <b>then return</b> v, move
+    <b>return</b> v, move
+
+<b>function</b> MIN-VALUE(state, &alpha;, &beta;) <b>returns</b> a (utility, move) pair
+    <b>if</b> IS-TERMINAL(state) <b>then return</b> UTILITY(state, player), null
+    v &larr; +&infin;
+    <b>for each</b> a <b>in</b> ACTIONS(state) <b>do</b>
+        v&prime;, a&prime; &larr; MAX-VALUE(RESULT(state, a), &alpha;, &beta;)
+        <b>if</b> v&prime; &lt; v <b>then</b>
+            v, move &larr; v&prime;, a
+            &beta; &larr; min{&beta;, v}
+        <b>if</b> v &le; &alpha; <b>then return</b> v, move
+    <b>return</b> v, move</pre>
+</div>
+
+<div class="def">
+<span class="box-label">What α and β actually mean</span>
+<ul>
+<li><strong>\(\alpha\)</strong> — the value of the <strong>best (highest-value) choice found so far</strong> for MAX, anywhere along the current path from the root.</li>
+<li><strong>\(\beta\)</strong> — the value of the <strong>best (lowest-value) choice found so far</strong> for MIN, anywhere along the current path from the root.</li>
+</ul>
+<p>Both start as wide open as possible (\(\alpha=-\infty\), \(\beta=+\infty\)) and only ever <strong>tighten</strong> as the search proceeds. The pruning trigger is simple: inside MAX-VALUE, once \(v\ge\beta\), MAX already has a move at least as good as something MIN can force earlier in the tree — so MIN would never let the game reach this node, and there's no point computing the rest of its siblings. The mirror-image logic applies inside MIN-VALUE when \(v\le\alpha\).</p>
+</div>
+</section>
+
+<section class="slide" id="p4-alphabeta-worked">
+<span class="slide-tag">Slides 18–20</span>
+<h3>6. Worked Example — Tracing Alpha-Beta Step by Step</h3>
+<p>Apply ALPHA-BETA-SEARCH to the exact same abstract tree from Example 3 above (A → B,C,D → nine terminal leaves T1–T9). This trace shows <em>every single function call</em> the algorithm makes, in order, together with the \((\alpha,\beta)\) window each call inherits.</p>
+
+<div class="ex">
+<span class="box-label">The full call-by-call trace</span>
+<p>ALPHA-BETA-SEARCH(A): player ← MAX</p>
+<table class="grid" style="font-size:.82em">
+<tr><th>#</th><th>Level</th><th>Function call</th><th>Inherited (α, β)</th><th>Result</th><th>Note</th></tr>
+<tr><td>1</td><td>0</td><td>MAX-VALUE(A, &minus;&infin;, +&infin;)</td><td>(&minus;&infin;, +&infin;)</td><td></td><td></td></tr>
+<tr><td>2</td><td>1</td><td>MIN-VALUE(B, &minus;&infin;, +&infin;)</td><td>(&minus;&infin;, +&infin;)</td><td></td><td></td></tr>
+<tr><td>3</td><td>2</td><td>MAX-VALUE(T1, &minus;&infin;, +&infin;)</td><td>(&minus;&infin;, +&infin;)</td><td><strong>3, null</strong></td><td>β = min{+∞,3} = 3</td></tr>
+<tr><td>4</td><td>2</td><td>MAX-VALUE(T2, &minus;&infin;, 3)</td><td>(&minus;&infin;, 3)</td><td><strong>12, null</strong></td><td>No update</td></tr>
+<tr><td>5</td><td>2</td><td>MAX-VALUE(T3, &minus;&infin;, 3)</td><td>(&minus;&infin;, 3)</td><td><strong>8, null</strong></td><td>No update</td></tr>
+<tr><td>&ndash;</td><td>1</td><td>MIN-VALUE(B, &minus;&infin;, +&infin;) returns</td><td></td><td><strong>3, b₁</strong></td><td>α = max{&minus;∞,3} = 3</td></tr>
+<tr><td>6</td><td>1</td><td>MIN-VALUE(C, 3, +&infin;)</td><td>(3, +&infin;)</td><td></td><td></td></tr>
+<tr><td>7</td><td>2</td><td>MAX-VALUE(T4, 3, +&infin;)</td><td>(3, +&infin;)</td><td><strong>2, null</strong></td><td>β = min{+∞,2} = 2; v = 2 ≤ α(=3) → <strong>Prune remaining child nodes</strong></td></tr>
+<tr><td>&ndash;</td><td>1</td><td>MIN-VALUE(C, 3, +&infin;) returns</td><td></td><td><strong>2, c₁</strong></td><td>No update</td></tr>
+<tr><td>8</td><td>1</td><td>MIN-VALUE(D, 3, +&infin;)</td><td>(3, +&infin;)</td><td></td><td></td></tr>
+<tr><td>9</td><td>2</td><td>MAX-VALUE(T7, 3, +&infin;)</td><td>(3, +&infin;)</td><td><strong>14, null</strong></td><td>β = min{+∞,14} = 14</td></tr>
+<tr><td>10</td><td>2</td><td>MAX-VALUE(T8, 3, 14)</td><td>(3, 14)</td><td><strong>5, null</strong></td><td>β = min{14,5} = 5</td></tr>
+<tr><td>11</td><td>2</td><td>MAX-VALUE(T9, 3, 5)</td><td>(3, 5)</td><td><strong>4, null</strong></td><td>β = min{5,4} = 4</td></tr>
+<tr><td>&ndash;</td><td>1</td><td>MIN-VALUE(D, 3, +&infin;) returns</td><td></td><td><strong>4, d₃</strong></td><td>α = max{&minus;∞,4} = 4</td></tr>
+<tr><td>&ndash;</td><td>0</td><td>MAX-VALUE(A, &minus;&infin;, +&infin;) returns</td><td></td><td><strong>4, a₃</strong></td><td></td></tr>
+</table>
+<p style="text-align:center;font-weight:700;margin-top:10px;">ALPHA-BETA-SEARCH(A) returns a₃ as the best move at state A.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Where the pruning actually happened, and why it's safe</span>
+<p>Look at call #7: evaluating C's first child, T4, gives \(v=2\). At this point, \(\beta=\min\{+\infty,2\}=2\), and the condition \(v\le\alpha\) fires (\(2\le3\)). This means: <strong>C's value can be at most 2</strong> — and since B already guaranteed MAX a value of 3 (call #2–5), MAX would never choose to move toward C anyway, no matter what C's remaining children (T5=4, T6=6) turn out to be. So <strong>T5 and T6 are never evaluated at all</strong> — call #7 returns immediately after just one child. Compare this to the full minimax trace in Example 3, which had to compute all nine leaf values; alpha-beta needed only <strong>seven</strong> (T1, T2, T3, T4, T7, T8, T9), and still arrived at the exact same answer (value 4, move a₃).</p>
+</div>
+
+<div class="def">
+<span class="box-label">Note — what the intermediate values mean</span>
+<p>In plain MINIMAX-SEARCH, every intermediate call to MAX-VALUE/MIN-VALUE returns the <strong>true</strong> minimax value of its subtree. In ALPHA-BETA-SEARCH, this is <em>not</em> guaranteed — an intermediate call's returned value is only a <strong>bound</strong> on the true minimax value, provably good enough for the decision at the parent state (exactly what happened with C above: its "true" value of 2 was never fully double-checked against T5/T6, but it didn't need to be). ALPHA-BETA-SEARCH guarantees the correct best move only <strong>at the root</strong> — but that guarantee is all that's actually needed. The whole point of alpha-beta-search is to get the <em>same answer</em> as minimax-search, with less work.</p>
+</div>
+</section>
+
+<section class="slide" id="p4-move-ordering">
+<span class="slide-tag">Slides 22–23</span>
+<h3>7. Move Ordering — When Does Alpha-Beta Help the Most?</h3>
+<div class="def">
+<span class="box-label">The effectiveness of pruning depends entirely on move order</span>
+<p>The effectiveness of alpha-beta pruning is <strong>highly dependent on the order</strong> in which the child states of any node are examined. With <strong>"perfect" ordering</strong> of moves at every state, alpha-beta-search needs only \(O(b^{m/2})\) nodes, instead of \(O(b^m)\) for minimax-search. This means the <strong>effective branching factor reduces from \(b\) to \(\sqrt b\)</strong>.</p>
+</div>
+<div class="key">
+<span class="box-label">What this means for chess, concretely</span>
+<p>For chess (\(b\approx35\)), perfect move ordering means an effective branching factor of about \(\sqrt{35}\approx6\) — instead of 35. That's the difference between a hopeless \(35^{80}\) and a merely enormous \(6^{80}\); still not fully solvable, but a genuinely dramatic improvement, and exactly why every real game-playing program invests heavily in good move ordering.</p>
+</div>
+
+<div class="an">
+<span class="box-label">An example of a perfectly ordered game tree</span>
+<p>Here's a deeper (4-level) tree — MAX, MIN, MAX, MIN — illustrating what "perfect ordering" looks like in practice. Every value shown is the already-computed backed-up minimax value at that node:</p>
+</div>
+<div style="text-align:center; margin:16px 0;">
+<svg viewBox="0 0 680 400" width="100%" style="max-width:680px;">
+<g font-family="EB Garamond" font-size="14" fill="#a8632f" font-weight="700">
+<text x="20" y="15">MAX</text><text x="150" y="15">MIN</text><text x="300" y="15">MAX</text><text x="470" y="15">MIN</text>
+</g>
+<g font-family="JetBrains Mono" font-size="12">
+<!-- Root A -->
+<polygon points="20,195 45,180 45,210" fill="none" stroke="#2b2620" stroke-width="1.3"/>
+<text x="15" y="230" font-size="12">A=5</text>
+<!-- Level1 B,C -->
+<polygon points="150,100 175,85 175,115" fill="none" stroke="#2b2620" stroke-width="1.3"/>
+<text x="145" y="130" font-size="12">B=5</text>
+<polygon points="150,290 175,275 175,305" fill="none" stroke="#2b2620" stroke-width="1.3"/>
+<text x="145" y="320" font-size="12">C=4</text>
+<!-- Level2 D,E,F,G -->
+<polygon points="290,50 313,37 313,63" fill="none" stroke="#2b2620" stroke-width="1.2"/><text x="283" y="78" font-size="11">D=5</text>
+<polygon points="290,150 313,137 313,163" fill="none" stroke="#2b2620" stroke-width="1.2"/><text x="283" y="178" font-size="11">E=9</text>
+<polygon points="290,240 313,227 313,253" fill="none" stroke="#2b2620" stroke-width="1.2"/><text x="283" y="268" font-size="11">F=4</text>
+<polygon points="290,340 313,327 313,353" fill="none" stroke="#2b2620" stroke-width="1.2"/><text x="283" y="378" font-size="11">G=6</text>
+<!-- Level3 H,I,J,K,L,M,N,O -->
+<polygon points="440,25 460,14 460,36" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="10" font-size="10">H=5</text>
+<polygon points="440,75 460,64 460,86" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="98" font-size="10">I=3</text>
+<polygon points="440,125 460,114 460,136" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="110" font-size="10">J=9</text>
+<polygon points="440,175 460,164 460,186" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="198" font-size="10">K=2</text>
+<polygon points="440,225 460,214 460,236" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="210" font-size="10">L=4</text>
+<polygon points="440,275 460,264 460,286" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="298" font-size="10">M=1</text>
+<polygon points="440,325 460,314 460,336" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="310" font-size="10">N=6</text>
+<polygon points="440,375 460,364 460,386" fill="none" stroke="#2b2620" stroke-width="1"/><text x="435" y="398" font-size="10">O=3</text>
+<!-- leaves text only -->
+<text x="490" y="18">5, 8</text><text x="490" y="68">3, 5</text><text x="490" y="118">9, 12</text><text x="490" y="168">2, 6</text>
+<text x="490" y="218">4, 7</text><text x="490" y="268">1, 3</text><text x="490" y="318">6, 10</text><text x="490" y="368">3, 8</text>
+</g>
+<g stroke="#888" stroke-width="1" fill="none">
+<line x1="45" y1="195" x2="150" y2="100"/><line x1="45" y1="195" x2="150" y2="290"/>
+<line x1="175" y1="100" x2="290" y2="50"/><line x1="175" y1="100" x2="290" y2="150"/>
+<line x1="175" y1="290" x2="290" y2="240"/><line x1="175" y1="290" x2="290" y2="340"/>
+<line x1="313" y1="50" x2="440" y2="25"/><line x1="313" y1="50" x2="440" y2="75"/>
+<line x1="313" y1="150" x2="440" y2="125"/><line x1="313" y1="150" x2="440" y2="175"/>
+<line x1="313" y1="240" x2="440" y2="225"/><line x1="313" y1="240" x2="440" y2="275"/>
+<line x1="313" y1="340" x2="440" y2="325"/><line x1="313" y1="340" x2="440" y2="375"/>
+</g>
+</svg>
+</div>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Under perfect ordering, at every MIN node the smallest-valued child is examined first, and at every MAX node the largest-valued child is examined first — this is precisely what lets alpha-beta cut off every second child at the deepest level, achieving the \(O(b^{m/2})\) bound described above.</p>
+</section>
+
+<section class="slide" id="p4-beyond-alphabeta">
+<span class="slide-tag">Slides 24–26</span>
+<h3>8. Beyond Alpha-Beta — What Real Game Engines Actually Do</h3>
+<div class="warn">
+<span class="box-label">Even perfect ordering isn't enough for chess</span>
+<p>Even an alpha-beta-search with better move ordering is <strong>not feasible</strong> for games like chess, because there are still too many states to explore in the available time.</p>
+</div>
+
+<div class="an">
+<span class="box-label">Shannon's two strategies (1950) — the original idea</span>
+<p>In the first paper on computer game-playing, <em>Programming a Computer for Playing Chess</em> (C. E. Shannon, <em>Philosophical Magazine</em>, Vol. 41, 7th series, 256–275, 1950), Claude Shannon recognized this exact problem and proposed two strategies:</p>
+<ul>
+<li><strong>Type A strategy</strong> — considers <em>all</em> possible moves to a certain depth in the search tree, then uses a heuristic function to estimate the utility of states at that depth. Explores a <strong>wide but shallow</strong> portion of the tree.</li>
+<li><strong>Type B strategy</strong> — ignores moves that look bad, and follows promising paths "as far as possible." Explores a <strong>deep but narrow</strong> portion of the tree.</li>
+</ul>
+</div>
+
+<div class="def">
+<span class="box-label">Key ideas used in practice — heuristic alpha-beta search</span>
+<ul>
+<li><strong>Cutoff test replacing terminal test</strong> — stop at a depth limit instead of searching all the way to the end of the game (this is Type A in action).</li>
+<li><strong>Evaluation function replacing utility function</strong> — estimate how good a non-terminal position is (e.g. king safety, piece mobility, in chess) instead of computing the true game value.</li>
+<li><strong>Move ordering</strong> — searching the most promising moves first (e.g. using prior knowledge or iterative deepening results) makes alpha-beta pruning far more effective, potentially reducing the effective branching factor dramatically — exactly Section 7's \(O(b^{m/2})\) result, chased deliberately.</li>
+<li><strong>Transposition tables</strong> — caching previously-seen positions (since different move orders can reach the <em>same</em> position) avoids redundant search.</li>
+<li><strong>Forward pruning / selective search</strong> — deliberately ignoring moves that look bad, at the risk of missing something (this is Type B; used carefully, since it's not guaranteed safe, unlike alpha-beta's pruning).</li>
+<li><strong>Iterative deepening</strong> — run depth-limited search with increasing depth; useful for time management, and for improving move ordering at each successive depth.</li>
+</ul>
+</div>
+
+<div class="key">
+<span class="box-label">And beyond alpha-beta entirely — where modern game AI has gone</span>
+<ul>
+<li><strong>Monte Carlo Tree Search (MCTS)</strong> — used in modern game AI (e.g. Go, and hybrid approaches in chess engines). Builds a search tree using random/guided <em>playouts</em>, rather than exhaustively expanding every node.</li>
+<li><strong>Learned evaluation functions</strong> — systems such as <strong>AlphaZero</strong> use deep neural networks, trained through self-play/reinforcement learning, to <em>learn</em> an evaluation function — combined with MCTS to evaluate board positions and select the most promising moves.</li>
+</ul>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway for all of Part 4 — and the whole course</span>
+<p>The story of this entire part mirrors the story of Part 2 almost exactly: start with a method that's provably correct but exponentially slow (Minimax, like uninformed search); find a way to get the <em>exact same answer</em> with much less work by being smarter about what to explore (Alpha-Beta pruning, like A*'s use of a heuristic); and when even that isn't fast enough for the hardest real-world cases, fall back on principled approximations (heuristic evaluation functions and depth cutoffs, echoing Part 3's local search trade-off of optimality for speed). Whether the environment is passive (Parts 2–3) or adversarial (Part 4), the same core tension — correctness versus computational feasibility — keeps reappearing, and the same family of ideas (heuristics, pruning, approximation) keeps being the answer.</p>
+</div>
+</section>
+
+
+
+<div class="part-header">
+  <div class="ptag">Part 5 of 5</div>
+  <h2>Constraint Satisfaction Problems</h2>
+  <p>Every search problem in Part 2 asked "what sequence of actions reaches a goal?" This part asks a subtly different question: forget the path entirely — what <em>assignment of values</em> satisfies every rule at once? That reframing is what makes Constraint Satisfaction Problems (CSPs) different from ordinary search, and it turns out to be exactly the right lens for scheduling, puzzles, and map colouring alike.</p>
+</div>
+
+<section class="slide" id="p5-intro">
+<span class="slide-tag">Slides 1–2</span>
+<h3>1. Why CSPs? Three Motivating Examples</h3>
+<div class="an">
+<span class="box-label">The common thread</span>
+<p>Many problems require us to make a <strong>collection of decisions</strong> while respecting certain restrictions (constraints). Three common examples:</p>
+<ol>
+<li><strong>Map Colouring</strong> — given a map, assign colours to regions such that neighbouring regions get different colours.</li>
+<li><strong>Exam Scheduling</strong> — given a set of courses (students may be enrolled in multiple) and a set of time slots, schedule exams so no student has two exams at the same time.</li>
+<li><strong>Sudoku</strong> — given a partially filled 9×9 grid, assign numbers to the remaining cells so every row, column, and 3×3 subgrid contains 1–9 exactly once.</li>
+</ol>
+<p>Notice what all three have in common: there's no notion of "moving through" a sequence of states one action at a time. There's just a set of unknowns, and a set of rules those unknowns must jointly satisfy.</p>
+</div>
+
+<h4>Formalising a CSP</h4>
+<div class="def">
+<span class="box-label">Definition — the three components of a CSP</span>
+<ul>
+<li><strong>Set of variables:</strong> \(\{X_1,X_2,\dots,X_n\}\)</li>
+<li><strong>Domains of the variables:</strong> for each \(1\le i\le n\), the set \(D_i\) is the set of possible values of \(X_i\).</li>
+<li><strong>Constraints:</strong> specify the allowable combinations of values.</li>
+</ul>
+</div>
+
+<div class="def">
+<span class="box-label">Definition — assignments</span>
+<ul>
+<li>An assignment of values to <strong>only some</strong> of the variables is a <strong>partial assignment.</strong></li>
+<li>An assignment of values to <strong>all</strong> of the variables is a <strong>complete assignment.</strong></li>
+<li>An assignment that does not violate any constraints is a <strong>consistent assignment.</strong></li>
+<li><strong>A solution to the CSP is a complete <em>and</em> consistent assignment.</strong></li>
+</ul>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway — this is a strictly smaller vocabulary than Part 2's search problems</span>
+<p>There's no transition model, no path cost, no notion of one state being "reached from" another. A CSP only has three ingredients: variables, domains, constraints. Everything in this part — every algorithm, every worked example — is really just different strategies for building up a complete, consistent assignment out of these three ingredients.</p>
+</div>
+
+<h4>Example 1 — Map Colouring</h4>
+<div class="ex">
+<span class="box-label">Problem</span>
+<p>Colour the regions of the map below using three colours, such that neighbouring regions get different colours:</p>
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px;">
+<ellipse cx="210" cy="120" rx="200" ry="100" fill="none" stroke="#2b2620" stroke-width="1.6"/>
+<line x1="130" y1="30" x2="130" y2="210" stroke="#2a4d6e" stroke-width="1.4"/>
+<line x1="240" y1="24" x2="240" y2="127" stroke="#2a4d6e" stroke-width="1.4"/>
+<line x1="130" y1="127" x2="405" y2="127" stroke="#2a4d6e" stroke-width="1.4"/>
+<line x1="270" y1="127" x2="270" y2="210" stroke="#2a4d6e" stroke-width="1.4"/>
+<line x1="270" y1="168" x2="390" y2="168" stroke="#2a4d6e" stroke-width="1.4"/>
+<g font-family="EB Garamond" font-size="17" font-weight="700">
+<text x="72" y="122">A</text>
+<text x="180" y="90">B</text>
+<text x="310" y="90">C</text>
+<text x="195" y="172">D</text>
+<text x="320" y="152">E</text>
+<text x="320" y="193">F</text>
+</g>
+<circle cx="360" cy="235" r="26" fill="none" stroke="#2b2620" stroke-width="1.6"/>
+<text x="352" y="241" font-family="EB Garamond" font-size="17" font-weight="700">G</text>
+</svg>
+</div>
+</div>
+
+<div class="ex">
+<span class="box-label">Formulation as a CSP</span>
+<p><strong>Variables:</strong> \(A,B,C,D,E,F,G\)</p>
+<p><strong>Domains:</strong> \(D_A=D_B=D_C=D_D=D_E=D_F=D_G=\{\text{red}(r),\text{green}(g),\text{blue}(b)\}\)</p>
+<p><strong>Constraints:</strong> \(A\ne B,\ A\ne D,\ B\ne C,\ B\ne D,\ C\ne D,\ C\ne E,\ D\ne E,\ D\ne F,\ E\ne F\)</p>
+<p><strong>A solution:</strong> \(A=r,\,B=g,\,C=r,\,D=b,\,E=g,\,F=r,\,G=r\)</p>
+</div>
+<div class="warn">
+<span class="box-label">Notice — G has no constraints at all</span>
+<p>Region G doesn't border any other region, so it never appears in <em>any</em> constraint — it can be coloured however we like, completely independently of the rest of the map. This is a small but useful thing to notice early: not every variable in a CSP is meaningfully "connected" to the others.</p>
+</div>
+
+<h4>Example 2 — Exam Scheduling</h4>
+<div class="ex">
+<span class="box-label">Problem &amp; CSP formulation</span>
+<p>Exams for courses \(A,B,C,D\) must be scheduled into time slots \(S_1,S_2,S_3\). Courses \(A,B\) share students; \(A,C\) share students; \(B,D\) share students. Schedule so no student has two exams at once.</p>
+<p><strong>Variables:</strong> \(A,B,C,D\). <strong>Domains:</strong> \(D_A=D_B=D_C=D_D=\{S_1,S_2,S_3\}\). <strong>Constraints:</strong> \(A\ne B,\ A\ne C,\ B\ne D\).</p>
+<p><strong>A solution:</strong> \(A=S_1,\,B=S_2,\,C=S_2,\,D=S_1\).</p>
+</div>
+
+<h4>Example 3 — Sudoku</h4>
+<div class="ex">
+<span class="box-label">CSP formulation</span>
+<p><strong>Variables:</strong> the 81 cells, denoted \(c_{11},c_{12},\dots,c_{19},c_{21},\dots,c_{99}\). <strong>Domains:</strong> \(\{1,2,\dots,9\}\) for every cell.</p>
+<p><strong>Constraints:</strong></p>
+<ul>
+<li>\(c_{ij}=m_{ij}\) for every cell already filled with a given value \(m_{ij}\);</li>
+<li>\(c_{ij}\ne c_{ik}\) for all \(j\ne k\) — no repeats within a row;</li>
+<li>\(c_{ij}\ne c_{kj}\) for all \(i\ne k\) — no repeats within a column;</li>
+<li>\(c_{ij}\ne c_{kl}\) whenever \((i,j)\ne(k,l)\) and both cells lie in the same \(3\times3\) subgrid (i.e. \(i,k\) and \(j,l\) both fall in the same block among \(A=\{1,2,3\}\), \(B=\{4,5,6\}\), \(C=\{7,8,9\}\)) — no repeats within a subgrid.</li>
+</ul>
+<p>Any correct solution to the Sudoku is a solution to this CSP.</p>
+</div>
+</section>
+
+<section class="slide" id="p5-graph">
+<span class="slide-tag">Slides 11–12</span>
+<h3>2. The Constraint Graph</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>A CSP can be visualized through a <strong>constraint graph</strong>, where the nodes correspond to variables, and an edge connects any two variables that participate in a (binary) constraint together.</p>
+</div>
+<div class="ex">
+<span class="box-label">The constraint graph for Example 1 (Map Colouring)</span>
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px;">
+<g stroke="#2a4d6e" stroke-width="1.6" fill="none">
+<line x1="60" y1="140" x2="150" y2="80"/>
+<line x1="60" y1="140" x2="180" y2="195"/>
+<line x1="150" y1="80" x2="270" y2="80"/>
+<line x1="150" y1="80" x2="180" y2="195"/>
+<line x1="270" y1="80" x2="180" y2="195"/>
+<line x1="270" y1="80" x2="340" y2="150"/>
+<line x1="180" y1="195" x2="340" y2="150"/>
+<line x1="180" y1="195" x2="330" y2="225"/>
+<line x1="340" y1="150" x2="330" y2="225"/>
+</g>
+<g font-family="EB Garamond" font-size="16" font-weight="700">
+<circle cx="60" cy="140" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="53" y="146">A</text>
+<circle cx="150" cy="80" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="143" y="86">B</text>
+<circle cx="270" cy="80" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="263" y="86">C</text>
+<circle cx="180" cy="195" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="173" y="201">D</text>
+<circle cx="340" cy="150" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="333" y="156">E</text>
+<circle cx="330" cy="225" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="323" y="231">F</text>
+<circle cx="230" cy="240" r="20" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="224" y="246">G</text>
+</g>
+</svg>
+</div>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Notice G sits alone, with no edges at all — a direct visual confirmation of Section 1's observation that G has no constraints.</p>
+</div>
+</section>
+
+<section class="slide" id="p5-backtracking">
+<span class="slide-tag">Slides 13–17</span>
+<h3>3. Backtracking Search</h3>
+<div class="def">
+<span class="box-label">Pseudocode — BACKTRACKING-SEARCH</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.6;"><b>function</b> BACKTRACKING-SEARCH(csp) <b>returns</b> a solution or failure
+    <b>return</b> BACKTRACK(csp, {})
+
+<b>function</b> BACKTRACK(csp, assignment) <b>returns</b> a solution or failure
+    <b>if</b> assignment is complete <b>then return</b> assignment
+    var &larr; SELECT-UNASSIGNED-VARIABLE(csp, assignment)
+    <b>for each</b> value <b>in</b> ORDER-DOMAIN-VALUES(csp, var, assignment) <b>do</b>
+        <b>if</b> value is consistent with assignment <b>then</b>
+            add {var = value} to assignment
+            result &larr; BACKTRACK(csp, assignment)
+            <b>if</b> result &ne; failure <b>then return</b> result
+            remove {var = value} from assignment
+    <b>return</b> failure</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Backtracking search is a recursive depth-first search performed on the search tree of partial assignments — try a value, recurse; if that whole branch fails, undo the assignment ("backtrack") and try the next value.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked example — a small map colouring CSP</span>
+<p><strong>Variables:</strong> \(A,B,C,D\). <strong>Domains:</strong> \(D_A=D_B=D_C=\{r,g,b\}\), but \(D_D=\{r\}\) — D can <em>only</em> be red. <strong>Constraints:</strong> \(A\ne B,\ A\ne C,\ B\ne C,\ A\ne D\).</p>
+<p>Fix the variable order \(A,B,C,D\) and the value order \(r,g,b\). Here is the complete trace:</p>
+</div>
+<div class="ex">
+<span class="box-label">The full trace</span>
+<table class="grid" style="font-size:.85em">
+<tr><th>Assignment so far</th><th>Outcome</th></tr>
+<tr><td>A=r</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=r, B=r</td><td>A≠B violated. Backtrack to B.</td></tr>
+<tr><td>A=r, B=g</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=r, B=g, C=r</td><td>A≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=r, B=g, C=g</td><td>B≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=r, B=g, C=b</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=r, B=g, C=b, D=r</td><td>A≠D violated. No value left for D → backtrack to C. No value left for C → backtrack to B.</td></tr>
+<tr><td>A=r, B=b</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=r, B=b, C=r</td><td>A≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=r, B=b, C=g</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=r, B=b, C=g, D=r</td><td>A≠D violated. No value left for D → backtrack to C.</td></tr>
+<tr><td>A=r, B=b, C=b</td><td>B≠C violated. No value left for C → backtrack to B. No value left for B → backtrack to A.</td></tr>
+<tr><td>A=g</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=g, B=r</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=g, B=r, C=r</td><td>B≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=g, B=r, C=g</td><td>A≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=g, B=r, C=b</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=g, B=r, C=b, D=r</td><td><strong>Consistent and complete.</strong></td></tr>
+</table>
+<p style="text-align:center;font-weight:700;margin-top:10px;">Solution by backtracking search: A=g, B=r, C=b, D=r.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway — plain backtracking can be genuinely wasteful</span>
+<p>Notice how much work happened before the algorithm realised the assignment for \(A\) had to be changed — it tried <em>every</em> combination of B and C under \(A=r\) (all doomed to fail once D is reached) before finally backtracking all the way back to \(A\). In fact, the value \(r\) could have been removed from \(D_A\) <strong>before</strong> search even began: since \(D_D=\{r\}\) and the constraint \(A\ne D\) holds, \(A=r\) can never be part of any solution. In general, such removals can be found by checking the consistency of the <em>arcs</em> — the edges — of the constraint graph, before running backtracking search at all. That's exactly the idea behind Section 4.</p>
+</div>
+</section>
+
+<section class="slide" id="p5-arcconsistency">
+<span class="slide-tag">Slides 18–26</span>
+<h3>4. Arc Consistency and the AC-3 Algorithm</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>A variable \(X_i\) is <strong>arc-consistent</strong> with respect to another variable \(X_j\) if, for every value in its current domain \(D_i\), there is <em>some</em> value in \(D_j\) that satisfies the binary constraint on the arc \((X_i,X_j)\). A CSP is arc consistent if every variable is arc consistent with respect to every other variable.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Pseudocode — AC-3</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.83em;line-height:1.6;"><b>function</b> AC-3(csp) <b>returns</b> false if an inconsistency is found and true otherwise
+    queue &larr; a queue of arcs, initially all the arcs in csp
+    <b>while</b> queue is not empty <b>do</b>
+        (X<sub>i</sub>, X<sub>j</sub>) &larr; POP(queue)
+        <b>if</b> REVISE(csp, X<sub>i</sub>, X<sub>j</sub>) <b>then</b>
+            <b>if</b> size(D<sub>i</sub>) = 0 <b>then return</b> false
+            <b>for each</b> X<sub>k</sub> <b>in</b> X<sub>i</sub>.NEIGHBOURS &minus; {X<sub>j</sub>} <b>do</b>
+                add (X<sub>k</sub>, X<sub>i</sub>) to queue
+    <b>return</b> true
+
+<b>function</b> REVISE(csp, X<sub>i</sub>, X<sub>j</sub>) <b>returns</b> true iff the domain of X<sub>i</sub> is revised
+    revised &larr; false
+    <b>for each</b> x <b>in</b> D<sub>i</sub> <b>do</b>
+        <b>if</b> no value y in D<sub>j</sub> allows (x, y) to satisfy the constraint between X<sub>i</sub>, X<sub>j</sub> <b>then</b>
+            delete x from D<sub>i</sub>
+            revised &larr; true
+    <b>return</b> revised</pre>
+</div>
+
+<div class="an">
+<span class="box-label">The intuition</span>
+<p>AC-3 keeps a queue of directed arcs (one arc per direction, for every edge in the constraint graph). It pops an arc \((X_i,X_j)\), and asks: does every remaining value of \(X_i\) still have <em>some</em> compatible partner left in \(D_j\)? If REVISE deletes a value from \(D_i\), then every arc pointing <em>into</em> \(X_i\) (from its other neighbours) might now need re-checking — so those arcs get pushed back onto the queue. This is exactly how one domain shrinking can ripple outward and shrink others.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked trace — AC-3 on the earlier 4-variable CSP</span>
+<p>Same CSP as Section 3: \(D_A=D_B=D_C=\{r,g,b\}\), \(D_D=\{r\}\), constraints \(A\ne B,A\ne C,B\ne C,A\ne D\). Constraint graph: A–B–C form a triangle, D hangs off A alone.</p>
+</div>
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 300 260" width="100%" style="max-width:280px;">
+<g stroke="#2a4d6e" stroke-width="1.6" fill="none">
+<line x1="90" y1="60" x2="210" y2="60"/>
+<line x1="90" y1="60" x2="150" y2="160"/>
+<line x1="210" y1="60" x2="150" y2="160"/>
+<line x1="150" y1="160" x2="150" y2="230"/>
+</g>
+<g font-family="EB Garamond" font-size="16" font-weight="700">
+<circle cx="90" cy="60" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="83" y="66">B</text>
+<circle cx="210" cy="60" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="203" y="66">C</text>
+<circle cx="150" cy="160" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="143" y="166">A</text>
+<circle cx="150" cy="230" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="143" y="236">D</text>
+</g>
+</svg>
+</div>
+<div class="ex">
+<span class="box-label">Trace, arc by arc</span>
+<p>Initial queue (two directed arcs per undirected edge): \(\{(A,B),(B,A),(A,C),(C,A),(B,C),(C,B),(A,D),(D,A)\}\).</p>
+<table class="grid" style="font-size:.86em">
+<tr><th>POP(queue)</th><th>REVISE result</th></tr>
+<tr><td>(A, B)</td><td>false — no deletions (every value in D_A still has a match in D_B)</td></tr>
+<tr><td>(B, A)</td><td>false</td></tr>
+<tr><td>(A, C)</td><td>false</td></tr>
+<tr><td>(C, A)</td><td>false</td></tr>
+<tr><td>(B, C)</td><td>false</td></tr>
+<tr><td>(C, B)</td><td>false</td></tr>
+<tr><td>(A, D)</td><td><strong>true</strong> — x=r: no value in D_D={r} satisfies A≠D, so <strong>delete r from D_A</strong>. x=g: no deletion. x=b: no deletion. → add (B,A) and (C,A) back to queue</td></tr>
+<tr><td>(D, A)</td><td>false</td></tr>
+<tr><td>(B, A)</td><td>false (re-checked; still fine)</td></tr>
+<tr><td>(C, A)</td><td>false (re-checked; still fine)</td></tr>
+<tr><td colspan="2">queue is empty → <strong>return true</strong></td></tr>
+</table>
+</div>
+<div class="key">
+<span class="box-label">The payoff — the reduced CSP</span>
+<p>After AC-3: \(D_A=\{g,b\}\) (r removed!), \(D_B=D_C=\{r,g,b\}\) unchanged, \(D_D=\{r\}\) unchanged. Now run backtracking search <em>again</em>, on this reduced CSP:</p>
+<table class="grid" style="font-size:.85em">
+<tr><th>Assignment so far</th><th>Outcome</th></tr>
+<tr><td>A=g</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=g, B=r</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=g, B=r, C=r</td><td>B≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=g, B=r, C=g</td><td>A≠C violated. Backtrack to C.</td></tr>
+<tr><td>A=g, B=r, C=b</td><td>Consistent. Assign next variable.</td></tr>
+<tr><td>A=g, B=r, C=b, D=r</td><td><strong>Consistent and complete.</strong></td></tr>
+</table>
+<p style="text-align:center;font-weight:700;margin-top:10px;">Solution: A=g, B=r, C=b, D=r — the <em>same</em> solution as before, found in far fewer steps.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway — the standard recipe</span>
+<p>For a given CSP, first run AC-3 to eliminate impossible values from the domains, <em>then</em> use backtracking search on the reduced CSP. It's also possible to weave consistency checking directly <em>into</em> backtracking search itself — imposing a consistency check after every single assignment, via a function called INFERENCE, rather than running AC-3 once up front. That's the subject of Section 5.</p>
+</div>
+</section>
+
+<section class="slide" id="p5-inference">
+<span class="slide-tag">Slides 27–29</span>
+<h3>5. Backtracking Search with an INFERENCE Function</h3>
+<div class="an">
+<span class="box-label">The idea</span>
+<p>It's also possible to incorporate consistency checks — such as arc consistency — <em>inside</em> the backtracking search algorithm itself, rather than as a one-time pre-processing pass. This is done using a function named INFERENCE, which imposes a consistency condition after the addition of <em>each</em> {var = value} to the assignment.</p>
+</div>
+<div class="def">
+<span class="box-label">Pseudocode — BACKTRACK with INFERENCE</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.83em;line-height:1.6;"><b>function</b> BACKTRACKING-SEARCH(csp) <b>returns</b> a solution or failure
+    <b>return</b> BACKTRACK(csp, {})
+
+<b>function</b> BACKTRACK(csp, assignment) <b>returns</b> a solution or failure
+    <b>if</b> assignment is complete <b>then return</b> assignment
+    var &larr; SELECT-UNASSIGNED-VARIABLE(csp, assignment)
+    <b>for each</b> value <b>in</b> ORDER-DOMAIN-VALUES(csp, var, assignment) <b>do</b>
+        <b>if</b> value is consistent with assignment <b>then</b>
+            add {var = value} to assignment
+            inferences &larr; INFERENCE(csp, var, assignment)
+            <b>if</b> inferences &ne; failure <b>then</b>
+                add inferences to csp
+                result &larr; BACKTRACK(csp, assignment)
+                <b>if</b> result &ne; failure <b>then return</b> result
+                remove inferences from csp
+            remove {var = value} from assignment
+    <b>return</b> failure</pre>
+</div>
+<div class="key">
+<span class="box-label">Key takeaway — plain backtracking is a special case</span>
+<p>The plain BACKTRACKING-SEARCH algorithm from Section 3 is exactly this algorithm with INFERENCE always returning an empty set (i.e. never inferring anything new). Every idea in this part fits into one unified picture: search plus <em>however much</em> consistency-checking you choose to weave in — anywhere from none (plain backtracking) to a full AC-3 pass after every assignment.</p>
+</div>
+</section>
+
+<section class="slide" id="p5-ac3-limits">
+<span class="slide-tag">Slides 30–32</span>
+<h3>6. Where AC-3 Falls Short</h3>
+<div class="warn">
+<span class="box-label">Counter-example 1 — AC-3 can do nothing at all, even on a solvable CSP</span>
+<p>Recall the full 7-variable map colouring problem from Section 1 (\(A,\dots,G\), domains \(\{r,g,b\}\), 9 constraints). Even though there are many <em>inconsistent</em> combinations ruled out by those constraints, <strong>the AC-3 algorithm has no effect on this problem at all</strong> — it doesn't shrink a single domain, despite the problem being solvable.</p>
+</div>
+<div class="warn">
+<span class="box-label">Counter-example 2 — AC-3 can even miss a CSP with NO solution</span>
+<p>Consider colouring the three vertices of a triangle using <strong>two</strong> colours, so that no two adjacent vertices share a colour. <strong>Variables:</strong> \(A,B,C\). <strong>Domains:</strong> \(D_A=D_B=D_C=\{r,g\}\). <strong>Constraints:</strong> \(A\ne B,\ B\ne C,\ A\ne C\).</p>
+<p>This CSP has <strong>no solution</strong> — with only 2 colours, you can never properly colour a 3-cycle (whichever colour A gets, B must differ, then C must differ from both A and B, but there are only 2 colours to choose from). Yet <strong>AC-3 has no effect on this problem either</strong> — it fails to detect the inconsistency.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway — why this happens, and what it means</span>
+<p>In general, AC-3 need not always reduce the domains of the variables — and <strong>even when the CSP has no solution</strong>, AC-3 is not guaranteed to reduce them either. Arc consistency only ever looks at <strong>two</strong> variables at a time, through a single binary constraint. The triangle problem's unsolvability is fundamentally a <em>three</em>-way interaction (A, B, and C mutually constraining each other in a cycle) — and that's structurally invisible to an algorithm that only ever checks one pair of variables against each other in isolation.</p>
+</div>
+</section>
+
+<section class="slide" id="p5-kconsistency">
+<span class="slide-tag">Slides 33–39</span>
+<h3>7. Generalising: k-Consistency</h3>
+<div class="an">
+<span class="box-label">The natural next step</span>
+<p>Arc consistency (which only looks at two variables at a time) is blind to inconsistencies like the two examples in Section 6. The natural way out is to look at <strong>three</strong> variables at once — this is called <strong>path consistency.</strong></p>
+</div>
+
+<div class="def">
+<span class="box-label">A ladder of definitions</span>
+<ul>
+<li><strong>Node consistency (1-consistency):</strong> a variable \(X_i\) is node consistent if every value in \(D_i\) satisfies all unary constraints on \(X_i\). A CSP is node consistent if every variable is.</li>
+<li><strong>Arc consistency (2-consistency):</strong> \(X_i\) is arc consistent with respect to \(X_j\) if for every value \(a\in D_i\), there exists \(b\in D_j\) satisfying the binary constraint on \((X_i,X_j)\). A CSP is arc consistent if every variable is arc consistent with respect to every other variable.</li>
+<li><strong>Path consistency (3-consistency):</strong> a pair \(\{X_i,X_j\}\) is path consistent with respect to \(X_m\) if for every value pair \((a,b)\in D_i\times D_j\) consistent with the \(X_i\text{-}X_j\) constraint, there exists \(c\in D_m\) satisfying both the \((X_i,X_m)\) and \((X_j,X_m)\) constraints. A CSP is path consistent if every pair is path consistent with respect to every other variable.</li>
+</ul>
+</div>
+
+<div class="def">
+<span class="box-label">Definition — general k-consistency</span>
+<p>A set of \(k-1\) variables \(\{X_1,X_2,\dots,X_{k-1}\}\) is <strong>\(k\)-consistent</strong> with respect to a variable \(X_k\) if for every \((a_1,\dots,a_{k-1})\in D_1\times\cdots\times D_{k-1}\) that's consistent with the binary constraints among \(X_1,\dots,X_{k-1}\), there exists \(a_k\in D_k\) satisfying the binary constraints on \((X_i,X_k)\) for every \(1\le i\le k-1\).</p>
+<p>A CSP is \(k\)-consistent if every set of \(k-1\) variables is \(k\)-consistent with respect to every other variable. (Node consistency is the \(k=1\) case, arc consistency is \(k=2\), path consistency is \(k=3\) — each definition above is just this general one, specialised.)</p>
+</div>
+
+<div class="def">
+<span class="box-label">Definition — strong k-consistency</span>
+<p>A CSP is <strong>strongly \(k\)-consistent</strong> if it is \(k\)-consistent, \((k-1)\)-consistent, \((k-2)\)-consistent, …, 2-consistent, <em>and</em> 1-consistent — the whole ladder holds simultaneously, all the way down.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The beautiful theoretical payoff — strong n-consistency solves the CSP trivially</span>
+<p>Suppose a CSP has \(n\) variables, and is made <strong>strongly \(n\)-consistent.</strong> Then a solution can be found with no search or backtracking at all:</p>
+<ul>
+<li><strong>Step 1:</strong> choose a consistent value for \(X_1\) (possible, since the CSP is 1-consistent).</li>
+<li><strong>Step 2:</strong> choose a consistent value for \(X_2\) (possible, since it's 2-consistent).</li>
+<li>\(\vdots\)</li>
+<li><strong>Step \(n\):</strong> choose a consistent value for \(X_n\) (possible, since it's \(n\)-consistent).</li>
+</ul>
+<p>At every step, strong \(k\)-consistency <em>guarantees</em> a compatible value exists for the next variable — so this simple greedy procedure never needs to backtrack. Worst-case time to find a solution this way: \(1+d+2d+3d+\cdots+(n-1)d = O(n^2d)\) — polynomial!</p>
+</div>
+
+<div class="warn">
+<span class="box-label">So can every CSP be solved in polynomial time? No.</span>
+<p><strong>Enforcing \(n\)-consistency itself must take exponential time.</strong> What does enforcing \(k\)-consistency actually require? For every relevant subset of \(k-1\) variables, we must examine which of the (up to) \(d^{k-1}\) possible joint assignments to that subset can be extended to every other variable. When \(k=n\), this means potentially reasoning about \(d^{n-1}\) possible assignments — exponential in \(n\).</p>
+<p><strong>Unless P = NP</strong> (a famously unsolved problem in computer science), <strong>no polynomial-time algorithm for enforcing \(n\)-consistency can exist.</strong></p>
+</div>
+
+<div class="key">
+<span class="box-label">The key takeaway for solving CSPs — and for this entire part</span>
+<ul style="margin:4px 0 0">
+<li><strong>Do not aim for full consistency.</strong> Achieving it is just as hard as solving the original problem.</li>
+<li><strong>Aim for cheap, partial consistency as a filter</strong> before or during search.</li>
+</ul>
+<p>In practice, node and arc consistency (AC-3) — and sometimes path consistency — are used <strong>not to solve the CSP outright</strong>, but to prune domains <em>before</em> handing the (much smaller) reduced problem to backtracking search. This is precisely the two-step recipe Section 4's worked example demonstrated directly: AC-3 first, backtracking search second — cheap filtering, then search, rather than either one alone.</p>
+</div>
+</section>
+
+
 <section class="slide" id="recap">
   <span class="slide-tag">Full-course recap</span>
   <h3>Recap: how all three parts connect</h3>
@@ -1346,6 +2185,8 @@
     <tr><td><strong>1. Agents &amp; Rationality</strong></td><td>What does it mean for a machine to act well?</td><td>An agent perceives &amp; acts (P-E-A-S); a <em>rational</em> agent maximises a performance measure; task environments differ in difficulty along 6 dimensions; agents range from simple reflex to learning-based.</td></tr>
     <tr><td><strong>2. Search Problems</strong></td><td>How do I find the best sequence of actions from start to goal?</td><td>Every search problem = state space + start + goal + actions + results + costs. Almost every algorithm (BFS/DFS/UCS/Greedy/A*) is Best-First Search with a different \(f(n)\). A* with an admissible/consistent heuristic is both fast <em>and</em> optimal.</td></tr>
     <tr><td><strong>3. Local Search</strong></td><td>What if I only care about the final state, not the path?</td><td>Hill Climbing greedily improves one state but gets stuck. Simulated Annealing escapes local optima by sometimes accepting worse moves, cooling over time. Genetic/Evolutionary Algorithms evolve a whole population via selection, crossover, and mutation.</td></tr>
+    <tr><td><strong>4. Adversarial Search</strong></td><td>How do I find the best move when an opponent is actively working against me?</td><td>The Minimax value backs up terminal utilities through alternating MAX/MIN levels; Alpha-Beta pruning gets the exact same answer while skipping provably-irrelevant branches; with perfect move ordering the effective branching factor drops from \(b\) to \(\sqrt b\); real engines add depth cutoffs, evaluation functions, and (in modern systems) learned evaluation via MCTS and self-play.</td></tr>
+    <tr><td><strong>5. Constraint Satisfaction</strong></td><td>What if I only care about a valid final assignment, not a path to it?</td><td>Backtracking search explores partial assignments depth-first, undoing bad choices; AC-3 prunes provably-impossible values from domains <em>before</em> or <em>during</em> search, often collapsing the search tree dramatically — though arc consistency alone is blind to genuinely 3-way inconsistencies, which is exactly what the k-consistency hierarchy generalises to fix (at an exponential cost of its own).</td></tr>
   </table>
 
   <h4>Mini glossary</h4>
@@ -1359,11 +2200,23 @@
     <tr><td><strong>Consistent</strong></td><td>A stronger, triangle-inequality-style version of admissibility.</td></tr>
     <tr><td><strong>Local optimum</strong></td><td>A state that's better than all its neighbours, but not the best possible state overall.</td></tr>
     <tr><td><strong>Fitness</strong></td><td>In evolutionary algorithms, a score measuring how good a candidate solution is.</td></tr>
+    <tr><td><strong>Minimax value</strong></td><td>The utility of a state for MAX, assuming both players play optimally from there to the end of the game.</td></tr>
+    <tr><td><strong>Zero-sum game</strong></td><td>A game where one player's gain is exactly the other's loss — what's good for MAX is equally bad for MIN.</td></tr>
+    <tr><td><strong>&alpha; (alpha)</strong></td><td>The best value MAX can guarantee so far, along the current path from the root.</td></tr>
+    <tr><td><strong>&beta; (beta)</strong></td><td>The best value MIN can guarantee so far, along the current path from the root.</td></tr>
+    <tr><td><strong>Pruning</strong></td><td>Skipping a branch of the search tree that's been proven irrelevant to the final decision, without ever evaluating it.</td></tr>
+    <tr><td><strong>Evaluation function</strong></td><td>A heuristic estimate of how good a non-terminal position is, used when a full search to terminal states isn't feasible.</td></tr>
+    <tr><td><strong>CSP</strong></td><td>Constraint Satisfaction Problem — defined by variables, their domains, and constraints on allowable combinations of values.</td></tr>
+    <tr><td><strong>Consistent assignment</strong></td><td>An assignment of values that violates no constraints (may be partial or complete).</td></tr>
+    <tr><td><strong>Constraint graph</strong></td><td>A graph with one node per CSP variable, and an edge between any two variables that share a constraint.</td></tr>
+    <tr><td><strong>Arc consistency</strong></td><td>A variable \(X_i\) is arc consistent w.r.t. \(X_j\) if every remaining value in \(D_i\) has at least one compatible value left in \(D_j\).</td></tr>
+    <tr><td><strong>AC-3</strong></td><td>The standard algorithm for enforcing arc consistency across an entire CSP, by repeatedly revising domains until no arc can shrink any further.</td></tr>
+    <tr><td><strong>k-consistency</strong></td><td>The general pattern behind node/arc/path consistency: any consistent assignment to \(k-1\) variables can always be extended to a \(k\)th, for every choice of that \(k\)th variable.</td></tr>
   </table>
 </section>
 
 <footer>
-  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality · Search Problems, Uninformed and Informed Search · Local Search Algorithms (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides.
+  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, and the backtracking and AC-3 trace tables in Part 5.
 </footer>
 </main>
 </div>

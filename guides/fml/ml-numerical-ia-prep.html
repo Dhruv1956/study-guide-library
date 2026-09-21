@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ML Numerical Problems — IA Prep Guide</title>
+<title>Fundamentals of Machine Learning — Complete Study Guide</title>
 <script>
   window.MathJax = {
     tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
@@ -29,6 +29,11 @@
     --amber-line: #c98a2c;
     --red-bg: #f7e9e6;
     --red-line: #b0563f;
+    --purple-bg: #f1eaf6;
+    --purple-line: #8c63a8;
+    --key-bg: #fdf1e2;
+    --key-line: #a8632f;
+    --sidebar-w: 310px;
   }
   *{box-sizing:border-box;}
   body{
@@ -36,42 +41,48 @@
     background: var(--cream);
     color: var(--ink);
     margin:0;
-    padding:0 0 80px 0;
-    font-size:19px;
+    padding:0;
+    font-size:18.5px;
     line-height:1.65;
   }
-  .wrap{max-width:880px;margin:0 auto;padding:0 32px;}
+  .shell{ display:flex; max-width:1500px; margin:0 auto; }
+  .sidebar{
+    width:var(--sidebar-w); flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:22px 12px 40px 20px; border-right:1px solid #e2d3ba;
+    background:var(--cream-2);
+  }
+  .sidebar .stitle{font-weight:700; font-size:1.15rem; color:#3f2f20; margin-bottom:2px;}
+  .sidebar .ssub{font-size:.8rem; color:var(--brown); font-style:italic; margin-bottom:16px;}
+  .sidebar h3{font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color:var(--gold); margin:18px 0 4px;}
+  .sidebar h3:first-of-type{margin-top:0;}
+  .sidebar a{display:block; text-decoration:none; color:var(--ink-soft); font-size:.86rem; padding:3px 0 3px 9px; border-left:2px solid transparent;}
+  .sidebar a:hover{color:var(--gold); border-left-color:var(--gold);}
+  .sidebar a.lec{font-weight:700; color:var(--ink); font-size:.95rem; margin-top:8px;}
+  .main{ flex:1; min-width:0; padding:0 0 90px; }
+  .wrap{max-width:900px;margin:0 auto;padding:0 40px;}
+
   header.title{
     background: linear-gradient(135deg, #3f2f20, #6b4b30);
     color: #f6ecd9;
-    padding:56px 32px 44px 32px;
-    margin-bottom: 10px;
+    padding:50px 40px 40px;
   }
-  header.title .inner{max-width:880px;margin:0 auto;}
-  header.title h1{font-size:2.5em; margin:0 0 8px 0; font-weight:700; letter-spacing:0.3px;}
-  header.title p{font-size:1.15em; margin:4px 0; color:#e6d3b3; font-style:italic;}
+  header.title h1{font-size:2.3em; margin:0 0 8px 0; font-weight:700; letter-spacing:0.3px;}
+  header.title p{font-size:1.1em; margin:4px 0; color:#e6d3b3; font-style:italic;}
   header.title .tag{
-    display:inline-block; margin-top:14px; background:rgba(255,255,255,0.12);
+    display:inline-block; margin-top:14px; margin-right:8px; background:rgba(255,255,255,0.12);
     border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 16px;
     font-size:0.85em; letter-spacing:0.5px; text-transform:uppercase; color:#f0dfc0;
   }
-  nav.toc{
-    background: var(--cream-2);
-    border:1px solid #e2d3ba;
-    border-radius:10px;
-    padding:20px 26px;
-    margin:30px 0 40px 0;
-  }
-  nav.toc h2{margin:0 0 10px 0; font-size:1.05em; text-transform:uppercase; letter-spacing:1px; color:var(--brown);}
-  nav.toc ol{margin:0; padding-left:22px;}
-  nav.toc li{margin:4px 0;}
-  nav.toc a{color:var(--ink); text-decoration:none; border-bottom:1px dotted var(--gold);}
-  nav.toc a:hover{color:var(--gold);}
+
+  .lecture-header{ margin-top:56px; padding:20px 26px; background:linear-gradient(120deg,#3f2f20,#6b4b30); color:#f6ecd9; border-radius:10px; }
+  .lecture-header .ltag{ font-family:'Fira Code',monospace; font-size:12.5px; opacity:.8; letter-spacing:.06em; text-transform:uppercase;}
+  .lecture-header h2{ color:#fff; font-size:26px; margin:6px 0 6px; font-family:'EB Garamond',serif; }
+  .lecture-header p{ margin:0; color:#e6d3b3; font-size:15.5px; max-width:820px;}
 
   h2.section-title{
-    font-size:1.9em;
-    margin-top:64px;
-    padding-bottom:10px;
+    font-size:1.7em;
+    margin-top:48px;
+    padding-bottom:8px;
     border-bottom: 3px solid var(--gold);
     color:#3f2f20;
     display:flex; align-items:baseline; gap:12px;
@@ -80,17 +91,17 @@
     font-family:'Fira Code',monospace; font-size:0.5em; background:var(--gold); color:#fff;
     padding:4px 10px; border-radius:6px; font-weight:600;
   }
-  h3{font-size:1.3em; color:var(--brown); margin-top:34px; border-left:4px solid var(--gold); padding-left:12px;}
-  h4{font-size:1.1em; color:var(--ink-soft); margin-top:24px;}
+  h3{font-size:1.25em; color:var(--brown); margin-top:30px; border-left:4px solid var(--gold); padding-left:12px;}
+  h4{font-size:1.05em; color:var(--ink-soft); margin-top:22px;}
 
-  p{margin:14px 0;}
+  p{margin:13px 0;}
   ul,ol{margin:10px 0;}
   li{margin:6px 0;}
 
   .box{
     border-radius:10px;
-    padding:18px 22px;
-    margin:22px 0;
+    padding:16px 20px;
+    margin:20px 0;
     border-left-width:5px;
     border-left-style:solid;
   }
@@ -103,9 +114,14 @@
   .practice .box-title{color:var(--amber-line);}
   .note{background:var(--red-bg); border-color:var(--red-line);}
   .note .box-title{color:var(--red-line);}
+  .concept{background:var(--purple-bg); border-color:var(--purple-line);}
+  .concept .box-title{color:var(--purple-line);}
+  .key{background:var(--key-bg); border-color:var(--key-line); border-left-width:6px;}
+  .key .box-title{color:var(--key-line);}
+  .key{box-shadow:0 1px 4px rgba(168,99,47,0.15);}
 
   table{border-collapse:collapse; width:100%; margin:16px 0; background:#fffdf8;}
-  th,td{border:1px solid #ddccae; padding:8px 12px; text-align:center; font-size:0.95em;}
+  th,td{border:1px solid #ddccae; padding:8px 12px; text-align:center; font-size:0.92em;}
   th{background:var(--cream-2); color:var(--brown);}
   .step{
     margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid #d9c69c;
@@ -117,15 +133,31 @@
   }
   .formula-sheet table{font-size:0.92em;}
   code{font-family:'Fira Code', monospace; background:#f0e6d2; padding:1px 6px; border-radius:4px; font-size:0.85em;}
+  pre code{background:none; padding:0; border-radius:0; font-size:1em; color:inherit;}
   .pill{
     display:inline-block; font-size:0.7em; text-transform:uppercase; letter-spacing:0.5px;
     background:#3f2f20; color:#f6ecd9; padding:3px 10px; border-radius:12px; margin-left:8px; vertical-align:middle;
   }
+  .numtag{
+    display:inline-block; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em;
+    background:var(--green-line); color:#fff; padding:2px 9px; border-radius:10px; margin-left:8px; vertical-align:middle;
+  }
+  .keytag{
+    display:inline-block; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em;
+    background:var(--key-line); color:#fff; padding:2px 9px; border-radius:10px; margin-left:8px; vertical-align:middle;
+  }
   hr.sep{border:none; border-top:1px dashed #cbb98d; margin:36px 0;}
-  footer{text-align:center; color:var(--brown); font-style:italic; margin-top:70px; font-size:0.95em;}
+  footer{text-align:center; color:var(--brown); font-style:italic; margin-top:70px; font-size:0.95em; padding:0 40px;}
+  .backtotop{ position:fixed; bottom:24px; right:24px; background:var(--brown); color:#fff; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:18px; box-shadow:0 4px 12px rgba(0,0,0,.25); opacity:0; transition:opacity .2s; pointer-events:none;}
+  .backtotop.show{ opacity:1; pointer-events:auto; }
+  @media(max-width:1000px){
+    .shell{ flex-direction:column; }
+    .sidebar{ position:relative; width:100%; height:auto; border-right:none; border-bottom:1px solid #e2d3ba; }
+    .wrap{ padding:0 20px; }
+  }
 </style>
 </head>
-<body>
+<body id="top">
 <style>
   :root { --sgl-safe-top: 0px; }
   @media (display-mode: standalone) {
@@ -134,33 +166,451 @@
   }
 </style>
 <a href="../../index.html" style="position:fixed;top:calc(10px + var(--sgl-safe-top));left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
+<div class="shell">
+<nav class="sidebar">
+  <div class="stitle">Fundamentals of Machine Learning</div>
+  <div class="ssub">Complete study guide &middot; CSS 3131</div>
 
+  <a class="lec" href="#L1">Lecture 1 &middot; Introduction &amp; Linear Regression</a>
+  <a href="#l1-what-is-ml">What is ML?</a>
+  <a href="#l1-need">Need for Machine Learning</a>
+  <a href="#l1-intro">Introduction to ML</a>
+  <a href="#l1-ai">What is AI? AI vs ML</a>
+  <a href="#l1-paradigm">ML: a new programming paradigm</a>
+  <a href="#l1-spam">Case study: the spam filter</a>
+  <a href="#l1-applications">Applications of ML</a>
+  <a href="#l1-classification">Classification of ML algorithms</a>
+  <a href="#l1-supervised">Supervised Learning</a>
+  <a href="#l1-unsupervised">Unsupervised Learning</a>
+  <a href="#l1-reinforcement">Reinforcement Learning</a>
+  <a href="#l1-comparison">Supervised vs Unsupervised vs RL</a>
+  <a href="#l1-iris">Example: the Iris dataset</a>
+  <a href="#l1-regression-intro">Regression: the model</a>
+  <a href="#sec1">Simple Linear Regression <span class="numtag">Numerical</span></a>
+  <a href="#sec2">Multiple Linear Regression <span class="numtag">Numerical</span></a>
+
+  <a class="lec" href="#L2">Lecture 2 &middot; Gradient Descent</a>
+  <a href="#l2-normal-vs-gd">Normal Equation vs Gradient Descent</a>
+  <a href="#l2-sgd-theory">Stochastic Gradient Descent</a>
+  <a href="#sec3">SGD Worked Iterations <span class="numtag">Numerical</span></a>
+
+  <a class="lec" href="#L3">Lecture 3 &middot; Model Behaviour</a>
+  <a href="#l3-parametric">Parametric vs Non-Parametric</a>
+  <a href="#l3-overfitting">Overfitting, Underfitting &amp; Generalization</a>
+  <a href="#l3-nofreelunch">No Free Lunch Theorem</a>
+  <a href="#l3-biasvariance">Bias and Variance</a>
+  <a href="#l3-polynomial">Polynomial Regression</a>
+
+  <a class="lec" href="#L4">Lecture 4 &middot; Logistic Regression</a>
+  <a href="#l4-sigmoid">The Sigmoid Function</a>
+  <a href="#l4-odds">Odds and Log-Odds</a>
+  <a href="#l4-predictions">How Logistic Regression Predicts</a>
+  <a href="#l4-costfunction">Cost Functions &amp; Slope Types</a>
+  <a href="#l4-costderivation">Deriving the Logistic Cost Function</a>
+  <a href="#sec4">Logistic Regression by SGD <span class="numtag">Numerical</span></a>
+  <a href="#l4-regvsclass">Regression vs Classification</a>
+
+  <a class="lec" href="#L5">Lecture 5 &middot; Evaluation Metrics</a>
+  <a href="#l5-confusion">Confusion Matrix</a>
+  <a href="#l5-metrics">Accuracy, Precision, Recall, F1</a>
+  <a href="#l5-fprfnr">FPR, FNR, Specificity</a>
+  <a href="#l5-worked">Worked Example: Medical Diagnosis <span class="numtag">Numerical</span></a>
+
+  <a class="lec" href="#L6">Lecture 6 &middot; k-Nearest Neighbors</a>
+  <a href="#l6-knn-intro">How k-NN Works</a>
+  <a href="#l6-knn-classification">k-NN for Classification</a>
+  <a href="#l6-knn-regression">k-NN Regression <span class="numtag">Numerical</span></a>
+  <a href="#l6-cv">Cross-Validation for Choosing k</a>
+  <a href="#l6-comparison">kNN vs Linear Regression</a>
+  <a href="#l6-weighted">Weighted k-NN</a>
+
+  <a class="lec" href="#L7">Lecture 7 &middot; Naive Bayes</a>
+  <a href="#l7-probability">Probability Foundations</a>
+  <a href="#l7-bayes-theorem">Bayes' Theorem</a>
+  <a href="#l7-naive-bayes">The Naive Bayes Classifier</a>
+  <a href="#l7-worked">Worked Examples <span class="numtag">Numerical</span></a>
+  <a href="#l7-python">Python Implementation</a>
+  <a href="#l7-gaussian">Gaussian Naive Bayes</a>
+  <a href="#l7-text">Text Classification with Naive Bayes</a>
+  <a href="#l7-laplace">Laplace Smoothing</a>
+
+  <h3>&nbsp;</h3>
+  <a href="#sec5">Formula Sheet</a>
+  <a href="#sec6">Exam Strategy</a>
+</nav>
+<main class="main">
 <header class="title">
-  <div class="inner">
-    <h1>ML Numerical Problems</h1>
-    <p>IA Preparation Guide — Fundamentals of Machine Learning (CSS 3131)</p>
-    <span class="tag">Built from your 4 lecture decks</span>
+  <div class="wrap" style="padding:0;max-width:none;">
+    <h1>Fundamentals of Machine Learning</h1>
+    <p>Complete Study Guide — every slide from all 7 lecture decks (CSS 3131), explained in full</p>
+    <span class="tag">7 lectures &middot; 390 slides covered</span>
+    <span class="tag">Numericals highlighted in green</span>
+    <span class="tag">Key exam topics highlighted in gold</span>
   </div>
 </header>
-
 <div class="wrap">
 
-<nav class="toc">
-  <h2>Contents</h2>
-  <ol>
-    <li><a href="#sec1">Simple Linear Regression — Least Squares Method</a></li>
-    <li><a href="#sec2">Multiple Linear Regression — Normal Equation</a></li>
-    <li><a href="#sec3">Linear Regression via Gradient Descent (SGD)</a></li>
-    <li><a href="#sec4">Logistic Regression — Sigmoid, Odds &amp; Predictions</a></li>
-    <li><a href="#sec5">Quick-Reference Formula Sheet</a></li>
-    <li><a href="#sec6">How to Approach the Numerical Question in the Exam</a></li>
-  </ol>
-</nav>
+<p>This guide now covers <strong>every slide from all seven of your lecture decks</strong> — not just the numerical questions. Where the original version gave you worked numericals only, this version builds the full conceptual picture around them: definitions, motivations, diagrams, and the reasoning behind every formula, in the order your slides actually present them.</p>
 
-<p>I went through all four of your lecture PDFs (Fundamentals of ML, Linear Regression/Gradient Descent, Parametric vs Non-Parametric, Logistic Regression). Four calculation types show up with full worked examples — these are your most likely IA numerical-question candidates. For each one below you get: the theory in plain terms, a fully re-derived worked example (I recomputed everything by hand and cross-checked with Python so every number here is verified), and fresh practice problems with complete solutions so you can test yourself before checking the answer.</p>
+<div class="box key">
+  <div class="box-title">How to read the colour-coding</div>
+  <ul style="margin:4px 0 0">
+    <li><span class="box theory" style="display:inline-block;padding:2px 10px;margin:0;border-radius:5px;">Blue</span> — theory, definitions, and formulas.</li>
+    <li><span class="box concept" style="display:inline-block;padding:2px 10px;margin:0;border-radius:5px;">Purple</span> — a conceptual explanation, comparison, or motivation from the slides.</li>
+    <li><span class="box worked" style="display:inline-block;padding:2px 10px;margin:0;border-radius:5px;">Green</span> — a fully worked <strong>numerical</strong> example (also marked with a green "Numerical" tag in the sidebar).</li>
+    <li><span class="box key" style="display:inline-block;padding:2px 10px;margin:0;border-radius:5px;">Gold</span> — a genuinely important, exam-relevant idea worth remembering word for word.</li>
+    <li><span class="box practice" style="display:inline-block;padding:2px 10px;margin:0;border-radius:5px;">Amber</span> — practice problems, for testing yourself.</li>
+    <li><span class="box note" style="display:inline-block;padding:2px 10px;margin:0;border-radius:5px;">Red</span> — a warning, common confusion, or a correction to something in the slides.</li>
+  </ul>
+</div>
 
-<!-- =========================================================== -->
-<h2 class="section-title" id="sec1"><span class="num">01</span> Simple Linear Regression — Least Squares Method</h2>
+<div class="lecture-header" id="L1">
+  <div class="ltag">Lecture 1</div>
+  <h2>Introduction to Machine Learning &amp; Linear Regression</h2>
+  <p>This lecture answers "what actually is ML, and why does it exist?", walks through a classic case study (the spam filter) to make the answer concrete, maps out the three major families of learning, and then opens the first algorithm of the course: Linear Regression.</p>
+</div>
+
+<div class="box note">
+<div class="box-title">A note on scope</div>
+<p>The official syllabus for this course (CSS 3131) is much larger than these 7 lecture decks — it continues into Decision Trees, Support Vector Machines, Bayesian Belief Networks, Ensembling/Boosting, Neural Networks, and PCA. This guide covers exactly what's in your 7 uploaded lectures: Introduction &amp; Linear Regression through Naive Bayes. If further lectures are uploaded later, this guide can be extended the same way.</p>
+</div>
+
+<h2 class="section-title" id="l1-what-is-ml"><span class="num">1.1</span> What is ML?</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p><strong>ML is a set of algorithms that can learn to perform tasks such as prediction and classification effectively using data.</strong></p>
+<p>Two classic definitions worth knowing by name for the exam:</p>
+<blockquote style="margin:10px 0;padding-left:16px;border-left:3px solid var(--gold);font-style:italic;">"A computer program is said to learn from experience E with respect to some class of tasks T, and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E." — <strong>Tom Mitchell (1997)</strong></blockquote>
+<blockquote style="margin:10px 0;padding-left:16px;border-left:3px solid var(--gold);font-style:italic;">"A field of study that gives computers the ability to learn without being explicitly programmed." — <strong>Arthur Samuel (1959)</strong></blockquote>
+</div>
+
+<div class="box key">
+<div class="box-title">Exam tip — Mitchell's definition, in T/P/E form</div>
+<p>Mitchell's definition is often tested by asking you to identify T (Task), P (Performance measure), and E (Experience) for a given scenario. For the spam-filter example later in this lecture: <strong>T</strong> = flagging spam for new emails, <strong>P</strong> = accuracy (ratio of correctly classified emails), <strong>E</strong> = the training data (examples of spam and non-spam/"ham" emails).</p>
+</div>
+
+<h2 class="section-title" id="l1-need"><span class="num">1.2</span> Need for Machine Learning</h2>
+<div class="box concept">
+<div class="box-title">Why ML became possible and necessary</div>
+<ul>
+<li><strong>High volume of available data</strong> — there's simply far more data to learn from than ever before.</li>
+<li><strong>Cost of storage has reduced</strong> — it's now cheap to keep all that data around.</li>
+<li><strong>Unavailability of complex algorithms</strong> (historically) — hand-coding rules for genuinely complex problems just doesn't scale.</li>
+</ul>
+<p><strong>Important objectives of Machine Learning:</strong></p>
+<ul>
+<li>To process archived data for organizations</li>
+<li>To make better decisions</li>
+<li>To design new products</li>
+<li>To improve business processes to develop decision support systems</li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l1-intro"><span class="num">1.3</span> Introduction to Machine Learning</h2>
+<div class="box concept">
+<div class="box-title">The human-learning analogy</div>
+<p>In the real world, we are surrounded by humans who can learn everything from their experiences with their learning capability, and we have computers or machines which work on our instructions. But can a machine also learn from experiences or past data like a human does? So here comes the role of Machine Learning.</p>
+<p>Machine Learning is said to be a subset of artificial intelligence that is mainly concerned with the development of algorithms which allow a computer to learn from the data and past experiences on their own.</p>
+</div>
+<div class="box concept">
+<div class="box-title">How an ML system actually behaves</div>
+<ul>
+<li>A Machine Learning system learns from historical data, builds prediction models, and whenever it receives new data, predicts the output for it.</li>
+<li>The accuracy of the predicted output depends upon the amount of data — a huge amount of data helps build a better model that predicts more accurately.</li>
+<li>Suppose we have a complex problem where we need to perform predictions. Instead of writing code for it, we feed the data to generic algorithms, and with the help of these algorithms, the machine builds the logic as per the data and predicts the output.</li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l1-ai"><span class="num">1.4</span> What is Artificial Intelligence (AI)? AI vs. ML</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>AI can be concisely described as <strong>the effort to automate intellectual tasks normally performed by humans.</strong> AI is a general field that <em>encompasses</em> machine learning and deep learning — but AI also includes many more approaches that may not involve any learning at all (e.g. hardcoded rule systems).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">The historical story: Symbolic AI → Machine Learning</div>
+<p><strong>Symbolic AI</strong> was the dominant paradigm in AI from the 1950s to the 1980s, reaching peak popularity during the expert-systems boom of the 1980s. Early chess programs only involved hardcoded rules crafted by programmers, and did not qualify as machine learning. For a long time, most experts believed that human-level AI could be achieved simply by having programmers handcraft a sufficiently large set of explicit rules for manipulating knowledge stored in explicit databases.</p>
+<p><strong>Symbolic AI proved suitable</strong> for well-defined, logical problems such as playing chess. But it turned out to be <strong>intractable</strong> for more complex, "fuzzy" problems — image classification, speech recognition, natural language translation. A new approach arose to take symbolic AI's place: <strong>machine learning.</strong></p>
+<p>Machine learning looks at the input data and the corresponding answers, and figures out what the rules should be. A machine learning system is <em>trained</em> rather than explicitly programmed — presented with many examples relevant to a task, it finds statistical structure in those examples that eventually lets it come up with rules for automating the task.</p>
+</div>
+
+<div class="box note">
+<div class="box-title">A fun historical aside</div>
+<p>The origins of chess are debated, but most historians agree that the game's ancestor, chaturanga, originated in India around the 6th century AD.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">ML vs. classical statistics</div>
+<ul>
+<li>Unlike statistics, machine learning tends to deal with large, complex datasets (such as a dataset of millions of images, each with tens of thousands of pixels) — classical statistical analysis, such as Bayesian analysis, would be impractical at that scale.</li>
+<li>Machine learning — and especially deep learning — exhibits comparatively little mathematical theory and is fundamentally an <strong>engineering discipline.</strong></li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l1-paradigm"><span class="num">1.5</span> Machine Learning: a New Programming Paradigm</h2>
+<div class="box key">
+<div class="box-title">The paradigm shift</div>
+<p>Traditional programming: you write explicit <strong>rules</strong> and feed them, together with <strong>data</strong>, into a program, to get <strong>answers</strong> out.</p>
+<p>Machine learning flips this around: you feed in <strong>data</strong> and the <strong>answers</strong> (expected outputs), and the system produces the <strong>rules</strong> — which can then be applied to new data.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">To do machine learning, we need three things</div>
+<ol>
+<li><strong>Input data points</strong> — e.g. for speech recognition, sound files of people speaking; for image tagging, pictures.</li>
+<li><strong>Examples of the expected output</strong> — e.g. human-generated transcripts for speech recognition; tags like "dog," "cat" for image tagging.</li>
+<li><strong>A way to measure whether the algorithm is doing a good job</strong> — necessary to determine the distance between the algorithm's current output and its expected output. This measurement is used as a feedback signal to adjust the way the algorithm works. <strong>This adjustment step is what we call learning.</strong></li>
+</ol>
+</div>
+
+<div class="box concept">
+<div class="box-title">Motivation</div>
+<p>Over the past two decades, Machine Learning has become one of the mainstays of information technology. With the ever-increasing amounts of data becoming available, there is good reason to believe that smart data analysis will become more pervasive as a necessary ingredient for technological progress.</p>
+</div>
+
+<h2 class="section-title" id="l1-spam"><span class="num">1.6</span> Case Study: the Spam Filter</h2>
+<p>This is the running example the course uses to make "why ML?" completely concrete — <strong>the same problem, solved two ways.</strong></p>
+
+<div class="box theory">
+<div class="box-title">Setting up the problem, in Mitchell's T/P/E language</div>
+<ul>
+<li>A spam filter is given examples of spam emails (e.g. flagged by users) and examples of regular ("ham") emails, and learns to flag spam.</li>
+<li>The examples the system uses to learn are the <strong>training set</strong>; each training example is a <strong>training instance</strong> (or sample).</li>
+<li><strong>Task T:</strong> flag spam for new emails. <strong>Experience E:</strong> the training data. <strong>Performance measure P:</strong> needs to be defined — a common choice is the ratio of correctly classified emails, called <strong>accuracy</strong>, often used in classification tasks.</li>
+</ul>
+</div>
+
+<div class="box concept">
+<div class="box-title">Attempt 1 — traditional programming</div>
+<p><strong>What does spam typically look like?</strong> You'd notice that some words or phrases (like "4U," "credit card," "free," "amazing") tend to come up a lot in the subject line — and perhaps other patterns in the sender's name, the email body, etc.</p>
+<ol>
+<li>Notice these patterns.</li>
+<li>Write a detection algorithm for each pattern noticed; the program flags an email as spam if enough of these patterns are detected.</li>
+<li>Test the program, and repeat steps 1–2 until it's good enough to launch.</li>
+</ol>
+<div class="box note" style="margin:10px 0 0;">
+<div class="box-title">The problem</div>
+<p>The program will likely become a long list of complex rules — hard to maintain.</p>
+</div>
+</div>
+
+<div class="box concept">
+<div class="box-title">Attempt 2 — the Machine Learning approach</div>
+<p>A spam filter based on ML techniques <strong>automatically learns</strong> which words and phrases are good predictors of spam, by detecting unusually frequent patterns of words in the spam examples compared to the ham examples. The program is <strong>much shorter, easier to maintain, and most likely more accurate.</strong></p>
+</div>
+
+<div class="box key">
+<div class="box-title">The real payoff — automatically adapting to change</div>
+<p>If spammers keep working around your spam filter, a traditional rule-based system needs new rules written forever. Example: if spammers notice all their emails containing "4U" are blocked, they switch to "For U" instead. A traditional filter would need to be manually updated to catch "For U." An <strong>ML-based filter automatically notices</strong> that "For U" has become unusually frequent in emails flagged as spam by users, and starts flagging them — <strong>without any intervention from you.</strong></p>
+</div>
+
+<h2 class="section-title" id="l1-applications"><span class="num">1.7</span> Other Applications, and Why Use ML</h2>
+<div class="box concept">
+<div class="box-title">Problems too complex for hand-written rules</div>
+<p>Machine Learning also shines for problems that are either too complex for traditional approaches, or have no known algorithm. <strong>Example — speech recognition:</strong> to distinguish the words "one" and "two," you might notice "two" starts with a high-pitch sound ("T") and hardcode an algorithm around that. But this won't scale to thousands of words, spoken by millions of different people, in noisy environments, across dozens of languages. The best solution: write an algorithm that <strong>learns by itself</strong>, given many example recordings of each word.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Machine Learning can help humans learn</div>
+<p>ML algorithms can be inspected to see what they've learned (though for some algorithms this can be tricky). Example: once a spam filter is trained on enough spam, you can inspect it to reveal the list of words and word-combinations it believes are the best predictors of spam — sometimes revealing unsuspected correlations or new trends. Applying ML to dig through large amounts of data to discover non-obvious patterns is called <strong>data mining.</strong></p>
+</div>
+
+<div class="box key">
+<div class="box-title">Why Use Machine Learning? — Summary</div>
+<p>Machine Learning is great for:</p>
+<ul>
+<li>Problems for which existing solutions require a lot of fine-tuning or long lists of rules — one ML algorithm can often simplify the code and perform better than the traditional approach.</li>
+<li>Complex problems for which a traditional approach yields no good solution — the best ML techniques can perhaps find one.</li>
+<li>Fluctuating environments — an ML system can adapt to new data.</li>
+<li>Getting insights about complex problems and large amounts of data.</li>
+</ul>
+</div>
+
+<div class="box concept">
+<div class="box-title">Examples of applications in diverse fields</div>
+<p>Machine learning is a growing technology used to mine knowledge from data (the "data mining" field). Wherever data exists, things can be learned from it — and whenever there's an excess of data, the mechanics of learning must be automatic. Applications emerge not from ML experts, nor from the data alone, but from <strong>people who work with the data and the problems it arises from.</strong></p>
+</div>
+
+<h2 class="section-title" id="l1-classification"><span class="num">1.8</span> Classification of Machine Learning Algorithms</h2>
+<div class="box theory">
+<div class="box-title">The four families</div>
+<ul>
+<li><strong>Supervised Learning</strong>
+  <ul><li>Classification</li><li>Regression</li></ul>
+</li>
+<li><strong>Unsupervised Learning</strong>
+  <ul><li>Clustering</li><li>Association</li></ul>
+</li>
+<li><strong>Semi-supervised Learning</strong></li>
+<li><strong>Reinforcement Learning</strong></li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l1-supervised"><span class="num">1.9</span> Supervised Learning</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<ul>
+<li>Uses <strong>labelled</strong> data — the training data fed to the algorithm includes the desired solution, called <strong>labels.</strong></li>
+<li>Two main categories: <strong>Classification</strong> and <strong>Regression.</strong></li>
+<li>ML has two important stages: <strong>Training</strong> and <strong>Testing.</strong> In training, the algorithm takes a labelled dataset (input) and starts learning; after training, the samples are processed and the model is generated. In testing, the constructed model is tested with test samples (data the model hasn't seen).</li>
+</ul>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0">
+<div class="box concept" style="margin:0">
+<div class="box-title">Classification Model</div>
+<ul style="margin:4px 0 0">
+<li>Input attributes are independent variables; target attributes are dependent variables.</li>
+<li>Output is a <strong>discrete</strong> value — separate groups, e.g. yes/no, cat/dog, spam/not spam.</li>
+<li>The relationship between dependent (target) and independent (input) variables is represented in a structure called <strong>classification.</strong></li>
+<li>Important classification algorithms: Logistic Regression, Support Vector Machine, KNN, Naive Bayes.</li>
+</ul>
+</div>
+<div class="box concept" style="margin:0">
+<div class="box-title">Regression Model</div>
+<ul style="margin:4px 0 0">
+<li>Unlike classification, the output is a <strong>continuous</strong> value — real numbers within a range, e.g. price, temperature, weight.</li>
+<li>Important regression algorithms: Linear Regression, Decision Tree, Random Forest, Gradient Boosting.</li>
+</ul>
+</div>
+</div>
+
+<div class="box theory">
+<div class="box-title">Formalising supervised learning as function approximation</div>
+<p>Goal: predict \(y\) from \(x\). Given a labelled set of input-output pairs, map input \(x\) to output \(y\).</p>
+<p><strong>Given:</strong> a training set \(\{(x_i,y_i)\ |\ i=1\dots n\}\). <strong>Find:</strong> a good approximation to \(f:X\to Y\) where \(y\in\{1,\dots,C\}\).</p>
+<ul>
+<li><strong>Classification</strong> — \(y\) is categorical.</li>
+<li><strong>Regression</strong> — \(y\) is a real value.</li>
+</ul>
+<p>Formalising: \(y=f(x)\) for some unknown function \(f\); the goal of learning is to <strong>estimate</strong> \(f\), given a labelled training set, and then make predictions using \(\hat y=\hat f(x)\).</p>
+<p><strong>Generalization</strong> means making good predictions on <em>novel</em> inputs (data the model hasn't seen before) — not just memorising the training data. Examples: spam detection, digit recognition, stock prices.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">A little history — where "supervised learning" comes from</div>
+<p>The supervised learning strategy consists of having available the desired outputs for a given set of input signals — each training sample is composed of the input signals and their corresponding outputs. This requires a table of input/output data, also called an <strong>attribute/value table</strong>, which represents the process and its behaviour. It is from this information that the learning system formulates a "hypothesis" about the system being learned. <strong>Donald Hebb</strong> proposed the first supervised learning strategy in 1949, inspired by neurophysiological observations.</p>
+<p>Mechanically: the network is trained by providing it with input and matching output patterns (usually from an external "teacher"). The network processes the inputs and compares its resulting outputs against the desired outputs. Errors are then propagated back through the system, causing it to adjust its weights. This repeats over and over as weights are continually refined — the set of data enabling this training is the <strong>training set.</strong> Example architectures: Perceptron, Feed-forward networks, Radial Basis Function networks, Support Vector Machines.</p>
+</div>
+
+<h2 class="section-title" id="l1-unsupervised"><span class="num">1.10</span> Unsupervised Learning</h2>
+<div class="box theory">
+<div class="box-title">Definition — "Learning without a Teacher"</div>
+<ul>
+<li><strong>Self-organized learning</strong> — no external teacher or critic oversees the learning process.</li>
+<li>The system is supposed to discover statistically salient features of the input population.</li>
+<li>Unlike supervised learning, there is <strong>no a priori set of categories</strong> into which the patterns are to be classified — the system must develop its own representation of the input stimuli.</li>
+<li>All similar input patterns are grouped together as <strong>clusters</strong>; if a matching input pattern isn't found, a new cluster is formed.</li>
+<li>Example architectures: Self-organizing maps, Hopfield networks.</li>
+</ul>
+</div>
+<div class="box concept">
+<div class="box-title">A biological analogy worth remembering</div>
+<p>The slides use the analogy of <strong>"how a fish or tadpole learns"</strong> — grouping similar experiences together without anyone labelling them, purely by noticing statistical regularities in what it encounters.</p>
+</div>
+
+<div style="text-align:center;margin:20px 0;">
+<svg viewBox="0 0 460 170" width="100%" style="max-width:460px;">
+<rect x="20" y="65" width="90" height="40" rx="6" fill="none" stroke="#7a5c3e" stroke-width="1.5"/>
+<text x="65" y="90" text-anchor="middle" font-family="EB Garamond" font-size="14">Environment</text>
+<rect x="240" y="65" width="110" height="40" rx="6" fill="none" stroke="#7a5c3e" stroke-width="1.5"/>
+<text x="295" y="90" text-anchor="middle" font-family="EB Garamond" font-size="14">Learning system</text>
+<path d="M 110,80 L 240,80" stroke="#b8863f" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+<text x="175" y="72" text-anchor="middle" font-family="EB Garamond" font-size="12">Vector describing state of the environment</text>
+<defs><marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b8863f"/></marker></defs>
+</svg>
+<p style="font-style:italic;color:var(--brown);font-size:.9rem;margin-top:6px">Block diagram of unsupervised learning — no feedback signal, just the environment's state feeding the learning system.</p>
+</div>
+
+<h2 class="section-title" id="l1-reinforcement"><span class="num">1.11</span> Reinforcement Learning</h2>
+<div class="box theory">
+<div class="box-title">When is reinforcement learning used?</div>
+<p>If less information is available about the target output values (<strong>critic information</strong>), learning based on this critic information is called <strong>reinforcement learning</strong>, and the feedback sent is called the <strong>reinforcement signal.</strong> Crucially, the feedback here is only <strong>evaluative</strong> (how good/bad was that?) and <strong>not instructive</strong> (it doesn't tell you the correct answer, unlike supervised learning's labels).</p>
+</div>
+
+<div style="text-align:center;margin:20px 0;">
+<svg viewBox="0 0 460 220" width="100%" style="max-width:460px;">
+<rect x="150" y="15" width="140" height="35" rx="6" fill="none" stroke="#7a5c3e" stroke-width="1.5"/>
+<text x="220" y="37" text-anchor="middle" font-family="EB Garamond" font-size="13">Environment</text>
+<rect x="20" y="150" width="120" height="40" rx="6" fill="none" stroke="#7a5c3e" stroke-width="1.5"/>
+<text x="80" y="175" text-anchor="middle" font-family="EB Garamond" font-size="13">Learning system</text>
+<rect x="300" y="150" width="140" height="40" rx="6" fill="none" stroke="#7a5c3e" stroke-width="1.5"/>
+<text x="370" y="169" text-anchor="middle" font-family="EB Garamond" font-size="12">Heuristic</text>
+<text x="370" y="184" text-anchor="middle" font-family="EB Garamond" font-size="12">reinforcement signal</text>
+<path d="M 210,50 L 130,150" stroke="#b8863f" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+<text x="140" y="100" font-family="EB Garamond" font-size="11">State (input)</text>
+<path d="M 230,50 L 340,150" stroke="#8c3b2e" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+<text x="255" y="100" font-family="EB Garamond" font-size="11">Primary reinforcement signal</text>
+<path d="M 140,170 L 300,170" stroke="#3f2f20" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+<text x="220" y="163" text-anchor="middle" font-family="EB Garamond" font-size="11">Action</text>
+<defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#3f2f20"/></marker></defs>
+</svg>
+<p style="font-style:italic;color:var(--brown);font-size:.9rem;margin-top:6px">Block diagram of reinforcement learning — the environment provides state and a primary reinforcement signal; a "critic" turns this into a heuristic reinforcement signal that shapes the learning system's actions.</p>
+</div>
+
+<h2 class="section-title" id="l1-comparison"><span class="num">1.12</span> Supervised vs. Unsupervised vs. Reinforcement Learning</h2>
+<table>
+<tr><th>Feature</th><th>Supervised Learning</th><th>Unsupervised Learning</th><th>Reinforcement Learning</th></tr>
+<tr><td><strong>Definition</strong></td><td>Learns from labelled data</td><td>Learns from unlabelled data</td><td>Learns by interacting with an environment</td></tr>
+<tr><td><strong>Data Type</strong></td><td>Labelled (input+output)</td><td>Unlabelled data</td><td>Sequential decisions, no fixed dataset</td></tr>
+<tr><td><strong>Objective</strong></td><td>Predict output for new data</td><td>Discover hidden patterns or groupings</td><td>Maximize cumulative reward</td></tr>
+<tr><td><strong>Examples of Tasks</strong></td><td>Classification, Regression</td><td>Clustering, Reduction</td><td>Sequential decision making</td></tr>
+<tr><td><strong>Feedback Type</strong></td><td>Direct feedback (correct answer provided)</td><td>No feedback</td><td>Delayed feedback via reward/penalty</td></tr>
+<tr><td><strong>Learning Process</strong></td><td>Learns a mapping from inputs to outputs</td><td>Learns data distribution or groupings</td><td>Learns policy via trial and error</td></tr>
+<tr><td><strong>Algorithms</strong></td><td>Linear/Logistic Regression, SVM, Decision Trees</td><td>K-Means, PCA, Hierarchical Clustering</td><td>Q-Learning, SARSA, Deep Q-Networks (DQN), Policy Gradient</td></tr>
+<tr><td><strong>Output</strong></td><td>Predictive model</td><td>Data groupings or reduced features</td><td>Optimal strategy or policy</td></tr>
+<tr><td><strong>Real-world Examples</strong></td><td>Spam detection, Medical diagnosis, Stock prediction</td><td>Customer segmentation, Anomaly detection</td><td>Robotics, Game playing (AlphaGo), Autonomous vehicles</td></tr>
+</table>
+
+<h2 class="section-title" id="l1-iris"><span class="num">1.13</span> Example: The Iris Dataset</h2>
+<div class="box concept">
+<div class="box-title">The classic example, worth knowing well</div>
+<p>Suppose we have to classify flowers into 3 categories from the Iris dataset, based on the attributes <strong>Petal length, Petal width, Sepal length &amp; Sepal width.</strong> The three categories (species) are <em>setosa</em>, <em>versicolor</em>, and <em>virginica</em>.</p>
+<table>
+<tr><th>Sepal Length (cm)</th><th>Sepal Width (cm)</th><th>Petal Length (cm)</th><th>Petal Width (cm)</th><th>Species (Category)</th></tr>
+<tr><td>5.1</td><td>3.5</td><td>1.4</td><td>0.2</td><td>Iris-setosa</td></tr>
+<tr><td>4.9</td><td>3.0</td><td>1.4</td><td>0.2</td><td>Iris-setosa</td></tr>
+<tr><td>7.0</td><td>3.2</td><td>4.7</td><td>1.4</td><td>Iris-versicolor</td></tr>
+<tr><td>6.4</td><td>3.2</td><td>4.5</td><td>1.5</td><td>Iris-versicolor</td></tr>
+<tr><td>6.3</td><td>3.3</td><td>6.0</td><td>2.5</td><td>Iris-virginica</td></tr>
+<tr><td>5.8</td><td>2.7</td><td>5.1</td><td>1.9</td><td>Iris-virginica</td></tr>
+</table>
+<p class="small" style="font-size:.85rem;color:var(--brown)">(A representative sample — the full dataset has 150 records, 50 for each of the 3 species.)</p>
+</div>
+<div class="box key">
+<div class="box-title">Why this example matters conceptually</div>
+<p>Plotting sepal length (x-axis) against sepal width (y-axis) for all 150 records produces a scatter plot where the three species form visually distinguishable — though somewhat overlapping — clusters. This is exactly the kind of pattern a <strong>classification</strong> algorithm is trying to learn: given a new flower's measurements, which of the 3 clusters does it most likely belong to? Iris is the "hello world" dataset of classification for precisely this reason — it's simple, visualisable, and not perfectly linearly separable, so it teaches the real challenges of classification without being confusing.</p>
+</div>
+
+<h2 class="section-title" id="l1-regression-intro"><span class="num">1.14</span> Linear Regression — Introduction</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>Linear Regression is a simple and powerful model approach for predicting a numeric response from a set of one or more independent variables. It models the relationship between a dependent variable \(y\) and one or more independent variables \(X\). The goal is to find a line (or hyperplane) that best fits the data points by minimizing the error between predicted and actual values.</p>
+<p><strong>Dependent and Independent Variables:</strong></p>
+<ul>
+<li>\(y\) — the variable we wish to predict: dependent, Response, or Target variable.</li>
+<li>\(X\) — the variable(s) used to predict \(y\): independent, predictor variable(s).</li>
+</ul>
+</div>
+<div class="box concept">
+<div class="box-title">Three forms of Linear Regression, based on the input data</div>
+<ul style="margin:4px 0 0">
+<li><strong>Simple Linear Regression</strong> — one independent variable.</li>
+<li><strong>Multi(ple) Linear Regression</strong> — more than one independent variable.</li>
+<li><strong>Polynomial Regression</strong> — fits a curve rather than a straight line (covered in Lecture 3).</li>
+</ul>
+</div>
+<div class="box theory">
+<div class="box-title">Reading the regression equation</div>
+<p>\[ y = mx + c \]</p>
+<ul>
+<li>\(y\) — the target or output value you want to predict.</li>
+<li>\(x\) — the input feature or data point you use to make the prediction.</li>
+<li>\(m\) — the <strong>slope</strong> of the line, showing how much \(y\) changes when \(x\) goes up by one unit.</li>
+<li>\(c\) — the <strong>y-intercept</strong>, the value of \(y\) when \(x=0\).</li>
+</ul>
+</div>
+<h2 class="section-title" id="sec1"><span class="num">1.15</span> Simple Linear Regression <span class="numtag">Numerical</span></h2>
 
 <div class="box theory">
   <div class="box-title">Theory</div>
@@ -237,7 +687,7 @@
 </div>
 
 <!-- =========================================================== -->
-<h2 class="section-title" id="sec2"><span class="num">02</span> Multiple Linear Regression — Normal Equation</h2>
+<h2 class="section-title" id="sec2"><span class="num">1.16</span> Multiple Linear Regression <span class="numtag">Numerical</span></h2>
 
 <div class="box theory">
   <div class="box-title">Theory</div>
@@ -307,7 +757,109 @@
 </div>
 
 <!-- =========================================================== -->
-<h2 class="section-title" id="sec3"><span class="num">03</span> Linear Regression via Gradient Descent (SGD)</h2>
+
+<div class="lecture-header" id="L2">
+  <div class="ltag">Lecture 2</div>
+  <h2>Linear Regression Using Gradient Descent</h2>
+  <p>Lecture 1 solved for the regression line two ways — the Normal Equation's closed form, and a first taste of Stochastic Gradient Descent. This lecture goes deep on the second method: why it exists, exactly how it updates its coefficients, and a full derivation from first principles.</p>
+</div>
+
+<h2 class="section-title" id="l2-normal-vs-gd"><span class="num">2.1</span> Normal Equation vs. Gradient Descent</h2>
+<div class="box theory">
+<div class="box-title">Two fundamentally different ways to fit a line</div>
+<ul>
+<li><strong>Normal Equation</strong> — linear regression using the normal equation gives a <strong>closed-form solution</strong>, using calculus to find the minimum of a function directly.</li>
+<li><strong>Gradient Descent</strong> — an <strong>iterative</strong> optimization algorithm that steadily alters the parameters, minimizing the cost function step by step.</li>
+</ul>
+</div>
+
+<div class="box concept">
+<div class="box-title">Advantages of each method</div>
+<p><strong>Normal Equation:</strong> computationally efficient for small-to-medium datasets with a simple linear model.</p>
+<p><strong>Gradient Descent:</strong></p>
+<ul>
+<li><strong>Scalability</strong> — can efficiently handle large datasets that may not fit in memory, processing data in batches.</li>
+<li><strong>Flexibility</strong> — applies to a wide range of ML models: linear regression, logistic regression, neural networks, and more.</li>
+<li><strong>Ability to handle complex models</strong> — can optimize models with a large number of parameters or nonlinear relationships that may be difficult to solve using the normal equation.</li>
+</ul>
+</div>
+
+<table>
+<tr><th>Gradient Descent</th><th>Normal Equation</th></tr>
+<tr><td>Iterative algorithm; need to choose learning rate and number of iterations</td><td>Analytical approach; no need to choose learning rate or iterations</td></tr>
+<tr><td>Works well with a <strong>large</strong> number of features</td><td>Works well with a <strong>small</strong> number of features</td></tr>
+<tr><td>Uses feature scaling, as it decreases the number of iterations</td><td>Feature scaling not required — computation time for matrix inverse/multiplication depends on matrix size, not the size of the numbers</td></tr>
+<tr><td>Time complexity depends on number of iterations and data size</td><td>Time complexity depends on input features (matrix sizes)</td></tr>
+<tr><td>Effective for large datasets or complex models</td><td>Efficient for small-to-medium datasets with simple linear models</td></tr>
+</table>
+
+<h2 class="section-title" id="l2-sgd-theory"><span class="num">2.2</span> Stochastic Gradient Descent — the mechanics</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>Stochastic Gradient Descent (SGD) can be used to learn (search for) the coefficients of a simple linear regression model by minimizing the error on a training dataset. Gradient Descent is the process of minimizing a function by following the <strong>gradients (slope)</strong> of the cost function — this requires knowing both the cost and its derivative, so that from a given point we know the gradient and can move in that direction (e.g. downhill, towards the minimum).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">How the algorithm works, step by step</div>
+<ul>
+<li>Each training instance is shown to the model <strong>one at a time.</strong></li>
+<li>The model makes a prediction for that training instance.</li>
+<li>The error is calculated.</li>
+<li>The model is updated to reduce the error for the next prediction.</li>
+</ul>
+<p>In each iteration, the coefficients — called <strong>weights (w)</strong> in ML language — are updated using:</p>
+<p>\[ w = w - \alpha\cdot\text{delta} \]</p>
+<ul>
+<li>\(w\) — the coefficient/weight being optimized.</li>
+<li>\(\alpha\) — the <strong>learning rate</strong> we must configure (e.g. 0.1).</li>
+<li>delta (or gradient) — the error for the model on the training data, attributed to that weight.</li>
+</ul>
+</div>
+
+<div class="box key">
+<div class="box-title">Two vivid analogies worth remembering</div>
+<p><strong>Hiking down a mountain:</strong> the perfect analogy for gradient descent — imagine a valley and a person with no sense of direction trying to reach the bottom. He goes down the slope, taking large steps when the slope is steep and small steps when it's less steep, deciding his next position based on his current one, and stops when he reaches the bottom (the goal).</p>
+<p><strong>A large bowl:</strong> think of the cost function's plot as a large bowl. A random position on the bowl's surface is the cost of the current coefficient values. The bottom of the bowl is the cost of the best coefficients — the minimum. The goal is to keep trying different coefficient values, evaluating their cost, and selecting new ones with slightly lower cost. Repeating this enough times leads to the bottom.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">The general Gradient Descent procedure</div>
+<ol>
+<li>The derivative of the cost is calculated — the slope of the function at a given point, telling us the <em>direction</em> (sign) to move the coefficients to get a lower cost next time: \(\text{delta}=\text{derivative(cost)}\).</li>
+<li>Now that we know which direction is "downhill," update the coefficients: \(\text{coefficient} = \text{coefficient} - (\alpha\times\text{delta})\).</li>
+<li>Repeat until the cost is 0.0, or no further improvement can be achieved.</li>
+</ol>
+</div>
+
+<div class="box concept">
+<div class="box-title">Where do the "coefficients" come from, in general?</div>
+<p>The goal of <em>all</em> supervised ML algorithms is to best estimate a target function \(f\) that maps input data \(X\) onto output variables \(Y\) — this describes all classification and regression problems. Some algorithms have coefficients that characterize their estimate of \(f\); different algorithms have different representations and coefficients, but many require an <strong>optimization process</strong> to find the coefficients giving the best estimate. Common algorithms with coefficients optimizable via gradient descent: <strong>Linear Regression and Logistic Regression.</strong></p>
+<p>The cost function evaluates the coefficients by calculating a prediction for every training instance, comparing predictions to actual outputs, and calculating a sum or average error — such as the <strong>Sum of Squared Residuals (SSR)</strong> for linear regression. The cost is calculated over the <em>entire</em> training dataset.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Why "stochastic"? Batch vs. Stochastic Gradient Descent</div>
+<p>Gradient descent can be slow on very large datasets, because one iteration requires a prediction for <em>every</em> instance in the training set — this takes a long time with millions of instances (this full-dataset version is called <strong>Batch Gradient Descent</strong>). <strong>Stochastic</strong> Gradient Descent is a variation where the coefficient update happens after <em>each individual training instance</em>, rather than waiting until the end of a full batch.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Full derivation — the SGD update equation for simple linear regression</div>
+<p>Dataset with input features \(x\) and target values \(y\). The model predicts \(y=w\cdot x+b\), where \(w\) is the weight (slope) and \(b\) the bias (intercept).</p>
+<p><strong>Step 1 — define the Mean Squared Error (MSE) loss function:</strong></p>
+<p>\[ L(w,b) = \frac1N\sum_{i=1}^N\big(y_i-(w\cdot x_i+b)\big)^2 \]</p>
+<p>where \(N\) is the number of training examples, \(x_i\) is the \(i\)th feature, \(y_i\) is the true label for the \(i\)th training example.</p>
+<p><strong>Step 2 &amp; 3 — compute the gradient</strong> (the partial derivatives of \(L\) with respect to \(w\) and \(b\)):</p>
+<p>\[ \frac{\partial L}{\partial w} = -\frac2N\sum_{i=1}^Nx_i\cdot\big(y_i-(w\cdot x_i+b)\big) \qquad \frac{\partial L}{\partial b} = -\frac2N\sum_{i=1}^N\big(y_i-(w\cdot x_i+b)\big) \]</p>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">(Setting both derivatives to zero and solving simultaneously would give the closed-form Normal Equation solution directly — this is exactly where the two methods connect.)</p>
+<p><strong>Step 4 — the Gradient Descent perspective:</strong> rather than solving the derivatives analytically, update \(w\) and \(b\) iteratively in the direction opposite the gradient:</p>
+<p>\[ w = w-\alpha\cdot\frac{\partial L}{\partial w} \qquad b = b-\alpha\cdot\frac{\partial L}{\partial b} \]</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Connecting this back to the exam-style update rule</div>
+<p>For a <em>single</em> training instance (the stochastic case, \(N=1\)), \(\partial L/\partial w\) simplifies to \(-2\cdot x\cdot\text{error}\) and \(\partial L/\partial b\) to \(-2\cdot\text{error}\) (where \(\text{error}=p(i)-y(i)\)). Absorbing the constant \(-2\) into the learning rate \(\alpha\) recovers exactly the simpler rule used throughout this course: \(B_0^{(t+1)}=B_0^{(t)}-\alpha\cdot\text{error}\), \(B_1^{(t+1)}=B_1^{(t)}-\alpha\cdot\text{error}\cdot x\).</p>
+</div>
+<h2 class="section-title" id="sec3"><span class="num">2.2</span> Linear Regression via Gradient Descent (SGD) <span class="numtag">Numerical</span></h2>
 
 <div class="box theory">
   <div class="box-title">Theory</div>
@@ -355,8 +907,418 @@
   </details>
 </div>
 
+
+<div class="box worked">
+<div class="box-title">Extending the example — 4 full epochs (20 iterations), and comparing against the Normal Equation</div>
+<p>Your slides extend the exact same dataset by repeating it 4 times end-to-end (\(x=[1,2,4,3,5]\) &amp; \(y=[1,3,3,2,5]\), repeated 4&times;, giving 20 training instances total = 4 epochs), and keep applying the same update rule iteration after iteration, carrying \(B_0,B_1\) forward between epochs (they are <em>not</em> reset to 0 at the start of each new epoch):</p>
+<table style="font-size:.85em">
+<tr><th>Iter</th><th>x</th><th>y</th><th>$B_0$</th><th>$B_1$</th><th>error</th></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>0.0100</td><td>0.0100</td><td>-1.0000</td></tr>
+<tr><td>5</td><td>5</td><td>5</td><td>0.1188</td><td>0.4101</td><td>-3.8254</td></tr>
+<tr><td>10</td><td>5</td><td>5</td><td>0.1809</td><td>0.6229</td><td>-2.3037</td></tr>
+<tr><td>15</td><td>5</td><td>5</td><td>0.2135</td><td>0.7332</td><td>-1.5138</td></tr>
+<tr><td>20</td><td>5</td><td>5</td><td><strong>0.2309</strong></td><td><strong>0.7904</strong></td><td>-1.1039</td></tr>
+</table>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">(Only every 5th iteration — the end of each epoch — is shown here; every intermediate row follows the identical one-line update rule from Section 2.2's worked example.)</p>
+<div class="step"><span class="step-label">Final coefficients, after 20 iterations (4 epochs)</span>
+$$B_0 = 0.230897 \qquad B_1 = 0.790439$$</div>
+<div class="step"><span class="step-label">Using these to predict on the original 5 training points, and computing RMSE</span>
+$$\hat y = 0.230897+0.790439x \;\Rightarrow\; \hat y = [1.021,\ 1.812,\ 3.393,\ 2.602,\ 4.183]$$
+$$RMSE_{GD} = \sqrt{\frac15\sum(y_i-\hat y_i)^2} = 0.7206$$</div>
+<div class="step"><span class="step-label">Compare against the Normal Equation's exact solution on the same data</span>
+$$m=0.8,\ c=0.4 \;\Rightarrow\; RMSE_{NE} = 0.6928$$</div>
+<span class="answer-final">After 20 iterations: B₀=0.2309, B₁=0.7904, RMSE≈0.7206 — close to, but not yet at, the Normal Equation's exact optimum (m=0.8, c=0.4, RMSE≈0.6928)</span>
+</div>
+
+<div class="box note">
+<div class="box-title">A labelling slip worth knowing about, in case you're cross-checking against the original slide</div>
+<p>Your slide captions this RMSE value (0.720626) as the <em>"RMSE of Normal Equation Method."</em> Recomputing both methods independently shows this number is actually gradient descent's RMSE after 20 iterations — the true Normal Equation optimum on this data gives a slightly <em>lower</em> RMSE of 0.6928 (as it should, since the Normal Equation finds the exact minimum-error line, while gradient descent only approaches it). The likely explanation: the slide reused the same plot/caption for both methods. Either way, the <strong>numbers themselves are correct</strong> and worth remembering: gradient descent gets close to, but does not exactly reach, the Normal Equation's answer in a finite number of iterations — which is exactly the trade-off Section 2.1's comparison table described.</p>
+</div>
+
+<h4>Applying Gradient Descent — practical tips from your slides</h4>
+<div class="box concept">
+<div class="box-title">Preparing data, and reading the diagnostics</div>
+<ul>
+<li><strong>Plot Cost vs. Iteration</strong> — collect and plot the cost each iteration. A well-performing run shows cost decreasing every iteration; if it doesn't, try reducing the learning rate.</li>
+<li><strong>Learning rate</strong> — a small value like 0.1, 0.001, or 0.0001; try different values and see what works best.</li>
+<li><strong>Rescale inputs</strong> — the algorithm reaches the minimum cost faster if the cost function's shape isn't skewed/distorted; rescale all input variables to the same range (e.g. 0 to 1).</li>
+<li><strong>Few passes</strong> — SGD often needs no more than 1–10 passes through the training data to converge on good coefficients.</li>
+<li><strong>Plot mean cost</strong> — per-instance updates in SGD can make the cost-over-time plot noisy; averaging over 10, 100, or 1000 updates gives a clearer view of the learning trend.</li>
+</ul>
+</div>
+
+<div class="box key">
+<div class="box-title">Summary — two roads to the same destination</div>
+<p>There are two methods for applying Linear Regression:</p>
+<ul>
+<li><strong>Analytical method</strong> — the Normal Equation Method — gives the <em>exact</em> solution.</li>
+<li><strong>Numerical optimization method</strong> — the Gradient Descent Method — an <em>iterative</em> process that approaches the solution.</li>
+</ul>
+</div>
+
 <!-- =========================================================== -->
-<h2 class="section-title" id="sec4"><span class="num">04</span> Logistic Regression — Sigmoid, Odds &amp; Predictions</h2>
+
+<div class="lecture-header" id="L3">
+  <div class="ltag">Lecture 3</div>
+  <h2>Model Behaviour — Parametric Models, Overfitting, Bias-Variance, and Polynomial Regression</h2>
+  <p>Before going further into new algorithms, this lecture pauses to ask a deeper question: what makes a model <em>good</em>, in a way that generalises beyond the exact data it was trained on? This is arguably the most conceptually important lecture in the course — every later algorithm gets judged against these ideas.</p>
+</div>
+
+<h2 class="section-title" id="l3-parametric"><span class="num">3.1</span> Parametric vs. Non-Parametric ML Models</h2>
+<div class="box theory">
+<div class="box-title">Definitions</div>
+<p><strong>Parametric models</strong> assume a specific functional form for the relationship between input and output variables. They summarize the data using a <strong>fixed number of parameters</strong>, regardless of the dataset's size. Examples: Linear Regression, Logistic Regression, Naive Bayes.</p>
+<p><strong>Non-parametric models</strong> do not assume a predefined functional form. They are highly flexible and can adapt to complex patterns in data. Examples: k-Nearest Neighbors (KNN), Decision Trees, Support Vector Machines.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Worked illustration</div>
+<p>Linear regression models the relationship as \(y=b_0+b_1x_1+b_2x_2\) — here \(b_0,b_1,b_2\) are <strong>fixed parameters</strong> learned from the data, regardless of whether you have 100 or 100,000 data points (that's what makes it "parametric"). KNN, by contrast, predicts the output for a new point based on the majority class of its \(k\) nearest neighbours <em>in the actual stored data</em> — there's no fixed small set of parameters standing in for the whole dataset.</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;"><code>from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)</code></pre>
+</div>
+
+<table>
+<tr><th>Aspect</th><th>Parametric</th><th>Non-Parametric</th></tr>
+<tr><td>Assumptions</td><td>Strong assumptions about data distribution</td><td>Minimal or no assumptions</td></tr>
+<tr><td>Flexibility</td><td>Less flexible</td><td>Adapts to complex data structures</td></tr>
+<tr><td>Data requirements</td><td>Requires less data; computationally efficient</td><td>Needs larger datasets; more compute</td></tr>
+<tr><td>Interpretability</td><td>More interpretable — good for inference</td><td>Less interpretable — good for prediction accuracy</td></tr>
+<tr><td>Overfitting risk</td><td>Lower (constrained by assumptions)</td><td>Higher, but can achieve higher accuracy with enough data</td></tr>
+</table>
+
+<div class="box key">
+<div class="box-title">When to use which</div>
+<p>Use <strong>parametric</strong> models when the data aligns with the model's assumptions, or when interpretability and computational efficiency are priorities. Use <strong>non-parametric</strong> models for complex, high-dimensional data where flexibility and accuracy matter more than interpretability.</p>
+</div>
+
+<h2 class="section-title" id="l3-overfitting"><span class="num">3.2</span> Generalization, Overfitting &amp; Underfitting</h2>
+<div class="box key">
+<div class="box-title">Generalization — the central question of this whole lecture</div>
+<p><strong>How well does a learned model generalize from the data it was trained on, to a new test set?</strong> A model is trained on a <em>training set</em> (labels known), and its real value is judged on a <em>test set</em> (unseen data) — e.g. training on labelled photos of fruits and animals, then testing on new, unlabelled photos of the same categories.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">What is overfitting?</div>
+<p>Overfitting occurs when a machine learning algorithm begins to <strong>memorize the training data</strong> rather than learning the underlying patterns — typically because the model is <strong>too complex</strong> for the data it's modeling. This leads to poor performance on new data, since the algorithm can't generalize beyond what it has memorized.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">What is underfitting?</div>
+<p>Underfitting occurs when a model is <strong>not complex enough</strong> — often because it isn't given enough data to learn from. As a result, it fails to learn the generalizable patterns and performs poorly on <em>both</em> the training data and new data.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">What is a "good fit"?</div>
+<p>A good fit is a model that accurately predicts the output of <em>new</em> data. The goal of machine learning is to build models that generalize well — meaning a <strong>low error rate on a test set of unseen data</strong>, not just a low error rate on the training data.</p>
+</div>
+
+<h2 class="section-title" id="l3-nofreelunch"><span class="num">3.3</span> The No Free Lunch Theorem</h2>
+<div class="box concept">
+<div class="box-title">The idea (and the pun in the name)</div>
+<p>The slides illustrate this with a cartoon of a vending machine advertising "Free Lunch — $10.00" — a joke on the theorem's name. The actual content of the <strong>No Free Lunch theorem</strong>: <strong>no single machine learning algorithm works best for every problem.</strong> The assumptions that make one algorithm perform well on one type of data (e.g. linear regression's assumption of a linear relationship) can make it perform poorly on data that violates those assumptions. There's no universally-best model — the "lunch" of a perfect one-size-fits-all algorithm is never actually free; you always pay for good performance with assumptions that could be wrong for a different dataset.</p>
+</div>
+
+<h2 class="section-title" id="l3-biasvariance"><span class="num">3.4</span> Bias and Variance</h2>
+<div class="box theory">
+<div class="box-title">The error decomposition</div>
+<p>A model's error can be split into <strong>reducible</strong> and <strong>irreducible</strong> parts.</p>
+<ul>
+<li><strong>Reducible error</strong> — split further into <strong>bias</strong> ("error due to squared bias") and <strong>variance</strong> ("error due to variance").</li>
+<li><strong>Irreducible error</strong> — the error we cannot remove with our model, caused by things outside our control, like statistical noise in observations (also called irreducible noise).</li>
+</ul>
+<p><strong>Bias</strong> — the difference between model predictions and the training data (on one set). <strong>Variance</strong> — the difference between model predictions and their expected value, <em>over all possible training sets.</em></p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked illustration — understanding Bias <span class="numtag">Numerical</span></div>
+<p>Mathematically: \(\text{Bias} = \text{Actual Value}-\text{Predicted Value}\).</p>
+<table>
+<tr><th>Temperature (°F)</th><th>Actual Yield</th><th>Predicted</th><th>Bias = Actual &minus; Predicted</th></tr>
+<tr><td>50</td><td>3.3</td><td>2.9</td><td>0.4</td></tr>
+<tr><td>70</td><td>2.3</td><td>2.7</td><td>-0.4</td></tr>
+<tr><td>90</td><td>3.0</td><td>2.8</td><td>0.2</td></tr>
+</table>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">Notice the predictions barely move (2.9, 2.7, 2.8) even though the actual yields swing quite a bit — a classic sign of high bias: the model is too simple to track the real pattern, so it just predicts something close to a flat average everywhere.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">High Bias — recognising it</div>
+<p>A model with high bias: is too simple; cannot learn the true relationship; makes systematic errors; usually <strong>underfits</strong> the data. Example: fitting a straight line to data that actually follows a quadratic curve.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Understanding Variance</div>
+<p>Variance measures how much the learned model changes when the training data changes. A <strong>high-variance</strong> model, trained on 3 different (but similarly-distributed) datasets, would produce 3 very different regression lines — the model is <strong>unstable.</strong></p>
+</div>
+
+<div class="box key">
+<div class="box-title">Bias vs. Variance — the full comparison (exam-important)</div>
+<table>
+<tr><th>Feature</th><th>Bias</th><th>Variance</th></tr>
+<tr><td>Definition</td><td>Difference between predicted and actual values, due to an overly simple model</td><td>Difference in predictions when trained on different training datasets</td></tr>
+<tr><td>Measures</td><td>Accuracy of the model</td><td>Stability (consistency) of the model</td></tr>
+<tr><td>Cause</td><td>Model is too simple</td><td>Model is too complex</td></tr>
+<tr><td>Effect on model</td><td><strong>Underfits</strong> the data</td><td><strong>Overfits</strong> the data</td></tr>
+<tr><td>Training error</td><td>High</td><td>Low</td></tr>
+<tr><td>Testing error</td><td>High</td><td>High</td></tr>
+<tr><td>Sensitivity to training data</td><td>Low</td><td>High</td></tr>
+<tr><td>Learning ability</td><td>Fails to capture the true relationship</td><td>Captures both the true pattern <em>and</em> the noise</td></tr>
+<tr><td>Model complexity</td><td>Low</td><td>High</td></tr>
+<tr><td>Prediction performance</td><td>Poor on both training and testing data</td><td>Excellent on training, poor on unseen testing data</td></tr>
+<tr><td>Example (Simple Linear Regression)</td><td>Fitting a straight line to quadratic data</td><td>Regression line changes significantly when training data changes slightly</td></tr>
+<tr><td>How to reduce</td><td>Increase model complexity, add more relevant features</td><td>Simplify the model, collect more data, use regularization</td></tr>
+<tr><td>Associated problem</td><td><strong>Underfitting</strong></td><td><strong>Overfitting</strong></td></tr>
+</table>
+</div>
+
+<h2 class="section-title" id="l3-polynomial"><span class="num">3.5</span> Polynomial Regression</h2>
+<div class="box theory">
+<div class="box-title">What is Polynomial Regression?</div>
+<p>Polynomial Regression models the relationship between independent and dependent variables as an <strong>\(n\)th degree polynomial.</strong> It's a special case of Linear Regression, where we fit a polynomial equation to data with a <strong>curvilinear</strong> relationship. A Quadratic Equation is a polynomial of the 2nd degree — but the degree can increase to any \(n\).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Assumptions of Polynomial Regression</div>
+<ul>
+<li>The dependent variable's behaviour can be explained by a linear or curvilinear additive relationship with a set of \(k\) independent variables.</li>
+<li>The relationship between the dependent variable and any independent variable is linear or curvilinear (specifically polynomial).</li>
+<li>The independent variables are independent of each other.</li>
+<li>The errors are independent, normally distributed with mean zero and constant variance (the OLS — Ordinary Least Squares — assumptions).</li>
+</ul>
+</div>
+
+<div class="box key">
+<div class="box-title">Why do we need Polynomial Regression?</div>
+<p>Consider Simple Linear Regression: we build a model and find it performs very badly. Looking at the gap between the actual values and the best-fit line, we notice the actual data has some kind of <strong>curve</strong> — the straight line is nowhere near cutting through the mean of the points. This is exactly where Polynomial Regression comes in: it predicts a best-fit line that <strong>follows the pattern (curve)</strong> of the data.</p>
+<p>Polynomial regression does <em>not</em> require the relationship between independent and dependent variables to be linear — this is the key difference from ordinary Linear Regression. It's generally used when Linear Regression fails to describe the data well.</p>
+</div>
+
+<div class="box note">
+<div class="box-title">A trade-off worth remembering</div>
+<p>As we increase the degree of the polynomial, model performance tends to increase — <strong>but</strong> increasing the degree also increases the risk of <strong>over-fitting</strong> (as well as, at very low degrees, under-fitting). This connects directly back to Section 3.4's bias-variance trade-off: a higher-degree polynomial has lower bias (it can bend to fit the training data closely) but higher variance (small changes in the data swing the fitted curve a lot).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">How to find the right degree</div>
+<ol>
+<li><strong>Forward Selection</strong> — increase the degree until it is significant enough to define the best possible model.</li>
+<li><strong>Backward Selection</strong> — decrease the degree until it is significant enough to define the best possible model.</li>
+</ol>
+</div>
+
+<div class="box theory">
+<div class="box-title">The polynomial function, and special cases you should recognise</div>
+<p>A polynomial is a function \(f(x)=c_0+c_1x+c_2x^2+\cdots+c_nx^n\), where \(n\) is the degree and \(c_i\) are coefficients.</p>
+<ul>
+<li><strong>Degree 0</strong> is just a constant. Performing polynomial regression of degree 0 on a dataset returns a single constant value — the <strong>mean average</strong> of the data (which makes sense: the average is an approximation of all the data points at once).</li>
+<li><strong>Degree 1</strong> is ordinary Linear Regression: \(y=mx+b\), equivalently \(f(x)=c_0+c_1x\) with \(c_1\) the slope and \(c_0\) the intercept.</li>
+<li><strong>Degree 2 (Quadratic regression)</strong> is not nearly as common — now the regression becomes genuinely non-linear, and the fitted curve is not restricted to a straight line.</li>
+</ul>
+</div>
+
+<div class="box theory">
+<div class="box-title">Fitting by least squares — the residual function</div>
+<p>To calculate coefficients that take <em>all</em> data points into consideration, we use <strong>least squares</strong>, built around a <strong>residual</strong> function. For any point \((x_i,y_i)\) on the line, the residual (error) is:</p>
+<p>\[ e_i = y_i - f(x_i) \]</p>
+<p>For each point, the residual tells us the error between our estimate and the true data. To get the <em>overall</em> error, we can't just sum the residuals directly, since errors can be positive or negative and would cancel out — so instead we square them and sum, giving the familiar sum-of-squares error. We want this sum to be as small as possible — <strong>we minimize it.</strong></p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Setting up quadratic regression's normal equations</div>
+<p>For the quadratic model \(y=a_0+a_1x+a_2x^2\), minimizing the sum of squared residuals over \(n\) known data points leads to a system of 3 normal equations in \(a_0,a_1,a_2\):</p>
+<p>\[ \begin{aligned} na_0 + a_1\textstyle\sum x_i + a_2\sum x_i^2 &= \sum y_i\\ a_0\textstyle\sum x_i + a_1\sum x_i^2 + a_2\sum x_i^3 &= \sum x_iy_i\\ a_0\textstyle\sum x_i^2 + a_1\sum x_i^3 + a_2\sum x_i^4 &= \sum x_i^2y_i \end{aligned} \]</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — quadratic regression by hand <span class="numtag">Numerical</span></div>
+<p>Find a quadratic regression model \(y=a_0+a_1x+a_2x^2\) for: \(x=[3,4,5,6,7]\), \(y=[2.5,3.2,3.8,6.5,11.5]\).</p>
+<div class="step"><span class="step-label">Step 1 — build the table of required sums</span>
+<table>
+<tr><th>x</th><th>y</th><th>x²</th><th>x³</th><th>x⁴</th><th>yx</th><th>yx²</th></tr>
+<tr><td>3</td><td>2.5</td><td>9</td><td>27</td><td>81</td><td>7.5</td><td>22.5</td></tr>
+<tr><td>4</td><td>3.2</td><td>16</td><td>64</td><td>256</td><td>12.8</td><td>51.2</td></tr>
+<tr><td>5</td><td>3.8</td><td>25</td><td>125</td><td>625</td><td>19</td><td>95</td></tr>
+<tr><td>6</td><td>6.5</td><td>36</td><td>216</td><td>1296</td><td>39</td><td>234</td></tr>
+<tr><td>7</td><td>11.5</td><td>49</td><td>343</td><td>2401</td><td>80.5</td><td>563.5</td></tr>
+<tr><th>Σ = 25</th><th>27.5</th><th>135</th><th>775</th><th>4659</th><th>158.8</th><th>966.2</th></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Step 2 — substitute into the normal equations (n=5)</span>
+\[ 5a_0+25a_1+135a_2=27.5 \]
+\[ 25a_0+135a_1+775a_2=158.8 \]
+\[ 135a_0+775a_1+4659a_2=966.2 \]
+</div>
+<div class="step"><span class="step-label">Step 3 — solve the system</span>
+$$a_0=12.4285714 \qquad a_1=-5.5128571 \qquad a_2=0.7642857$$
+</div>
+<span class="answer-final">y = 12.4285714 − 5.5128571·x + 0.7642857·x²</span>
+</div>
+
+<div class="box note">
+<div class="box-title">A typo worth flagging, in case you're cross-checking against the original slide</div>
+<p>The problem statement gives \(y=11.5\) for \(x=7\), but the intermediate calculation table on the original slide displays this value as "12" — an apparent transcription slip. Independently recomputing confirms \(y=11.5\) is correct: the column sums (\(\Sigma y=27.5\), \(\Sigma yx=158.8\), \(\Sigma yx^2=966.2\)) and the final coefficients only work out correctly with 11.5, and match the slide's own stated final answer exactly.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">A second example from your slides — the Yield Data Set <span class="numtag">Numerical</span></div>
+<p>This dataset of size \(n=15\) contains measurements of yield from an experiment at five different temperature levels (\(x\)=temperature in °F, \(y\)=yield). Your slides show the data and note "the trend of this data is better suited to a quadratic fit" than a linear one, but don't carry the calculation through — completed here.</p>
+<table style="font-size:.85em">
+<tr><th>i</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr>
+<tr><td>Temp</td><td>50</td><td>50</td><td>50</td><td>70</td><td>70</td><td>70</td><td>80</td><td>80</td><td>80</td><td>90</td><td>90</td><td>90</td><td>100</td><td>100</td><td>100</td></tr>
+<tr><td>Yield</td><td>3.3</td><td>2.8</td><td>2.9</td><td>2.3</td><td>2.6</td><td>2.1</td><td>2.5</td><td>2.9</td><td>2.4</td><td>3.0</td><td>3.1</td><td>2.8</td><td>3.3</td><td>3.5</td><td>3.0</td></tr>
+</table>
+<p>Fitting both a linear and a quadratic model (via the same least-squares normal-equation approach as the previous example, just with \(n=15\) points) and comparing \(R^2\):</p>
+<div class="step"><span class="step-label">Results</span>
+$$\text{Linear: } y=2.306+0.00676x, \qquad R^2_{linear}=0.092$$
+$$\text{Quadratic: } y=7.960-0.1537x+0.001076x^2, \qquad R^2_{quad}=0.673$$
+</div>
+<span class="answer-final">The quadratic model explains 67.3% of the variance in yield, versus just 9.2% for the linear model — confirming the slide's claim that this data is genuinely curved, not a straight-line relationship.</span>
+</div>
+
+<div class="box key">
+<div class="box-title">What Lecture 3 adds to your toolkit</div>
+<p>Every algorithm from here on will be judged by the ideas in this lecture: is it parametric or not, does it generalize or just memorize, and where does it sit on the bias-variance trade-off? Polynomial Regression is the first concrete illustration — the same least-squares machinery as Linear Regression, just with extra powers of \(x\) added as features, trading lower bias for higher variance as the degree grows.</p>
+</div>
+
+<div class="lecture-header" id="L4">
+  <div class="ltag">Lecture 4</div>
+  <h2>Logistic Regression</h2>
+  <p>The first <em>classification</em> algorithm of the course — despite the name "regression." This lecture builds the sigmoid function up from scratch, connects it to the language of odds and log-odds used throughout statistics, derives its cost function, and trains it by hand via stochastic gradient descent.</p>
+</div>
+
+<h2 class="section-title" id="l4-sigmoid"><span class="num">4.1</span> The Sigmoid Function</h2>
+<div class="box key">
+<div class="box-title">The single most important fact about Logistic Regression</div>
+<p><strong>Logistic regression is not a regression — it is a classification learning algorithm.</strong> The name comes from statistics, because its mathematical formulation resembles linear regression's.</p>
+</div>
+<div class="box theory">
+<div class="box-title">Definition — the standard logistic (sigmoid) function</div>
+<p>\[ f(x) = \frac{1}{1+e^{-x}} \]</p>
+<p>\(e\) is the base of the natural logarithm (Euler's number); \(e^x\) is also called \(\exp(x)\). The natural logarithm (\(\ln\)) and \(e^x\) are inverse operations. The sigmoid is an <strong>S-shaped curve</strong> that takes any real-valued number and maps it into a value between 0 and 1 — but never exactly at those limits.</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;"><code>def sigmoid(x):
+    return 1.0 / (1 + np.exp(-x))
+# Ex: exp(0) = 1, sigmoid(0) = 0.5</code></pre>
+<p>As \(x\to\infty\), the probability approaches 1; as \(x\to-\infty\), it approaches 0.</p>
+</div>
+<div class="box concept">
+<div class="box-title">Reading the sigmoid's graph for classification</div>
+<p>Interpreting \(f(x)\): if it's \(\ge\) the threshold 0.5, we say the class of \(x\) is 1 (positive); otherwise, 0 (negative).</p>
+</div>
+
+<h2 class="section-title" id="l4-predictions"><span class="num">4.2</span> How Logistic Regression Predicts Probabilities</h2>
+<div class="box theory">
+<div class="box-title">Modelling the probability of a class</div>
+<p>Logistic regression models the probability of the "default" class. Example: modelling a person's status (\(Y\)) as rich (1) or poor (0) from income (\(X\)) — the model gives \(P(\text{status}=\text{rich}\mid\text{income})\). Generally: \(P(X)=P(Y=1\mid X)\) — the probability that output \(y\) is 1, given input \(X\).</p>
+<p>The sigmoid function is \(P(Y=1\mid X) = \dfrac1{1+e^{-z}}\), where the output can be <strong>directly interpreted</strong> as the estimated probability. (E.g. output 0.8 means an estimated 80% chance of the event.) Here \(z\) is a linear combination of input features and weights: \(z=B_0+B_1x\).</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">The full equation, and what each term means</div>
+<p>Logistic regression uses an equation much like linear regression — inputs \(x\) are combined linearly using weights/coefficients — but the key difference is that the modelled output is <strong>binary</strong> (0 or 1), not a numeric value:</p>
+<p>\[ y = \frac{e^{B_0+B_1x}}{1+e^{B_0+B_1x}} \]</p>
+<p>\(y\) is the predicted output, \(B_0\) is the bias/intercept, \(B_1\) is the coefficient for input \(x\). Each input column has an associated \(B\) coefficient that must be learned from training data.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — predicting from known coefficients <span class="numtag">Numerical</span></div>
+<p>Given coefficients \(B_0=-100\), \(B_1=0.6\). Find \(P(\text{rich}\mid\text{income}=150)\).</p>
+<div class="step"><span class="step-label">Step 1 — Compute z</span>
+$$z = -100+0.6(150) = -100+90=-10$$</div>
+<div class="step"><span class="step-label">Step 2 — Apply the sigmoid</span>
+$$P = \frac1{1+e^{-(-10)}} = \frac1{1+e^{10}} = \frac{1}{1+22026.47} = 0.0000454$$</div>
+<div class="step"><span class="step-label">Step 3 — Decide</span>
+Rule: predict 0 if \(P(\text{rich})<0.5\); predict 1 if \(P(\text{rich})\ge0.5\).</div>
+<span class="answer-final">P ≈ 0.0000454 — essentially zero chance of "rich" → predict 0 (poor)</span>
+</div>
+<div class="box note">
+<div class="box-title">A decimal-point slip worth knowing about</div>
+<p>The original slide states this probability as "0.000453978687" — one decimal place off from the correct value, \(0.0000453978687\). The conclusion (predict "poor") is unaffected either way, since both values are far below the 0.5 threshold.</p>
+</div>
+
+<h2 class="section-title" id="l4-odds"><span class="num">4.3</span> Odds and Log-Odds</h2>
+<div class="box theory">
+<div class="box-title">Definitions</div>
+<p><strong>Odds</strong> represent the ratio of the probability of success to the probability of failure. If \(P\) is the probability of success and \(Q=1-P\) the probability of failure:</p>
+<p>\[ O = \frac{P}{Q} = \frac{P}{1-P} \]</p>
+<p><strong>Log-odds</strong> (or <strong>logit</strong>) is the natural log of the odds: \(\text{logit}(O)=\ln(P/Q)\).</p>
+</div>
+<div class="box worked">
+<div class="box-title">Worked Example <span class="numtag">Numerical</span></div>
+<p>If the probability of winning a game is 0.6: odds \(=0.6/0.4=1.5\). Log-odds \(=\ln(1.5)=0.405\).</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Why transform odds into log-odds at all?</div>
+<ul>
+<li>It transforms the odds ratio onto a <strong>linear scale</strong>, making it amenable to modelling with linear-regression-style techniques.</li>
+<li>Log-odds range from \(-\infty\) to \(+\infty\) (unlike probability, bounded in \([0,1]\), or odds, bounded in \([0,\infty)\)).</li>
+<li>Changes in log-odds are more interpretable than changes in raw probability, especially for binary outcomes.</li>
+</ul>
+</div>
+
+<div class="box proof">
+<div class="box-title">Deriving why ln(odds) = z — the key algebraic link</div>
+<p>The sigmoid function can be written \(P(x)=\dfrac{e^z}{1+e^z}\) (an equivalent form of \(\frac{1}{1+e^{-z}}\), obtained by multiplying top and bottom by \(e^z\)). So \(1-P(x) = \dfrac{1}{1+e^z}\). Substituting into the log-odds expression:</p>
+<p>\[ \ln\left(\frac{P(x)}{1-P(x)}\right) = \ln\left(\frac{e^z/(1+e^z)}{1/(1+e^z)}\right) = \ln(e^z) = z \]</p>
+<p>Since \(z=B_0+B_1x\) is linear in the inputs, this gives the central identity of logistic regression:</p>
+<p style="text-align:center;font-size:1.1rem">\[ \ln(\text{odds}) = B_0+B_1x \]</p>
+<p>Exponentiating both sides (using that \(\ln\) and \(e^x\) are inverse operations): \(\text{odds}=e^{B_0+B_1X}\). So the model <em>is</em> a linear combination of the inputs — but that linear combination relates to the <strong>log-odds</strong> of the default class, not the probability directly. This transform connecting the linear equation to the probabilities is called the <strong>link function</strong> (here, the <em>logit link function</em>).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Learning the model — the intuition for Maximum Likelihood</div>
+<p>The coefficients must be estimated from training data using <strong>maximum-likelihood estimation.</strong> The best coefficients would predict a value very close to 1 for the default class, and very close to 0 for the other class. Intuitively, a search procedure seeks coefficient values that minimize the error in the predicted probabilities — a minimization algorithm optimizes the coefficients, often implemented via an efficient numerical optimization routine, or (as this course does) from scratch using <strong>gradient descent.</strong></p>
+</div>
+
+<h2 class="section-title" id="l4-costfunction"><span class="num">4.4</span> Cost Functions, and Types of Slope</h2>
+<div class="box theory">
+<div class="box-title">Types of slope, for the line y = b₀ + b₁x</div>
+<ul>
+<li><strong>Positive slope</strong> — \(y\) increases as \(x\) increases; the line runs "uphill" left to right. Example: slope 5, intercept 2 — when \(x\) increases by 1, \(y\) increases by 5.</li>
+<li><strong>Negative slope</strong> — \(y\) decreases as \(x\) increases; runs "downhill." Example: slope &minus;0.4, intercept 7.2 — when \(x\) increases by 1, \(y\) decreases by 0.4.</li>
+<li><strong>Zero slope</strong> — \(y\) doesn't change; a horizontal line. Example: slope 0, intercept &minus;4. A slope of zero moves only left/right, never up/down.</li>
+<li><strong>Vertical lines</strong> are problematic — no change in \(x\) means the slope formula divides by zero, so the slope is <em>undefined</em>. Some call this "infinite slope"; since we can't tell if it's \(+\infty\) or \(-\infty\), the term "no slope" is also common (and, admittedly, a little confusing).</li>
+</ul>
+</div>
+
+<div class="box key">
+<div class="box-title">Cost function vs. loss function — the distinction to remember</div>
+<p><strong>Loss function</strong> — measures how good the model is at predicting the expected outcome for a <em>single</em> sample, compared to its actual value. If loss is low, the model gives good results for that sample.</p>
+<p><strong>Cost function</strong> — the <strong>average</strong> of all the loss function values, across the whole dataset. Both need to be <strong>minimized</strong> to improve model performance; in casual usage the two terms are often used interchangeably, referring to the same overall goal (minimizing the error between actual and predicted outcomes).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Visualizing the cost function for Linear Regression</div>
+<p>For Linear Regression, many different lines are possible (different slopes and intercepts) — which one is "right"? We use <strong>Mean Squared Error (MSE)</strong> as the criterion: the sum of squared differences between prediction and true value, collapsed into a single number. <strong>MSE <em>is</em> the cost function</strong> for linear regression. The line with the minimum MSE represents the best-fitting relationship between \(X\) and \(Y\); once found, that line is used to predict \(Y\) for new inputs.</p>
+</div>
+
+<h2 class="section-title" id="l4-costderivation"><span class="num">4.5</span> Deriving the Logistic Regression Cost Function</h2>
+<div class="box theory">
+<div class="box-title">Setup</div>
+<p>The model predicts the probability that an input belongs to a class, via the sigmoid: \(\text{prediction}=\sigma(z)\), \(z=b_0+b_1x_1+b_2x_2\). The true label \(y\) is either 0 or 1.</p>
+</div>
+
+<div class="box proof">
+<div class="box-title">The cost function — negative log-likelihood (cross-entropy)</div>
+<p>For a single training example \((x_1,x_2,y)\), the cost is defined as:</p>
+<p>\[ \text{Cost}(b_0,b_1,b_2) = -y\cdot\log(\text{prediction}) - (1-y)\cdot\log(1-\text{prediction}) \]</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Reading this: when \(y=1\), the cost reduces to just \(-\log(\text{prediction})\) — small when the prediction is close to 1 (correct), huge when it's close to 0 (badly wrong). When \(y=0\), it reduces to \(-\log(1-\text{prediction})\) — small when the prediction is close to 0, huge when close to 1. Either way, confidently wrong predictions are punished heavily.</p>
+<p>Taking the partial derivative of the cost with respect to \(b_0,b_1,b_2\), and using the fact that the sigmoid's own derivative is \(\sigma(z)(1-\sigma(z))\), the chain rule collapses beautifully:</p>
+<p>\[ \frac{\partial\,\text{Cost}}{\partial b_j} = (\text{prediction}-y)\cdot x_j \]</p>
+<p>— a remarkably clean result: <strong>the gradient is just the error, scaled by the input</strong>, with no leftover sigmoid-derivative term at all (it cancels out algebraically against the \(\log\) in the cost function).</p>
+</div>
+
+<div class="box note">
+<div class="box-title">An inconsistency in the slides, worth understanding rather than memorising blindly</div>
+<p>Your slides state the update rule as:</p>
+<p>\[ b = b + \alpha\cdot(y-\text{prediction})\cdot\text{prediction}\cdot(1-\text{prediction})\cdot x \]</p>
+<p>This <em>extra</em> \(\text{prediction}\cdot(1-\text{prediction})\) factor does not actually belong to the cross-entropy cost function just derived above (whose gradient is the clean \((\text{prediction}-y)\cdot x\), with no such factor). Where does it come from? If you instead used plain <strong>squared error</strong> as the cost — \(\frac12(y-\text{prediction})^2\), the same style of cost used for linear regression throughout this course — differentiating it through the sigmoid via the chain rule <em>does</em> produce exactly this extra \(\text{prediction}(1-\text{prediction})\) factor (the sigmoid's own derivative). So the update rule as written matches training logistic regression with <strong>squared-error loss</strong>, not the cross-entropy loss stated just above it.</p>
+<p><strong>It gets more tangled still:</strong> checking the actual worked numbers in Section 4.6 below against this stated formula shows the real arithmetic used doesn't include the \((1-\text{prediction})\) factor either — it matches simply \(\alpha\cdot\text{error}\cdot\text{prediction}\cdot x\). This guide flags the discrepancy plainly rather than silently picking one version, and uses the formula that actually reproduces the slide's own computed numbers (verified independently) wherever a specific answer is needed.</p>
+</div>
+<h2 class="section-title" id="sec4"><span class="num">4.6</span> Logistic Regression by Stochastic Gradient Descent <span class="numtag">Numerical</span></h2>
 
 <div class="box theory">
   <div class="box-title">Theory</div>
@@ -411,6 +1373,54 @@
   </details>
 </div>
 
+<div class="box worked">
+<div class="box-title">Worked Example 3 — training Logistic Regression from scratch via SGD (2 input variables) <span class="numtag">Numerical</span></div>
+<p>Dataset: \(x_1=[2,3,4,5]\), \(x_2=[1,2,3,4]\), \(y=[1,1,0,0]\). Start \(B_0=B_1=B_2=0\), \(\alpha=0.01\).</p>
+<div class="step"><span class="step-label">The update rule actually used (see Section 4.5's note on the slide's formula discrepancy)</span>
+$$z=B_0+B_1x_1+B_2x_2 \qquad \text{prediction}=\sigma(z) \qquad \text{error}=y-\text{prediction}$$
+$$B_0^{new}=B_0+\alpha\cdot\text{error}\cdot\text{prediction}\cdot1 \qquad B_1^{new}=B_1+\alpha\cdot\text{error}\cdot\text{prediction}\cdot x_1 \qquad B_2^{new}=B_2+\alpha\cdot\text{error}\cdot\text{prediction}\cdot x_2$$
+</div>
+<table style="font-size:.85em">
+<tr><th>x₁</th><th>x₂</th><th>y</th><th>z</th><th>pred</th><th>error</th><th>New B₀</th><th>New B₁</th><th>New B₂</th></tr>
+<tr><td>2</td><td>1</td><td>1</td><td>0.0000</td><td>0.5000</td><td>0.5000</td><td>0.00250</td><td>0.00500</td><td>0.00250</td></tr>
+<tr><td>3</td><td>2</td><td>1</td><td>0.0225</td><td>0.5056</td><td>0.4944</td><td>0.00500</td><td>0.01250</td><td>0.00750</td></tr>
+<tr><td>4</td><td>3</td><td>0</td><td>0.0775</td><td>0.5194</td><td>-0.5194</td><td>0.00230</td><td>0.00171</td><td>-0.00059</td></tr>
+<tr><td>5</td><td>4</td><td>0</td><td>0.0085</td><td>0.5021</td><td>-0.5021</td><td>-0.00022</td><td>-0.01090</td><td>-0.01068</td></tr>
+</table>
+<div class="step"><span class="step-label">Checking accuracy after this one epoch</span>
+<p>Using the final coefficients \(B_0=-0.00022,\,B_1=-0.0109,\,B_2=-0.01068\) to re-predict all 4 training rows, and applying the rule <em>predict 1 if prediction \(\ge0.5\), else 0</em>: only 2 of the 4 predictions come out correct after a single epoch.</p>
+</div>
+<span class="answer-final">After 1 epoch: B₀≈-0.0002, B₁≈-0.0109, B₂≈-0.0107, accuracy = 50%</span>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">Your slides note this exact point: one epoch is rarely enough. The full procedure repeats for a fixed number of epochs (or until error drops to an acceptable level), plotting accuracy vs. epoch to see the model improve.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">A second dataset from your slides — Problem Statement 2</div>
+<p>Your slides set up a second, larger example: two input variables \(X_1,X_2\) drawn from a Gaussian distribution, 10 training instances, plotted as a scatter graph that's <strong>linearly separable</strong> by eye. The same SGD procedure applies — starting from \(B_0=B_1=B_2=0\), the first instance \((X_1{=}2.7810836,\,X_2{=}2.550537003,\,Y{=}0)\) gives prediction \(=0.5\) (since \(z=0\) at zero coefficients), exactly as in Worked Example 3 above. The slides specify running this for <strong>10 full epochs</strong> with \(\alpha=0.3\), tracking accuracy vs. epoch — the same mechanics as Example 3, just repeated longer and on more data. The full 10-point dataset is given as a follow-up exercise (Practice 4.4 below).</p>
+</div>
+
+<div class="box practice">
+<div class="box-title">Practice 4.4 — the slide's own exercise dataset</div>
+<p>Using the update rule from Worked Example 3, run one epoch of SGD (\(\alpha=0.3\), starting coefficients 0) on this dataset from your slides, and compare your predicted classes to the actual \(Y\):</p>
+<table style="font-size:.85em">
+<tr><th>X1</th><th>X2</th><th>Actual Y</th></tr>
+<tr><td>2.7810</td><td>2.5505</td><td>0</td></tr>
+<tr><td>1.4654</td><td>2.3621</td><td>0</td></tr>
+<tr><td>3.3965</td><td>4.4002</td><td>0</td></tr>
+<tr><td>1.3880</td><td>1.8502</td><td>0</td></tr>
+<tr><td>3.0640</td><td>3.0053</td><td>0</td></tr>
+<tr><td>7.6275</td><td>2.7592</td><td>1</td></tr>
+<tr><td>5.3324</td><td>2.0886</td><td>1</td></tr>
+<tr><td>6.9225</td><td>1.7710</td><td>1</td></tr>
+<tr><td>8.6754</td><td>-0.2420</td><td>1</td></tr>
+<tr><td>7.6737</td><td>3.508</td><td>1</td></tr>
+</table>
+<details>
+<summary style="cursor:pointer; font-weight:600; color:var(--amber-line);">Show final coefficients after 1 epoch</summary>
+<p>Working through all 10 rows with \(\alpha=0.3\) gives, after one epoch (independently computed): \(B_0\approx-0.0064\), \(B_1\approx0.561\), \(B_2\approx-0.088\). Notice \(B_1\) — the coefficient on \(X_1\) — grows fastest and dominates, which makes sense: looking at the data, \(X_1\) alone almost perfectly separates the two classes (small \(X_1\)&rarr;class 0, large \(X_1\)&rarr;class 1), so the learning algorithm quickly picks up on it, while \(B_2\) even moves slightly negative since \(X_2\) alone is a much weaker/noisier signal for the class.</p>
+</details>
+</div>
+
 <div class="box practice">
   <div class="box-title">Practice 4.3 — the slide's unfinished example, completed</div>
   <p>Your Lecture 4 deck sets up "predict pass/fail from hours studied" but stops before giving numbers. Using representative coefficients $B_0=-4,\ B_1=1.2$, find the probability of passing for a student who studies (a) 3.5 hours and (b) 7.5 hours.</p>
@@ -425,7 +1435,1039 @@
 </div>
 
 <!-- =========================================================== -->
-<h2 class="section-title" id="sec5"><span class="num">05</span> Quick-Reference Formula Sheet</h2>
+
+<h2 class="section-title" id="l4-regvsclass"><span class="num">4.7</span> Regression vs. Classification Problems</h2>
+<div class="box key">
+<div class="box-title">The general distinction, beyond just Linear/Logistic Regression</div>
+<p>Variables can be characterized as <strong>quantitative</strong> or <strong>qualitative</strong> (categorical).</p>
+<ul>
+<li><strong>Quantitative</strong> variables take on numerical values — e.g. a person's age, height, or income; the value of a house; the price of a stock.</li>
+<li><strong>Qualitative</strong> variables take on values in one of \(K\) different classes/categories — e.g. the brand of product purchased (A, B, or C); whether a person defaults on a debt (yes/no); a disease diagnosis.</li>
+</ul>
+<p>We tend to call problems with a <strong>quantitative</strong> response <strong>regression</strong> problems, and problems with a <strong>qualitative</strong> response <strong>classification</strong> problems. This is exactly why Logistic Regression — despite its name — is a classification technique: its response variable (which class?) is qualitative, not quantitative.</p>
+</div>
+
+<div class="lecture-header" id="L5">
+  <div class="ltag">Lecture 5</div>
+  <h2>ML Model Evaluation Metrics — Basics</h2>
+  <p>Building a classifier is only half the job — this short but exam-critical lecture covers how to actually measure whether it's any good, especially for classification problems.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The basic concepts covered</div>
+<p>Model evaluation metrics help us determine how well a machine learning model performs, especially for classification problems: <strong>Confusion Matrix, Accuracy, Precision, Recall, F1 Score, FNR, FPR</strong> (and Specificity).</p>
+</div>
+
+<h2 class="section-title" id="l5-confusion"><span class="num">5.1</span> The Confusion Matrix</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>A confusion matrix compares the <strong>actual</strong> class with the <strong>predicted</strong> class. For a binary classification problem (e.g. Pass/Fail):</p>
+<table>
+<tr><th></th><th>Predicted Positive</th><th>Predicted Negative</th></tr>
+<tr><td><strong>Actual Positive</strong></td><td>True Positive (TP)</td><td>False Negative (FN)</td></tr>
+<tr><td><strong>Actual Negative</strong></td><td>False Positive (FP)</td><td>True Negative (TN)</td></tr>
+</table>
+</div>
+<div class="box concept">
+<div class="box-title">The four cells, explained with an example</div>
+<ul>
+<li><strong>TP (True Positive)</strong> — Actual = Positive, Predicted = Positive. E.g. a student actually passes and the model predicts Pass.</li>
+<li><strong>TN (True Negative)</strong> — Actual = Negative, Predicted = Negative. E.g. a student actually fails and the model predicts Fail.</li>
+<li><strong>FP (False Positive)</strong> — Actual = Negative, Predicted = Positive. E.g. a student actually fails but the model predicts Pass. Also called a <strong>Type I error.</strong></li>
+<li><strong>FN (False Negative)</strong> — Actual = Positive, Predicted = Negative. E.g. a student actually passes but the model predicts Fail. Also called a <strong>Type II error.</strong></li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l5-metrics"><span class="num">5.2</span> Accuracy, Precision, Recall &amp; F1</h2>
+<div class="box theory">
+<div class="box-title">2. Accuracy — "what proportion of all predictions were correct?"</div>
+<p>\[ \text{Accuracy} = \frac{TP+TN}{TP+FP+FN+TN} \]</p>
+</div>
+<div class="box worked">
+<div class="box-title">Worked Example <span class="numtag">Numerical</span></div>
+<p>\(TP=40,\ TN=45,\ FP=5,\ FN=10\).</p>
+$$\text{Accuracy} = \frac{40+45}{40+5+10+45} = \frac{85}{100} = 0.85$$
+<span class="answer-final">Accuracy = 85%</span>
+</div>
+
+<div class="box theory">
+<div class="box-title">3. Precision — "of all predicted positives, how many were actually positive?"</div>
+<p>\[ \text{Precision} = \frac{TP}{FP+TP} \]</p>
+<p>Answers: <em>Of all patients predicted as Diseased, how many were actually diseased?</em></p>
+</div>
+
+<div class="box theory">
+<div class="box-title">4. Recall (Sensitivity / True Positive Rate) — "of all actual positives, how many did we catch?"</div>
+<p>\[ \text{Recall} = \frac{TP}{FN+TP} \]</p>
+<p>Answers: <em>Of all the patients who actually have the disease, how many were correctly identified by the model?</em></p>
+</div>
+
+<div class="box theory">
+<div class="box-title">5. F1 Score — the harmonic mean of Precision and Recall</div>
+<p>\[ F1 = \frac{2\times\text{Precision}\times\text{Recall}}{\text{Precision}+\text{Recall}} \]</p>
+</div>
+<div class="box worked">
+<div class="box-title">Worked Example <span class="numtag">Numerical</span></div>
+<p>Given \(\text{Precision}=0.8889\), \(\text{Recall}=0.8\):</p>
+$$F1 = \frac{2\times0.8889\times0.8}{0.8889+0.8} = \frac{1.4222}{1.6889} \approx 0.8421$$
+<span class="answer-final">F1 ≈ 0.8421 (84.21%)</span>
+</div>
+
+<div class="box key">
+<div class="box-title">General interpretation of F1-score — worth memorising</div>
+<table>
+<tr><th>F1-score</th><th>General interpretation</th></tr>
+<tr><td>90–100%</td><td>Excellent</td></tr>
+<tr><td>80–89%</td><td>Very good</td></tr>
+<tr><td>70–79%</td><td>Good / acceptable in many applications</td></tr>
+<tr><td>60–69%</td><td>Moderate</td></tr>
+<tr><td>Below 60%</td><td>Generally needs improvement</td></tr>
+</table>
+</div>
+
+<div class="box key">
+<div class="box-title">Simple memory trick</div>
+<ul style="margin:4px 0 0">
+<li><strong>Accuracy</strong> → Overall correctness</li>
+<li><strong>Precision</strong> → Predicted-Positive correctness</li>
+<li><strong>Recall</strong> → Actual-Positive coverage</li>
+<li><strong>F1</strong> → Balance between Precision and Recall</li>
+<li><strong>Confusion Matrix</strong> → TP, TN, FP, FN — the raw ingredients every metric above is calculated from</li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l5-fprfnr"><span class="num">5.3</span> FPR, FNR &amp; Specificity</h2>
+<div class="box theory">
+<div class="box-title">6. FPR (False Positive Rate)</div>
+<p>Measures the proportion of actual <em>negative</em> cases the model incorrectly predicts as positive — e.g. the proportion of healthy patients incorrectly classified as diseased.</p>
+<p>\[ FPR = \frac{FP}{TN+FP} \]</p>
+</div>
+<div class="box theory">
+<div class="box-title">7. FNR (False Negative Rate)</div>
+<p>Measures the proportion of actual <em>positive</em> cases the model incorrectly predicts as negative — e.g. the proportion of diseased patients incorrectly classified as healthy.</p>
+<p>\[ FNR = \frac{FN}{TP+FN} \]</p>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">(Corrected from the slide, which shows this as "FNR=FN+(TP+FN)" — clearly meant to be a ratio, not a sum, given FNR is defined identically in spirit to FPR just above it, and the worked example below only makes sense as a fraction.)</p>
+</div>
+<div class="box theory">
+<div class="box-title">8. Specificity</div>
+<p>Measures how well the model correctly identifies the <em>negative</em> cases.</p>
+<p>\[ \text{Specificity} = \frac{TN}{TN+FP} \]</p>
+</div>
+
+<h2 class="section-title" id="l5-worked"><span class="num">5.4</span> Full Worked Example — Medical Diagnosis</h2>
+<div class="box worked">
+<div class="box-title">Problem <span class="numtag">Numerical</span></div>
+<p>A model diagnoses a disease. Confusion matrix obtained:</p>
+<table>
+<tr><th>Actual \ Predicted</th><th>Diseased (D)</th><th>Healthy (H)</th></tr>
+<tr><td>Diseased (D)</td><td>40</td><td>15</td></tr>
+<tr><td>Healthy (H)</td><td>10</td><td>135</td></tr>
+</table>
+<p><strong>(a)</strong> Calculate accuracy, precision, recall, F1-score. <strong>(b)</strong> Determine FPR and FNR. Suggest ways to improve the model.</p>
+<div class="step"><span class="step-label">Reading off TP, FN, FP, TN</span>
+<p>\(TP=40\) (Diseased correctly caught), \(FN=15\) (Diseased missed), \(FP=10\) (Healthy wrongly flagged), \(TN=135\) (Healthy correctly cleared).</p></div>
+<div class="step"><span class="step-label">(a) The four core metrics</span>
+$$\text{Accuracy} = \frac{40+135}{40+15+10+135} = \frac{175}{200} = 87.5\%$$
+$$\text{Precision} = \frac{40}{40+10} = 80\%$$
+$$\text{Recall} = \frac{40}{40+15} = 72.73\%$$
+$$F1 = \frac{2\times0.80\times0.7273}{0.80+0.7273} \approx 76.19\%$$
+</div>
+<div class="step"><span class="step-label">(b) FPR and FNR</span>
+$$FPR = \frac{10}{135+10} = 6.90\% \qquad FNR = \frac{15}{40+15} = 27.27\%$$
+</div>
+<span class="answer-final">Accuracy=87.5%, Precision=80%, Recall=72.73%, F1=76.19%, FPR=6.90%, FNR=27.27%</span>
+</div>
+
+<div class="box key">
+<div class="box-title">Interpreting the result — the genuinely important part of this example</div>
+<p>An F1-score of 76.19% is "reasonably good" by the interpretation table above — but it should <strong>not</strong> automatically be considered adequate for medical diagnosis. The important issue: <strong>Recall = 72.73%</strong>, meaning the model is <strong>missing about 27.27% of diseased patients</strong> (its FNR). For medical diagnosis, <strong>recall/sensitivity is often more important than F1-score</strong>, because false negatives can be serious — a missed diagnosis can cost a life, while a false alarm (false positive) usually just costs an extra test.</p>
+<p>For this kind of application, prioritise checking, in order:</p>
+<ul>
+<li><strong>Recall/Sensitivity</strong> — how many diseased patients are actually detected?</li>
+<li><strong>F1-score</strong> — the overall balance between precision and recall.</li>
+<li><strong>FPR</strong> — how many healthy patients are incorrectly diagnosed (the "cost" of chasing higher recall)?</li>
+</ul>
+<p>Conclusion: further improvement is desirable, particularly in recall, since the current 27.27% FNR means a considerable number of diseased patients are being missed by this model.</p>
+</div>
+
+<div class="lecture-header" id="L6">
+  <div class="ltag">Lecture 6</div>
+  <h2>k-Nearest Neighbors (k-NN)</h2>
+  <p>The first genuinely <strong>non-parametric</strong> algorithm covered in depth — k-NN doesn't learn an equation at all. It just remembers the training data, and at prediction time, looks around for the most similar examples it has on file.</p>
+</div>
+
+<h2 class="section-title" id="l6-knn-intro"><span class="num">6.1</span> How k-NN Works</h2>
+<div class="box theory">
+<div class="box-title">Definition and key vocabulary</div>
+<ul>
+<li>k-NN is a <strong>nearest neighbor learning method.</strong></li>
+<li>It's called a <strong>lazy learner</strong> algorithm — it does not learn from the training data immediately; instead it <em>stores</em> the dataset, and only acts on it at classification time.</li>
+<li>It's also called <strong>instance-based / memory-based</strong> learning — it needs memory to store the dataset during training, and predicts a test instance's class only when a new instance actually arrives, delaying all real processing until then.</li>
+<li>It is <strong>non-parametric</strong> and <strong>supervised.</strong> It handles both classification and regression, though it's most commonly used for classification.</li>
+</ul>
+</div>
+<div class="box key">
+<div class="box-title">The core principle</div>
+<p>Predict the label of a new (test) data point by considering the labels of its <strong>nearest neighbours.</strong> \(k\) is the number of nearest neighbours considered. E.g. with \(k=3\): out of all \(n\) distances computed during testing, only the 3 nearest are used for the prediction.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Algorithm 4.1: k-NN, formally</div>
+<p><strong>Inputs:</strong> Training dataset \(T\), distance metric \(d\), test instance \(t\), number of nearest neighbours \(k\). <strong>Output:</strong> predicted class or category.</p>
+<ol>
+<li>For each instance \(i\) in \(T\), compute the distance between \(t\) and \(i\) using the distance metric.
+<ul><li><strong>Continuous attributes</strong> — Euclidean distance: \(\text{dist}((x_1,y_1),(x_2,y_2))=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}\)</li>
+<li><strong>Categorical (binary) attributes</strong> — Hamming Distance: if the two instances' values are the same, \(d=0\); otherwise \(d=1\).</li></ul></li>
+<li>Sort the distances in ascending order and select the first \(k\) nearest training instances.</li>
+<li>Predict the class by <strong>majority voting</strong> (if the target attribute is discrete) or the <strong>mean</strong> (if continuous) of the \(k\) selected nearest instances.</li>
+</ol>
+</div>
+
+<div class="box concept">
+<div class="box-title">General steps, in plain language</div>
+<ol>
+<li><strong>Selecting the optimal value of K</strong> — the number of nearest neighbours to consider.</li>
+<li><strong>Calculating distance</strong> — measure similarity between the target and every training point (Euclidean, Manhattan, or Minkowski distance).</li>
+<li><strong>Finding nearest neighbours</strong> — the \(k\) points with the smallest distances to the target.</li>
+<li><strong>Voting</strong> for classification, or <strong>taking the average</strong> for regression.</li>
+</ol>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0">
+<div class="box concept" style="margin:0">
+<div class="box-title">Applications</div>
+<ul style="margin:4px 0 0"><li>Recommendation systems (Amazon, Netflix)</li><li>Spam detection</li><li>Customer segmentation</li><li>Speech recognition</li></ul>
+</div>
+<div class="box concept" style="margin:0">
+<div class="box-title">Advantages / Disadvantages</div>
+<p style="margin:4px 0 0"><strong>+</strong> Easy to implement, no training required, few hyperparameters, flexible.</p>
+<p style="margin:4px 0 0"><strong>&minus;</strong> Doesn't scale well to large datasets; struggles as the number of features grows; prone to overfitting.</p>
+</div>
+</div>
+
+<div class="box theory">
+<div class="box-title">Formalising the distance metrics, in general</div>
+<p>Three common distance measures between two points \(P(x_1,y_1)\) and \(Q(x_2,y_2)\) in 2D:</p>
+<table>
+<tr><th>Metric</th><th>Formula</th><th>Intuition</th></tr>
+<tr><td>Euclidean</td><td>\(d_E(P,Q)=\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}\)</td><td>Straight line ("as the crow flies") between P and Q.</td></tr>
+<tr><td>Manhattan</td><td>\(d_M(P,Q)=|x_1-x_2|+|y_1-y_2|\)</td><td>Path along the axes, like city blocks — horizontal + vertical.</td></tr>
+<tr><td>Minkowski</td><td>\(d_p(P,Q)=\big(|x_1-x_2|^p+|y_1-y_2|^p\big)^{1/p},\ p\ge1\)</td><td>A generalised distance, parameterised by \(p\).</td></tr>
+</table>
+<p>Minkowski distance is a family that <strong>contains the other two as special cases</strong>: \(p=1\to\)Manhattan distance, \(p=2\to\)Euclidean distance, \(p\to\infty\to\)Chebyshev (\(L_\infty\)) distance. Choosing \(p\) lets you tune how heavily large individual coordinate differences are penalised relative to many small ones.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Another worked classification example — height &amp; weight <span class="numtag">Numerical</span></div>
+<p>Classify \((x,y)=(170,57)\) as Underweight or Normal, using \(k=3\) and Euclidean distance.</p>
+<table style="font-size:.85em">
+<tr><th>Height (cm)</th><th>Weight (kg)</th><th>Class</th></tr>
+<tr><td>167</td><td>51</td><td>Underweight</td></tr>
+<tr><td>182</td><td>62</td><td>Normal</td></tr>
+<tr><td>176</td><td>69</td><td>Normal</td></tr>
+<tr><td>173</td><td>64</td><td>Normal</td></tr>
+<tr><td>172</td><td>65</td><td>Normal</td></tr>
+<tr><td>174</td><td>56</td><td>Underweight</td></tr>
+<tr><td>169</td><td>58</td><td>Normal</td></tr>
+<tr><td>173</td><td>57</td><td>Normal</td></tr>
+<tr><td>170</td><td>55</td><td>Normal</td></tr>
+</table>
+<div class="step"><span class="step-label">Distances, sorted ascending (independently computed)</span>
+<table style="font-size:.85em">
+<tr><th>Rank</th><th>(Height,Weight)</th><th>Distance</th><th>Class</th></tr>
+<tr><td>1</td><td>(169,58)</td><td>1.41</td><td>Normal</td></tr>
+<tr><td>2</td><td>(170,55)</td><td>2.00</td><td>Normal</td></tr>
+<tr><td>3</td><td>(173,57)</td><td>3.00</td><td>Normal</td></tr>
+</table>
+</div>
+<span class="answer-final">All 3 nearest neighbours are "Normal" → predicted class: Normal</span>
+</div>
+
+<h2 class="section-title" id="l6-knn-classification"><span class="num">6.2</span> Worked Example — Classification with k-NN</h2>
+<div class="box worked">
+<div class="box-title">Problem <span class="numtag">Numerical</span></div>
+<p><strong>Given:</strong> Test instance \((6.1,\,40,\,5)\) — (CGPA, Assessment marks, Projects Submitted). Categories: Pass, Fail. Classify using Euclidean distance; take \(k=3\).</p>
+<table style="font-size:.85em">
+<tr><th>CGPA</th><th>Assessment</th><th>Projects</th><th>Result</th></tr>
+<tr><td>9.2</td><td>85</td><td>8</td><td>P</td></tr>
+<tr><td>8</td><td>80</td><td>7</td><td>P</td></tr>
+<tr><td>8.5</td><td>81</td><td>8</td><td>P</td></tr>
+<tr><td>6</td><td>45</td><td>5</td><td>F</td></tr>
+<tr><td>6.5</td><td>50</td><td>4</td><td>F</td></tr>
+<tr><td>8.2</td><td>72</td><td>7</td><td>P</td></tr>
+<tr><td>5.8</td><td>38</td><td>5</td><td>F</td></tr>
+<tr><td>8.9</td><td>91</td><td>9</td><td>P</td></tr>
+</table>
+<div class="step"><span class="step-label">Step 1 — compute the Euclidean distance from the test instance to every training row</span>
+$$d = \sqrt{(\text{CGPA}-6.1)^2+(\text{Assess}-40)^2+(\text{Proj}-5)^2}$$
+<table style="font-size:.85em">
+<tr><th>Row</th><th>Distance</th><th>Class</th></tr>
+<tr><td>(9.2,85,8)</td><td>45.21</td><td>P</td></tr>
+<tr><td>(8,80,7)</td><td>40.09</td><td>P</td></tr>
+<tr><td>(8.5,81,8)</td><td>41.18</td><td>P</td></tr>
+<tr><td>(6,45,5)</td><td>5.001</td><td>F</td></tr>
+<tr><td>(6.5,50,4)</td><td>10.06</td><td>F</td></tr>
+<tr><td>(8.2,72,7)</td><td>32.13</td><td>P</td></tr>
+<tr><td>(5.8,38,5)</td><td>2.02</td><td>F</td></tr>
+<tr><td>(8.9,91,9)</td><td>51.23</td><td>P</td></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Step 2 — sort ascending, select the k=3 nearest</span>
+<table>
+<tr><th>Rank</th><th>Row</th><th>Distance</th><th>Class</th></tr>
+<tr><td>1</td><td>(5.8,38,5)</td><td>2.02</td><td>F</td></tr>
+<tr><td>2</td><td>(6,45,5)</td><td>5.001</td><td>F</td></tr>
+<tr><td>3</td><td>(6.5,50,4)</td><td>10.06</td><td>F</td></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Step 3 — majority vote</span>
+<p>All 3 nearest neighbours are class <strong>F</strong> — unanimous vote.</p></div>
+<span class="answer-final">Predicted class: Fail (F)</span>
+</div>
+
+<h2 class="section-title" id="l6-knn-regression"><span class="num">6.3</span> k-NN Regression</h2>
+<div class="box key">
+<div class="box-title">k-NN isn't just for classification</div>
+<p>It's important to note that Linear Regression <em>and</em> k-NN can both be used for regression, even though k-NN is more commonly introduced as a classifier. Example: k-NN regression for house-price prediction, including hyperparameter tuning of \(k\).</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem — predict a house's price <span class="numtag">Numerical</span></div>
+<p>Predict the price of a new house: Area = 1500 sq.ft., Bedrooms = 3, using Area and Number of Bedrooms as features.</p>
+<table>
+<tr><th>House</th><th>Area (sq.ft.)</th><th>Bedrooms</th><th>Price (₹ lakh)</th></tr>
+<tr><td>1</td><td>800</td><td>2</td><td>40</td></tr>
+<tr><td>2</td><td>1000</td><td>2</td><td>45</td></tr>
+<tr><td>3</td><td>1200</td><td>3</td><td>52</td></tr>
+<tr><td>4</td><td>1400</td><td>3</td><td>60</td></tr>
+<tr><td>5</td><td>1600</td><td>3</td><td>68</td></tr>
+<tr><td>6</td><td>1800</td><td>4</td><td>75</td></tr>
+<tr><td>7</td><td>2000</td><td>4</td><td>82</td></tr>
+<tr><td>8</td><td>2200</td><td>4</td><td>90</td></tr>
+</table>
+</div>
+
+<div class="box concept">
+<div class="box-title">The complete process, end to end</div>
+<p>Original data &rarr; Train/Test Split &rarr; Feature Scaling (StandardScaler) &rarr; Try \(K=1,2,3,4,5\) &rarr; Cross-validation &rarr; Select \(K\) with minimum RMSE &rarr; Train final k-NN model &rarr; Predict house price.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Why feature scaling is essential for k-NN specifically</div>
+<p>Area ranges 800–2200; Bedrooms ranges 2–4 — wildly different numerical scales. Since k-NN is a <strong>distance-based</strong> algorithm, Area would completely dominate the distance calculation unscaled — a difference of 400 sq.ft. would contribute far more to the distance than a difference of one whole bedroom, even though both might matter equally to price. <strong>Feature scaling is essential before applying k-NN</strong> — this is a much bigger deal for k-NN than for Linear Regression (see Section 6.5's comparison table).</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Z-score standardization</div>
+<p>\[ z = \frac{x-\mu}{\sigma} \]</p>
+<p>\(x\)=original value, \(\mu\)=mean, \(\sigma\)=standard deviation, \(z\)=standardized value. After scaling, each feature will have approximately mean 0 and standard deviation 1.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Scaling both features, step by step <span class="numtag">Numerical</span></div>
+<div class="step"><span class="step-label">Area: mean and standard deviation</span>
+$$\mu_{Area} = \frac{800+1000+\cdots+2200}{8} = 1500$$
+$$\sigma_{Area} = \sqrt{\frac{\sum(x-\mu)^2}{N}} = \sqrt{\frac{1{,}680{,}000}{8}} \approx 458.26$$
+</div>
+<div class="step"><span class="step-label">Scaled Area values</span>
+<table style="font-size:.85em">
+<tr><th>House</th><th>Area</th><th>Scaled Area</th></tr>
+<tr><td>1</td><td>800</td><td>-1.527</td></tr>
+<tr><td>2</td><td>1000</td><td>-1.091</td></tr>
+<tr><td>3</td><td>1200</td><td>-0.655</td></tr>
+<tr><td>4</td><td>1400</td><td>-0.218</td></tr>
+<tr><td>5</td><td>1600</td><td>0.218</td></tr>
+<tr><td>6</td><td>1800</td><td>0.655</td></tr>
+<tr><td>7</td><td>2000</td><td>1.091</td></tr>
+<tr><td>8</td><td>2200</td><td>1.527</td></tr>
+</table>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">Notice the range has transformed from 800–2200 down to approximately &minus;1.527 to 1.527.</p>
+</div>
+<div class="step"><span class="step-label">Bedrooms: mean, standard deviation, and scaled values</span>
+$$\mu_{Bedroom} = \frac{2+2+3+3+3+4+4+4}{8} = 3.125 \qquad \sigma_{Bedroom} \approx 0.7817$$
+$$z_{Bedroom} = \frac{x-3.125}{0.7817} \;\Rightarrow\; z(2)\approx-1.439,\quad z(3)\approx-0.160,\quad z(4)\approx1.120$$
+</div>
+<div class="step"><span class="step-label">The fully scaled dataset</span>
+<table style="font-size:.85em">
+<tr><th>House</th><th>Area</th><th>Bedrooms</th><th>Scaled Area</th><th>Scaled Bedrooms</th><th>Price</th></tr>
+<tr><td>H1</td><td>800</td><td>2</td><td>-1.527</td><td>-1.439</td><td>40</td></tr>
+<tr><td>H2</td><td>1000</td><td>2</td><td>-1.091</td><td>-1.439</td><td>45</td></tr>
+<tr><td>H3</td><td>1200</td><td>3</td><td>-0.655</td><td>-0.160</td><td>52</td></tr>
+<tr><td>H4</td><td>1400</td><td>3</td><td>-0.218</td><td>-0.160</td><td>60</td></tr>
+<tr><td>H5</td><td>1600</td><td>3</td><td>0.218</td><td>-0.160</td><td>68</td></tr>
+<tr><td>H6</td><td>1800</td><td>4</td><td>0.655</td><td>1.120</td><td>75</td></tr>
+<tr><td>H7</td><td>2000</td><td>4</td><td>1.091</td><td>1.120</td><td>82</td></tr>
+<tr><td>H8</td><td>2200</td><td>4</td><td>1.527</td><td>1.120</td><td>90</td></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Scale the new house — Area=1500, Bedrooms=3</span>
+$$z_{Area} = \frac{1500-1500}{458.26}=0 \qquad z_{Bedroom} = \frac{3-3.125}{0.7817}\approx-0.160$$
+$$X_{new} = (0,\ -0.160)$$
+</div>
+<div class="step"><span class="step-label">Calculate distances (k=3) and predict</span>
+<table>
+<tr><th>House</th><th>Price</th><th>Distance</th></tr>
+<tr><td>H4</td><td>60</td><td>0.218</td></tr>
+<tr><td>H5</td><td>68</td><td>0.218</td></tr>
+<tr><td>H3</td><td>52</td><td>0.655</td></tr>
+</table>
+$$\hat Y = \frac{60+68+52}{3} = 60 \text{ lakh}$$
+</div>
+<span class="answer-final">Predicted price for a 1500 sq.ft., 3-bedroom house: ₹60 lakh</span>
+</div>
+
+<h2 class="section-title" id="l6-cv"><span class="num">6.4</span> Cross-Validation for Choosing K</h2>
+<div class="box theory">
+<div class="box-title">What does 3-fold CV mean?</div>
+<p>3-fold cross-validation means dividing the training data into 3 parts, using each part once for <strong>validation</strong> while training on the other two, calculating the RMSE for each round, and <strong>averaging</strong> the three RMSE values.</p>
+</div>
+<div class="box concept">
+<div class="box-title">Illustration with 6 houses</div>
+<table>
+<tr><th>Fold</th><th>Houses used for validation</th><th>Houses used for training</th></tr>
+<tr><td>1</td><td>1, 2</td><td>3, 4, 5, 6</td></tr>
+<tr><td>2</td><td>3, 4</td><td>1, 2, 5, 6</td></tr>
+<tr><td>3</td><td>5, 6</td><td>1, 2, 3, 4</td></tr>
+</table>
+<p>We train/evaluate k-NN separately for each candidate: \(K=1\to\)evaluate, \(K=2\to\)evaluate, ..., \(K=5\to\)evaluate. In practice this is automated with <code>GridSearchCV(pipeline, param_grid, cv=3, scoring='neg_root_mean_squared_error')</code>, which tests each value of \(K\) using 3-fold CV instead of picking one arbitrarily.</p>
+</div>
+<div class="box worked">
+<div class="box-title">Worked Example — choosing K by CV RMSE <span class="numtag">Numerical</span></div>
+<p>Each fold's RMSE is calculated using \(\text{RMSE}=\sqrt{\frac1n\sum(y_i-\hat y_i)^2}\). Suppose, for \(K=3\):</p>
+<table>
+<tr><th>Fold</th><th>RMSE</th></tr>
+<tr><td>Fold 1</td><td>5.05</td></tr>
+<tr><td>Fold 2</td><td>4.62</td></tr>
+<tr><td>Fold 3</td><td>4.57</td></tr>
+</table>
+<p>Repeating this for every \(K=1,\dots,5\):</p>
+<table>
+<tr><th>K</th><th>Fold 1</th><th>Fold 2</th><th>Fold 3</th><th>Average CV RMSE</th></tr>
+<tr><td>1</td><td>7.2</td><td>8.1</td><td>7.8</td><td>7.70</td></tr>
+<tr><td>2</td><td>5.9</td><td>6.2</td><td>6.0</td><td>6.03</td></tr>
+<tr><td>3</td><td>5.05</td><td>4.62</td><td>4.57</td><td><strong>4.75</strong></td></tr>
+<tr><td>4</td><td>5.1</td><td>5.3</td><td>5.2</td><td>5.20</td></tr>
+<tr><td>5</td><td>5.4</td><td>5.6</td><td>5.5</td><td>5.50</td></tr>
+</table>
+<span class="answer-final">Since lower RMSE is better, K = 3 has the lowest CV RMSE — it's the best choice.</span>
+</div>
+
+<div class="box key">
+<div class="box-title">The complete k-NN pipeline, end to end</div>
+<p>House Dataset &rarr; Train-Test Split &rarr; Scale Area + Bedrooms &rarr; Choose candidate \(K\) values &rarr; Cross-validation &rarr; Calculate RMSE for each \(K\) &rarr; Choose \(K\) with lowest RMSE (here, \(K^*=3\)) &rarr; Train the final k-NN model.</p>
+</div>
+
+<h2 class="section-title" id="l6-comparison"><span class="num">6.5</span> k-NN vs. Linear Regression</h2>
+<div class="box concept">
+<div class="box-title">The core distinction</div>
+<p>Both can be used for regression. <strong>Key difference:</strong> Linear Regression learns a single <strong>global equation</strong>; k-NN learns <strong>locally</strong> from nearby observations only. If the relationship between area and price is approximately a straight line, Linear Regression may work very well. If the relationship is highly irregular or nonlinear, k-NN Regression can capture local patterns without ever fitting one particular equation.</p>
+</div>
+<table style="font-size:.88em">
+<tr><th>Aspect</th><th>Linear Regression</th><th>k-NN Regression</th></tr>
+<tr><td>Type</td><td>Parametric</td><td>Non-parametric</td></tr>
+<tr><td>Learning approach</td><td>Model-based</td><td>Instance-based</td></tr>
+<tr><td>Model</td><td>Fits a mathematical line/plane</td><td>Uses nearby training observations</td></tr>
+<tr><td>Assumption</td><td>Assumes approximately linear relationship</td><td>No specific functional-form assumption</td></tr>
+<tr><td>Training</td><td>Estimates coefficients</td><td>Essentially stores the training data</td></tr>
+<tr><td>Prediction</td><td>Uses the learned equation</td><td>Averages the K nearest target values</td></tr>
+<tr><td>Effect of K</td><td>Not applicable</td><td>Controls smoothness</td></tr>
+<tr><td>Sensitive to distance</td><td>No</td><td>Yes</td></tr>
+<tr><td>Feature scaling</td><td>Usually less critical</td><td><strong>Very important</strong></td></tr>
+<tr><td>Outliers</td><td>Can strongly affect the fitted line</td><td>Can affect local predictions</td></tr>
+<tr><td>Interpretability</td><td>High</td><td>Relatively low</td></tr>
+<tr><td>Prediction speed</td><td>Fast</td><td>Can be slower for large datasets</td></tr>
+<tr><td>Best suited for</td><td>Linear relationships</td><td>Complex/local relationships</td></tr>
+</table>
+
+<div class="box concept">
+<div class="box-title">Three factors that strictly affect k-NN's performance</div>
+<ol>
+<li><strong>Number of nearest neighbours (k)</strong> — too small a \(k\) makes the model sensitive to noise (overfits, following every quirk of individual points); too large a \(k\) oversmooths and can wash out real local structure (underfits), and starts pulling in points that aren't really "nearby" in any meaningful sense.</li>
+<li><strong>Distance metric</strong> — should be chosen based on the type of data; it must not be dominated by whichever feature happens to have larger raw numbers (a bigger number in the training data doesn't mean it deserves more importance — hence the need for scaling, Section 6.3).</li>
+<li><strong>Decision rule</strong> — how the k neighbours' values get combined (majority vote, simple average, or weighted, Section 6.6). k-NN works better in low dimensions, because in high dimensions, the notion of "nearness" itself becomes less meaningful — with enough features, most points end up roughly equidistant from each other (a symptom of the so-called "curse of dimensionality").</li>
+</ol>
+</div>
+
+<h2 class="section-title" id="l6-weighted"><span class="num">6.6</span> Weighted k-NN</h2>
+<div class="box theory">
+<div class="box-title">The idea</div>
+<p>In ordinary k-NN, all \(k\) neighbours count equally in the vote/average. In <strong>Weighted k-NN</strong>, the \(k\) closest neighbours are given <strong>higher weight</strong> in the decision than neighbours that are farther away (but still among the \(k\) selected) — a closer neighbour has more influence than a farther one.</p>
+<p>If you don't assign weights at all, it works like ordinary k-NN — every neighbour weighted equally. If you do assign weights, give <em>more</em> weight to points that are nearer.</p>
+</div>
+<div class="box theory">
+<div class="box-title">The exact Weighted k-NN algorithm, step by step</div>
+<p><strong>Inputs:</strong> Training dataset \(T\), distance metric \(d\), weighting function \(w(i)\), test instance \(t\), number of neighbours \(k\). <strong>Output:</strong> predicted class or category.</p>
+<ol>
+<li>For each instance in \(T\), compute the distance to \(t\) (Euclidean for continuous attributes; Hamming for binary/categorical — identical to ordinary k-NN's Step 1).</li>
+<li>Sort distances ascending; select the first \(k\) nearest training instances.</li>
+<li>Predict the class by <strong>weighted voting</strong>, computed as:
+<ul>
+<li>Compute the <strong>inverse</strong> of each of the \(k\) selected distances: \(w_i=1/d_i\).</li>
+<li>Find the <strong>sum</strong> of these inverses.</li>
+<li>Compute each neighbour's <strong>weight</strong> by dividing its inverse distance by that sum — each weight is effectively a "vote," but a fractional one, for its neighbour's class.</li>
+<li>Add up the weighted votes for each class, and predict the class with the <strong>maximum total weight.</strong></li>
+</ul>
+</li>
+</ol>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">This is the precise mechanism behind Section 6.6's general description: closer neighbours (smaller \(d_i\), so larger \(1/d_i\)) end up with proportionally larger weights, and therefore more say in the final vote, than neighbours near the edge of the \(k\)-neighbourhood.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Algorithm of Weighted k-NN</div>
+<p><strong>Input:</strong> Training dataset \(T\), distance metric \(d\), weight function \(w\), test instance \(t\), number of neighbours \(k\). <strong>Output:</strong> predicted class or category.</p>
+<p>The first two steps are identical to ordinary k-NN (compute distances, sort and select the \(k\) nearest). The difference is in the final step: instead of a plain majority vote or simple average, each of the \(k\) selected neighbours contributes a <strong>weight</strong> — commonly the inverse of its distance (\(w=1/d\), or \(1/d^2\)) — so nearer neighbours pull the final decision more strongly than farther ones.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">What Lecture 6 adds to your toolkit</div>
+<p>k-NN is the clearest possible illustration of "non-parametric": there's no equation to learn, no coefficients to estimate — just a stored dataset and a distance calculation done fresh at prediction time. Its Achilles' heel is exactly what its strength as a distance-based method implies: feature scaling and the choice of \(k\) (best chosen via cross-validation) matter enormously, in a way they simply don't for parametric models like Linear Regression.</p>
+</div>
+
+<div class="lecture-header" id="L7">
+  <div class="ltag">Lecture 7</div>
+  <h2>Naive Bayes</h2>
+  <p>The final lecture of this course builds an entire classification algorithm out of one 250-year-old piece of probability theory. Along the way it covers everything from marginal probability to text classification and spam filtering — genuinely one of the most widely-used classifiers in practice, for exactly the reasons this lecture explains.</p>
+</div>
+<div class="box concept">
+<div class="box-title">Objectives (prerequisites: basics of probability and Bayes theorem)</div>
+<p>Understand probability-based learning; the fundamentals of Bayes theorem; the Bayes classification problem; the Naive Bayes classification problem based on Bayes theorem; and the Naive Bayes classification algorithm itself.</p>
+</div>
+
+<h2 class="section-title" id="l7-probability"><span class="num">7.1</span> Probability Foundations</h2>
+<div class="box theory">
+<div class="box-title">What is probability-based learning?</div>
+<p>Learning combines <strong>prior knowledge</strong> (prior probabilities) with observed data. Instead of giving one single, fixed answer, this approach calculates the <strong>likelihood</strong> of different possible results — using probability theory to describe randomness, uncertainty, and noise, in order to predict future events. It's a tool for modelling large datasets.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Marginal, Joint, and Conditional probability</div>
+<ul>
+<li><strong>Joint probability</strong> — the probability of two events occurring <em>simultaneously.</em></li>
+<li><strong>Marginal probability</strong> — the probability of an event, irrespective of the outcome of another variable.</li>
+<li><strong>Conditional probability</strong> — the probability of one event occurring in the presence of a second event.</li>
+</ul>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example <span class="numtag">Numerical</span></div>
+<table>
+<tr><th>Gender</th><th>Pass</th><th>Fail</th><th>Total</th></tr>
+<tr><td>Male</td><td>40</td><td>10</td><td>50</td></tr>
+<tr><td>Female</td><td>30</td><td>20</td><td>50</td></tr>
+<tr><td>Total</td><td>70</td><td>30</td><td>100</td></tr>
+</table>
+<p><strong>Joint</strong> probability of Male AND Pass: \(P(\text{Male}\cap\text{Pass})=40/100=0.40\). Similarly \(P(\text{Female}\cap\text{Pass})=30/100=0.30\).</p>
+<p><strong>Marginal</strong> probability of Male: \(P(\text{Male})=50/100=0.50\). Marginal probability of passing: \(P(\text{Pass})=70/100=0.70\).</p>
+<p><strong>Conditional</strong> probability: since we already know the student is male, we only consider the 50 males — 40 of them passed. \(P(\text{Pass}\mid\text{Male})=40/50=0.80\).</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The relationship linking all three</div>
+<p>\[ P(M\cap P) = P(P\mid M)\times P(M) \]</p>
+<p>i.e. Joint = Conditional × Marginal. <strong>Joint probability is symmetrical:</strong> \(P(M\cap P)=P(P\cap M)\). But <strong>conditional probability is NOT symmetrical:</strong> \(P(P\mid M)\ne P(M\mid P)\) in general — confirm from the table: \(P(P\mid M)=40/50=0.80\), quite different from \(P(M\mid P)=40/70=0.571\).</p>
+</div>
+
+<div class="box proof">
+<div class="box-title">An alternate way to calculate conditional probability — this IS Bayes' Rule</div>
+<p>One conditional probability can be calculated using the <em>other</em> conditional probability:</p>
+<p>\[ P(A\mid B) = \frac{P(B\mid A)\cdot P(A)}{P(B)} \qquad\text{(and symmetrically)}\qquad P(B\mid A) = \frac{P(A\mid B)\cdot P(B)}{P(A)} \]</p>
+<p>This is useful when the joint probability is hard to calculate directly (which is most of the time), or when the <em>reverse</em> conditional probability is available or easier to compute. This is <strong>Bayes' Rule</strong> (or Bayes' Theorem), named for Reverend Thomas Bayes, credited with first describing it.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0">
+<div class="box theory" style="margin:0">
+<div class="box-title">Prior Probability</div>
+<p>The probability of a class occurring <em>before</em> any evidence (features) is observed. E.g. if 100 samples belong to Class A and 50 to Class B, the class prior for A is \(100/150\).</p>
+</div>
+<div class="box theory" style="margin:0">
+<div class="box-title">Posterior Probability</div>
+<p>The probability of an event/hypothesis \(A\) occurring <em>after</em> observing some evidence \(B\) — i.e. \(P(A\mid B)\).</p>
+</div>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — conditional probability <span class="numtag">Numerical</span></div>
+<p>Events: "It Rains" (A), "It is cloudy" (B). \(P(A)=0.3\) (rain on any day is 30% likely), \(P(B)=0.5\) (cloudiness is 50% likely). A later example (Section 7.2) uses this same style of setup to compute a full conditional probability.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Bayesian Learning</div>
+<p>Describes and represents knowledge in an uncertain domain, mainly using probability to reason about it. Uses Bayes theorem to infer unknown parameters. Useful in reasoning and diagnosis, handling missing data, and estimating uncertainty in predictions.</p>
+</div>
+
+<h2 class="section-title" id="l7-bayes-theorem"><span class="num">7.2</span> Bayes' Theorem</h2>
+<div class="box theory">
+<div class="box-title">What is Bayes Theorem?</div>
+<p>A fundamental concept in probability theory, playing a crucial role in many ML algorithms. It provides a way to <strong>update</strong> a probability based on new evidence, allowing us to infer belief in a hypothesis (represented by a prior, \(P(A)\)) based on new evidence.</p>
+</div>
+
+<div class="box proof">
+<div class="box-title">Derivation, from the definition of conditional probability</div>
+<p>From the definition of conditional probability, for two events \(A\) and \(B\):</p>
+<p>\[ P(A\mid B) = \frac{P(A\cap B)}{P(B)},\ P(B)\ne0 \qquad P(B\mid A) = \frac{P(B\cap A)}{P(A)},\ P(A)\ne0 \]</p>
+<p>Since the joint probability is symmetric, \(P(B\cap A)=P(A\cap B)\), and:</p>
+<p>\[ P(A\cap B) = P(A\mid B)P(B) = P(B\mid A)P(A) \]</p>
+<p>Rearranging gives Bayes' Theorem:</p>
+<p style="text-align:center;font-size:1.15rem">\[ P(A\mid B) = \frac{P(B\mid A)\,P(A)}{P(B)},\qquad P(B)\ne0 \]</p>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">Bayes' theorem is also known as the formula for the probability of "causes" — it describes the probability of occurrence of an event related to any condition, and is a special case of conditional probability.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Naming every term — worth knowing cold</div>
+<ul>
+<li>\(P(A\mid B)\) — the <strong>posterior</strong> probability (probability of class \(A\) given feature \(B\)).</li>
+<li>\(P(B\mid A)\) — the <strong>likelihood</strong> (probability of feature \(B\) given class \(A\)).</li>
+<li>\(P(A)\) — the <strong>prior</strong> probability of class \(A\).</li>
+<li>\(P(B)\) — the <strong>evidence</strong> (probability of feature \(B\)).</li>
+</ul>
+<p style="text-align:center;font-weight:700">Posterior = Likelihood × Prior / Evidence</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">The three components, in sequence</div>
+<ol>
+<li><strong>Prior probability</strong> — your initial belief about how likely an outcome is, before seeing evidence. E.g. if 30% of emails in a dataset are spam, the prior probability any new email is spam is 0.3.</li>
+<li><strong>Likelihood</strong> — how probable the observed evidence is, given a particular outcome. E.g. the probability of seeing the word "discount" in spam emails vs. non-spam emails.</li>
+<li><strong>Posterior probability</strong> — your <em>updated</em> belief after considering the evidence — the final probability used to make a decision. This is exactly what the Naive Bayes classifier calculates to decide which class a data point belongs to.</li>
+</ol>
+</div>
+
+<div class="box key">
+<div class="box-title">How Bayes' Theorem applies to classification</div>
+<ol>
+<li>Start with prior probabilities for each class, from the training data.</li>
+<li>Calculate the likelihood of observing the specific features in each class.</li>
+<li>For a new data point, compute the posterior probability for <em>each</em> possible class.</li>
+<li>Assign the data point to the class with the <strong>highest</strong> posterior probability.</li>
+</ol>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — completing the rain/cloudy problem <span class="numtag">Numerical</span></div>
+<p>Suppose \(P(\text{cloudy})=0.4\), \(P(\text{rain})=0.2\), and \(P(\text{cloudy}\mid\text{rain})=0.85\). If it's cloudy today, what's the probability it will rain?</p>
+<div class="step">
+$$P(\text{rain}\mid\text{cloudy}) = \frac{P(\text{cloudy}\mid\text{rain})\times P(\text{rain})}{P(\text{cloudy})} = \frac{0.85\times0.2}{0.4} = 0.425$$
+</div>
+<span class="answer-final">P(rain | cloudy) = 0.425 (42.5%)</span>
+</div>
+
+<div class="box concept">
+<div class="box-title">Complement rules, useful for filling in missing pieces</div>
+<p>\(P(\text{not }A)=1-P(A)\). If we have \(P(\text{not }B\mid\text{not }A)\), then \(P(B\mid\text{not }A)=1-P(\text{not }B\mid\text{not }A)\).</p>
+</div>
+
+<h2 class="section-title" id="l7-naive-bayes"><span class="num">7.3</span> The Naive Bayes Classifier</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>Naive Bayes is a simple and powerful <strong>supervised</strong> algorithm for predictive modelling, based on Bayes theorem, used for classification problems — both binary and multiclass. It's easiest to understand with binary or categorical inputs.</p>
+</div>
+<div class="box key">
+<div class="box-title">Why is it called "naive"?</div>
+<p>It's called naive Bayes (or "idiot Bayes") because the probability calculation for each hypothesis is simplified to make it <strong>tractable.</strong> Rather than computing the joint \(P(d_1,d_2,d_3\mid h)\) directly, the attributes are <strong>assumed to be conditionally independent</strong> given the target value, and calculated as \(P(d_1\mid h)\times P(d_2\mid h)\times\cdots\). This is a strong assumption, most unlikely to be exactly true in real data — attributes usually do interact. <strong>Nevertheless, the approach performs surprisingly well</strong> even where this assumption clearly doesn't hold.</p>
+<p>Concretely: to predict whether a person will Play based on Weather=Sunny, Temperature=Mild, Humidity=High — Naive Bayes assumes that <em>once we know</em> whether the person will Play or Not, Weather, Temperature, and Humidity are independent of one another. Counting how many times each attribute co-occurs with each class is the main learning idea.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Working of the Naive Bayes Classifier — the four steps</div>
+<ol>
+<li>Convert the given dataset into <strong>frequency tables.</strong></li>
+<li>Generate a <strong>Likelihood table</strong> by finding the probabilities of the given features.</li>
+<li>Use <strong>Bayes theorem</strong> to calculate the posterior probability.</li>
+<li>The class with the <strong>higher</strong> probability is the predicted class.</li>
+</ol>
+</div>
+
+<h2 class="section-title" id="l7-worked"><span class="num">7.4</span> Worked Examples</h2>
+<div class="box worked">
+<div class="box-title">Example 1 — the classic "Play Tennis" problem <span class="numtag">Numerical</span></div>
+<p>Weather conditions and whether a player played, over 14 days. <strong>Problem:</strong> if the weather is Sunny, should the player play?</p>
+<div class="step"><span class="step-label">Step 1 &amp; 2 — Frequency and Likelihood tables</span>
+<table>
+<tr><th>Weather</th><th>Yes</th><th>No</th><th>Probability</th></tr>
+<tr><td>Overcast</td><td>5</td><td>0</td><td>5/14 = 0.357</td></tr>
+<tr><td>Rainy</td><td>2</td><td>2</td><td>4/14 = 0.29</td></tr>
+<tr><td>Sunny</td><td>3</td><td>2</td><td>5/14 = 0.357</td></tr>
+<tr><td><strong>Total</strong></td><td>10</td><td>4</td><td></td></tr>
+<tr><td><strong>All probability</strong></td><td>10/14 = 0.71</td><td>4/14 = 0.29</td><td></td></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Step 3 — apply Bayes' theorem, for both classes</span>
+$$P(\text{Yes}\mid\text{Sunny}) = \frac{P(\text{Sunny}\mid\text{Yes})\times P(\text{Yes})}{P(\text{Sunny})} = \frac{0.3\times0.71}{0.35} = 0.60$$
+$$P(\text{No}\mid\text{Sunny}) = \frac{P(\text{Sunny}\mid\text{No})\times P(\text{No})}{P(\text{Sunny})} = \frac{0.5\times0.29}{0.35} = 0.41$$
+</div>
+<span class="answer-final">P(Yes|Sunny) > P(No|Sunny) → the player should play</span>
+</div>
+
+<div class="box worked">
+<div class="box-title">Example 2 — student effort and result <span class="numtag">Numerical</span></div>
+<p>Data on students' effort level (Poor/Average/Good) and result (Pass/Fail), 13 students total, 6 of whom failed, 5 of whom put in "Poor" effort. <strong>Check the statement:</strong> "A student will fail if the effort is poor."</p>
+<div class="step">
+$$P(\text{Fail}\mid\text{Poor}) = \frac{P(\text{Poor}\mid\text{Fail})\times P(\text{Fail})}{P(\text{Poor})}$$
+$$P(\text{Poor}\mid\text{Fail}) = \frac{4}{6}=0.667 \qquad P(\text{Fail})=\frac{6}{13} \qquad P(\text{Poor})=\frac{5}{13}$$
+$$P(\text{Fail}\mid\text{Poor}) = 0.667\times\frac{6/13}{5/13} = 0.667\times\frac65 = 0.80$$
+</div>
+<span class="answer-final">P(Fail | Poor) = 0.80 — a high probability, supporting the statement</span>
+</div>
+
+<div class="box worked">
+<div class="box-title">Example 3 — Naive Bayes with multiple features <span class="numtag">Numerical</span></div>
+<p>Same Play Tennis dataset (14 days, 9 Yes / 5 No). <strong>Problem:</strong> probability of playing when Weather=Overcast <em>and</em> Temperature=Mild.</p>
+<div class="step"><span class="step-label">The multi-feature recipe</span>
+<ol style="margin:4px 0"><li>Calculate the prior probability for each class.</li><li>Calculate the conditional probability of each attribute, for each class.</li><li>Multiply the conditional probabilities together (the "naive" independence step).</li><li>Multiply by the prior.</li><li>Compare — higher probability wins.</li></ol>
+</div>
+<div class="step"><span class="step-label">Probability of playing (Yes)</span>
+$$P(\text{Yes})=\frac{9}{14}=0.64 \qquad P(\text{Overcast}\mid\text{Yes})=\frac49=0.44 \qquad P(\text{Mild}\mid\text{Yes})=\frac49=0.44$$
+$$P(\text{Overcast},\text{Mild}\mid\text{Yes}) = 0.44\times0.44 = 0.1936$$
+$$P(\text{Yes}\mid\text{Overcast},\text{Mild}) = 0.1936\times0.64 = 0.124$$
+</div>
+<div class="step"><span class="step-label">Probability of not playing (No)</span>
+$$P(\text{No})=\frac{5}{14}=0.36 \qquad P(\text{Overcast}\mid\text{No})=\frac05=0 \qquad P(\text{Mild}\mid\text{No})=\frac25=0.4$$
+$$P(\text{Overcast},\text{Mild}\mid\text{No}) = 0\times0.4 = 0 \qquad P(\text{No}\mid\text{Overcast},\text{Mild}) = 0$$
+</div>
+<span class="answer-final">P(Yes|...) = 0.124 > P(No|...) = 0 → the player should play</span>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">(Corrected from the slide, which writes "P(Overcast|Play=No) = 0/9" — since there are only 5 "No" days in this dataset, not 9, the fraction should read 0/5. The value is still 0 either way, so the final conclusion is unaffected.)</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Example 4 — classifying an unknown species, from 4 categorical attributes <span class="numtag">Numerical</span></div>
+<table style="font-size:.85em">
+<tr><th>Color</th><th>Legs</th><th>Height</th><th>Smelly</th><th>Species</th></tr>
+<tr><td>White</td><td>3</td><td>Short</td><td>Yes</td><td>M</td></tr>
+<tr><td>Green</td><td>2</td><td>Tall</td><td>No</td><td>M</td></tr>
+<tr><td>Green</td><td>3</td><td>Short</td><td>Yes</td><td>M</td></tr>
+<tr><td>White</td><td>3</td><td>Short</td><td>Yes</td><td>M</td></tr>
+<tr><td>Green</td><td>2</td><td>Short</td><td>No</td><td>H</td></tr>
+<tr><td>White</td><td>2</td><td>Tall</td><td>No</td><td>H</td></tr>
+<tr><td>White</td><td>2</td><td>Tall</td><td>No</td><td>H</td></tr>
+<tr><td>White</td><td>2</td><td>Short</td><td>Yes</td><td>H</td></tr>
+</table>
+<p>Classify \(X=\{\text{Color=Green, Legs=2, Height=Tall, Smelly=No}\}\).</p>
+<div class="step"><span class="step-label">Step 1 — priors</span>
+$$P(M)=4/8=0.5 \qquad P(H)=4/8=0.5$$
+</div>
+<div class="step"><span class="step-label">Step 2 — conditional probability tables, built directly from the data</span>
+<table style="font-size:.85em">
+<tr><th>Attribute = value</th><th>P( &middot; | M)</th><th>P( &middot; | H)</th></tr>
+<tr><td>Color = Green</td><td>2/4 = 0.5</td><td>1/4 = 0.25</td></tr>
+<tr><td>Legs = 2</td><td>1/4 = 0.25</td><td>4/4 = 1.0</td></tr>
+<tr><td>Height = Tall</td><td>1/4 = 0.25</td><td>2/4 = 0.5</td></tr>
+<tr><td>Smelly = No</td><td>1/4 = 0.25</td><td>3/4 = 0.75</td></tr>
+</table>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">(The original slide's table swaps the Tall/Short labels for the M class — stating "P(Tall|M)=0.75" where the data actually gives 0.75 for <em>Short</em>, and 0.25 for Tall. The table above is rebuilt directly from the 8 rows, so it's internally consistent with the raw data.)</p>
+</div>
+<div class="step"><span class="step-label">Step 3 — combine (naive independence assumption)</span>
+$$P(M\mid X) = P(M)\times0.5\times0.25\times0.25\times0.25 = 0.5\times0.5\times0.25\times0.25\times0.25 \approx 0.0039$$
+$$P(H\mid X) = P(H)\times0.25\times1.0\times0.5\times0.75 = 0.5\times0.25\times1.0\times0.5\times0.75 \approx 0.0469$$
+</div>
+<span class="answer-final">P(H|X) > P(M|X) → classify X as species H</span>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">(This matches the slide's own final conclusion — species H — even though its intermediate arithmetic for P(M|X), which used the swapped 0.75 value, came out to 0.0117 rather than the data-consistent 0.0039. Either way, H comfortably wins.)</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — flu diagnosis from symptoms <span class="numtag">Numerical</span></div>
+<p>Given previous patients' symptoms and diagnosis:</p>
+<table style="font-size:.85em">
+<tr><th>chills</th><th>runny nose</th><th>headache</th><th>fever</th><th>flu?</th></tr>
+<tr><td>Y</td><td>N</td><td>Mild</td><td>Y</td><td>N</td></tr>
+<tr><td>Y</td><td>Y</td><td>No</td><td>N</td><td>Y</td></tr>
+<tr><td>Y</td><td>N</td><td>Strong</td><td>Y</td><td>Y</td></tr>
+<tr><td>N</td><td>Y</td><td>Mild</td><td>Y</td><td>Y</td></tr>
+<tr><td>N</td><td>N</td><td>No</td><td>N</td><td>N</td></tr>
+<tr><td>N</td><td>Y</td><td>Strong</td><td>Y</td><td>Y</td></tr>
+<tr><td>N</td><td>Y</td><td>Strong</td><td>N</td><td>N</td></tr>
+<tr><td>Y</td><td>Y</td><td>Mild</td><td>Y</td><td>Y</td></tr>
+</table>
+<p>Does a patient with <strong>chills=Y, runny nose=N, headache=Mild, fever=Y</strong> have the flu?</p>
+<div class="step"><span class="step-label">Priors, and the individual conditional probabilities needed</span>
+$$P(\text{Flu=Y})=5/8=0.625 \qquad P(\text{Flu=N})=3/8=0.375$$
+$$P(\text{chills=Y}\mid Y)=0.6 \quad P(\text{runny=N}\mid Y)=0.2 \quad P(\text{headache=Mild}\mid Y)=0.4 \quad P(\text{fever=Y}\mid Y)=0.8$$
+$$P(\text{chills=Y}\mid N)=0.333 \quad P(\text{runny=N}\mid N)=0.667 \quad P(\text{headache=Mild}\mid N)=0.333 \quad P(\text{fever=Y}\mid N)=0.333$$
+</div>
+<div class="step"><span class="step-label">Combining, using the query exactly as stated (fever=Y)</span>
+$$P(Y\mid\text{query}) \propto 0.625\times0.6\times0.2\times0.4\times0.8 = 0.024$$
+$$P(N\mid\text{query}) \propto 0.375\times0.333\times0.667\times0.333\times0.333 \approx 0.00926$$
+</div>
+<span class="answer-final">P(Y|query) = 0.024 > P(N|query) ≈ 0.0093 → predict Flu = Yes</span>
+</div>
+
+<div class="box note">
+<div class="box-title">A genuine inconsistency in the source, worth understanding</div>
+<p>The original slide poses this exact query (fever=<strong>Y</strong>), but its own worked formula substitutes \(P(\text{fever=N}\mid\text{flu})\) instead — using the <em>complement</em> of what the question actually asks. That substitution changes the answer entirely: with fever=N plugged in, the slide computes \(P(Y\mid\text{query})=0.006\) and \(P(N\mid\text{query})=0.0185\), and concludes <strong>Flu = No</strong> — the opposite of the answer above.</p>
+<p>Recomputing carefully with the query exactly as stated (fever=<strong>Y</strong>, matching the patient described) gives \(P(Y\mid\text{query})=0.024\), which is larger, so the correct conclusion is <strong>Flu = Yes</strong>. This is a good example of why it's worth double-checking that every value you substitute into Bayes' theorem actually matches the question being asked — a single swapped attribute value flips the entire conclusion.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — will the car be stolen? <span class="numtag">Numerical</span></div>
+<table style="font-size:.85em">
+<tr><th>Example</th><th>Color</th><th>Type</th><th>Origin</th><th>Stolen?</th></tr>
+<tr><td>1</td><td>Red</td><td>Sports</td><td>Domestic</td><td>Yes</td></tr>
+<tr><td>2</td><td>Red</td><td>Sports</td><td>Domestic</td><td>No</td></tr>
+<tr><td>3</td><td>Red</td><td>Sports</td><td>Domestic</td><td>Yes</td></tr>
+<tr><td>4</td><td>Yellow</td><td>Sports</td><td>Domestic</td><td>No</td></tr>
+<tr><td>5</td><td>Yellow</td><td>Sports</td><td>Imported</td><td>Yes</td></tr>
+<tr><td>6</td><td>Yellow</td><td>SUV</td><td>Imported</td><td>No</td></tr>
+<tr><td>7</td><td>Yellow</td><td>SUV</td><td>Imported</td><td>Yes</td></tr>
+<tr><td>8</td><td>Yellow</td><td>SUV</td><td>Domestic</td><td>No</td></tr>
+<tr><td>9</td><td>Red</td><td>SUV</td><td>Imported</td><td>No</td></tr>
+<tr><td>10</td><td>Red</td><td>Sports</td><td>Imported</td><td>Yes</td></tr>
+</table>
+<p>New instance = (Red, SUV, Domestic) — Stolen: Yes or No?</p>
+<div class="step"><span class="step-label">Priors and conditional probability tables</span>
+$$P(\text{Yes})=P(\text{No})=5/10=0.5$$
+<table style="font-size:.85em">
+<tr><th></th><th>P( &middot; |Yes)</th><th>P( &middot; |No)</th></tr>
+<tr><td>Color=Red</td><td>3/5</td><td>2/5</td></tr>
+<tr><td>Type=SUV</td><td>1/5</td><td>3/5</td></tr>
+<tr><td>Origin=Domestic</td><td>2/5</td><td>3/5</td></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Combine</span>
+$$P(\text{Yes}\mid X) = 0.5\times\frac35\times\frac15\times\frac25 = \frac3{125} = 0.024$$
+$$P(\text{No}\mid X) = 0.5\times\frac25\times\frac35\times\frac35 = \frac9{125} = 0.072$$
+</div>
+<span class="answer-final">P(No|X) = 0.072 > P(Yes|X) = 0.024 → predict the car is NOT stolen</span>
+</div>
+
+<h2 class="section-title" id="l7-python"><span class="num">7.5</span> Python Implementation</h2>
+<div class="box concept">
+<div class="box-title">Building Naive Bayes from scratch, conceptually</div>
+<p>Using the same Play Tennis-style idea, but simplified to one feature (Weather) with data <code>[('Sunny','Yes'),('Overcast','Yes'),('Rainy','No'),('Sunny','No')]</code>:</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;"><code>data = [('Sunny','Yes'), ('Overcast','Yes'), ('Rainy','No'), ('Sunny','No')]
+yes_count = sum(1 for w,l in data if l=='Yes')
+no_count  = sum(1 for w,l in data if l=='No')
+total = len(data)
+prob_yes, prob_no = yes_count/total, no_count/total
+
+prob_given_yes = {'Sunny':0,'Overcast':0,'Rainy':0}
+prob_given_no  = {'Sunny':0,'Overcast':0,'Rainy':0}
+for weather, label in data:
+    if label=='Yes': prob_given_yes[weather]+=1
+    elif label=='No': prob_given_no[weather]+=1
+for w in prob_given_yes:
+    prob_given_yes[w] /= yes_count
+for w in prob_given_no:
+    prob_given_no[w]  /= no_count
+
+def predict(weather):
+    p_yes = prob_yes*prob_given_yes[weather]
+    p_no  = prob_no*prob_given_no[weather]
+    return 'Yes' if p_yes>p_no else 'No'
+
+print(predict('Sunny'))</code></pre>
+<p>This mirrors exactly the 4-step recipe from Section 7.3: count → convert to probabilities (priors and likelihoods) → combine via Bayes' rule → compare and pick the larger.</p>
+</div>
+
+<h2 class="section-title" id="l7-gaussian"><span class="num">7.6</span> Gaussian Naive Bayes</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>In Gaussian Naive Bayes, the predictors take <strong>continuous</strong> values, assumed to be sampled from a <strong>Gaussian (Normal) Distribution.</strong></p>
+</div>
+<div class="box key">
+<div class="box-title">An important distinction — which variant to use</div>
+<p><strong>Case 1 — Categorical feature</strong> (e.g. Blood Pressure category: Low, Normal, High) → use ordinary (Categorical) Naive Bayes, possibly with Laplace smoothing. <strong>Case 2 — Numerical feature</strong> (e.g. actual blood pressure: 120, 125, 130, 140, 145, 150) → use <strong>Gaussian</strong> Naive Bayes. Even though the training values form a finite/discrete set of numbers, BP is <em>conceptually</em> a continuous numerical variable — so Gaussian NB models its underlying distribution instead of just counting frequencies.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example <span class="numtag">Numerical</span></div>
+<table>
+<tr><th>Patient</th><th>Blood Pressure</th><th>Disease</th></tr>
+<tr><td>1</td><td>120</td><td>No</td></tr>
+<tr><td>2</td><td>125</td><td>No</td></tr>
+<tr><td>3</td><td>130</td><td>No</td></tr>
+<tr><td>4</td><td>140</td><td>Yes</td></tr>
+<tr><td>5</td><td>145</td><td>Yes</td></tr>
+<tr><td>6</td><td>150</td><td>Yes</td></tr>
+</table>
+<p>Predict the disease status of a new patient with \(X=\text{BP}=142\).</p>
+<div class="step"><span class="step-label">Step 1 — mean for each class</span>
+$$\mu_{No} = \frac{120+125+130}{3}=125 \qquad \mu_{Yes}=\frac{140+145+150}{3}=145$$
+</div>
+<div class="step"><span class="step-label">Step 2 — standard deviation for each class (population std, for simplicity)</span>
+$$\sigma_{No}\approx4.08 \qquad \sigma_{Yes}\approx4.08$$
+</div>
+<div class="step"><span class="step-label">Step 3 — the Gaussian probability density function</span>
+$$P(x\mid\text{class}) = \frac1{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
+<p>Plugging in \(x=142\) for each class (independently verified):</p>
+$$P(142\mid\text{No}) \approx 1.68\times10^{-5} \qquad P(142\mid\text{Yes}) \approx 0.0746$$
+</div>
+<div class="step"><span class="step-label">Step 4 — combine with equal priors (0.5 each) and compare</span>
+$$P(\text{No})\times P(142\mid\text{No}) \approx 8.39\times10^{-6} \qquad P(\text{Yes})\times P(142\mid\text{Yes}) \approx 0.0373$$
+</div>
+<span class="answer-final">P(Yes|142) ≫ P(No|142) → predict Disease = Yes</span>
+</div>
+
+<h2 class="section-title" id="l7-text"><span class="num">7.7</span> Text Classification with Naive Bayes</h2>
+<div class="box concept">
+<div class="box-title">Why text classification matters, and where it shows up</div>
+<p>Assigning subject categories, topics, or genres; spam detection; authorship identification; age/gender identification; language identification; sentiment analysis.</p>
+</div>
+<div class="box theory">
+<div class="box-title">The formal setup</div>
+<p><strong>Input:</strong> a document \(d\); a fixed set of classes \(C=\{c_1,c_2,\dots,c_J\}\). <strong>Output:</strong> a predicted class \(c\in C\). Notation: \(\gamma(d)=c\) represents the classifier — \(\gamma()\) is the classifier, \(d\) the document, \(c\) the assigned class. (E.g. the "mark as spam" button in Gmail is exactly this \(\gamma(d)\) being invoked.)</p>
+</div>
+<div class="box key">
+<div class="box-title">The representation: Bag of Words</div>
+<p>Naive Bayes text classification relies on a very simple document representation — the <strong>bag of words</strong>: ignore word order and sentence construction entirely, and treat every document as just the <em>set</em> (with counts) of words it contains. Since text can't be fed directly into a classifier, and documents vary hugely in length and word combinations, we use word <strong>occurrence counts</strong> (term frequency) to build feature vectors.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — "Please buy GPU from our store" <span class="numtag">Numerical</span></div>
+<table style="font-size:.85em">
+<tr><th>Doc ID</th><th>Content</th><th>Class</th></tr>
+<tr><td>1</td><td>Nvidia GPU is the best in the world.</td><td>computer graphics</td></tr>
+<tr><td>2</td><td>Nvidia is giving tough competition to AMD.</td><td>computer graphics</td></tr>
+<tr><td>3</td><td>We were running our application with GTX 1050 (High end GPU)... the problem was with the OS.</td><td>computer graphics</td></tr>
+<tr><td>4</td><td>GPU, Ganpat Pandey University, is located...</td><td>(not computer graphics)</td></tr>
+</table>
+<p>Important words for computer graphics: {Nvidia, GPU, AMD, GTX 1050}. Classify using just the word "GPU": \(d=\text{GPU}\), \(c=\text{computer graphics}\).</p>
+<div class="step">
+$$P(\text{comp.graphics}\mid\text{GPU}) = P(\text{GPU}\mid\text{comp.graphics})\times\frac{P(\text{comp.graphics})}{P(\text{GPU})}$$
+$$P(\text{comp.graphics}) = \frac34=0.75 \qquad P(\text{GPU}) = \frac34=0.75 \qquad P(\text{GPU}\mid\text{comp.graphics})=\frac23=0.66$$
+$$P(\text{comp.graphics}\mid\text{GPU}) = 0.66\times\frac{0.75}{0.75}=0.66$$
+</div>
+<span class="answer-final">0.66 > 0.5 → predict this text is about computer graphics</span>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — the classic Sports / Not Sports classifier <span class="numtag">Numerical</span></div>
+<table>
+<tr><th>Text</th><th>Tag</th></tr>
+<tr><td>"A great game"</td><td>Sports</td></tr>
+<tr><td>"The election was over"</td><td>Not sports</td></tr>
+<tr><td>"Very clean match"</td><td>Sports</td></tr>
+<tr><td>"A clean but forgettable game"</td><td>Sports</td></tr>
+<tr><td>"It was a close election"</td><td>Not sports</td></tr>
+</table>
+<p><strong>Question:</strong> which tag does "A very close game" belong to?</p>
+
+<div class="step"><span class="step-label">Feature engineering: word frequencies (bag of words)</span>
+<p>Ignore word order; treat each document as a set of word counts. To compare tags, the shared denominator (evidence) can simply be discarded — we only need to know which numerator is bigger.</p>
+</div>
+<div class="step"><span class="step-label">The zero-probability problem</span>
+<p>Directly calculating \(P(\text{"a very close game"}\mid\text{Sports})\) is impossible — this exact sentence never appears in the training data, so this probability is 0. <strong>This is exactly why the "naive" assumption is useful:</strong> instead of whole sentences, treat every individual <em>word</em> as independent, so "this was a fun party" is treated the same as "party fun was this." Individual words <em>do</em> recur in the training data, even if whole sentences don't.</p>
+</div>
+<div class="step"><span class="step-label">Priors</span>
+$$P(\text{Sports})=\frac35=0.6 \qquad P(\text{Not Sports})=\frac25=0.4$$
+</div>
+<div class="step"><span class="step-label">Likelihoods — hit the zero problem again</span>
+<p>\(P(\text{game}\mid\text{Sports})\): "game" appears 2 times across the Sports texts, which total 11 words → \(2/11\). But \(P(\text{close}\mid\text{Sports})=0\) ("close" never appears in a Sports text), and similarly \(P(\text{very}\mid\text{Not Sports})=0\), \(P(\text{game}\mid\text{Not Sports})=0\). Multiplying these into the product makes the <em>whole</em> likelihood collapse to zero — the well-known problem with plain Maximum Likelihood Estimation (MLE) on sparse data. <strong>Solution: Laplace (add-1) smoothing</strong> (Section 7.8).</p>
+</div>
+<div class="step"><span class="step-label">Applying Laplace smoothing</span>
+<p>Add 1 to every count, and add the vocabulary size \(V\) to every denominator (so probabilities never exceed 1). Vocabulary here: {a, great, game, the, election, was, over, very, clean, match, but, forgettable, it, close} — \(V=14\) unique words. Sports has 11 total word-tokens; Not Sports has 9.</p>
+<table style="font-size:.85em">
+<tr><th>Word</th><th>P(word|Sports), smoothed</th><th>P(word|Not Sports), smoothed</th></tr>
+<tr><td>a</td><td>(2+1)/(11+14) = 0.12</td><td>(1+1)/(9+14) = 0.087</td></tr>
+<tr><td>very</td><td>(1+1)/(11+14) = 0.08</td><td>(0+1)/(9+14) = 0.0435</td></tr>
+<tr><td>close</td><td>(0+1)/(11+14) = 0.04</td><td>(1+1)/(9+14) = 0.087</td></tr>
+<tr><td>game</td><td>(2+1)/(11+14) = 0.12</td><td>(0+1)/(9+14) = 0.0435</td></tr>
+</table>
+</div>
+<div class="step"><span class="step-label">Combine — prior × product of likelihoods</span>
+$$P(\text{Sports}\mid\text{"a very close game"}) \propto 0.6\times0.12\times0.08\times0.04\times0.12 \approx 2.76\times10^{-5}$$
+$$P(\text{Not Sports}\mid\text{"a very close game"}) \propto 0.4\times0.087\times0.0435\times0.087\times0.0435 \approx 5.72\times10^{-6}$$
+</div>
+<span class="answer-final">P(Sports|...) is about 5× larger → the classifier tags "A very close game" as Sports</span>
+</div>
+
+<div class="box concept">
+<div class="box-title">Handling unknown words</div>
+<p>A word that appears in test data but never appeared in <em>any</em> training document, in any class, is an <strong>unknown word.</strong> Solution: simply <strong>ignore it</strong> — remove it from the test document and don't include any probability for it. E.g. testing "A clean tough game": "tough" never appeared in training, so treat the test sentence as "A clean game" instead. (This is different from a word that appears in <em>some</em> classes but not others — for that case, keep the word and let Laplace smoothing handle the zero, rather than discarding it.)</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Finding the vocabulary size V</div>
+<p>\(V\) is the number of unique words in the training data — the <strong>union</strong> of all word types across <em>all</em> classes, not just the words in one class.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Advanced techniques to improve basic Naive Bayes text classification</div>
+<ul>
+<li><strong>Removing stop words</strong> — common words that add nothing to classification (a, able, either, else, ever, ...). "The election was over" → "election over"; "a very close game" → "very close game."</li>
+<li><strong>Lemmatizing words</strong> — grouping different inflections of the same word together (election, elections, elected → all counted as the same word appearing more times).</li>
+<li><strong>Using n-grams</strong> — instead of counting single words, count sequences of words (e.g. "clean match," "close election") to capture some of the word-order information that bag-of-words otherwise throws away.</li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l7-laplace"><span class="num">7.8</span> Laplace Smoothing — a Complete Worked Walkthrough</h2>
+<div class="box theory">
+<div class="box-title">The simple idea</div>
+<p>Instead of allowing any word's probability to become exactly zero, <strong>add 1 to every count.</strong> To keep the result a valid probability (never exceeding 1), add the vocabulary size \(V\) to the denominator too:</p>
+<p>\[ P(\text{word}\mid\text{class}) = \frac{\text{count}(\text{word, class})+1}{\text{total words in class}+V} \]</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Full worked example — spam filtering from scratch <span class="numtag">Numerical</span></div>
+<table>
+<tr><th>Email</th><th>Content</th><th>Class</th></tr>
+<tr><td>E1</td><td>Win free prize</td><td>Spam</td></tr>
+<tr><td>E2</td><td>Win free money</td><td>Spam</td></tr>
+<tr><td>E3</td><td>Free prize now</td><td>Spam</td></tr>
+<tr><td>E4</td><td>Win lottery prize</td><td>Spam</td></tr>
+<tr><td>E5</td><td>Free offer</td><td>Spam</td></tr>
+<tr><td>E6</td><td>Meeting at office</td><td>Ham</td></tr>
+<tr><td>E7</td><td>Project meeting today</td><td>Ham</td></tr>
+<tr><td>E8</td><td>Office meeting today</td><td>Ham</td></tr>
+<tr><td>E9</td><td>Project discussion</td><td>Ham</td></tr>
+<tr><td>E10</td><td>Meeting tomorrow</td><td>Ham</td></tr>
+</table>
+<p>Classify a new email: <strong>"Win free prize."</strong></p>
+
+<div class="step"><span class="step-label">Step 1 — Prior probability</span>
+$$P(\text{Spam}) = \frac{5}{10}=0.5 \qquad P(\text{Ham}) = \frac{5}{10}=0.5$$
+</div>
+
+<div class="step"><span class="step-label">Step 2 — Likelihood, for Spam (no smoothing needed here)</span>
+<p>Words in the new email: win, free, prize. Counting across the 5 Spam emails:</p>
+<table>
+<tr><th>Word</th><th># Spam emails containing it</th><th>P(word | Spam)</th></tr>
+<tr><td>win</td><td>3</td><td>3/5 = 0.6</td></tr>
+<tr><td>free</td><td>4</td><td>4/5 = 0.8</td></tr>
+<tr><td>prize</td><td>3</td><td>3/5 = 0.6</td></tr>
+</table>
+$$P(\text{win, free, prize}\mid\text{Spam}) = P(\text{win}\mid S)\times P(\text{free}\mid S)\times P(\text{prize}\mid S) = 0.6\times0.8\times0.6=0.288$$
+</div>
+
+<div class="step"><span class="step-label">Step 2b — Likelihood for Ham hits the zero-probability problem</span>
+<p>None of "win," "free," "prize" occur in <em>any</em> of the 5 Ham emails — so a direct calculation gives \(P(\text{win}\mid\text{Ham})=P(\text{free}\mid\text{Ham})=P(\text{prize}\mid\text{Ham})=0\), and the whole product collapses to 0.</p>
+</div>
+
+<div class="step"><span class="step-label">Applying Laplace smoothing to fix this</span>
+<p>Suppose the full vocabulary contains \(V=18\) unique words. Ham has 5 total word-tokens.</p>
+$$P(\text{win}\mid\text{Ham}) = \frac{0+1}{5+18} = \frac1{23}\approx0.0435$$
+<p>The same smoothed value applies to "free" and "prize" (each also has 0 occurrences in Ham):</p>
+$$P(\text{win, free, prize}\mid\text{Ham}) = 0.0435^3 \approx 0.0000822$$
+</div>
+
+<div class="step"><span class="step-label">Step 3 — Posterior probability, both classes</span>
+$$P(\text{Spam})\times P(\text{words}\mid\text{Spam}) = 0.5\times0.288 = 0.144$$
+$$P(\text{Ham})\times P(\text{words}\mid\text{Ham}) = 0.5\times0.0000822 \approx 0.0000411$$
+</div>
+<span class="answer-final">P(Spam|...) = 0.144 ≫ P(Ham|...) ≈ 0.0000411 → classify "Win free prize" as SPAM</span>
+</div>
+
+<div class="box key">
+<div class="box-title">Generalising Laplace smoothing — three ways to estimate a conditional probability</div>
+<p>If even one conditional probability in the Naive Bayes product is zero, the <strong>entire expression</strong> becomes zero — this is exactly the failure mode Section 7.7 ran into. There's a spectrum of fixes, from no correction at all to a fully tunable one:</p>
+<table>
+<tr><th>Method</th><th>Formula</th></tr>
+<tr><td>Original (no smoothing)</td><td>\(P(A_i\mid C) = \dfrac{N_{ic}}{N_c}\)</td></tr>
+<tr><td>Laplace (add-1)</td><td>\(P(A_i\mid C) = \dfrac{N_{ic}+1}{N_c+c}\)</td></tr>
+<tr><td>m-estimate</td><td>\(P(A_i\mid C) = \dfrac{N_{ic}+mp}{N_c+m}\)</td></tr>
+</table>
+<p>where \(N_{ic}\) is the count of attribute value \(A_i\) within class \(C\), \(N_c\) is the total count for class \(C\), \(c\) is the number of classes, \(p\) is a prior probability, and \(m\) is a tunable parameter.</p>
+<p class="small" style="font-size:.85rem;color:var(--ink-soft)">Laplace smoothing is exactly the special case of the m-estimate where \(m=c\) and \(p=1/c\) (a uniform prior across all classes) — so everything in Section 7.7's spam/ham example is really just the m-estimate with these particular settings. The general m-estimate lets you dial in a different (non-uniform) prior \(p\), and control how strongly it pulls the estimate away from the raw counts via \(m\): a larger \(m\) means more smoothing (leaning more on the prior), a smaller \(m\) means trusting the observed counts more.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The complete Naive Bayes flow, summarised end to end</div>
+<p>Training Emails &rarr; count Spam and Ham emails &rarr; calculate <strong>Prior</strong> &rarr; count word frequencies per class &rarr; calculate <strong>Likelihood</strong> (with Laplace smoothing wherever needed) &rarr; for a new email, multiply Prior × Likelihood for each class &rarr; get the <strong>Posterior</strong> for each class &rarr; compare &rarr; the higher probability wins.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">What Lecture 7 — and this whole course — adds up to</div>
+<p>Naive Bayes closes the loop on a theme running through every lecture in this guide: start from a simple, honest assumption (here, feature independence given the class), derive exactly what that assumption implies mathematically, and then confront where the assumption <em>visibly</em> breaks (the zero-probability problem) with a principled fix (Laplace smoothing) rather than throwing the whole model out. The same pattern — simple model, honest derivation, a known failure mode, and a practical fix — is exactly what made Linear Regression's gradient descent, Logistic Regression's cost function, and k-NN's feature scaling all work the way they do.</p>
+</div>
+<h2 class="section-title" id="sec5"><span class="num">A</span> Appendix: Quick-Reference Formula Sheet</h2>
 
 <div class="box theory formula-sheet">
   <table>
@@ -442,7 +2484,7 @@
 </div>
 
 <!-- =========================================================== -->
-<h2 class="section-title" id="sec6"><span class="num">06</span> How to Approach the Numerical Question in the Exam</h2>
+<h2 class="section-title" id="sec6"><span class="num">B</span> Appendix: How to Approach the Numerical Question in the Exam</h2>
 
 <div class="box note">
   <div class="box-title">Strategy</div>
@@ -455,9 +2497,73 @@
   </ol>
 </div>
 
+<h2 class="section-title" id="recap"><span class="num">&#10003;</span> Full Course Recap</h2>
+<div class="box key">
+<div class="box-title">The story of these 7 lectures, in one paragraph</div>
+<p>Lecture 1 asks what ML even is, then opens with the simplest possible algorithm: fit a straight line (Linear Regression). Lecture 2 shows a second way to fit that same line — Gradient Descent — trading an exact formula for an iterative search that scales to problems the exact formula can't touch. Lecture 3 pulls back to ask what makes any model good, giving you the vocabulary (bias, variance, overfitting, parametric vs. non-parametric) to judge everything that follows. Lecture 4 adapts the same "fit a line" idea to classification via the sigmoid function. Lecture 5 gives you the vocabulary to judge a classifier's performance. Lectures 6 and 7 then present two completely different philosophies of classification: k-NN, which memorises the data and looks at neighbours; and Naive Bayes, which builds an explicit probability model — the two ends of the parametric/non-parametric spectrum Lecture 3 set up at the very start.</p>
 </div>
 
-<footer>Built from M&amp;C ML Lectures 1–4 · every worked number cross-verified · good luck with the IA</footer>
+<table>
+<tr><th>Lecture</th><th>The question it answers</th><th>The core idea</th></tr>
+<tr><td><strong>1. Intro &amp; Linear Regression</strong></td><td>What is ML, and how do you fit the simplest possible model?</td><td>Supervised/unsupervised/RL; least-squares Linear and Multiple Regression via the Normal Equation.</td></tr>
+<tr><td><strong>2. Gradient Descent</strong></td><td>How do you fit a model when there's no closed-form solution, or too much data for one?</td><td>Iteratively nudge coefficients opposite the cost function's gradient; SGD updates after every single training instance.</td></tr>
+<tr><td><strong>3. Model Behaviour</strong></td><td>How do you know if a model is actually good?</td><td>Parametric vs. non-parametric; overfitting/underfitting; the bias-variance trade-off; Polynomial Regression as the first concrete illustration.</td></tr>
+<tr><td><strong>4. Logistic Regression</strong></td><td>How do you adapt regression to predict a class, not a number?</td><td>The sigmoid squashes a linear combination into a probability; trained via the same SGD machinery, with a cross-entropy-flavoured cost function.</td></tr>
+<tr><td><strong>5. Evaluation Metrics</strong></td><td>Once you have a classifier, how do you know if it's actually any good?</td><td>Confusion matrix; Accuracy, Precision, Recall, F1; and why Recall often matters more than F1 in high-stakes settings like medical diagnosis.</td></tr>
+<tr><td><strong>6. k-Nearest Neighbors</strong></td><td>What if you don't want to assume any particular equation at all?</td><td>Store the data, measure distance at prediction time, vote/average over the k closest points; feature scaling and choice of k (via cross-validation) are everything.</td></tr>
+<tr><td><strong>7. Naive Bayes</strong></td><td>What if you want an explicit probability model, built from simple counting?</td><td>Bayes' theorem plus a (very) strong independence assumption; astonishingly effective for text classification once Laplace smoothing handles the zero-probability problem.</td></tr>
+</table>
 
+<h3>Mini glossary</h3>
+<table>
+<tr><td><strong>Hypothesis / Model</strong></td><td>The function \(\hat y=f(x)\) the algorithm learns to map inputs to outputs.</td></tr>
+<tr><td><strong>Cost / Loss function</strong></td><td>A single number measuring how wrong the model's predictions are — loss for one example, cost for the average across all examples.</td></tr>
+<tr><td><strong>Gradient Descent</strong></td><td>Iteratively updating parameters in the direction that reduces the cost function fastest.</td></tr>
+<tr><td><strong>Epoch</strong></td><td>One complete pass through the entire training dataset.</td></tr>
+<tr><td><strong>Overfitting / Underfitting</strong></td><td>Memorising noise instead of the pattern (high variance) / being too simple to capture the pattern at all (high bias).</td></tr>
+<tr><td><strong>Sigmoid function</strong></td><td>\(1/(1+e^{-x})\) — squashes any real number into a probability between 0 and 1.</td></tr>
+<tr><td><strong>Confusion Matrix</strong></td><td>The TP/TN/FP/FN breakdown every classification metric is built from.</td></tr>
+<tr><td><strong>k-NN</strong></td><td>A lazy, instance-based classifier/regressor that predicts from the k closest stored training points.</td></tr>
+<tr><td><strong>Naive Bayes</strong></td><td>A probabilistic classifier built on Bayes' theorem plus a feature-independence assumption.</td></tr>
+<tr><td><strong>Laplace Smoothing</strong></td><td>Adding 1 to every count (and the vocabulary size to every denominator) to avoid a zero probability wiping out an entire prediction.</td></tr>
+</table>
+
+<div class="box note">
+<div class="box-title">What's beyond these 7 lectures</div>
+<p>This course's official syllabus (CSS 3131) continues well past Naive Bayes — into Decision Trees, Support Vector Machines, Bayesian Belief Networks, Ridge/Lasso Regression, Bagging and Random Forests, Boosting (AdaBoost, XGBoost), Artificial Neural Networks, and PCA. None of that is in these 7 uploaded decks, so none of it is in this guide yet. If further lecture decks are uploaded, this guide can be extended the same way the first 7 were.</p>
+</div>
+
+<footer>
+  Built as a complete study companion for <em>Fundamentals of Machine Learning</em> (CSS 3131, MIT Manipal) — all 7 lecture decks, covering Introduction &amp; Linear Regression through Naive Bayes. Every worked numerical example was independently recomputed and cross-checked in Python; several small inconsistencies in the original slides (a decimal-point slip, a mislabelled Tall/Short table, an SGD update-rule discrepancy, an unlabelled RMSE plot, and two "solve it yourself" exercises) were identified, verified, and clearly flagged rather than silently corrected or repeated as-is.
+</footer>
+</main>
+</div>
+</div>
+
+<a href="#top" class="backtotop" id="backtotop">&uarr;</a>
+
+<script>
+  const btn = document.getElementById('backtotop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
+  });
+
+  const links = document.querySelectorAll('.sidebar a[href^="#"]');
+  const map = new Map();
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) map.set(el, a); });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = map.get(entry.target);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(l => l.style.color = '');
+        links.forEach(l => l.style.borderLeftColor = 'transparent');
+        link.style.color = 'var(--gold)';
+        link.style.borderLeftColor = 'var(--gold)';
+      }
+    });
+  }, { rootMargin: '-10% 0px -70% 0px' });
+  map.forEach((link, el) => observer.observe(el));
+</script>
 </body>
 </html>

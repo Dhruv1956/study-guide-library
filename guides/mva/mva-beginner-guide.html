@@ -136,6 +136,8 @@
   <div class="toc-title">Multivariate Analysis</div>
   <div class="toc-sub">A slow, beginner-friendly walkthrough</div>
 
+  <a href="#formula-sheet-top" style="display:block;margin-bottom:10px;font-weight:700;">&#9733; Formula Sheet (quick reference)</a>
+
   <h3>Part 1 · MND &amp; Hotelling's T²</h3>
   <a href="#p1-intro">1. What is multivariate data?</a>
   <a href="#p1-descriptive">2. Mean vector &amp; covariance matrix</a>
@@ -166,6 +168,15 @@
   <a href="#p3-mle-mean">6. MLE of the mean vector</a>
   <a href="#p3-mle-cov">7. MLE of the covariance matrix</a>
 
+  <h3>Part 4 · LRT &amp; Confidence Regions</h3>
+  <a href="#p4-lrt-intro">1. The idea behind the LRT</a>
+  <a href="#p4-lrt-why">2. Why LRT in Multivariate Analysis</a>
+  <a href="#p4-lrt-derivation">3. Deriving the LRT for a mean vector</a>
+  <a href="#p4-cr-univariate">4. Confidence intervals, revisited</a>
+  <a href="#p4-cr-multivariate">5. From interval to region</a>
+  <a href="#p4-cr-formula">6. The confidence region formula</a>
+  <a href="#p4-cr-worked">7. Worked example (two-sample CR)</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full recap &amp; glossary</a>
 </nav>
@@ -173,10 +184,10 @@
 <div class="hero">
   <div class="eyebrow">Study Guide · Multivariate Analysis</div>
   <h1>MND, Hotelling's T², Correlation &amp; Wishart — Explained Slowly</h1>
-  <p class="lead">This guide walks through all three of your MVA notes — <em>MND and Hotelling's T-square</em>, <em>Multiple and Partial Correlation</em>, and <em>Wishart Distribution and MLE</em> — page by page, in plain English, building every formula up from a concrete picture before the matrix algebra shows up.</p>
+  <p class="lead">This guide walks through all four of your MVA notes — <em>MND and Hotelling's T-square</em>, <em>Multiple and Partial Correlation</em>, <em>Wishart Distribution and MLE</em>, and <em>Likelihood Ratio Tests &amp; Confidence Regions</em> — page by page, in plain English, building every formula up from a concrete picture before the matrix algebra shows up.</p>
   <div class="badges">
     <span class="badge">MIT Manipal · Handwritten notes</span>
-    <span class="badge">3 documents · 51 pages covered</span>
+    <span class="badge">4 documents · 64 pages covered</span>
     <span class="badge">All worked examples independently re-checked</span>
   </div>
 </div>
@@ -194,8 +205,59 @@
   </p>
   <p class="small" style="margin-top:10px;">Every calculation from your notes was redone independently while building this guide. Almost everything checked out exactly — the one place it didn't is flagged clearly in Part 1, Section 9, with the corrected working.</p>
 </div>
+<div class="def" id="formula-sheet-top">
+<span class="box-label">Quick-Reference Formula Sheet — every formula in this guide, in one place</span>
+<p style="margin:4px 0 12px;">There's no separate formula book for MVA, so here's one built from the guide itself. Organised by Part, in the exact notation used throughout — jump here any time you need a formula without re-reading the derivation. The same table appears again at the very end, as part of the full recap.</p>
+
+<h4 style="margin-top:18px;">Part 1 — MND &amp; Hotelling's T²</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(\bar{X} = \begin{bmatrix} \bar{X}_1\\ \vdots \\ \bar{X}_p \end{bmatrix}\)</td><td>Sample mean vector — stack each variable's own average.</td></tr>
+<tr><td>\(S_{ii} = \dfrac{1}{n-1}\sum(X_i-\bar X_i)^2,\ \ S_{ik}=\dfrac{1}{n-1}\sum(X_i-\bar X_i)(X_k-\bar X_k)\)</td><td>Sample covariance matrix \(S\) — variances on the diagonal, covariances off it.</td></tr>
+<tr><td>\(\Sigma = E\big[(X-\mu)(X-\mu)^{\top}\big]\)</td><td>Population covariance (dispersion) matrix.</td></tr>
+<tr><td>\(\rho_{ik} = \dfrac{\sigma_{ik}}{\sqrt{\sigma_{ii}}\sqrt{\sigma_{kk}}}\)</td><td>Population correlation coefficient between \(X_i\) and \(X_k\).</td></tr>
+<tr><td>\(f(x) = \dfrac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}\exp\left[-\tfrac12(x-\mu)^{\top}\Sigma^{-1}(x-\mu)\right]\)</td><td>MND density function, \(X\sim N_p(\mu,\Sigma)\).</td></tr>
+<tr><td>\(a'X \sim N(a'\mu,\ a'\Sigma a)\)</td><td>Any linear combination of a MND vector is itself normal.</td></tr>
+<tr><td>\(AX \sim N_q(A\mu,\ A\Sigma A')\)</td><td>Any linear transformation of a MND vector is itself MND.</td></tr>
+<tr><td>Mean \(=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)\)<br>Var \(=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</td><td>Conditional distribution of \(X_1\) given \(X_2=x_2\) (still normal).</td></tr>
+<tr><td>\(T^2 = n(\bar X-\mu)^{\top}S^{-1}(\bar X-\mu) \sim \dfrac{(n-1)p}{n-p}F_{p,\,n-p}\)</td><td>Hotelling's \(T^2\) — one sample. Reject \(H_0\) for large \(T^2\).</td></tr>
+<tr><td>\(S_p = \dfrac{(n_1-1)S_1+(n_2-1)S_2}{n_1+n_2-2}\)</td><td>Pooled covariance matrix (two-sample case).</td></tr>
+<tr><td>\(T^2 = \dfrac{n_1n_2}{n_1+n_2}(\bar X_1-\bar X_2)^{\top}S_p^{-1}(\bar X_1-\bar X_2) \sim \dfrac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,\,n_1+n_2-p-1}\)</td><td>Hotelling's \(T^2\) — two samples, testing \(\mu_1=\mu_2\).</td></tr>
+<tr><td>\(T^2\sim\chi^2_p\)</td><td>Large-sample approximation when d.f. \(\ge30\).</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 2 — Multiple &amp; Partial Correlation</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(r_{12.3} = \dfrac{r_{12}-r_{13}r_{23}}{\sqrt{(1-r_{13}^2)(1-r_{23}^2)}}\)</td><td>Partial correlation between \(X_1,X_2\), controlling for \(X_3\). Can be negative.</td></tr>
+<tr><td>\(R_{1.23} = \sqrt{\dfrac{r_{12}^2+r_{13}^2-2r_{12}r_{13}r_{23}}{1-r_{23}^2}}\)</td><td>Multiple correlation — how well \((X_2,X_3)\) jointly predict \(X_1\). Always \(\ge0\).</td></tr>
+<tr><td>\(R_{1.23}^2 = \dfrac{\text{Explained variance}}{\text{Total variance}}\)</td><td>What \(R^2\) measures — proportion of \(X_1\)'s variance explained by the others.</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 3 — Wishart Distribution &amp; MLE</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(A = \displaystyle\sum_{i=1}^n X_iX_i^{\top}\)</td><td>Cross-product matrix.</td></tr>
+<tr><td>\(A \sim W_p(n,\Sigma)\) &nbsp; when \(X_i\sim N_p(0,\Sigma)\) i.i.d.</td><td>Definition of the Wishart distribution — the matrix analogue of Chi-square.</td></tr>
+<tr><td>\(A_1\sim W_{n_1}(\Sigma),\ A_2\sim W_{n_2}(\Sigma) \Rightarrow A_1+A_2\sim W_{n_1+n_2}(\Sigma)\)</td><td>Wishart degrees of freedom add, just like Chi-square.</td></tr>
+<tr><td>\(A\sim W_p(n,\Sigma) \Rightarrow CAC'\sim W_q(n,\,C\Sigma C')\)</td><td>Wishart under a fixed linear transformation \(C\).</td></tr>
+<tr><td>\(\dfrac{a'Aa}{a'\Sigma a}\sim\chi^2_n\)</td><td>Wishart folds back down to plain Chi-square along any fixed direction \(a\).</td></tr>
+<tr><td>\(\boxed{\hat\mu=\bar X}\)</td><td>MLE of the mean vector.</td></tr>
+<tr><td>\(\boxed{\hat\Sigma_{MLE} = \dfrac1n\sum_{i=1}^n(x_i-\bar X)(x_i-\bar X)' = \dfrac{n-1}{n}S}\)</td><td>MLE of the covariance matrix — divides by \(n\), not \(n-1\); biased, like the univariate case.</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 4 — Likelihood Ratio Tests &amp; Confidence Regions</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(\Lambda = \dfrac{\sup_{\theta\in\Theta_0}L(\theta)}{\sup_{\theta\in\Theta}L(\theta)}\), &nbsp; \(0\le\Lambda\le1\)</td><td>The Likelihood Ratio — small \(\Lambda\) is evidence against \(H_0\).</td></tr>
+<tr><td>\(\Lambda^{2/n} = \dfrac{|\hat\Sigma|}{|\hat\Sigma_0|}\)</td><td>Wilk's Lambda — the LRT statistic for testing \(H_0:\mu=\mu_0\).</td></tr>
+<tr><td>\(\boxed{n(\bar X-\mu)'S^{-1}(\bar X-\mu) \le \dfrac{p(n-1)}{n-p}F_{p,n-p}(\alpha)}\)</td><td>\(100(1-\alpha)\%\) confidence region for a single mean vector \(\mu\).</td></tr>
+<tr><td>\(\dfrac{n_An_B}{n_A+n_B}\big[(\bar X_A-\bar X_B)-\delta\big]'S_p^{-1}\big[(\bar X_A-\bar X_B)-\delta\big] \le \dfrac{(n_A+n_B-2)p}{n_A+n_B-p-1}F_{p,\,n_A+n_B-p-1}(\alpha)\)</td><td>Confidence region for a difference of mean vectors \(\delta=\mu_A-\mu_B\).</td></tr>
+</table>
+</div>
+
 <div class="part-header">
-  <div class="ptag">Part 1 of 3</div>
+  <div class="ptag">Part 1 of 4</div>
   <h2>Multivariate Normal Distribution &amp; Hotelling's T²</h2>
   <p>Everything in univariate statistics you already know — means, variances, the normal curve, the t-test — has a "multivariate" version, built for when you're measuring <em>several</em> things about each individual at once instead of just one. This part builds that whole picture from scratch, ending at Hotelling's T², the multivariate cousin of the t-test.</p>
 </div>
@@ -608,7 +670,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 2 of 3</div>
+  <div class="ptag">Part 2 of 4</div>
   <h2>Multiple &amp; Partial Correlation</h2>
   <p>Ordinary correlation only ever looks at two variables at a time — and can be seriously misleading when a third variable is secretly influencing both. This part builds the two tools multivariate analysis uses to fix that.</p>
 </div>
@@ -764,7 +826,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 3 of 3</div>
+  <div class="ptag">Part 3 of 4</div>
   <h2>Wishart Distribution &amp; Maximum Likelihood Estimation</h2>
   <p>Part 1 used the sample covariance matrix \(S\) as if we already knew its distribution — this part derives exactly that (the Wishart distribution), and then derives \(S\) itself from first principles, by finding the maximum likelihood estimators of \(\mu\) and \(\Sigma\).</p>
 </div>
@@ -976,6 +1038,277 @@
     <p>where \(S\) is the usual (unbiased) sample covariance matrix from Part 1. Notice the MLE divides by \(n\), while the "usual" sample covariance matrix \(S\) divides by \(n-1\) — exactly mirroring the univariate fact that the MLE of \(\sigma^2\) is <em>biased</em> (divides by \(n\)), while the standard unbiased sample variance divides by \(n-1\). The two estimators differ only by the small factor \(\frac{n-1}{n}\), which shrinks toward 1 as the sample size grows.</p>
   </div>
 </section>
+
+<div class="part-header">
+  <div class="ptag">Part 4 of 4</div>
+  <h2>Likelihood Ratio Tests &amp; Confidence Regions</h2>
+  <p>Every hypothesis test so far in this guide — the \(t\)-test, Hotelling's \(T^2\) — was built for one specific job. This part introduces a completely general recipe, the <strong>Likelihood Ratio Test (LRT)</strong>, that can test almost any hypothesis about almost any parameter, and then uses that same idea to build <strong>confidence regions</strong> — the multivariate generalisation of a confidence interval.</p>
+</div>
+
+<section class="slide" id="p4-lrt-intro">
+<span class="slide-tag">Page 1</span>
+<h3>1. The idea behind the Likelihood Ratio Test</h3>
+<p>Until now, in hypothesis testing, we have calculated a statistic — \(t\), \(F\), or Hotelling's \(T^2\). Each one was purpose-built for a specific kind of hypothesis. Today's approach is different: a single, more general recipe called the <strong>Likelihood Ratio Test</strong>.</p>
+
+<div class="def">
+<span class="box-label">Definition — the setup</span>
+<p>Under the null hypothesis: \(H_0:\theta\in\Theta_0\). Under the full model: \(\theta\in\Theta\), where \(\Theta_0\subseteq\Theta\).</p>
+<p>The null hypothesis puts <strong>restrictions</strong> on the possible values of the parameters. The alternative allows more freedom. The likelihood ratio test compares these two situations.</p>
+</div>
+
+<div class="an">
+<span class="box-label">Worked example from your notes</span>
+<p>Suppose we have a normal distribution. Under the full model, \(\mu\) can be any value — here, \(\mu>0\) (the natural range for the quantity being modelled). But under \(H_0:\mu=10\), we impose a restriction: \(\mu\) <em>must</em> be 10.</p>
+<p>Which model should fit the data better: the unrestricted model, where \(\mu\) can take any (positive) value, or the restricted model, where we force \(\mu=10\)?</p>
+<p class="small" style="font-size:.9rem;color:var(--ink-soft)">Your notes are cut off by the bottom of the page right at the answer to this question — but the very next page picks the thread back up and answers it directly: the unrestricted model will always fit at least as well, because it has strictly more freedom to chase whatever the data actually looks like. That's the key idea the rest of this page and the next one build on.</p>
+</div>
+
+<h4>Maximizing the likelihood, with and without the restriction</h4>
+<p>Under the full model, maximize \(L(\theta)\) over <em>all</em> possible parameter values:</p>
+<p>\[ \sup_{\theta\in\Theta} L(\theta) \]</p>
+<p>Under the null hypothesis, maximize the likelihood <em>subject to</em> the restriction in \(H_0\):</p>
+<p>\[ \sup_{\theta\in\Theta_0} L(\theta) \]</p>
+<p>Now compare them.</p>
+
+<div class="key">
+<span class="box-label">Definition — the Likelihood Ratio</span>
+<p>\[ \Lambda = \frac{\text{Maximum likelihood under } H_0}{\text{Maximum likelihood under the full model}} = \frac{\text{restricted}}{\text{unrestricted}} = \frac{\displaystyle\sup_{\theta\in\Theta_0}L(\theta)}{\displaystyle\sup_{\theta\in\Theta}L(\theta)} \]</p>
+</div>
+
+<p>Because the unrestricted model has strictly more freedom, its best-possible likelihood can never be smaller than the restricted model's:</p>
+<p>\[ \sup_{\theta\in\Theta_0}L(\theta) \;\le\; \sup_{\theta\in\Theta}L(\theta) \quad\Longrightarrow\quad \boxed{0\le\Lambda\le1} \]</p>
+
+<div class="warn">
+<span class="box-label">Reading the value of Λ</span>
+<ol style="margin:4px 0 0">
+<li>If \(H_0\) is true, or close to true, the restriction doesn't hurt the fit very much: \(L_0\approx L_{full}\Rightarrow\Lambda\approx1\). So we do <strong>not</strong> reject \(H_0\).</li>
+<li>If \(H_0\) is not supported by the data, forcing the restriction makes the likelihood much smaller: \(L_0\ll L_{full}\Rightarrow\Lambda\approx0\). So we <strong>have evidence against</strong> \(H_0\).</li>
+</ol>
+<p style="margin-top:8px"><strong>"The smaller the likelihood ratio, the stronger the evidence against \(H_0\)."</strong></p>
+</div>
+</section>
+
+<section class="slide" id="p4-lrt-why">
+<span class="slide-tag">Page 3</span>
+<h3>2. Why we study the LRT in Multivariate Analysis</h3>
+<p>Many multivariate hypotheses impose restrictions on covariance matrices, mean vectors, correlations, and so on. Hotelling's \(T^2\) was designed mainly for testing mean vectors, but <strong>the LRT gives us a much more general framework</strong> — the same recipe covers all of these:</p>
+<p>\[ H_0: \mu=\mu_0 \qquad H_0: \Sigma=\Sigma_0 \qquad\Big\}\ \text{restrictions} \]</p>
+<p>or equality of covariance matrices across populations, and many others besides.</p>
+
+<div class="def">
+<span class="box-label">Setup for the derivation</span>
+<p>Let \(X_1,X_2,\dots,X_n\) be a random sample of size \(n\) from a \(p\)-variate normal distribution \(N_p(\mu,\Sigma)\). The likelihood function is:</p>
+<p>\[ L(\mu,\Sigma) = \frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left[-\frac12\sum_{i=1}^n(X_i-\mu)'\Sigma^{-1}(X_i-\mu)\right] \]</p>
+<p>Under the full parameter space \(\Theta=\{(\mu,\Sigma)\}\), the MLEs are — from Part 3 — already known:</p>
+<p>\[ \hat\mu = \bar X = \frac1n\sum_{i=1}^nX_i, \qquad \hat\Sigma = \frac1n\sum_{i=1}^n(X_i-\bar X)(X_i-\bar X)' \qquad \text{—— (1)} \]</p>
+</div>
+</section>
+
+<section class="slide" id="p4-lrt-derivation">
+<span class="slide-tag">Pages 4–6</span>
+<h3>3. Deriving the LRT statistic for testing a mean vector</h3>
+<p>To build \(\Lambda\), we need the maximum likelihood value in <em>both</em> the full model and the restricted model. Simplifying the exponent of the likelihood uses the same "trace trick" already introduced in Part 3.</p>
+
+<div class="key">
+<span class="box-label">Recall — the trace trick</span>
+<p>Let \(A\) be a \(k\times k\) symmetric matrix and \(x\) be a \((k\times1)\) vector. Then:</p>
+<p>\[ x'Ax = \text{tr}(x'Ax) = \text{tr}(Axx') \]</p>
+</div>
+
+<h4>Simplifying the unrestricted (full-model) exponent</h4>
+<p>Using this result in the exponent term of the MND, we get:</p>
+<p>\[ \sum_{i=1}^n(X_i-\bar X)'\hat\Sigma^{-1}(X_i-\bar X) = \sum_{i=1}^n\text{tr}\big(\hat\Sigma^{-1}(X_i-\bar X)(X_i-\bar X)'\big) = \text{tr}\left[\hat\Sigma^{-1}\sum_{i=1}^n(X_i-\bar X)(X_i-\bar X)'\right] \]</p>
+<p>Since \(\sum_{i=1}^n(X_i-\bar X)(X_i-\bar X)' = n\hat\Sigma\) (using equation (1)):</p>
+<p>\[ = \text{tr}\big[\hat\Sigma^{-1}\cdot n\hat\Sigma\big] = \text{tr}[n\cdot I_p] = n\cdot\text{tr}(I_p) = np \]</p>
+<p>Substituting this back into the likelihood function gives the <strong>unrestricted maximum likelihood</strong>:</p>
+<p>\[ \max_{\mu,\Sigma}L(\mu,\Sigma) = L(\hat\mu,\hat\Sigma) = \frac{1}{(2\pi)^{np/2}|\hat\Sigma|^{n/2}}\exp\left(\frac{-np}2\right) \qquad\text{—— (2)} \]</p>
+
+<h4>Restricted maximization under H₀</h4>
+<p>We test \(H_0:\mu=\mu_0\) vs. \(H_1:\mu\ne\mu_0\). Under \(H_0\), \(\mu\) is <em>fixed</em> at \(\mu_0\) — it's no longer free to be estimated. The likelihood becomes:</p>
+<p>\[ L(\mu_0,\Sigma) = \frac1{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left[-\frac12\sum_j(X_j-\mu_0)'\Sigma^{-1}(X_j-\mu_0)\right] \]</p>
+<p>Under \(H_0\), the MLE for \(\Sigma\) is now built around \(\mu_0\) instead of \(\bar X\):</p>
+<p>\[ \hat\Sigma_0 = \frac1n\sum_j(X_j-\mu_0)(X_j-\mu_0)' \]</p>
+<p>Applying the <em>exact same</em> trace trick with \(\hat\Sigma_0\) gives the exponent \(=np\) again, so the <strong>restricted maximum likelihood</strong> is:</p>
+<p>\[ \max_{\Sigma}L(\mu_0,\Sigma) = L(\mu_0,\hat\Sigma_0) = \frac1{(2\pi)^{np/2}|\hat\Sigma_0|^{n/2}}\exp\left(\frac{-np}2\right) \qquad\text{—— (3)} \]</p>
+
+<h4>Constructing the likelihood ratio statistic</h4>
+<p>\[ \Lambda = \frac{\max_\Sigma L(\mu_0,\Sigma)}{\max_{\mu,\Sigma}L(\mu,\Sigma)} = \frac{L(\mu_0,\hat\Sigma_0)}{L(\hat\mu,\hat\Sigma)} \]</p>
+<p>Substituting equations (2) and (3) — the \((2\pi)^{np/2}\) terms and the \(\exp(-np/2)\) terms are identical top and bottom, and cancel completely:</p>
+<p>\[ \Lambda = \frac{\dfrac1{(2\pi)^{np/2}|\hat\Sigma_0|^{n/2}}\exp\left(\dfrac{-np}2\right)}{\dfrac1{(2\pi)^{np/2}|\hat\Sigma|^{n/2}}\exp\left(\dfrac{-np}2\right)} = \frac{|\hat\Sigma|^{n/2}}{|\hat\Sigma_0|^{n/2}} = \left(\frac{|\hat\Sigma|}{|\hat\Sigma_0|}\right)^{n/2} \]</p>
+
+<div class="key">
+<span class="box-label">Wilk's Lambda</span>
+<p>The equivalent statistic</p>
+<p>\[ \Lambda^{2/n} = \frac{|\hat\Sigma|}{|\hat\Sigma_0|} \]</p>
+<p>is called <strong>Wilk's Lambda</strong>. If the observed value of the likelihood ratio is too small, \(H_0:\mu=\mu_0\) is rejected.</p>
+</div>
+
+<div class="an">
+<span class="box-label">Why this matters</span>
+<p>Notice what \(\hat\Sigma\) and \(\hat\Sigma_0\) actually measure: \(\hat\Sigma\) is built around the sample's own best-fitting centre \(\bar X\), so it captures the <em>smallest possible</em> spread the data could have. \(\hat\Sigma_0\) is built around the hypothesised (possibly wrong) centre \(\mu_0\) instead, so if \(\mu_0\) is far from where the data actually sits, \(\hat\Sigma_0\) will come out inflated — larger in every direction — to "explain away" that extra distance. A large \(|\hat\Sigma_0|\) relative to \(|\hat\Sigma|\) is exactly what makes \(\Lambda\) small, and that's precisely the signal that \(\mu_0\) is a poor guess for the true mean.</p>
+</div>
+</section>
+
+<section class="slide" id="p4-cr-univariate">
+<span class="slide-tag">Pages 7–9</span>
+<h3>4. Confidence intervals — the univariate case, revisited</h3>
+<p>So far, we have studied estimation and hypothesis testing — we've estimated unknown parameters, and we've tested hypotheses about them. Now we discuss another important concept: <strong>confidence intervals and confidence regions.</strong></p>
+
+<div class="def">
+<span class="box-label">Definition</span>
+<p><strong>"A confidence interval gives us a range of plausible values for an unknown population parameter."</strong></p>
+</div>
+
+<p>Suppose \(X_1,X_2,\dots,X_n\sim N(\mu,\sigma^2)\). We want to estimate \(\mu\). From the sample, we calculate \(\bar X\). Does one value, \(\bar X\), tell us <em>exactly</em> where \(\mu\) is? <strong>No.</strong> So instead we give a range of plausible values for \(\mu\) — a confidence interval.</p>
+
+<div class="an">
+<span class="box-label">Worked example from your notes</span>
+<p>Suppose we want to estimate the average height of students in a college. We take a random sample of \(n=10\) students and obtain \(\bar X=170\text{cm}\), \(S=6\text{cm}\) (\(\sigma\) unknown). We know the <em>sample</em> mean is 170cm — but can we conclude the <em>population</em> mean is exactly 170cm? <strong>No</strong> — the sample mean will change from sample to sample. So instead of giving one estimate, we want a range of plausible values for the true population mean \(\mu\).</p>
+</div>
+
+<p>This is exactly where the \(t\)-statistic comes back in:</p>
+<p>\[ t = \frac{\bar X-\mu}{S/\sqrt n} \sim t_{n-1} \]</p>
+<p>General \(100(1-\alpha)\%\) confidence interval:</p>
+<p>\[ P\left[-t_{\alpha/2,n-1} \le \frac{\bar X-\mu}{S/\sqrt n} \le t_{\alpha/2,n-1}\right] = 1-\alpha \]</p>
+<p>Rearranging (multiply through by \(S/\sqrt n\), then add \(\bar X\) to every term), we obtain:</p>
+<p>\[ \bar X - t_{\alpha/2,n-1}\frac{S}{\sqrt n} \;\le\; \mu \;\le\; \bar X + t_{\alpha/2,n-1}\frac{S}{\sqrt n} \]</p>
+<p>Or more compactly — the confidence interval:</p>
+<p>\[ \boxed{\bar X \pm t_{\alpha/2,n-1}\frac{S}{\sqrt n}} \]</p>
+
+<div style="text-align:center;margin:18px 0;">
+<svg viewBox="0 0 460 190" width="100%" style="max-width:460px;">
+<path d="M 30,150 C 100,60 180,40 230,40 C 280,40 360,60 430,150" fill="none" stroke="#3b6ea5" stroke-width="2"/>
+<line x1="30" y1="150" x2="430" y2="150" stroke="#565f6b" stroke-width="1"/>
+<line x1="130" y1="150" x2="130" y2="105" stroke="#a1522f" stroke-dasharray="4 3"/>
+<line x1="330" y1="150" x2="330" y2="105" stroke="#a1522f" stroke-dasharray="4 3"/>
+<text x="105" y="168" font-family="EB Garamond" font-size="14">&#8722;t&#8342;&#8342;&#8322;</text>
+<text x="325" y="168" font-family="EB Garamond" font-size="14">+t&#8342;&#8342;&#8322;</text>
+<text x="205" y="90" font-family="EB Garamond" font-size="15" fill="#3b6ea5">1&#8722;&#945;</text>
+<text x="10" y="145" font-family="EB Garamond" font-size="12" fill="#8c3b2e">&#945;/2</text>
+<text x="420" y="145" font-family="EB Garamond" font-size="12" fill="#8c3b2e">&#945;/2</text>
+</svg>
+</div>
+<p>\((1-\alpha)\) represents the probability in the central region — the "confidence level." The small areas outside \(\pm t_{\alpha/2}\) are the values that our confidence procedure does <em>not</em> cover.</p>
+
+<div class="ex">
+<span class="box-label">Worked example — 95% confidence</span>
+<p>\(\alpha=0.05 \Rightarrow 1-\alpha = 1-0.05 = 0.95 \Rightarrow 100(1-\alpha)\% = 95\%\).</p>
+</div>
+
+<div class="key">
+<span class="box-label">The correct interpretation — worth memorising word for word</span>
+<p>"If we repeatedly take many random samples and construct a 95% confidence interval using the same method, approximately <strong>95 out of every 100</strong> intervals will contain the true population mean." Equivalently: 95% of confidence intervals (out of 100) contain \(\mu\); approximately 5 confidence intervals out of 100 <strong>miss</strong> \(\mu\). This is a statement about the <em>procedure</em>, repeated many times — not a probability statement about any single interval you've already computed.</p>
+</div>
+</section>
+
+<section class="slide" id="p4-cr-multivariate">
+<span class="slide-tag">Page 10</span>
+<h3>5. From a confidence interval to a confidence region</h3>
+<p>So far we have learned only one variable — suppose we want to estimate the population mean \(\mu\):</p>
+<p>\[ \bar X - t_{\alpha/2,n-1}\frac{S}{\sqrt n} \le \mu \le \bar X + t_{\alpha/2,n-1}\frac{S}{\sqrt n} \]</p>
+<p>Here \(\mu\) is only <em>one number</em>. Therefore all possible values of \(\mu\) lie on a <strong>number line</strong>.</p>
+
+<div class="warn">
+<span class="box-label">What happens when we have more than one variable?</span>
+<p>\[ X_i = \begin{bmatrix}X_{i1}\\X_{i2}\end{bmatrix}, \qquad \mu = \begin{bmatrix}\mu_1\\\mu_2\end{bmatrix} \]</p>
+<p>In multivariate analysis, the variables may be <strong>correlated</strong>. Therefore, we want <em>one joint region</em> that covers all variables together — not two separate, independent intervals.</p>
+</div>
+
+<table class="grid">
+<tr><th>Dimension of parameter</th><th>What we build</th></tr>
+<tr><td>One-dimensional parameter</td><td>Confidence <strong>Interval</strong></td></tr>
+<tr><td>\(p\)-dimensional parameter space</td><td>Confidence <strong>Region</strong></td></tr>
+</table>
+
+<p>Recall the univariate \(t\)-statistic, squared:</p>
+<p>\[ t = \frac{\bar X-\mu}{S/\sqrt n}, \qquad t^2 = \frac{n(\bar X-\mu)^2}{S^2} \]</p>
+<p>This measures how far the unknown population mean \(\mu\) is from the sample \(\bar X\), <em>after accounting for variability</em>. Now generalise it to vectors — this is exactly Hotelling's \(T^2\) from Part 1:</p>
+<p>\[ T^2 = n(\bar X-\mu)'S^{-1}(\bar X-\mu) \]</p>
+
+<div class="an">
+<span class="box-label">The key analogy</span>
+<p>This is <em>exactly</em> the same idea as the univariate \(t^2\), but now we are measuring the distance between two <strong>vectors</strong> instead of two numbers — using the Mahalanobis distance from Part 1 rather than ordinary squared distance. In the univariate case, all values of \(\mu\) that fall within our acceptable \(t\)-range form the confidence interval. In exactly the same way, in multivariate analysis, <strong>all mean vectors \(\mu\) that fall within the acceptable Hotelling's \(T^2\) range form the confidence region.</strong></p>
+</div>
+</section>
+
+<section class="slide" id="p4-cr-formula">
+<span class="slide-tag">Page 11</span>
+<h3>6. The confidence region formula, for a one-sample multivariate normal population</h3>
+<p>Recall from Part 1 the sampling distribution of one-sample Hotelling's \(T^2\):</p>
+<p>\[ \frac{(n-p)}{p(n-1)}T^2 \sim F_{p,n-p} \qquad\Longrightarrow\qquad T^2 \sim \frac{(n-1)p}{n-p}F_{p,n-p} \]</p>
+<p>Therefore, we do <strong>not</strong> reject the proposed \(\mu\) when:</p>
+<p>\[ T^2 \le \frac{p(n-1)}{n-p}F_{p,n-p}(\alpha) \]</p>
+<p>Hence, the set of <em>all</em> such \(\mu\) is:</p>
+<div class="key">
+<span class="box-label">Key result — the confidence region for a mean vector</span>
+<p>\[ \boxed{n(\bar X-\mu)'S^{-1}(\bar X-\mu) \;\le\; \frac{p(n-1)}{n-p}F_{p,n-p}(\alpha)} \]</p>
+<p>and this is the \(100(1-\alpha)\%\) <strong>confidence region</strong> for the population mean vector.</p>
+</div>
+<div class="an">
+<span class="box-label">What this region actually looks like</span>
+<p>For \(p=2\), this inequality traces out the inside of an <strong>ellipse</strong> centred at \(\bar X\) — not a rectangle formed from two separate intervals. The shape and tilt of that ellipse are governed entirely by \(S^{-1}\): if the two variables are strongly correlated, the ellipse tilts and stretches along that correlation direction, exactly reflecting the fact that some combinations of \((\mu_1,\mu_2)\) are far more plausible, jointly, than others — information two separate one-at-a-time confidence intervals would throw away.</p>
+</div>
+</section>
+
+<section class="slide" id="p4-cr-worked">
+<span class="slide-tag">Pages 12–13</span>
+<h3>7. Worked example — a confidence region for the difference between two mean vectors</h3>
+<p>The one-sample confidence region generalises immediately to the <strong>two-sample</strong> case, using exactly the two-sample Hotelling's \(T^2\) machinery from Part 1, Section 10. Let \(\delta=\mu_A-\mu_B\) be the true (unknown) difference between two population mean vectors. Following the identical logic as the one-sample case:</p>
+<div class="key">
+<span class="box-label">Key result — confidence region for a difference of mean vectors</span>
+<p>\[ \frac{n_An_B}{n_A+n_B}\big[(\bar X_A-\bar X_B)-\delta\big]'S_p^{-1}\big[(\bar X_A-\bar X_B)-\delta\big] \;\le\; \frac{(n_A+n_B-2)p}{n_A+n_B-p-1}F_{p,\,n_A+n_B-p-1}(\alpha) \]</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked example, from your notes</span>
+<p>Age and risky behaviour are two important factors that make a difference between the accident group (AG) and non-accident group (NAG) of workers. Random samples of 20 individuals from AG and 50 individuals from NAG were collected. The sample mean vector and sample covariance matrix are given. Construct a 95% confidence region for the difference between the two population mean vectors.</p>
+<table class="grid">
+<tr><th></th><th>Sample 1 (AG)</th><th>Sample 2 (NAG)</th></tr>
+<tr><td>Mean vector</td><td>\(\bar X_A=\begin{bmatrix}50\\6\end{bmatrix}\)</td><td>\(\bar X_B=\begin{bmatrix}40\\8\end{bmatrix}\)</td></tr>
+<tr><td>Covariance matrix</td><td>\(S_A=\begin{bmatrix}16&-5\\-5&4\end{bmatrix}\)</td><td>\(S_B=\begin{bmatrix}25&-6\\-6&9\end{bmatrix}\)</td></tr>
+</table>
+
+<p><strong>Solution.</strong> \(n_A=20\), \(n_B=50\), \(p=2\). We want to construct a 95% confidence region for \(\delta=\mu_A-\mu_B=\begin{bmatrix}\delta_1\\\delta_2\end{bmatrix}\).</p>
+
+<p>First, pool the two covariance matrices:</p>
+<p>\[ S_p = \frac{(n_A-1)S_A+(n_B-1)S_B}{n_A+n_B-2} = \frac{19\begin{bmatrix}16&-5\\-5&4\end{bmatrix}+49\begin{bmatrix}25&-6\\-6&9\end{bmatrix}}{68} \]</p>
+<div class="ans" style="background:var(--key-bg);border-left:5px solid var(--key-line);border-radius:8px;padding:10px 16px;">
+<p>\[ S_p = \begin{bmatrix}22.4853 & -5.7206\\-5.7206 & 7.6029\end{bmatrix} \]</p>
+</div>
+
+<p>The two-sample \(T^2\) statistic (from Part 1, Section 10) is:</p>
+<p>\[ T^2 = \frac{n_An_B}{n_A+n_B}\big[(\bar X_A-\bar X_B)-\delta\big]'S_p^{-1}\big[(\bar X_A-\bar X_B)-\delta\big] \]</p>
+<p>For a 95% CR, we need the critical value:</p>
+<p>\[ T^2 \le \frac{(n_A+n_B-2)p}{n_A+n_B-p-1}F_{p,\,n_A+n_B-p-1}(\alpha) = \frac{68\times2}{67}F_{2,67}(0.05) = \frac{136}{67}\times3.134 \approx \boxed{6.361} \]</p>
+</div>
+
+<div class="fix">
+<span class="box-label">Your notes leave the final step as an exercise — "Solve it." Here it is, completed.</span>
+<p>The difference in sample means is \(\bar X_A-\bar X_B = \begin{bmatrix}50-40\\6-8\end{bmatrix}=\begin{bmatrix}10\\-2\end{bmatrix}\), and inverting \(S_p\):</p>
+<p>\[ S_p^{-1} = \begin{bmatrix}0.0550 & 0.0414\\0.0414 & 0.1627\end{bmatrix} \]</p>
+<p>The confidence region is every \((\delta_1,\delta_2)\) satisfying:</p>
+<p>\[ \frac{n_An_B}{n_A+n_B}\begin{bmatrix}10-\delta_1 & -2-\delta_2\end{bmatrix}\begin{bmatrix}0.0550 & 0.0414\\0.0414 & 0.1627\end{bmatrix}\begin{bmatrix}10-\delta_1\\-2-\delta_2\end{bmatrix} \;\le\; 6.361 \]</p>
+<p>With \(\dfrac{n_An_B}{n_A+n_B}=\dfrac{20\times50}{70}=14.286\), divide both sides through by this constant to isolate the quadratic form:</p>
+<p>\[ \begin{bmatrix}10-\delta_1 & -2-\delta_2\end{bmatrix}\begin{bmatrix}0.0550 & 0.0414\\0.0414 & 0.1627\end{bmatrix}\begin{bmatrix}10-\delta_1\\-2-\delta_2\end{bmatrix} \;\le\; \frac{6.361}{14.286} \approx 0.445 \]</p>
+<p>Multiplying out the quadratic form explicitly:</p>
+<div class="ans" style="background:var(--key-bg);border-left:5px solid var(--key-line);border-radius:8px;padding:10px 16px;">
+<p style="text-align:center">\[ 0.0550(10-\delta_1)^2 \;+\; 0.0828(10-\delta_1)(-2-\delta_2) \;+\; 0.1627(-2-\delta_2)^2 \;\le\; 0.445 \]</p>
+</div>
+<p>This is the completed 95% confidence region — an <strong>ellipse</strong> in the \((\delta_1,\delta_2)\)-plane, centred at \((\delta_1,\delta_2)=(10,-2)\) (the observed difference in sample means), tilted and stretched according to \(S_p^{-1}\). Any hypothesised difference \(\delta=(\delta_1,\delta_2)\) that satisfies this inequality is a <em>plausible</em> value for the true difference between the accident-group and non-accident-group mean vectors, at 95% confidence; any \(\delta\) outside it is rejected.</p>
+</div>
+
+<div class="warn">
+<span class="box-label">A quick sanity check worth doing on any confidence region</span>
+<p>Plug in \(\delta=(10,-2)\) — the centre of the region, exactly the observed \(\bar X_A-\bar X_B\) — and both bracketed terms vanish, giving \(0\le0.445\). ✓ The centre point always trivially satisfies its own confidence region; this is a useful one-line check that the inequality's direction and the sign of every term have been set up correctly, before trusting the region for anything further.</p>
+</div>
+</section>
+
+<div class="key" style="margin-top:20px">
+<span class="box-label">What Part 4 adds to your toolkit</span>
+<p>The Likelihood Ratio Test is the single most general recipe in this guide — restrict the parameter space under \(H_0\), compare the best-possible fit under the restriction against the best-possible fit without it, and a small ratio is evidence against \(H_0\). Applied to a multivariate mean vector, it reproduces exactly the \(|\hat\Sigma|/|\hat\Sigma_0|\) statistic known as Wilk's Lambda. And the same "how far is my estimate from a candidate parameter, measured in Mahalanobis units" idea that built Hotelling's \(T^2\) in Part 1 also builds <strong>confidence regions</strong> — the direct multivariate analogue of a confidence interval, tracing out an ellipse (or higher-dimensional ellipsoid) of jointly plausible parameter values, rather than a separate interval per variable.</p>
+</div>
+
+
 <section class="slide" id="recap">
   <span class="slide-tag">Full-course recap</span>
   <h3>Recap: how all three parts connect</h3>
@@ -984,6 +1317,7 @@
     <tr><td><strong>1. MND &amp; Hotelling's T²</strong></td><td>How do mean, variance, and the normal curve generalise to many variables at once?</td><td>Mean vector, covariance matrix, and the Mahalanobis distance replace their univariate counterparts. The MND has powerful special properties (linear combos stay normal, zero covariance ⟹ independence, conditionals stay normal). Hotelling's \(T^2\) is the multivariate t-test.</td></tr>
     <tr><td><strong>2. Multiple &amp; Partial Correlation</strong></td><td>How do I measure relationships between variables once more than two are involved?</td><td>Partial correlation strips out a third variable's influence from a pairwise relationship (can be negative). Multiple correlation measures how well a whole group of variables jointly predicts one variable (never negative).</td></tr>
     <tr><td><strong>3. Wishart &amp; MLE</strong></td><td>What's the sampling distribution of the covariance matrix itself, and where does \(\hat\mu=\bar X\) actually come from?</td><td>The Wishart distribution is the matrix generalisation of the Chi-square distribution — it governs the sum-of-cross-products matrix \(A\), and hence \((n-1)S\). Maximum likelihood, worked out directly from the MND density, proves \(\hat\mu=\bar X\) and \(\hat\Sigma_{MLE}=\frac{n-1}{n}S\).</td></tr>
+    <tr><td><strong>4. LRT &amp; Confidence Regions</strong></td><td>Is there one general recipe for testing any hypothesis, and how do we give a range of plausible values for an entire mean <em>vector</em> at once?</td><td>The Likelihood Ratio Test compares the best-possible fit under a restriction (\(H_0\)) against the best-possible fit without it — a small ratio \(\Lambda\) is evidence against \(H_0\); applied to a mean vector, it reduces to Wilk's Lambda \(|\hat\Sigma|/|\hat\Sigma_0|\). Confidence regions generalise confidence intervals to \(p\) dimensions using Hotelling's \(T^2\), producing an ellipsoid of jointly plausible parameter values instead of \(p\) separate intervals.</td></tr>
   </table>
 
   <h4>Mini glossary</h4>
@@ -996,11 +1330,65 @@
     <tr><td><strong>Wishart distribution \(W_p(n,\Sigma)\)</strong></td><td>The distribution of a sum-of-cross-products matrix built from \(n\) independent \(N_p(0,\Sigma)\) vectors — the matrix version of Chi-square.</td></tr>
     <tr><td><strong>Hotelling's \(T^2\)</strong></td><td>The multivariate generalisation of the (squared) t-statistic, used to test hypotheses about mean vectors.</td></tr>
     <tr><td><strong>MLE</strong></td><td>The parameter values that make the observed data "most likely" under the assumed model.</td></tr>
+    <tr><td><strong>Likelihood Ratio \(\Lambda\)</strong></td><td>Restricted (under \(H_0\)) maximum likelihood, divided by unrestricted (full-model) maximum likelihood. Always between 0 and 1; small values are evidence against \(H_0\).</td></tr>
+    <tr><td><strong>Wilk's Lambda</strong></td><td>\(\Lambda^{2/n}=|\hat\Sigma|/|\hat\Sigma_0|\) — the LRT statistic for testing a mean vector, comparing the sample covariance built around \(\bar X\) against the covariance built around the hypothesised \(\mu_0\).</td></tr>
+    <tr><td><strong>Confidence region</strong></td><td>The multivariate generalisation of a confidence interval — a region of jointly plausible parameter vectors, built from Hotelling's \(T^2\) and traced out as an ellipse (or ellipsoid) rather than a rectangle of separate intervals.</td></tr>
   </table>
+
+<div class="def" id="formula-sheet-bottom">
+<span class="box-label">Formula Sheet — the complete reference, one more time</span>
+<p style="margin:4px 0 12px;">The same formula sheet from the top of the guide, repeated here as the final piece of the recap — everything from all four parts, in one place, for a last look before an exam.</p>
+
+<h4 style="margin-top:18px;">Part 1 — MND &amp; Hotelling's T²</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(\bar{X} = \begin{bmatrix} \bar{X}_1\\ \vdots \\ \bar{X}_p \end{bmatrix}\)</td><td>Sample mean vector — stack each variable's own average.</td></tr>
+<tr><td>\(S_{ii} = \dfrac{1}{n-1}\sum(X_i-\bar X_i)^2,\ \ S_{ik}=\dfrac{1}{n-1}\sum(X_i-\bar X_i)(X_k-\bar X_k)\)</td><td>Sample covariance matrix \(S\) — variances on the diagonal, covariances off it.</td></tr>
+<tr><td>\(\Sigma = E\big[(X-\mu)(X-\mu)^{\top}\big]\)</td><td>Population covariance (dispersion) matrix.</td></tr>
+<tr><td>\(\rho_{ik} = \dfrac{\sigma_{ik}}{\sqrt{\sigma_{ii}}\sqrt{\sigma_{kk}}}\)</td><td>Population correlation coefficient between \(X_i\) and \(X_k\).</td></tr>
+<tr><td>\(f(x) = \dfrac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}\exp\left[-\tfrac12(x-\mu)^{\top}\Sigma^{-1}(x-\mu)\right]\)</td><td>MND density function, \(X\sim N_p(\mu,\Sigma)\).</td></tr>
+<tr><td>\(a'X \sim N(a'\mu,\ a'\Sigma a)\)</td><td>Any linear combination of a MND vector is itself normal.</td></tr>
+<tr><td>\(AX \sim N_q(A\mu,\ A\Sigma A')\)</td><td>Any linear transformation of a MND vector is itself MND.</td></tr>
+<tr><td>Mean \(=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)\)<br>Var \(=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</td><td>Conditional distribution of \(X_1\) given \(X_2=x_2\) (still normal).</td></tr>
+<tr><td>\(T^2 = n(\bar X-\mu)^{\top}S^{-1}(\bar X-\mu) \sim \dfrac{(n-1)p}{n-p}F_{p,\,n-p}\)</td><td>Hotelling's \(T^2\) — one sample. Reject \(H_0\) for large \(T^2\).</td></tr>
+<tr><td>\(S_p = \dfrac{(n_1-1)S_1+(n_2-1)S_2}{n_1+n_2-2}\)</td><td>Pooled covariance matrix (two-sample case).</td></tr>
+<tr><td>\(T^2 = \dfrac{n_1n_2}{n_1+n_2}(\bar X_1-\bar X_2)^{\top}S_p^{-1}(\bar X_1-\bar X_2) \sim \dfrac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,\,n_1+n_2-p-1}\)</td><td>Hotelling's \(T^2\) — two samples, testing \(\mu_1=\mu_2\).</td></tr>
+<tr><td>\(T^2\sim\chi^2_p\)</td><td>Large-sample approximation when d.f. \(\ge30\).</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 2 — Multiple &amp; Partial Correlation</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(r_{12.3} = \dfrac{r_{12}-r_{13}r_{23}}{\sqrt{(1-r_{13}^2)(1-r_{23}^2)}}\)</td><td>Partial correlation between \(X_1,X_2\), controlling for \(X_3\). Can be negative.</td></tr>
+<tr><td>\(R_{1.23} = \sqrt{\dfrac{r_{12}^2+r_{13}^2-2r_{12}r_{13}r_{23}}{1-r_{23}^2}}\)</td><td>Multiple correlation — how well \((X_2,X_3)\) jointly predict \(X_1\). Always \(\ge0\).</td></tr>
+<tr><td>\(R_{1.23}^2 = \dfrac{\text{Explained variance}}{\text{Total variance}}\)</td><td>What \(R^2\) measures — proportion of \(X_1\)'s variance explained by the others.</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 3 — Wishart Distribution &amp; MLE</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(A = \displaystyle\sum_{i=1}^n X_iX_i^{\top}\)</td><td>Cross-product matrix.</td></tr>
+<tr><td>\(A \sim W_p(n,\Sigma)\) &nbsp; when \(X_i\sim N_p(0,\Sigma)\) i.i.d.</td><td>Definition of the Wishart distribution — the matrix analogue of Chi-square.</td></tr>
+<tr><td>\(A_1\sim W_{n_1}(\Sigma),\ A_2\sim W_{n_2}(\Sigma) \Rightarrow A_1+A_2\sim W_{n_1+n_2}(\Sigma)\)</td><td>Wishart degrees of freedom add, just like Chi-square.</td></tr>
+<tr><td>\(A\sim W_p(n,\Sigma) \Rightarrow CAC'\sim W_q(n,\,C\Sigma C')\)</td><td>Wishart under a fixed linear transformation \(C\).</td></tr>
+<tr><td>\(\dfrac{a'Aa}{a'\Sigma a}\sim\chi^2_n\)</td><td>Wishart folds back down to plain Chi-square along any fixed direction \(a\).</td></tr>
+<tr><td>\(\boxed{\hat\mu=\bar X}\)</td><td>MLE of the mean vector.</td></tr>
+<tr><td>\(\boxed{\hat\Sigma_{MLE} = \dfrac1n\sum_{i=1}^n(x_i-\bar X)(x_i-\bar X)' = \dfrac{n-1}{n}S}\)</td><td>MLE of the covariance matrix — divides by \(n\), not \(n-1\); biased, like the univariate case.</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 4 — Likelihood Ratio Tests &amp; Confidence Regions</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(\Lambda = \dfrac{\sup_{\theta\in\Theta_0}L(\theta)}{\sup_{\theta\in\Theta}L(\theta)}\), &nbsp; \(0\le\Lambda\le1\)</td><td>The Likelihood Ratio — small \(\Lambda\) is evidence against \(H_0\).</td></tr>
+<tr><td>\(\Lambda^{2/n} = \dfrac{|\hat\Sigma|}{|\hat\Sigma_0|}\)</td><td>Wilk's Lambda — the LRT statistic for testing \(H_0:\mu=\mu_0\).</td></tr>
+<tr><td>\(\boxed{n(\bar X-\mu)'S^{-1}(\bar X-\mu) \le \dfrac{p(n-1)}{n-p}F_{p,n-p}(\alpha)}\)</td><td>\(100(1-\alpha)\%\) confidence region for a single mean vector \(\mu\).</td></tr>
+<tr><td>\(\dfrac{n_An_B}{n_A+n_B}\big[(\bar X_A-\bar X_B)-\delta\big]'S_p^{-1}\big[(\bar X_A-\bar X_B)-\delta\big] \le \dfrac{(n_A+n_B-2)p}{n_A+n_B-p-1}F_{p,\,n_A+n_B-p-1}(\alpha)\)</td><td>Confidence region for a difference of mean vectors \(\delta=\mu_A-\mu_B\).</td></tr>
+</table>
+</div>
 </section>
 
 <footer>
-  Built as a study companion for <em>Multivariate Analysis</em> — MND and Hotelling's T-square · Multiple and Partial Correlation · Wishart Distribution and MLE (MIT Manipal handwritten notes). Every worked numerical example was independently recomputed and cross-checked against the original notes; one correction was found and flagged in Part 1, Section 9.
+  Built as a study companion for <em>Multivariate Analysis</em> — MND and Hotelling's T-square · Multiple and Partial Correlation · Wishart Distribution and MLE · Likelihood Ratio Tests and Confidence Regions (MIT Manipal handwritten notes). Every worked numerical example was independently recomputed and cross-checked against the original notes; one correction was found and flagged in Part 1, Section 9; Part 4's closing exercise, left as "solve it" in the original notes, was completed and verified in full.
 </footer>
 </main>
 </div>
