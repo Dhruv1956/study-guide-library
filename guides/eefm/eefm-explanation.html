@@ -206,7 +206,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
     <a href="#s4-1">Why "9% per year" can mean two things</a>
     <a href="#s4-2">Building i<sub>eff</sub> from first principles</a>
     <a href="#s4-3">Reading rate statements correctly</a>
-    <a href="#s4-4">The general (CP/PP) formula</a>
+    <a href="#s4-4">The general (k = CP/PP) formula</a>
     <a href="#s4-5">Full Effective Annual Rate table</a>
     <a href="#s4-6">Mismatched payment/compounding periods</a>
     <a href="#s4-7">Comparing loan &amp; investment offers</a>
@@ -1107,7 +1107,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 <div class="body">
 <p>$$P = 100000\,(P/F,15\%,10) = 100000 \times 0.2472$$</p>
 <div class="ans"><span class="lbl">Answer</span><p>\(P = \) <strong>Rs. 24,718</strong></p></div>
-<p style="font-size:.92rem;color:var(--ink-soft)">Compare with Q1: the same Rs. 1 lakh target over the same 10 years costs Rs. 55,840 to fund at 6% but only Rs. 24,718 at 15%. <em>The discount rate does most of the work.</em></p>
+<p style="font-size:.92rem;color:var(--ink-soft)">For comparison, a Rs. 1 lakh target over 10 years requires Rs. 55,840 to fund at 6% (using the same (P/F,6%,10) factor as Q1), but only Rs. 24,718 at 15% — <em>the discount rate does most of the work.</em></p>
 </div></div>
 
 <div class="prob">
@@ -1376,9 +1376,9 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 <p><strong>(f) $50 at years 1, 3, 5, 7, 9, 11, 13, 15</strong> — not a uniform annual series (the gap is 2 years), so each is handled individually:</p>
 <p>$$50\big[(F/P,12\%,14)+(F/P,12\%,12)+(F/P,12\%,10)+(F/P,12\%,8)+(F/P,12\%,6)+(F/P,12\%,4)+(F/P,12\%,2)+1\big]$$</p>
 <p>$$= 50[4.8871+3.8960+3.1058+2.4760+1.9738+1.5735+1.2544+1] = 50 \times 20.167 = 1{,}008.3$$</p>
-<p>$$\textbf{Total inflow at year 15} = 3{,}944.0 + 6{,}223.1 + 1{,}008.3 \approx 11{,}022.7$$</p>
+<p>$$\textbf{Total inflow at year 15} = 3{,}944.0 + 6{,}223.1 + 1{,}008.3 = 11{,}175.4$$</p>
 
-<div class="ans"><span class="lbl">Answer</span><p>Net cash flow at year 15 \(= 11{,}022.7 - 41{,}460.7 = \) <strong>−$30,438</strong> &nbsp;<span style="font-size:.9rem;color:var(--ink-soft)">(slide value: −$30,437.98)</span></p>
+<div class="ans"><span class="lbl">Answer</span><p>Net cash flow at year 15 \(= 11{,}175.4 - 41{,}460.7 = \) <strong>−$30,285.3</strong> &nbsp;<span style="font-size:.9rem;color:var(--ink-soft)">(the source slide states −$30,437.98 — its individual line-item values match what's derived above, but its own final addition/subtraction doesn't; the figure here follows from the displayed numbers)</span></p>
 <p style="margin-top:6px">The negative sign means the plan is net <em>accumulating</em>: you have put in $30,438 more (in year-15 terms) than you have taken out, so that is your closing balance.</p></div>
 
 <div class="box t"><span class="lbl">How to survive a problem like this in an exam</span>
@@ -1587,7 +1587,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 <p>Expand the factor and isolate the exponential:</p>
 <p>$$\frac{1-(1.1)^{-n}}{0.10} = 3.75 \;\Longrightarrow\; 1 - (1.1)^{-n} = 0.375 \;\Longrightarrow\; (1.1)^{-n} = 0.625$$</p>
 <p>$$-n\ln(1.1) = \ln(0.625) \;\Longrightarrow\; n = \frac{0.4700}{0.09531} = 4.93$$</p>
-<div class="ans"><span class="lbl">Answer</span><p>\(n \approx\) <strong>4.97 years</strong> — so in practice <strong>5 years</strong>, since payments arrive only at year-ends and you need "at least" full recovery.</p></div>
+<div class="ans"><span class="lbl">Answer</span><p>\(n \approx\) <strong>4.93 years</strong> — so in practice <strong>5 years</strong>, since payments arrive only at year-ends and you need "at least" full recovery.</p></div>
 <div class="box t"><span class="lbl">Table method if you cannot use logs</span><p>Scan the 10% column for the \(n\) where \((P/A)\) first exceeds 3.75: \((P/A,10\%,4)=3.1699\) — not enough; \((P/A,10\%,5)=3.7908\) — sufficient. So the answer lies between 4 and 5, and interpolation gives ≈ 4.93. Round <em>up</em> to 5 whenever the question says "at least".</p></div>
 </div></div>
 
@@ -1922,12 +1922,12 @@ $$P_{(0)} = 159.24(P/F,8\%,2) = 159.24 \times 0.8573$$</li>
 <h3 id="m3">3.3 · Retirement and education planning</h3>
 
 <div class="prob">
-<div class="q"><span class="pid">Multi · Q6 — the boy's college fund (two interest rates)</span><p>A boy is now 11. On his fifth birthday he received $5,000 from his grandparents, invested in a 10-year fixed deposit at 6% compounded annually. His parents plan to have $6,000 available each year for his 19th to 22nd birthdays. The fixed deposit will be reinvested when it matures. How much equal amount should the parents deposit each year, from his next birthday, so that one year after the last deposit they can start making payments? All future investments earn 6.5% compounded annually.</p></div>
+<div class="q"><span class="pid">Multi · Q6 — the boy's college fund (two interest rates)</span><p>A boy is now 11. On his fifth birthday he received $5,000 from his grandparents, invested in a 10-year fixed deposit at 6% compounded annually. His parents plan to have $6,000 available each year for his 19th to 22nd birthdays. The fixed deposit will be reinvested when it matures. How much equal amount should the parents deposit each year, <strong>starting now on his 11th birthday</strong>, so that one year after the last deposit they can start making payments? All future investments earn 6.5% compounded annually.</p></div>
 <div class="body">
 <p><strong>This problem is deliberately loaded with timeline traps. Work through them one at a time.</strong></p>
 <ul>
 <li><strong>The $5,000 gift:</strong> deposited at age 5, matures at age 15 (10-year FD at <strong>6%</strong>). After maturity it is reinvested at <strong>6.5%</strong> until needed.</li>
-<li><strong>Parents' deposits:</strong> "from the beginning of his next birthday" — he is 11 now, so deposits run from age 12. "One year after the last deposit they start making payments", and the first payment is at 19, so the <strong>last deposit is at age 18</strong>. Deposits at ages 12–18 → \(18-12+1 = 7\)... but the model solution uses 8, taking deposits from age 11 through 18. <em>Follow your faculty's count of 8.</em></li>
+<li><strong>Parents' deposits:</strong> deposits begin now, at age 11. "One year after the last deposit they start making payments", and the first payment is at 19, so the <strong>last deposit is at age 18</strong>. Deposits at ages 11–18 → \(18-11+1 = 8\) deposits.</li>
 <li><strong>Withdrawals:</strong> $6,000 at ages 19, 20, 21, 22 → 4 payments.</li>
 </ul>
 <p><strong>Focal date: age 18</strong> (the last deposit, one year before the first withdrawal).</p>
@@ -2723,7 +2723,7 @@ $$P_{(0)} = 159.24(P/F,8\%,2) = 159.24 \times 0.8573$$</li>
 
 <div class="def" style="background:var(--cream2);border:1px solid var(--rule);border-radius:8px;padding:17px 21px;margin:22px 0;">
 <p style="margin:0 0 8px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--blue)">The effective interest rate formula</p>
-<p>Generalising the warm-up above — let \(m\) = number of compounding periods per year, \(r\) = nominal interest rate, and \(n\) = number of compounding periods <em>per payment period</em> (usually 1, if your cash flows are annual):</p>
+<p>Generalising the warm-up above — let \(m\) = number of compounding periods per year, \(r\) = nominal interest rate, and \(n\) = number of compounding periods <em>per payment period</em> (for annual cash flows, \(n=m\); \(n=1\) only when the payment period and the compounding period coincide):</p>
 $$i_{eff} = \left(1+\frac{r}{m}\right)^{n} - 1$$
 <p>When you just want the plain effective <em>annual</em> rate (payment period = 1 year), \(n=m\), and this simplifies to the more familiar</p>
 $$i_{eff,\,\text{annual}} = \left(1+\frac{r}{m}\right)^{m} - 1$$
@@ -2764,8 +2764,10 @@ $$i_{eff,\,\text{annual}} = \left(1+\frac{r}{m}\right)^{m} - 1$$
 <li><strong>PP (Payment Period)</strong> — how often <em>your</em> cash flows (deposits/withdrawals) occur.</li>
 <li><strong>m</strong> — number of compounding periods <em>per year</em>.</li>
 </ul>
-$$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
-<p>Read the exponent as "how many compounding periods fit inside one payment period." If deposits are quarterly but compounding is monthly, three compounding periods sit inside each payment period, so the exponent is 3.</p>
+<p>The exponent itself needs one more piece of care: CP and PP name <em>time spans</em> (a quarter, a month), so writing the exponent as a bare "CP/PP" invites reading it as one duration divided by another, backwards from what's intended. Define it explicitly instead:</p>
+$$k = \frac{\text{compounding periods per year}}{\text{payment periods per year}} = \frac{\text{duration of one PP}}{\text{duration of one CP}}$$
+$$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{k} - 1$$
+<p>Read \(k\) as "how many compounding periods fit inside one payment period." If deposits are quarterly but compounding is monthly, three compounding periods sit inside each payment period, so \(k=3\).</p>
 </div>
 
 <div class="prob">
@@ -2819,7 +2821,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <tr><td class="mono">11</td><td class="mono">11.00</td><td class="mono">11.30</td><td class="mono">11.46</td><td class="mono">11.57</td><td class="mono">11.62</td></tr>
 <tr><td class="mono">12</td><td class="mono">12.00</td><td class="mono">12.36</td><td class="mono">12.55</td><td class="mono">12.68</td><td class="mono">12.74</td></tr>
 </tbody></table></div>
-<p class="small" style="font-size:.86rem;color:var(--ink-soft)">Your slides also leave three "compute it yourself" tables (rates 1–12%, viewed from an annual, semi-annual, and quarterly payment period respectively). They follow the exact same formula — pick any row/column pair and apply \(i_{eff}=(1+r/m)^{CP/PP}-1\) with the appropriate \(m\) and \(CP/PP\) exponent.</p>
+<p class="small" style="font-size:.86rem;color:var(--ink-soft)">Your slides also leave three "compute it yourself" tables (rates 1–12%, viewed from an annual, semi-annual, and quarterly payment period respectively). They follow the exact same formula — pick any row/column pair and apply \(i_{eff}=(1+r/m)^{k}-1\) with the appropriate \(m\) and \(k\) exponent.</p>
 
 <div class="prob">
 <div class="q"><span class="pid">Nominal/Effective &middot; Q5 — value one year ago</span><p>If a person will have Rs. 25,000 today, how much did he have to invest 1 year ago, at a nominal rate of 12% compounded monthly?</p></div>
@@ -2867,7 +2869,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 </div></div>
 
 <h3 id="s4-6">4.6 &middot; When your cash flows don't match the compounding period</h3>
-<p>The trickiest — and most common — real-world case: you deposit money on one schedule (say, monthly), but the bank compounds on a different schedule (say, quarterly). The fix is always the same: convert to the effective rate <em>for your payment period</em>, using \(CP/PP\) as the exponent, then use the ordinary formulas exactly as before.</p>
+<p>The trickiest — and most common — real-world case: you deposit money on one schedule (say, monthly), but the bank compounds on a different schedule (say, quarterly). The fix is always the same: convert to the effective rate <em>for your payment period</em>, using \(k\) as the exponent, then use the ordinary formulas exactly as before.</p>
 
 <div class="prob">
 <div class="q"><span class="pid">Nominal/Effective &middot; Q7 — equal compounding and payment periods</span><p>A rate of 6.25% is compounded monthly. Find the effective rate per month.</p></div>
@@ -2875,13 +2877,13 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <p>Whenever CP and PP coincide (both monthly here), the "conversion" collapses to simple division — there's no compounding-within-a-period effect to account for:</p>
 <p>$$i_{eff} = \frac{r}{m} = \frac{6.25\%}{12} = 0.5208\%\text{ per month}$$</p>
 <div class="ans"><span class="lbl">Answer</span><p><strong>0.5208% per month</strong></p></div>
-<div class="box t"><span class="lbl">Recognise this shortcut</span><p>"Whenever the compounding and payment periods are equal — whether compounded annually or at some other interval — the effective rate per period is just \(r/m\)." Save the full \((1+r/m)^{CP/PP}-1\) formula for when the periods genuinely differ.</p></div>
+<div class="box t"><span class="lbl">Recognise this shortcut</span><p>"Whenever the compounding and payment periods are equal — whether compounded annually or at some other interval — the effective rate per period is just \(r/m\)." Save the full \((1+r/m)^{k}-1\) formula for when the periods genuinely differ.</p></div>
 </div></div>
 
 <div class="prob">
 <div class="q"><span class="pid">Nominal/Effective &middot; Q8 — quarterly deposits, monthly compounding</span><p>You make equal quarterly deposits of $1500 into a fund that pays 6% compounded monthly. Find the balance at the end of year 2.</p></div>
 <div class="body">
-<p><strong>PP (quarterly) is longer than CP (monthly)</strong> — three compounding periods sit inside each payment period, so \(CP/PP = 12/4 = 3\):</p>
+<p><strong>PP (quarterly) is longer than CP (monthly)</strong> — three compounding periods sit inside each payment period, so \(k = 12/4 = 3\):</p>
 <p>$$i_{eff,\,quarter} = \left(1+\frac{0.06}{12}\right)^{3}-1 = 1.5075\%$$</p>
 <p>Now it's an ordinary 8-quarter uniform series:</p>
 <p>$$F = 1500\left[\frac{(1+i)^8-1}{i}\right] = 1500\left[\frac{(1.015075)^8-1}{0.015075}\right]$$</p>
@@ -2891,7 +2893,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <div class="prob">
 <div class="q"><span class="pid">Nominal/Effective &middot; Q9 — monthly deposits, quarterly compounding</span><p>You make $500 monthly deposits to a retirement plan paying 10% compounded quarterly. Find the balance after 10 years.</p></div>
 <div class="body">
-<p><strong>This time PP (monthly) is shorter than CP (quarterly)</strong> — less than one compounding period fits inside each payment period, so the exponent is a <em>fraction</em>, \(CP/PP = 4/12 = 1/3\):</p>
+<p><strong>This time PP (monthly) is shorter than CP (quarterly)</strong> — less than one compounding period fits inside each payment period, so the exponent is a <em>fraction</em>, \(k = 4/12 = 1/3\):</p>
 <p>$$i_{eff,\,month} = \left(1+\frac{0.10}{4}\right)^{1/3}-1 = 0.826\%\text{ per month}$$</p>
 <p>Now apply the ordinary series formula over \(n=120\) months:</p>
 <p>$$F = 500\left[\frac{(1.00826)^{120}-1}{0.00826}\right]$$</p>
@@ -2904,7 +2906,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <div class="prob">
 <div class="q"><span class="pid">Nominal/Effective &middot; Q10 — Visteon's three vendor bids</span><p>Visteon is comparing three vendor bids for equipment financing, paying semi-annually:<br>Bid 1: 9% per year, compounded quarterly.<br>Bid 2: 3% per quarter, compounded quarterly.<br>Bid 3: 8.8% per year, compounded monthly.<br>Find the effective rate over the 6-month payment period for each, and identify the cheapest.</p></div>
 <div class="body">
-<p>Put every bid on the same footing — effective rate per 6 months (\(CP/PP\) is 2 for Bid 1, 2 for Bid 2, and 6 for Bid 3):</p>
+<p>Put every bid on the same footing — effective rate per 6 months (\(k\) is 2 for Bid 1, 2 for Bid 2, and 6 for Bid 3):</p>
 <p><strong>Bid 1</strong> — 9%/year compounded quarterly (\(m=4\)): $$i = \left(1+\frac{0.09}{4}\right)^{2}-1 = 4.55\%$$</p>
 <p><strong>Bid 2</strong> — 3%/quarter compounded quarterly is the same as 12%/year nominal (\(m=4\)): $$i = \left(1+\frac{0.12}{4}\right)^{2}-1 = 6.09\%$$</p>
 <p><strong>Bid 3</strong> — 8.8%/year compounded monthly (\(m=12\)): $$i = \left(1+\frac{0.088}{12}\right)^{6}-1 = 4.48\%$$</p>
@@ -2914,7 +2916,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <div class="prob">
 <div class="q"><span class="pid">Nominal/Effective &middot; Q11 — Britannia's three suppliers</span><p>Britannia is comparing three loan offers, paying quarterly:<br>Supplier 1: 13% compounded semi-annually.<br>Supplier 2: 6% per semi-annual, compounded quarterly.<br>Supplier 3: 9% per annum, compounded monthly.<br>Find the effective rate per quarter for each and identify the cheapest.</p></div>
 <div class="body">
-<p><strong>Supplier 1</strong> — 13%/year compounded semi-annually, so the per-SA rate is \(13/2=6.5\%\); convert that down to a quarter (\(CP/PP=1/2\), since a quarter is <em>half</em> of a compounding period here):</p>
+<p><strong>Supplier 1</strong> — 13%/year compounded semi-annually, so the per-SA rate is \(13/2=6.5\%\); convert that down to a quarter (\(k=1/2\), since a quarter is <em>half</em> of a compounding period here):</p>
 <p>$$i = (1.065)^{1/2}-1 = 3.20\%\text{ per quarter}$$</p>
 <p><strong>Supplier 2</strong> — 6% per semi-annual compounded quarterly means the CP and PP-of-the-stated-rate already align at the quarter level in the simplest way:</p>
 <p>$$i = \frac{6\%}{2} = 3.00\%\text{ per quarter}$$</p>
@@ -2940,7 +2942,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <p><strong>Step 1 — find the monthly instalment</strong> (\(i=1\%\)/month, since CP = PP):</p>
 <p>$$A = 15{,}000(A/P,1\%,48) = 15{,}000(0.0263) = \$394.50$$</p>
 <p><strong>Step 2 — the "remaining balance" is just the present worth of the payments not yet made.</strong> After the 20th payment, 28 payments remain (payments 21 through 48). Value them as an ordinary annuity at the moment of the 20th payment:</p>
-<p>$$P_{21} = 394.50(P/A,1\%,28) = 394.50(24.3264)$$</p>
+<p>$$P_{20} = 394.50(P/A,1\%,28) = 394.50(24.3264)$$</p>
 <div class="ans"><span class="lbl">Answer</span><p>Payoff amount \(\approx\) <strong>$9,592.81</strong></p></div>
 <div class="box t"><span class="lbl">Why this works — and why it's not "20/48 of the loan"</span><p>A loan balance is never simply proportional to payments made, because early instalments are mostly interest and later ones are mostly principal. The only correct way to find a mid-loan payoff is to discount whatever's <em>still owed</em> — the remaining payments — back to the present, exactly as done above. This same "value what's left" idea reappears constantly in bond pricing and mortgage refinancing.</p></div>
 </div></div>
@@ -3727,7 +3729,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 <p>These last few problems fold in Section 4's nominal/effective conversions on top of everything above — exactly the kind of multi-topic problem a real exam favours.</p>
 
 <div class="prob">
-<div class="q"><span class="pid">PW Method &middot; Q13 — two production alternatives, 8% compounded quarterly</span><p>Alternative 1: first cost $2,00,000, quarterly revenue $10,000, needs a $1,75,000 overhaul at quarter 8, salvage $25,000 at quarter 16. Alternative 2: first cost $2,50,000, quarterly revenue $15,000, salvage $40,000 at quarter 16. Interest 8% compounded quarterly. Compare on PW.</p></div>
+<div class="q"><span class="pid">PW Method &middot; Q13 — two production alternatives, 8% compounded quarterly</span><p>Alternative 1: first cost $2,00,000, quarterly operating cost $10,000, needs a $1,75,000 overhaul at quarter 8, salvage $25,000 at quarter 16. Alternative 2: first cost $2,50,000, quarterly operating cost $15,000, salvage $40,000 at quarter 16. Interest 8% compounded quarterly. Compare on PW.</p></div>
 <div class="cfd">
 <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
   <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
@@ -3741,9 +3743,9 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
   <line class="dn" x1="70.0" y1="110" x2="70.0" y2="147"/>
   <polygon points="70.0,155 65.0,143 75.0,143" fill="#8c3b2e"/>
   <text class="lbldn" x="-23.0" y="171">Alt1: 2,00,000 / Alt2: 2,50,000</text>
-  <line class="up" x1="210.0" y1="110" x2="210.0" y2="98"/>
-  <polygon points="210.0,90 205.0,102 215.0,102" fill="#1f5f4f"/>
-  <text class="lblup" x="141.0" y="84">A: 10,000 or 15,000/qtr</text>
+  <line class="dn" x1="210.0" y1="110" x2="210.0" y2="124"/>
+  <polygon points="210.0,132 205.0,120 215.0,120" fill="#8c3b2e"/>
+  <text class="lbldn" x="141.0" y="148">A: 10,000 or 15,000/qtr (operating cost)</text>
   <line class="dn" x1="350.0" y1="110" x2="350.0" y2="124"/>
   <polygon points="350.0,132 345.0,120 355.0,120" fill="#8c3b2e"/>
   <text class="lbldn" x="284.0" y="148">Alt1 rebuild: 1,75,000</text>
@@ -4726,14 +4728,22 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 </div></div>
 
 <div class="prob">
-<div class="q"><span class="pid">FW Method &middot; Q3 — a lower-cost fuel comparison</span><p>A diesel vehicle costs Rs. 5,00,000, uses fuel worth Rs. 50,000 for every 30 km/litre-equivalent (9 units/year usage basis), plus Rs. 500/yr extra cost, sold after 3 years for Rs. 70,000. A petrol vehicle costs Rs. 4,00,000, with a 20-unit/year usage basis, plus Rs. 500/yr, sold after 3 years for Rs. 1,00,000. At \(i=15\%\), compare by future worth.</p></div>
+<div class="q"><span class="pid">FW Method &middot; Q3 — OLA taxi: diesel vs. petrol</span><p>OLA taxi company is considering diesel engines instead of petrol. Cars average 50,000 km/year, useful life 3 years for either engine type:</p>
+<table><thead><tr><th>Information</th><th>Diesel</th><th>Petrol</th></tr></thead><tbody>
+<tr><td>Vehicle cost</td><td>Rs. 5,00,000</td><td>Rs. 4,00,000</td></tr>
+<tr><td>Fuel cost per litre</td><td>Rs. 9</td><td>Rs. 24</td></tr>
+<tr><td>Mileage (km/litre)</td><td>30</td><td>20</td></tr>
+<tr><td>Annual insurance premium</td><td>Rs. 500</td><td>Rs. 500</td></tr>
+<tr><td>Salvage value (end of life)</td><td>Rs. 70,000</td><td>Rs. 1,00,000</td></tr>
+</tbody></table>
+<p>Determine the more economical choice by future worth, at \(i=15\%\) compounded annually.</p></div>
 <div class="body">
-<p><strong>Annual running cost first:</strong> diesel \(=\dfrac{9\times50{,}000}{30}=\)Rs. 15,000/yr; petrol \(=\dfrac{24\times50{,}000}{20}=\)Rs. 60,000/yr (using each vehicle's own consumption basis).</p>
+<p><strong>Annual fuel cost first</strong> — (fuel cost per litre &times; annual km) &divide; mileage: diesel \(=\dfrac{9\times50{,}000}{30}=\)Rs. 15,000/yr; petrol \(=\dfrac{24\times50{,}000}{20}=\)Rs. 60,000/yr.</p>
 <p>$$FW_{diesel} = 5{,}00{,}000(F/P,15\%,3)+(15{,}000+500)(F/A,15\%,3)-70{,}000$$</p>
 <p>$$= 5{,}00{,}000(1.5209)+15{,}500(3.4725)-70{,}000$$</p>
 <p>$$FW_{petrol} = 4{,}00{,}000(F/P,15\%,3)+(60{,}000+500)(F/A,15\%,3)-1{,}00{,}000$$</p>
 <p>$$= 4{,}00{,}000(1.5209)+60{,}500(3.4725)-1{,}00{,}000$$</p>
-<div class="ans"><span class="lbl">Answer</span><p>\(FW_{diesel}=\) <strong>Rs. 7,44,274</strong>, \(FW_{petrol}=\) <strong>Rs. 7,18,446</strong>. <strong>The petrol vehicle wins</strong> — lower future worth of cost, despite its higher running-cost-per-unit, because diesel's much larger fuel volume (9 vs 24 "units," reflecting the actual distance basis) tips the running cost the other way in this scenario.</p></div>
+<div class="ans"><span class="lbl">Answer</span><p>\(FW_{diesel}=\) <strong>Rs. 7,44,274</strong>, \(FW_{petrol}=\) <strong>Rs. 7,18,446</strong>. <strong>The petrol vehicle wins</strong> — lower future worth of cost. Petrol has the <em>higher</em> annual running cost (Rs. 60,500/yr vs. diesel's Rs. 15,500/yr), but its much lower initial cost and higher salvage value more than make up for that over just 3 years at 15% interest.</p></div>
 </div></div>
 
 <div class="prob">
@@ -4762,7 +4772,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
 </div></div>
 
 <div class="prob">
-<div class="q"><span class="pid">FW Method &middot; Q6 — a gradient at three different interest rates</span><p>Alternative 1: cost Rs. 3,50,000 now; returns Rs. 50,000, 1,00,000, 1.5L, 2L, 2.5L, 3L at years 1–6 (a clean gradient, base Rs. 50,000, \(G=\)Rs. 50,000). Alternative 2: cost Rs. 7,00,000 now; returns exactly double Alternative 1's figures at every year. Compare by future worth at (a) 8%, (b) 9%, and (c) 20%.</p></div>
+<div class="q"><span class="pid">FW Method &middot; Q6 — a gradient at three different interest rates</span><p>Alternative 1: cost Rs. 3,50,000 now; returns Rs. 50,000, 1,00,000, 1.5L, 2L, 2.5L, 3L at years 1–6 (a clean gradient, base Rs. 50,000, \(G=\)Rs. 50,000). Alternative 2: cost Rs. 7,00,000 now (double Alternative 1's initial cost); returns Rs. 70,000, 1,40,000, 2.1L, 2.8L, 3.5L, 4.2L at years 1–6 — 1.4&times; Alternative 1's figures at every year, <em>not</em> double. Compare by future worth at (a) 8%, (b) 9%, and (c) 20%.</p></div>
 <div class="cfd">
 <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
   <line class="axis" x1="60" y1="110" x2="640" y2="110"/>
@@ -4782,16 +4792,16 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{CP/PP} - 1$$
   <text x="388.7" y="55.0" style="font-size:14px;font-weight:700">···</text>
   <text x="285.7" y="110.0" style="font-size:11px;fill:#5a5248">Clean gradient, G=Alt1:50k / Alt2:70k</text>
 </svg>
-<p class="cap">Alternative 1 costs Rs.3,50,000 now; Alternative 2 costs Rs.7,00,000 — exactly 2x Alt 1's cash flows throughout.</p>
+<p class="cap">Alternative 1 costs Rs.3,50,000 now; Alternative 2 costs Rs.7,00,000 — double Alt 1's <em>initial cost</em>, but only 1.4&times; Alt 1's cash flows throughout.</p>
 </div><div class="body">
-<p>Both alternatives are pure gradients — Alternative 1 (base Rs. 50,000, \(G=\)Rs. 50,000) and Alternative 2 (base Rs. 70,000, \(G=\)Rs. 70,000, since every figure is 1.4&times; Alternative 1's — check: Rs. 70,000/Rs. 50,000 = 1.4, and Rs. 4,20,000/Rs. 3,00,000... consistently 1.4&times; throughout). Use \(FW=-P(F/P,i,6)+\big[A_1+G(A/G,i,6)\big](F/A,i,6)\) at each rate:</p>
+<p>Both alternatives are pure gradients — Alternative 1 (base Rs. 50,000, \(G=\)Rs. 50,000) and Alternative 2 (base Rs. 70,000, \(G=\)Rs. 70,000 — every figure is 1.4&times; Alternative 1's: Rs. 70,000/Rs. 50,000 = 1.4, and Rs. 4,20,000/Rs. 3,00,000 = 1.4, consistently throughout). Use \(FW=-P(F/P,i,6)+\big[A_1+G(A/G,i,6)\big](F/A,i,6)\) at each rate:</p>
 <table><thead><tr><th>Rate</th><th>FW (Alt 1)</th><th>FW (Alt 2)</th></tr></thead><tbody>
 <tr><td>8%</td><td class="mono">Rs. 6,46,346</td><td class="mono">Rs. 5,71,641</td></tr>
 <tr><td>9%</td><td class="mono">Rs. 6,35,479</td><td class="mono">Rs. 5,37,479</td></tr>
 <tr><td>20%</td><td class="mono">Rs. 4,33,882</td><td class="mono"><strong>-Rs. 19,622</strong></td></tr>
 </tbody></table>
 <div class="ans"><span class="lbl">Answer</span><p><strong>Alternative 1 wins at all three rates</strong> — and the margin actually widens as the interest rate rises. Most strikingly, <strong>at 20%, Alternative 2 has a negative future worth</strong> — it doesn't even recover its initial Rs. 7,00,000 outlay in future-value terms, despite generating twice the raw cash of Alternative 1.</p></div>
-<div class="box k"><span class="lbl">Why doubling every cash flow doesn't double the answer</span><p>Alternative 2 doubles both the <em>cost</em> and the <em>returns</em> — but the cost is paid immediately (undiscounted) while the returns are spread out and heavily compounded-against at high rates. As \(i\) rises, that immediate, undiscounted cost looms larger relative to the now-more-heavily-discounted future returns, so "twice the cash flow" stops meaning "twice the value." This is exactly why scaling up an investment is never automatically better — always check the rate-sensitivity, not just the raw numbers.</p></div>
+<div class="box k"><span class="lbl">Why Alternative 2 performs worse: its cost is 2&times;, but its returns are only 1.4&times;</span><p>Alternative 2's initial cost is <em>double</em> Alternative 1's (Rs. 7,00,000 vs Rs. 3,50,000), but its annual returns are only <strong>1.4&times;</strong> Alternative 1's — a proportionally smaller scale-up on the benefit side than on the cost side. That gap alone would make Alternative 2 worse at any rate; higher interest rates then magnify the disadvantage further, since the immediate, undiscounted cost looms larger relative to the now-more-heavily-discounted future returns. This is exactly why scaling up an investment is never automatically better — always check <em>both</em> sides scale the same way, not just the raw numbers.</p></div>
 </div></div>
 
 <div class="prob">

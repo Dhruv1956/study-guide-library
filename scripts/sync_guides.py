@@ -36,7 +36,7 @@ GUIDES = [
         ),
     },
     {
-        "source": "~/Downloads/ALL_HTML/AI.html",
+        "source": "~/Desktop/AI/HTML explanations/AI.html",
         "dest": "guides/ai/intro-to-ai-guide.html",
         "accent_bg": "rgba(21,26,32,0.85)",
         "extra_css": "    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }\n",
@@ -52,6 +52,12 @@ GUIDES = [
         "dest": "guides/fml/ml-numerical-ia-prep.html",
         "accent_bg": "rgba(21,26,32,0.85)",
         "extra_css": "",
+    },
+    {
+        "source": "~/Desktop/EEFM/TVM_Complete_Solutions.html",
+        "dest": "guides/eefm/tvm-complete-solutions.html",
+        "accent_bg": "rgba(138,106,43,0.92)",
+        "extra_css": "    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }\n",
     },
 ]
 

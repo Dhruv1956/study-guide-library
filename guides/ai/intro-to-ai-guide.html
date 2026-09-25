@@ -196,6 +196,20 @@
   <a href="#p5-ac3-limits">6. Where AC-3 falls short</a>
   <a href="#p5-kconsistency">7. Generalising: k-Consistency</a>
 
+  <h3>Part 6 &middot; Logical Agents &amp; Propositional Logic</h3>
+  <a href="#p6-kba">1. Knowledge-Based Agents</a>
+  <a href="#p6-logical-agents">2. Logical Agents</a>
+  <a href="#p6-connectives">3. Connectives, equivalences &amp; basic rules</a>
+  <a href="#p6-wumpus">4. The Wumpus World</a>
+  <a href="#p6-entailment">5. Models and Entailment</a>
+  <a href="#p6-tt-entails">6. TT-ENTAILS? (model checking)</a>
+  <a href="#p6-resolution-rules">7. Literals, Clauses &amp; Resolution Rules</a>
+  <a href="#p6-cnf-resolution">8. CNF &amp; the Resolution Algorithm</a>
+  <a href="#p6-dpll">9. SAT and the DPLL Algorithm</a>
+  <a href="#p6-horn-fc">10. Horn Clauses &amp; Forward Chaining</a>
+  <a href="#p6-backward-chaining">11. Backward Chaining</a>
+  <a href="#p6-fc-vs-bc">12. Forward vs Backward Chaining</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full recap &amp; glossary</a>
 </nav>
@@ -203,10 +217,10 @@
 <div class="hero">
   <div class="eyebrow">Study Guide · Introduction to Artificial Intelligence</div>
   <h1>Agents, Search &amp; Local Search — Explained Slowly</h1>
-  <p class="lead">This guide walks through all five of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, and <em>Constraint Satisfaction Problems</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
+  <p class="lead">This guide walks through all six of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, <em>Constraint Satisfaction Problems</em>, and <em>Logical Agents &amp; Propositional Logic</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
   <div class="badges">
     <span class="badge">Dr Aishwarya S. — MIT Manipal</span>
-    <span class="badge">5 decks · 159 slides covered</span>
+    <span class="badge">6 decks · 257 slides covered</span>
     <span class="badge">Beginner pace</span>
   </div>
 </div>
@@ -223,7 +237,7 @@
   </p>
 </div>
 <div class="part-header">
-  <div class="ptag">Part 1 of 5</div>
+  <div class="ptag">Part 1 of 6</div>
   <h2>Agents &amp; Rationality</h2>
   <p>Before we can write any "intelligent" program, we need a precise, unambiguous way to talk about what a machine that "acts intelligently" even is. This part builds that vocabulary from a simple robot vacuum cleaner.</p>
 </div>
@@ -449,7 +463,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 2 of 5</div>
+  <div class="ptag">Part 2 of 6</div>
   <h2>Search Problems, Uninformed and Informed Search</h2>
   <p>Part 1 told us that a Goal-Based Agent needs to find a path from where it is to where it wants to be. Part 2 makes that idea completely precise, and builds up the family of algorithms — BFS, DFS, Uniform-Cost Search, Greedy Search, and A* — that actually find that path.</p>
 </div>
@@ -927,7 +941,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 3 of 5</div>
+  <div class="ptag">Part 3 of 6</div>
   <h2>Local Search Algorithms</h2>
   <p>Part 2 was all about finding the best <em>path</em> from start to goal. Part 3 asks: what if you don't care about the path at all — only about ending up in a good final configuration? That question leads to a completely different family of algorithms.</p>
 </div>
@@ -1359,7 +1373,7 @@
 </section>
 
 <div class="part-header">
-  <div class="ptag">Part 4 of 5</div>
+  <div class="ptag">Part 4 of 6</div>
   <h2>Adversarial Search &amp; Games</h2>
   <p>Every search algorithm in Part 2 assumed a passive environment — the world just sat there while you planned. This part drops that assumption: now there's an opponent, actively trying to make things go badly for you. That single change is what turns "search" into "game-playing," and it's the subject of this final part.</p>
 </div>
@@ -1775,7 +1789,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 5 of 5</div>
+  <div class="ptag">Part 5 of 6</div>
   <h2>Constraint Satisfaction Problems</h2>
   <p>Every search problem in Part 2 asked "what sequence of actions reaches a goal?" This part asks a subtly different question: forget the path entirely — what <em>assignment of values</em> satisfies every rule at once? That reframing is what makes Constraint Satisfaction Problems (CSPs) different from ordinary search, and it turns out to be exactly the right lens for scheduling, puzzles, and map colouring alike.</p>
 </div>
@@ -2177,6 +2191,823 @@
 </section>
 
 
+
+<div class="part-header">
+  <div class="ptag">Part 6 of 6</div>
+  <h2>Logical Agents &amp; Propositional Logic</h2>
+  <p>Every previous part built agents that search, optimise, or satisfy constraints — but none of them <em>reasoned</em> in the human sense of drawing new conclusions from what they already know. This part builds that capability from the ground up: an agent that stores facts as logical sentences, and can derive brand-new true facts purely by the shape of those sentences, using five different algorithms for doing exactly that.</p>
+</div>
+
+<section class="slide" id="p6-kba">
+<span class="slide-tag">Slides 1–7</span>
+<h3>1. Knowledge-Based Agents</h3>
+<div class="an">
+<span class="box-label">The question this part answers</span>
+<p>How does an agent combine what it has sensed <em>now</em> with what it knows <em>in general</em> to figure out what to do?</p>
+</div>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>Knowledge-Based Agents (KBAs) are agents that explicitly store knowledge about the world in a <strong>Knowledge Base (KB)</strong> and use an <strong>inference mechanism</strong> to derive new knowledge and decide actions.</p>
+<p>The Knowledge Base is a set of sentences in some formal language, known by a knowledge-based agent. The agent updates it with percepts and queries it to choose actions. The knowledge could be stored in logic, probability distributions, semantic networks, etc.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Three examples, across three different kinds of KB</span>
+<ol>
+<li><strong>An agent navigating a maze</strong> (a logical KBA) — KB: propositional logic sentences describing which cells have obstacles, which are safe/unsafe, which give reward/penalty. Inference: logical entailment (model checking, resolution) to deduce safe squares.</li>
+<li><strong>A medical diagnosis system with Bayesian Networks</strong> (a probabilistic KBA) — KB: conditional probability tables (CPTs). Inference: Bayes' theorem, updating disease probabilities given symptoms.</li>
+<li><strong>A plant identification assistant</strong> (a semantic-network-based KBA) — KB: a semantic network representing plant categories and their properties (typically a directed graph, concepts as vertices, relations as edges). Inference: graph traversal and relation chaining.</li>
+</ol>
+</div>
+
+<div class="def">
+<span class="box-label">The five functions used in a Knowledge-Based Agent program</span>
+<ul>
+<li><strong>TELL</strong> — adds new sentences to the knowledge base.</li>
+<li><strong>ASK</strong> — queries what is known.</li>
+<li><strong>MAKE-PERCEPT-SENTENCE</strong> — constructs a sentence asserting that the agent perceived the given percept at the given time.</li>
+<li><strong>MAKE-ACTION-QUERY</strong> — constructs a sentence asking what action should be done at the current time.</li>
+<li><strong>MAKE-ACTION-SENTENCE</strong> — constructs a sentence asserting that the chosen action was executed.</li>
+</ul>
+</div>
+
+<div class="def">
+<span class="box-label">The Knowledge-Based Agent program</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.6;"><b>function</b> KB-AGENT(percept) <b>returns</b> an action
+    <b>persistent</b>: KB, a knowledge base
+                t, a counter indicating time (initially 0)
+    TELL(KB, MAKE-PERCEPT-SENTENCE(percept, t))
+    action &larr; ASK(KB, MAKE-ACTION-QUERY(t))
+    TELL(KB, MAKE-ACTION-SENTENCE(action, t))
+    t &larr; t+1
+    <b>return</b> action</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Every cycle: tell the KB what was just perceived, ask the KB what to do, tell the KB what was actually done, advance the clock. The entire "intelligence" of the agent lives inside how ASK is implemented — which is exactly what the rest of this part is about.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-logical-agents">
+<span class="slide-tag">Slide 8</span>
+<h3>2. Logical Agents</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p><strong>Logical agents</strong> are knowledge-based agents that store and reason with knowledge in <strong>formal logic.</strong></p>
+</div>
+<div class="key">
+<span class="box-label">Why logic?</span>
+<ul style="margin:4px 0 0">
+<li><strong>Clarity</strong> — formal syntax &amp; semantics leave no room for ambiguity about what a sentence means.</li>
+<li><strong>Supports valid reasoning</strong> — you can mechanically guarantee that if the premises are true, the conclusion must be true too.</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="p6-connectives">
+<span class="slide-tag">Slides 9–11</span>
+<h3>3. Logical Connectives, Equivalences, and Basic Inference Rules</h3>
+<div class="def">
+<span class="box-label">Truth tables for the five logical connectives</span>
+<table class="grid" style="font-size:.9em">
+<tr><th>P</th><th>Q</th><th>&not;P</th><th>P&and;Q</th><th>P&or;Q</th><th>P&rArr;Q</th><th>P&hArr;Q</th></tr>
+<tr><td>true</td><td>true</td><td>false</td><td>true</td><td>true</td><td>true</td><td>true</td></tr>
+<tr><td>true</td><td>false</td><td>false</td><td>false</td><td>true</td><td>false</td><td>false</td></tr>
+<tr><td>false</td><td>true</td><td>true</td><td>false</td><td>true</td><td>true</td><td>false</td></tr>
+<tr><td>false</td><td>false</td><td>true</td><td>false</td><td>false</td><td>true</td><td>true</td></tr>
+</table>
+</div>
+
+<div class="def">
+<span class="box-label">Standard logical equivalences — worth having memorised</span>
+<table class="grid" style="font-size:.88em">
+<tr><td>Commutativity of &and;</td><td>\(P\land Q \equiv Q\land P\)</td></tr>
+<tr><td>Commutativity of &or;</td><td>\(P\lor Q \equiv Q\lor P\)</td></tr>
+<tr><td>Associativity of &and;</td><td>\((P\land Q)\land R \equiv P\land(Q\land R)\)</td></tr>
+<tr><td>Associativity of &or;</td><td>\((P\lor Q)\lor R \equiv P\lor(Q\lor R)\)</td></tr>
+<tr><td>Double-Negation Elimination</td><td>\(\neg(\neg P) \equiv P\)</td></tr>
+<tr><td>Contraposition</td><td>\((P\Rightarrow Q) \equiv (\neg Q\Rightarrow\neg P)\)</td></tr>
+<tr><td>Implication Elimination</td><td>\((P\Rightarrow Q) \equiv (\neg P\lor Q)\)</td></tr>
+<tr><td>Biconditional Elimination</td><td>\((P\Leftrightarrow Q) \equiv \big((P\Rightarrow Q)\land(Q\Rightarrow P)\big)\)</td></tr>
+<tr><td>De Morgan</td><td>\(\neg(P\land Q) \equiv \neg P\lor\neg Q\)</td></tr>
+<tr><td>De Morgan</td><td>\(\neg(P\lor Q) \equiv \neg P\land\neg Q\)</td></tr>
+<tr><td>Distributivity of &and; over &or;</td><td>\(P\land(Q\lor R) \equiv (P\land Q)\lor(P\land R)\)</td></tr>
+<tr><td>Distributivity of &or; over &and;</td><td>\(P\lor(Q\land R) \equiv (P\lor Q)\land(P\lor R)\)</td></tr>
+</table>
+</div>
+
+<div class="key">
+<span class="box-label">Three basic inference rules — the building blocks for everything later in this part</span>
+<p><strong>And-Elimination:</strong> \(P\land Q \Rightarrow P\) and \(P\land Q\Rightarrow Q\)</p>
+<p><strong>Modus Ponens:</strong> \((P\Rightarrow Q)\land P \Rightarrow Q\)</p>
+<p><strong>Unit Resolution Rule:</strong> \((P\lor Q)\land\neg P \Rightarrow Q\)</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Keep an eye on Unit Resolution in particular — Section 7 shows Modus Ponens is really just a special case of it, and it becomes the engine behind the entire Resolution algorithm in Section 8.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-wumpus">
+<span class="slide-tag">Slides 12–17</span>
+<h3>4. The Wumpus World</h3>
+<p>The running example for this entire part — a small, fully-specified world used to make every abstract idea (KB, inference, entailment) completely concrete.</p>
+
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 400 400" width="100%" style="max-width:360px;">
+<g stroke="#2b2620" stroke-width="1.5" fill="none">
+<rect x="10" y="10" width="380" height="380"/>
+<line x1="105" y1="10" x2="105" y2="390"/><line x1="200" y1="10" x2="200" y2="390"/><line x1="295" y1="10" x2="295" y2="390"/>
+<line x1="10" y1="105" x2="390" y2="105"/><line x1="10" y1="200" x2="390" y2="200"/><line x1="10" y1="295" x2="390" y2="295"/>
+</g>
+<g font-family="EB Garamond" font-size="15" font-weight="700" text-anchor="middle">
+<text x="342" y="55">Pit</text>
+<text x="57" y="150">Wumpus</text><text x="152" y="150">Gold</text><text x="247" y="150">Pit</text>
+<text x="247" y="340">Pit</text>
+</g>
+<text x="57" y="370" font-family="EB Garamond" font-size="13" font-weight="700" fill="#a1522f">START</text>
+<g font-family="'Fira Code',monospace" font-size="9" fill="#8a8578">
+<text x="18" y="25">1,4</text><text x="113" y="25">2,4</text><text x="208" y="25">3,4</text><text x="303" y="25">4,4</text>
+<text x="18" y="120">1,3</text><text x="113" y="120">2,3</text><text x="208" y="120">3,3</text><text x="303" y="120">4,3</text>
+<text x="18" y="215">1,2</text><text x="113" y="215">2,2</text><text x="208" y="215">3,2</text><text x="303" y="215">4,2</text>
+<text x="18" y="310">1,1</text><text x="113" y="310">2,1</text><text x="208" y="310">3,1</text><text x="303" y="310">4,1</text>
+</g>
+</svg>
+</div>
+
+<div class="def">
+<span class="box-label">The setup</span>
+<ul>
+<li>The Wumpus World is a cave consisting of rooms connected by passageways.</li>
+<li>One room contains the <strong>Wumpus</strong>, a beast that eats anyone who enters its room.</li>
+<li>The agent can shoot the Wumpus with an arrow — it has only one arrow.</li>
+<li>Some rooms contain bottomless <strong>pits</strong> that trap anyone who enters (except the Wumpus).</li>
+<li>There's a heap of <strong>gold</strong> in one room, which the agent aims to collect and climb out with.</li>
+</ul>
+</div>
+
+<div class="ex">
+<span class="box-label">PEAS description</span>
+<p><strong>Performance Measure:</strong> +1000 for climbing out with the gold; &minus;1000 for falling in a pit or being eaten; &minus;1 for each action taken; &minus;10 for using the arrow. Game ends when the agent dies or climbs out.</p>
+<p><strong>Environment:</strong> a 4&times;4 grid of rooms, walled in. Agent starts at [1,1], facing east. Gold and Wumpus locations are chosen uniformly at random from the non-start squares. Every other square is a pit independently with probability 0.2.</p>
+<p><strong>Actuators:</strong> <em>Forward, Turn Left, Turn Right</em> (agent dies entering a pit or live-Wumpus square; bumping a wall while moving forward does nothing). <em>Grab</em> picks up gold in the current square. <em>Shoot</em> fires the single arrow in a straight line until it hits the Wumpus or a wall. <em>Climb out</em> only works from [1,1].</p>
+<p><strong>Sensors:</strong> <em>Stench</em> in squares orthogonally adjacent to the Wumpus; <em>Breeze</em> adjacent to a pit; <em>Glitter</em> in the gold's square; <em>Bump</em> on walking into a wall; <em>Scream</em> (heard anywhere) when the Wumpus is killed.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Percepts, as a list of 5 symbols</span>
+<p>Percepts are given to the agent program as a list of five bits, corresponding to Stench, Breeze, Glitter, Bump, Scream in that order.</p>
+<div class="warn" style="margin-top:10px">
+<span class="box-label">A source inconsistency worth flagging</span>
+<p>The original slide's worked example says "if there is a Stench and a Breeze, but no Glitter, Bump or Scream" — but then gives the percept vector as \([\text{Stench}, \text{None}, \text{None}, \text{Bump}, \text{None}]\), which actually encodes Stench and <strong>Bump</strong> (not Breeze), with no Breeze/Glitter/Scream. The prose and the vector don't match. The vector itself is unambiguous, so it's used as the reference above: <strong>Stench and Bump present, nothing else.</strong></p>
+</div>
+</div>
+
+<div class="def">
+<span class="box-label">Notation for the Knowledge Base</span>
+<p>For every location \([x,y]\): \(P_{x,y}\) is true if there's a pit there; \(W_{x,y}\) true if the Wumpus is there (alive or dead); \(B_{x,y}\) true if there's a Breeze there; \(S_{x,y}\) true if there's a Stench there; \(L_{x,y}\) true if the agent is there.</p>
+</div>
+
+<div class="def">
+<span class="box-label">The Knowledge Base — the rules of the game</span>
+<p>There is no pit in [1,1]: \(R_1:\neg P_{11}\)</p>
+<p>A square is breezy iff there's a pit in a neighbouring square: \(R_2: B_{11}\Leftrightarrow P_{12}\lor P_{21}\), &nbsp; \(R_3: B_{12}\Leftrightarrow P_{11}\lor P_{22}\lor P_{13}\), and so on.</p>
+<p>A square has stench iff there's a Wumpus in a neighbouring square: \(R_4: S_{11}\Leftrightarrow W_{12}\lor W_{21}\), &nbsp; \(R_5: S_{12}\Leftrightarrow W_{11}\lor W_{22}\lor W_{13}\), and so on.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked inference — deriving ¬P₂₁ ("there is no pit in [2,1]")</span>
+<p>Applying <strong>biconditional elimination</strong> on \(R_2\):</p>
+<p>\(R_6: (B_{11}\Rightarrow P_{12}\lor P_{21}) \land (P_{12}\lor P_{21}\Rightarrow B_{11})\)</p>
+<p>Applying <strong>and-elimination</strong> to \(R_6\):</p>
+<p>\(R_7: P_{12}\lor P_{21}\Rightarrow B_{11}\)</p>
+<p>Using the <strong>contrapositive</strong> equivalence:</p>
+<p>\(R_8: \neg B_{11}\Rightarrow \neg(P_{12}\lor P_{21})\)</p>
+<p>Applying <strong>modus ponens</strong> on \(R_8\) and the percept \(\neg B_{11}\) (no breeze was sensed at the start):</p>
+<p>\(R_9: \neg(P_{12}\lor P_{21})\)</p>
+<p>Applying <strong>De Morgan's law</strong> on \(R_9\):</p>
+<p>\(R_{10}: \neg P_{12}\land\neg P_{21}\)</p>
+<p>Applying <strong>and-elimination</strong> on \(R_{10}\):</p>
+<p style="text-align:center;font-weight:700">\(R_{11}: \neg P_{21}\)</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Six inference rules, chained together, turn one sensed fact (no breeze at the start) into a guarantee that [2,1] is pit-free — entirely mechanical, no guessing.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The full walkthrough — five time steps, from start to climbing out with the gold</span>
+<table class="grid" style="font-size:.82em">
+<tr><th>t</th><th>KB gains</th><th>Percept(s)</th><th>New inferences</th><th>Action(s)</th></tr>
+<tr><td>0</td><td>Rules of the game</td><td>&not;B₁₁, &not;S₁₁</td><td>&not;P₁₂, &not;P₂₁, &not;W₁₂, &not;W₂₁</td><td>Forward ([2,1])</td></tr>
+<tr><td>1</td><td>+ &not;B₁₁,&not;S₁₁,&not;P₁₂,&not;P₂₁,&not;W₁₂,&not;W₂₁</td><td>B₂₁, &not;S₂₁</td><td>P₃₁&or;P₂₂, &not;W₃₁, &not;W₂₂</td><td>Turn Left×2, Forward([1,1]); Turn Right, Forward([1,2])</td></tr>
+<tr><td>2</td><td>+ B₂₁,&not;S₂₁,P₃₁&or;P₂₂,&not;W₃₁,&not;W₂₂</td><td>&not;B₁₂, S₁₂</td><td>W₁₃, &not;P₂₂, &not;P₁₃, P₃₁</td><td>Turn Right, Forward([2,2])</td></tr>
+<tr><td>3</td><td>+ &not;B₁₂,S₁₂,W₁₃,&not;P₂₂,&not;P₁₃,P₃₁</td><td>&not;B₂₂, &not;S₂₂</td><td>&not;P₂₃, &not;W₂₃, &not;P₃₂, &not;W₃₂</td><td>Turn Left, Forward([2,3])</td></tr>
+<tr><td>4</td><td>+ &not;B₂₂,&not;S₂₂,&not;P₂₃,&not;W₂₃,&not;P₃₂,&not;W₃₂</td><td>B₂₃, S₂₃, G₂₃</td><td>P₃₃&or;P₂₄&or;P₁₃</td><td>Grab; Turn Left×2, Forward([2,2]); Turn Right, Forward([1,2]); Turn Left, Forward([1,1]); Climb out</td></tr>
+</table>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">G₂₃ (Glitter at [2,3]) at \(t=4\) is exactly the signal that triggers Grab — every other percept up to that point has been used purely to keep proving squares safe, one inference chain like the ¬P₂₁ derivation above at a time.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-entailment">
+<span class="slide-tag">Slides 24–35</span>
+<h3>5. Models and Entailment</h3>
+<div class="def">
+<span class="box-label">Definition — Model</span>
+<p>A <strong>model</strong> is an assignment of a truth value to every propositional symbol (a "possible world"). Example: \(P\): "Today is Monday", \(Q\): "There is a quiz scheduled for today." \(\{P=\text{true}, Q=\text{false}\}\) is a model.</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Note: with \(n\) propositional symbols, the number of possible models is \(2^n\).</p>
+</div>
+
+<div class="def">
+<span class="box-label">Definition — Entailment</span>
+<p>A sentence \(P\) <strong>entails</strong> a sentence \(Q\) (written \(P\models Q\)) if in every model in which \(P\) is true, \(Q\) is also true.</p>
+<p>Equivalently: \(P\models Q\) iff \(P\Rightarrow Q\) is a <strong>tautology</strong> (always true, in every possible model).</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Example 1</span>
+<p>\(P\): "It is raining." \(Q\): "It is sunny." \(P\lor Q\): "It is raining OR it is sunny." Claim: \(P\models P\lor Q\).</p>
+<table class="grid" style="font-size:.88em">
+<tr><th>P</th><th>Q</th><th>P&or;Q</th><th>P&rArr;P&or;Q</th></tr>
+<tr><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+<tr><td>F</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>F</td><td>F</td><td>F</td><td>T</td></tr>
+</table>
+<p>In every model where \(P\) is true, \(P\lor Q\) is also true. Hence \(P\models P\lor Q\).</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Example 2</span>
+<p>KB: \((P\land\neg Q)\Rightarrow R\), \(P\), \(\neg Q\). Query \(\alpha\): \(R\). Claim: \(KB\models\alpha\).</p>
+<table class="grid" style="font-size:.82em">
+<tr><th>P</th><th>Q</th><th>R</th><th>&not;Q</th><th>(P&and;&not;Q)&rArr;R</th><th>KB</th><th>KB&rArr;R</th></tr>
+<tr><td>T</td><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+<tr><td>T</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+<tr><td>T</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td></tr>
+<tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+<tr><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+<tr><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+<tr><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+</table>
+<p>KB is true in only one row (row 3), and \(R\) is true there too. In every model where KB is true, \(R\) is also true. Hence \(KB\models R\).</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Example 3 — entailment isn't just for propositional variables</span>
+<p>KB: "All men are mortal", "Socrates is a man." \(\alpha\): "Socrates is mortal."</p>
+<p>\(\big[\forall x\, \text{Man}(x)\Rightarrow\text{Mortal}(x)\big] \land \text{Man}(\text{Socrates}) \models \text{Mortal}(\text{Socrates})\)</p>
+<p>In every model where KB is true, \(\alpha\) is also true — so \(KB\models\alpha\).</p>
+</div>
+
+<div class="warn">
+<span class="box-label">Non-examples — entailment is about structure, not "meaning"</span>
+<p>\(P\): "2 is odd." \(Q\): "Paris is in France." \(P\) does <strong>not</strong> entail \(Q\), even though \(P\Rightarrow Q\) happens to be (vacuously) true in the "usual" world — there's no <em>necessary</em> logical link forcing \(Q\) whenever \(P\) holds.</p>
+<p>\(P\): "\(n\) is divisible by 4." \(Q\): "\(n\) is even." \(P\) does not entail \(Q\) either, even though \(P\Rightarrow Q\) is true under the usual axioms of arithmetic — entailment can't "know" those axioms; it only cares about whether the sentence structure forces the conclusion.</p>
+<p><strong>Entailment does not care what the words/predicates in the sentences "actually mean."</strong> It only cares about the structural pattern. \(KB\models\alpha\) means: for every possible model — even any bizarre reinterpretation you could dream up — if that model satisfies KB, it is <em>forced</em> to also satisfy \(\alpha\). Equivalently: \(KB\models\alpha\) if and only if there is no model that satisfies KB but fails to satisfy \(\alpha\).</p>
+<p>Entailment only exists when there is a <strong>necessary logical link</strong>. Otherwise, changing interpretations (models) will break it.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The formal, set-theoretic view — and why it matters</span>
+<p>Let \(M(\alpha)\) and \(M(\beta)\) be the sets of models in which \(\alpha\) and \(\beta\) are true, respectively. Then:</p>
+<p style="text-align:center;font-weight:700">\(\alpha\models\beta\) &nbsp;if and only if&nbsp; \(M(\alpha)\subseteq M(\beta)\)</p>
+<p><strong>Model checking</strong> is exactly this: a way of checking whether \(\alpha\models\beta\) by checking whether \(M(\alpha)\subseteq M(\beta)\) — precisely what every truth table above has been doing, one row (one model) at a time.</p>
+</div>
+
+<div class="warn">
+<span class="box-label">The problem with brute-force model checking</span>
+<p>To check \(KB\models\alpha\), where KB and \(\alpha\) together contain \(n\) propositional symbols: an algorithm that generates and <em>stores</em> all \(2^n\) possible models to check each one takes \(O(n\cdot2^n)\) space. The <strong>TT-ENTAILS?</strong> algorithm (next section) is a recursive algorithm that needs only \(O(n)\) space, by generating models one at a time via a depth-first search over the binary tree of models.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-tt-entails">
+<span class="slide-tag">Slides 36–46</span>
+<h3>6. TT-ENTAILS? — Deciding Entailment by Model Checking</h3>
+<div class="def">
+<span class="box-label">Pseudocode</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.83em;line-height:1.6;"><b>function</b> TT-ENTAILS?(KB, &alpha;) <b>returns</b> true or false
+    symbols &larr; a list of the proposition symbols in KB and &alpha;
+    <b>return</b> TT-CHECK-ALL(KB, &alpha;, symbols, {})
+
+<b>function</b> TT-CHECK-ALL(KB, &alpha;, symbols, model) <b>returns</b> true or false
+    <b>if</b> EMPTY?(symbols) <b>then</b>
+        <b>if</b> PL-TRUE?(KB, model) <b>then return</b> PL-TRUE?(&alpha;, model)
+        <b>else return</b> true   <span class="cm" style="opacity:.75">(When KB is false, always return true)</span>
+    <b>else</b>
+        P &larr; FIRST(symbols)
+        rest &larr; REST(symbols)
+        <b>return</b> (TT-CHECK-ALL(KB, &alpha;, rest, model &cup; {P=true})
+               <b>and</b>
+               TT-CHECK-ALL(KB, &alpha;, rest, model &cup; {P=false}))</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">The recursion picks one symbol at a time, branches on true/false, and only actually evaluates KB and &alpha; once every symbol has a value (the base case). Note the deliberately generous base case: if KB turns out to be false in that particular complete model, the model is irrelevant to entailment, so the function just returns true and lets the other branch carry the real work.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 1 — does A∧B entail A?</span>
+<p>\(KB=A\land B\), \(\alpha=A\). \(\text{symbols}=[A,B]\).</p>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p><strong>Branch 1</strong> — TT-CHECK-ALL(KB,&alpha;,[B],{A=true}):</p>
+<p>&nbsp;&nbsp;{A=true,B=true}: PL-TRUE?(KB)=T&and;T=true &rarr; return PL-TRUE?(&alpha;)=A=<strong>true</strong></p>
+<p>&nbsp;&nbsp;{A=true,B=false}: PL-TRUE?(KB)=T&and;F=false &rarr; KB false, return <strong>true</strong></p>
+<p>&nbsp;&nbsp;true AND true = <strong>true</strong></p>
+<p><strong>Branch 2</strong> — TT-CHECK-ALL(KB,&alpha;,[B],{A=false}):</p>
+<p>&nbsp;&nbsp;{A=false,B=true}: PL-TRUE?(KB)=F&and;T=false &rarr; KB false, return <strong>true</strong></p>
+<p>&nbsp;&nbsp;{A=false,B=false}: PL-TRUE?(KB)=F&and;F=false &rarr; KB false, return <strong>true</strong></p>
+<p>&nbsp;&nbsp;true AND true = <strong>true</strong></p>
+<p><strong>Root:</strong> true (Branch 1) AND true (Branch 2) = <strong>true</strong></p>
+</div>
+<span class="box-label" style="display:block;">So TT-ENTAILS?(A∧B, A) returns true, that is, A∧B ⊨ A.</span>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 2 — does A∨B entail A?</span>
+<p>\(KB=A\lor B\), \(\alpha=A\). \(\text{symbols}=[A,B]\).</p>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p><strong>Branch 1</strong> — TT-CHECK-ALL(KB,&alpha;,[B],{A=true}):</p>
+<p>&nbsp;&nbsp;{A=true,B=true}: PL-TRUE?(KB)=T&or;T=true &rarr; return PL-TRUE?(&alpha;)=A=<strong>true</strong></p>
+<p>&nbsp;&nbsp;{A=true,B=false}: PL-TRUE?(KB)=T&or;F=true &rarr; return PL-TRUE?(&alpha;)=A=<strong>true</strong></p>
+<p>&nbsp;&nbsp;true AND true = <strong>true</strong></p>
+<p><strong>Branch 2</strong> — TT-CHECK-ALL(KB,&alpha;,[B],{A=false}):</p>
+<p>&nbsp;&nbsp;{A=false,B=true}: PL-TRUE?(KB)=F&or;T=true &rarr; return PL-TRUE?(&alpha;)=A=<strong>false</strong></p>
+<p>&nbsp;&nbsp;{A=false,B=false}: PL-TRUE?(KB)=F&or;F=false &rarr; KB false, return <strong>true</strong></p>
+<p>&nbsp;&nbsp;false AND true = <strong>false</strong></p>
+<p><strong>Root:</strong> true (Branch 1) AND false (Branch 2) = <strong>false</strong></p>
+</div>
+<span class="box-label" style="display:block;">So TT-ENTAILS?(A∨B, A) returns false, that is, A∨B ⊭ A.</span>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Makes sense: in the model {A=false, B=true}, A∨B is true but A itself is false — exactly the one "escaping" model that breaks entailment, and exactly the branch that returns false above.</p>
+</div>
+
+<div class="key">
+<span class="box-label">What the algorithm is really computing, and its cost</span>
+<p>TT-ENTAILS?(KB,\(\alpha\)) returns the truth value of: for every model \(m\), \(m\in M(KB)\Rightarrow m\in M(\alpha)\) — that is, \(M(KB)\subseteq M(\alpha)\), which is exactly \(KB\models\alpha\).</p>
+<p>The time complexity of TT-ENTAILS? is \(O(2^n)\), where \(n\) is the total number of propositional symbols in KB and \(\alpha\) — it still has to branch all the way down to a complete model before it can conclude anything.</p>
+</div>
+
+<div class="warn">
+<span class="box-label">The real weakness — TT-ENTAILS? can't detect failure early</span>
+<p>In the \(A\land B\models A\) trace above: once \(A=\text{false}\) is assigned, \(KB=A\land B\) is <em>already</em> false, whatever \(B\) turns out to be. But the algorithm still branches on \(B\) and evaluates both leaves, only to find "KB false, return true" both times — wasted work. In general, the algorithm always builds out every branch and checks all \(2^n\) complete models before answering, because it only evaluates KB once every symbol has a value, and never looks at KB with a partial model.</p>
+<p>What's needed is a <strong>cheap test on a partial model</strong>: "is KB already false, or already true?" <strong>Conjunctive Normal Form (CNF)</strong> makes this test trivial — built from literals and clauses, which is exactly where Section 7 begins.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-resolution-rules">
+<span class="slide-tag">Slides 48–56</span>
+<h3>7. Literals, Clauses, and the Resolution Rules</h3>
+<div class="def">
+<span class="box-label">Definitions</span>
+<p>A <strong>literal</strong> is either an atomic sentence (a <em>positive</em> literal) or a negated atomic sentence (a <em>negative</em> literal). E.g. \(P,Q,W_{31}\) are positive; \(\neg P,\neg Q,\neg P_{12}\) are negative.</p>
+<p>A <strong>clause</strong> is a disjunction of literals. E.g. \(P\lor Q\lor R\), &nbsp; \(P\lor Q\lor\neg R\lor S\), &nbsp; \(P_{13}\lor P_{22}\).</p>
+</div>
+
+<div class="key">
+<span class="box-label">The Unit Resolution Rule</span>
+<p>\[ (l_1\lor l_2\lor\cdots\lor l_k)\land m \models l_1\lor\cdots\lor l_{i-1}\lor l_{i+1}\lor\cdots\lor l_k \]</p>
+<p>where each \(l_j\) and \(m\) are literals, and \(l_i\) and \(m\) are <strong>complementary</strong> (negations of each other).</p>
+<div class="an" style="margin-top:10px">
+<span class="box-label">Modus Ponens is just a special case</span>
+<p>\((P\Rightarrow Q)\land P\models Q\) is exactly \((\neg P\lor Q)\land P\models Q\) — a unit resolution where the "clause" is \(\neg P\lor Q\) (using Implication Elimination) and the single literal is \(P\), complementary to \(\neg P\).</p>
+</div>
+</div>
+
+<div class="key">
+<span class="box-label">The Full Resolution Rule</span>
+<p>\[ (l_1\lor\cdots\lor l_k)\land(m_1\lor\cdots\lor m_n) \models l_1\lor\cdots\lor l_{i-1}\lor l_{i+1}\lor\cdots\lor l_k\lor m_1\lor\cdots\lor m_{j-1}\lor m_{j+1}\lor\cdots\lor m_n \]</p>
+<p>where \(l_i\) and \(m_j\) are complementary literals. In words: take two clauses, find one complementary pair of literals between them, and the <strong>resolvent</strong> is everything else from both clauses, OR'd together.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked example — proving the resolution rule directly</span>
+<p>\(k=2\), \(n=2\): \((P\lor Q)\land(\neg P\lor R) \models Q\lor R\).</p>
+<p><strong>Proof.</strong> Suppose \((P\lor Q)\land(\neg P\lor R)\) is true — so both \(P\lor Q\) and \(\neg P\lor R\) are true. To show: \(Q\lor R\) is true.</p>
+<p><strong>Case 1:</strong> \(P\) is false. Then since \(P\lor Q\) is true, \(Q\) must be true.</p>
+<p><strong>Case 2:</strong> \(P\) is true. Then since \(\neg P\lor R\) is true, \(R\) must be true.</p>
+<p>Hence one of \(Q,R\) is true — so \(Q\lor R\) is true. &#8718;</p>
+<table class="grid" style="font-size:.82em;margin-top:10px">
+<tr><th>P</th><th>Q</th><th>R</th><th>P&or;Q</th><th>&not;P&or;R</th><th>(P&or;Q)&and;(&not;P&or;R)</th><th>Q&or;R</th><th>&hArr;(Q&or;R)</th></tr>
+<tr><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+<tr><td>T</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td><td>F</td><td>T</td></tr>
+<tr><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+<tr><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+<tr><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td></tr>
+</table>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Verified by model checking (truth table): the implication holds in all 8 rows — confirming the proof by cases above.</p>
+</div>
+
+<div class="warn">
+<span class="box-label">A trap worth knowing — can you resolve two complementary pairs at once?</span>
+<p>Does \((P\lor Q\lor R)\land(\neg P\lor\neg Q\lor S) \models R\lor S\)? <strong>No.</strong> In the model \(\{P=\text{true},Q=\text{false},R=\text{false},S=\text{false}\}\): the left side is true, but \(R\lor S\) is false. <strong>Resolution only ever removes exactly one complementary pair at a time</strong> — trying to cancel both \(P/\neg P\) and \(Q/\neg Q\) simultaneously is not a valid inference.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Why any of this matters — the fact the whole Resolution algorithm rests on</span>
+<p style="text-align:center;font-weight:700">Every sentence in propositional logic is logically equivalent to a conjunction of clauses.</p>
+<p>Once every sentence can be rewritten this way, resolution — a single, simple, mechanical rule — is the <em>only</em> inference rule you ever need to decide entailment. That rewriting is called Conjunctive Normal Form, covered next.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-cnf-resolution">
+<span class="slide-tag">Slides 57–66</span>
+<h3>8. Conjunctive Normal Form &amp; the Resolution Algorithm</h3>
+<div class="def">
+<span class="box-label">Definition — Conjunctive Normal Form (CNF)</span>
+<p>A sentence expressed as a <strong>conjunction of clauses</strong> is said to be in CNF. E.g. \((P\lor Q\lor R)\land(R\lor\neg S)\), &nbsp; \((\neg P\lor Q)\land(P\lor R)\land(\neg R\lor S)\), &nbsp; \(P\land(Q\lor\neg R)\).</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 1 — converting a biconditional to CNF</span>
+<p>Convert \(B_{11}\Leftrightarrow P_{12}\lor P_{21}\) (recall this is \(R_2\) from the Wumpus World) into CNF.</p>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p><strong>Biconditional Elimination:</strong> \((B_{11}\Rightarrow P_{12}\lor P_{21})\land(P_{12}\lor P_{21}\Rightarrow B_{11})\)</p>
+<p><strong>Converting conditionals to disjunctions:</strong> \((\neg B_{11}\lor(P_{12}\lor P_{21}))\land(\neg(P_{12}\lor P_{21})\lor B_{11})\)</p>
+<p><strong>De Morgan's law:</strong> \((\neg B_{11}\lor P_{12}\lor P_{21})\land\big((\neg P_{12}\land\neg P_{21})\lor B_{11}\big)\)</p>
+<p><strong>Right Distributive law:</strong></p>
+</div>
+<p style="text-align:center;font-weight:700">\((\neg B_{11}\lor P_{12}\lor P_{21}) \land (\neg P_{12}\lor B_{11}) \land (\neg P_{21}\lor B_{11})\)</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 2 — a messier sentence</span>
+<p>Convert \(\neg(P\Rightarrow Q)\lor(Q\land R\land\neg S)\) into CNF.</p>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p><strong>Conditional to disjunction:</strong> \(\neg(\neg P\lor Q)\lor(Q\land R\land\neg S)\)</p>
+<p><strong>De Morgan's law:</strong> \((P\land\neg Q)\lor(Q\land R\land\neg S)\)</p>
+<p><strong>Left Distributive law:</strong> \(\big((P\land\neg Q)\lor Q\big)\land\big((P\land\neg Q)\lor R\big)\land\big((P\land\neg Q)\lor\neg S\big)\)</p>
+<p><strong>Right Distributive law:</strong> \((P\lor Q)\land(\neg Q\lor Q)\land(P\lor R)\land(\neg Q\lor R)\land(P\lor\neg S)\land(\neg Q\lor\neg S)\)</p>
+<p>Since \(\neg Q\lor Q\equiv\mathbf{T}\), that clause drops out:</p>
+</div>
+<p style="text-align:center;font-weight:700">\((P\lor Q)\land(P\lor R)\land(\neg Q\lor R)\land(P\lor\neg S)\land(\neg Q\lor\neg S)\)</p>
+</div>
+
+<div class="def">
+<span class="box-label">Validity and Satisfiability</span>
+<p>A sentence is <strong>valid</strong> if it is true in all models — valid sentences are called <strong>tautologies.</strong> A sentence is <strong>satisfiable</strong> if it is true in at least one model.</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Note: \(P\) is valid iff \(\neg P\) is not satisfiable; \(P\) is satisfiable iff \(\neg P\) is not valid.</p>
+</div>
+
+<div class="proof" style="background:var(--cream2);border:1px solid var(--rule);border-radius:8px;padding:14px 20px;">
+<span class="box-label" style="color:var(--blue-line)">The chain that makes resolution-based refutation work</span>
+<p>\(\alpha\models\beta\)</p>
+<p>\(\Leftrightarrow\ \alpha\Rightarrow\beta\) is valid.</p>
+<p>\(\Leftrightarrow\ \neg(\alpha\Rightarrow\beta)\) is not satisfiable.</p>
+<p>\(\Leftrightarrow\ \neg(\neg\alpha\lor\beta)\) is not satisfiable.</p>
+<p style="text-align:center;font-weight:700">\(\Leftrightarrow\ \alpha\land\neg\beta\) is not satisfiable. &nbsp;<span class="small" style="font-weight:400">(proof by contradiction)</span></p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">This is the entire strategy behind PL-RESOLUTION: to prove \(KB\models\alpha\), show that \(KB\land\neg\alpha\) can never be satisfied — by resolving clauses together until an outright contradiction (the <strong>empty clause</strong>) is derived.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Pseudocode — PL-RESOLUTION</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.83em;line-height:1.6;"><b>function</b> PL-RESOLUTION(KB, &alpha;) <b>returns</b> true or false
+    clauses &larr; the set of clauses in the CNF representation of KB &and; &not;&alpha;
+    new &larr; {}
+    <b>while</b> true <b>do</b>
+        <b>for each</b> pair of clauses C<sub>i</sub>, C<sub>j</sub> <b>in</b> clauses <b>do</b>
+            resolvents &larr; PL-RESOLVE(C<sub>i</sub>, C<sub>j</sub>)
+            <b>if</b> resolvents contains the empty clause <b>then return</b> true
+            new &larr; new &cup; resolvents
+        <b>if</b> new &sube; clauses <b>then return</b> false
+        clauses &larr; clauses &cup; new</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Negate the query, throw it in with the KB's clauses, and keep resolving pairs. Derive the empty clause (a direct contradiction) and KB⊨&alpha; is proven. Run out of new resolvents to add without ever hitting a contradiction, and KB⊭&alpha;.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example — running PL-RESOLUTION</span>
+<p>KB: \((P\lor\neg Q)\land(Q\lor R)\land(\neg P\lor R)\). Query \(\alpha:R\). Negating \(\alpha\) and combining: \(\text{clauses}=\{P\lor\neg Q,\ Q\lor R,\ \neg P\lor R,\ \neg R\}\), labelled \(C_1,C_2,C_3,C_4\) (negated \(\alpha\)).</p>
+</div>
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 620 400" width="100%" style="max-width:600px;">
+<g font-family="EB Garamond" font-size="13">
+<rect x="10" y="10" width="130" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="30" y="30" font-weight="700">P&or;&not;Q</text><text x="30" y="48" font-size="11">C1</text>
+<rect x="160" y="10" width="110" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="185" y="30" font-weight="700">Q&or;R</text><text x="185" y="48" font-size="11">C2</text>
+<rect x="290" y="10" width="130" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="310" y="30" font-weight="700">&not;P&or;R</text><text x="310" y="48" font-size="11">C3</text>
+<rect x="440" y="10" width="130" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="475" y="30" font-weight="700">&not;R</text><text x="460" y="48" font-size="11">C4 (&not;&alpha;)</text>
+<rect x="10" y="130" width="130" height="50" rx="8" fill="#f1eaf6" stroke="#8c63a8" stroke-width="2"/><text x="35" y="150" font-weight="700">P&or;R</text><text x="25" y="168" font-size="11">C1,C2</text>
+<rect x="160" y="130" width="130" height="50" rx="8" fill="#f3f3f0" stroke="#999"/><text x="175" y="150" font-weight="700">&not;Q&or;R</text><text x="175" y="168" font-size="11">C1,C3</text>
+<rect x="310" y="130" width="130" height="50" rx="8" fill="#f3f3f0" stroke="#999"/><text x="345" y="150" font-weight="700">none</text><text x="335" y="168" font-size="11">C2,C3</text>
+<rect x="460" y="130" width="130" height="50" rx="8" fill="#f3f3f0" stroke="#999"/><text x="510" y="150" font-weight="700">Q</text><text x="480" y="168" font-size="11">C2,C4</text>
+<rect x="460" y="200" width="130" height="50" rx="8" fill="#f3f3f0" stroke="#999"/><text x="505" y="220" font-weight="700">&not;P</text><text x="480" y="238" font-size="11">C3,C4</text>
+<rect x="185" y="270" width="130" height="50" rx="8" fill="#f1eaf6" stroke="#8c63a8" stroke-width="2"/><text x="230" y="290" font-weight="700">R</text><text x="200" y="308" font-size="11">(P&or;R)+C3</text>
+<rect x="185" y="340" width="130" height="50" rx="8" fill="#f1eaf6" stroke="#8c63a8" stroke-width="2"/><text x="200" y="360" font-weight="700">empty clause</text><text x="220" y="378" font-size="11">R+C4</text>
+</g>
+<g stroke="#8c63a8" stroke-width="2" fill="none" marker-end="url(#arr)">
+<line x1="75" y1="60" x2="75" y2="130"/>
+<line x1="75" y1="180" x2="230" y2="270"/>
+<line x1="250" y1="320" x2="250" y2="340"/>
+</g>
+<g stroke="#aaa" stroke-width="1" fill="none">
+<line x1="140" y1="60" x2="225" y2="130"/>
+<line x1="355" y1="60" x2="375" y2="130"/>
+<line x1="505" y1="60" x2="230" y2="130"/>
+<line x1="505" y1="60" x2="525" y2="130"/>
+<line x1="440" y1="60" x2="380" y2="130"/>
+<line x1="290" y1="60" x2="520" y2="200"/>
+<line x1="475" y1="60" x2="520" y2="200"/>
+</g>
+<line x1="375" y1="155" x2="250" y2="280" stroke="#8c63a8" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<text x="330" y="230" font-family="EB Garamond" font-size="11">C3=&not;P&or;R</text>
+<line x1="525" y1="225" x2="315" y2="360" stroke="#8c63a8" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<text x="420" y="330" font-family="EB Garamond" font-size="11">C4=&not;R</text>
+<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#8c63a8"/></marker></defs>
+</svg>
+</div>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p><strong>Level 1</strong> (input): \(C_1=P\lor\neg Q\), \(C_2=Q\lor R\), \(C_3=\neg P\lor R\), \(C_4=\neg R\) (negated \(\alpha\)).</p>
+<p><strong>Level 2</strong> (all pairwise resolvents): \(C_1{+}C_2\to P\lor R\); &nbsp;\(C_1{+}C_3\to\neg Q\lor R\); &nbsp;\(C_1{+}C_4\to\) none (no complementary pair); &nbsp;\(C_2{+}C_3\to\) none; &nbsp;\(C_2{+}C_4\to Q\); &nbsp;\(C_3{+}C_4\to\neg P\).</p>
+<p><strong>Level 3:</strong> resolve \((P\lor R)\) with \(C_3=\neg P\lor R\) on \(P/\neg P\): \(R\lor R=R\).</p>
+<p><strong>Level 4:</strong> resolve \(R\) with \(C_4=\neg R\): the <strong>empty clause</strong>.</p>
+</div>
+<span class="box-label" style="display:block;">Therefore, PL-RESOLUTION returns true — that is, KB ⊨ R.</span>
+</section>
+
+<section class="slide" id="p6-dpll">
+<span class="slide-tag">Slides 67–83</span>
+<h3>9. The SAT Problem and the DPLL Algorithm</h3>
+<div class="def">
+<span class="box-label">The Boolean Satisfiability (SAT) Problem</span>
+<p>The problem of determining if there exists an interpretation (a model) that satisfies a given Boolean formula. It was the <strong>first problem proved to be NP-complete</strong> (1970s).</p>
+<p style="text-align:center;font-weight:700">Cook-Levin Theorem: The Boolean Satisfiability Problem is NP-complete.</p>
+</div>
+
+<div class="def">
+<span class="box-label">The DPLL Algorithm (Davis, Putnam, Logemann, Loveland)</span>
+<p>Checks satisfiability of a propositional sentence, using <strong>three improvements</strong> over the simple scheme of TT-ENTAILS?:</p>
+<ol><li>Early termination</li><li>Pure symbol heuristic</li><li>Unit clause heuristic</li></ol>
+</div>
+
+<div class="def">
+<span class="box-label">1. Early termination</span>
+<p>Detects whether the sentence must be true or false, even with a partially completed model. A clause is true if any literal is true; a sentence is false if any clause is false; a sentence is true if all clauses are true.</p>
+</div>
+
+<div class="def">
+<span class="box-label">2. Pure symbol heuristic</span>
+<p>A <strong>pure symbol</strong> is one that appears with the same "sign" in every clause. For the sentence to be true, a model must assign pure symbols so as to make their literals true.</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)"><strong>Precise definition, as DPLL uses it:</strong> let \(S\) be a set of clauses and \(m\) a partial model. A symbol \(P\) is pure w.r.t. \((S,m)\) if: (1) \(P\) is unassigned in \(m\); (2) \(P\) occurs in at least one clause of \(S\) not yet true in \(m\); (3) in all such not-yet-true clauses, \(P\) occurs with the same sign. Occurrences of \(P\) in clauses <em>already</em> made true by \(m\) are ignored.</p>
+</div>
+
+<div class="def">
+<span class="box-label">3. Unit clause heuristic</span>
+<p>A <strong>unit clause</strong> is a clause in which all literals except one are already assigned false by the model.</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)"><strong>Precise definition:</strong> a clause \(C\in S\) is a unit clause w.r.t. \((S,m)\) if exactly one literal \(l\) of \(C\) is unassigned, and every other literal of \(C\) is false in \(m\). Then \(l\) is the unit literal. If \(l=P\), FIND-UNIT-CLAUSE returns \((P,\text{true})\); if \(l=\neg P\), it returns \((P,\text{false})\). If several unit clauses exist, any one can be chosen.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Pseudocode — DPLL</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.82em;line-height:1.6;"><b>function</b> DPLL-SATISFIABLE?(s) <b>returns</b> true or false
+    clauses &larr; the set of clauses in the CNF representation of s
+    symbols &larr; a list of the proposition symbols in s
+    <b>return</b> DPLL(clauses, symbols, {})
+
+<b>function</b> DPLL(clauses, symbols, model) <b>returns</b> true or false
+    <b>if</b> every clause in clauses is true in model <b>then return</b> true
+    <b>if</b> some clause in clauses is false in model <b>then return</b> false
+    P, value &larr; FIND-PURE-SYMBOL(symbols, clauses, model)
+    <b>if</b> P is non-null <b>then return</b> DPLL(clauses, symbols&minus;P, model &cup; {P=value})
+    P, value &larr; FIND-UNIT-CLAUSE(clauses, model)
+    <b>if</b> P is non-null <b>then return</b> DPLL(clauses, symbols&minus;P, model &cup; {P=value})
+    P &larr; FIRST(symbols)
+    rest &larr; REST(symbols)
+    <b>return</b> DPLL(clauses, rest, model &cup; {P=true}) <b>or</b>
+             DPLL(clauses, rest, model &cup; {P=false})</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Check the two easy exits first (all true / some false), then try pure symbol, then unit clause, and only <em>then</em> fall back to plain branching on the first remaining symbol. This ordering is exactly why DPLL beats TT-ENTAILS? — it resolves as much as it can for free before ever guessing.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 1 — satisfiability check, resolved entirely by heuristics (no branching needed)</span>
+<p>Check: \((A\lor B)\land(\neg B\lor\neg C)\land(C\lor A)\land(\neg D\lor E)\land(D\lor\neg E)\land D\), i.e. \(C_1,\dots,C_6\). Initial call: DPLL(clauses, [A,B,C,D,E], {}).</p>
+<table class="grid" style="font-size:.8em">
+<tr><th>Call</th><th>symbols</th><th>model</th><th>Clause status</th><th>Pure symbol</th><th>Unit clause</th><th>Action</th></tr>
+<tr><td>1</td><td>A,B,C,D,E</td><td>{}</td><td>none true, none false</td><td>A (positive)</td><td></td><td>A=true</td></tr>
+<tr><td>2</td><td>B,C,D,E</td><td>{A=T}</td><td>C1,C3 true</td><td>B (negative)</td><td></td><td>B=false</td></tr>
+<tr><td>3</td><td>C,D,E</td><td>{A=T,B=F}</td><td>C1,C2,C3 true</td><td>&mdash;</td><td>D (C6)</td><td>D=true</td></tr>
+<tr><td>4</td><td>C,E</td><td>{A=T,B=F,D=T}</td><td>C1,C2,C3,C5,C6 true</td><td>E (positive)</td><td></td><td>E=true</td></tr>
+<tr><td>5</td><td>C</td><td>{A=T,B=F,D=T,E=T}</td><td>all 6 clauses true</td><td></td><td></td><td><strong>return true</strong></td></tr>
+</table>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">C is never even assigned — satisfiability is already settled without it. Notice call 3: C has occurrences in C2 and C3, but both are already satisfied by that point, so C has no "live" occurrence left and isn't even eligible to be pure — while D's single-literal clause C6 makes D an immediate unit clause instead.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 2 — an immediate contradiction</span>
+<p>Check: \(A\land\neg A\), i.e. \(C_1=A\), \(C_2=\neg A\). Initial call: DPLL(clauses, [A], {}).</p>
+<table class="grid" style="font-size:.85em">
+<tr><th>Call</th><th>symbols</th><th>model</th><th>Clause status</th><th>Pure symbol</th><th>Unit clause</th><th>Action</th></tr>
+<tr><td>1</td><td>A</td><td>{}</td><td>none true, none false</td><td>&mdash;</td><td>A (C1)</td><td>A=true</td></tr>
+<tr><td>2</td><td>{}</td><td>{A=T}</td><td>C2 false</td><td></td><td></td><td><strong>return false</strong></td></tr>
+</table>
+<p><strong>Therefore, A∧¬A is not satisfiable.</strong> Note \(A\) is <em>not</em> pure here (it appears positively in C1 and negatively in C2 — mixed sign) — but C1=\(A\) alone is a one-literal unit clause, so the unit-clause heuristic fires instead.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 3 — genuine branching</span>
+<p>Check: \((A\lor B)\land(\neg A\lor B)\land(\neg A\lor\neg B)\), i.e. \(C_1,C_2,C_3\). Initial call: DPLL(clauses,[A,B],{}).</p>
+<table class="grid" style="font-size:.82em">
+<tr><th>Call</th><th>symbols</th><th>model</th><th>Clause status</th><th>Pure</th><th>Unit</th><th>Action</th></tr>
+<tr><td>1</td><td>A,B</td><td>{}</td><td>none true, none false</td><td>&mdash;</td><td>&mdash;</td><td><strong>Branch on A</strong>: (1) A=true, (2) A=false</td></tr>
+<tr><td>2 (Br.1)</td><td>B</td><td>{A=T}</td><td>C1 true</td><td>&mdash;</td><td>B (C2)</td><td>B=true</td></tr>
+<tr><td>3</td><td>[]</td><td>{A=T,B=T}</td><td>C1,C2 true, C3 false</td><td></td><td></td><td><strong>return false</strong></td></tr>
+<tr><td>4 (Br.2)</td><td>B</td><td>{A=F}</td><td>C2,C3 true</td><td>B (positive)</td><td></td><td>B=true</td></tr>
+<tr><td>5</td><td>[]</td><td>{A=F,B=T}</td><td>C1,C2,C3 true</td><td></td><td></td><td><strong>return true</strong></td></tr>
+</table>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">With no pure symbol or unit clause available at call 1, DPLL falls back to branching on the first symbol, A. Branch 1 (A=true) dies once B is forced true and C3 becomes false. Branch 2 (A=false) satisfies C2 and C3 immediately (both contain ¬A), leaving B pure in the one remaining live clause C1 — and the whole sentence is satisfiable via {A=false, B=true}.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway</span>
+<p>DPLL can also be used to check <strong>entailment</strong> directly, via the same \(\alpha\land\neg\beta\) unsatisfiability trick from Section 8 — check whether \(KB\land\neg\alpha\) is satisfiable using DPLL; if it's not, \(KB\models\alpha\).</p>
+</div>
+</section>
+
+<section class="slide" id="p6-horn-fc">
+<span class="slide-tag">Slides 84–90</span>
+<h3>10. Horn Clauses and Forward Chaining</h3>
+<div class="def">
+<span class="box-label">Definite Clauses and Horn Clauses</span>
+<p>A clause in which <strong>exactly one</strong> literal is positive is a <strong>definite clause.</strong> E.g. \(\neg P\lor\neg Q\lor R\), \(P\lor\neg Q\). (\(P\lor\neg Q\lor R\) is <em>not</em> definite — two positive literals.)</p>
+<p>A clause in which <strong>at most one</strong> literal is positive is a <strong>Horn clause.</strong> E.g. \(\neg P\lor\neg Q\lor R\), \(\neg P\lor\neg Q\). (\(P\lor\neg Q\lor R\) is not Horn either.)</p>
+</div>
+<div class="key">
+<span class="box-label">Two properties worth remembering</span>
+<ul style="margin:4px 0 0">
+<li>Every definite clause is a Horn clause (a definite clause is just the special case with <em>exactly</em> one positive literal, rather than "at most" one).</li>
+<li><strong>Horn clauses are closed under resolution</strong> — resolving two Horn clauses always yields another Horn clause. E.g. \((\neg P\lor\neg Q\lor R)\land(\neg P\lor\neg Q\lor\neg R)\models\neg P\lor\neg Q\) — Horn, Horn, and the resolvent is Horn too.</li>
+</ul>
+</div>
+<div class="def">
+<span class="box-label">Every Horn clause can be written as an implication</span>
+<p><strong>Multiple literals, one positive (also definite):</strong> \(\neg P\lor\neg Q\lor R \equiv \neg(P\land Q)\lor R \equiv (P\land Q)\Rightarrow R\)</p>
+<p><strong>A single positive literal (also definite):</strong> \(P \equiv \mathbf{T}\Rightarrow P\)</p>
+<p><strong>No positive literals:</strong> \(\neg P\lor\neg Q \equiv \neg(P\land Q) \equiv (P\land Q)\Rightarrow\mathbf{F}\); &nbsp; \(\neg P\equiv P\Rightarrow\mathbf{F}\)</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">This "implication form" is exactly what Forward and Backward Chaining are built on — every Horn-clause KB can be read as a set of if-then rules, with plain facts as \(\mathbf{T}\Rightarrow P\) rules.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Pseudocode — Forward Chaining (PL-FC-ENTAILS?)</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.82em;line-height:1.6;"><b>function</b> PL-FC-ENTAILS?(KB, q) <b>returns</b> true or false
+    <span class="cm" style="opacity:.75">inputs: KB, a set of propositional definite clauses; q, a proposition symbol</span>
+    count &larr; a table; count[c] initially = number of symbols in clause c's premise
+    inferred &larr; a table; inferred[s] initially false for all symbols
+    queue &larr; a queue of symbols, initially the symbols known to be true in KB
+
+    <b>while</b> queue is not empty <b>do</b>
+        p &larr; POP(queue)
+        <b>if</b> p = q <b>then return</b> true
+        <b>if</b> inferred[p] = false <b>then</b>
+            inferred[p] &larr; true
+            <b>for each</b> clause c in KB <b>where</b> p is in c.PREMISE <b>do</b>
+                decrement count[c]
+                <b>if</b> count[c] = 0 <b>then</b> add c.CONCLUSION to queue
+    <b>return</b> false</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">The idea: start from known facts, and every time a rule's <em>entire</em> premise has been established (its count hits 0), its conclusion becomes newly known too — keep going until the query pops out of the queue, or the queue runs dry.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked example</span>
+<p>KB: \(A,\ B,\ \neg A\lor\neg B\lor L,\ \neg A\lor\neg P\lor L,\ \neg B\lor\neg L\lor M,\ \neg L\lor\neg M\lor P,\ \neg P\lor Q\). Query \(q=Q\).</p>
+<p>As implications: \(A\) (fact), \(B\) (fact), \(A\land B\Rightarrow L\), \(A\land P\Rightarrow L\), \(B\land L\Rightarrow M\), \(L\land M\Rightarrow P\), \(P\Rightarrow Q\).</p>
+</div>
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 420 380" width="100%" style="max-width:380px;">
+<g font-family="EB Garamond" font-size="15" font-weight="700">
+<text x="200" y="20">Q</text>
+<text x="200" y="90">P</text>
+<text x="270" y="180">M</text>
+<text x="160" y="200">L</text>
+<text x="90" y="320">A</text><text x="270" y="320">B</text>
+</g>
+<g stroke="#2b2620" stroke-width="1.3" fill="none">
+<path d="M203,30 L203,80"/>
+<path d="M110,300 Q60,150 195,95" fill="none"/>
+<path d="M203,110 L173,190"/>
+<path d="M203,110 Q260,150 272,170"/>
+<path d="M167,210 L120,300"/>
+<path d="M167,210 Q220,250 262,300"/>
+<path d="M270,190 Q220,240 175,205"/>
+</g>
+<g font-family="EB Garamond" font-size="10" fill="#565048">
+<text x="55" y="150">A&and;P&rArr;L</text>
+<text x="215" y="60">P&rArr;Q</text>
+<text x="230" y="240">L&and;M&rArr;P</text>
+<text x="90" y="260">A&and;B&rArr;L</text>
+<text x="215" y="270">B&and;L&rArr;M</text>
+</g>
+</svg>
+</div>
+<div class="step" style="margin:10px 0 10px 4px; padding-left:14px; border-left:2px solid var(--rule);">
+<p>\(\text{inferred}[s]=\text{false}\) for all \(s\); \(\text{queue}=\{A,B\}\).</p>
+<p><strong>1)</strong> \(p\gets A\). inferred[A]&larr;true.</p>
+<p><strong>2)</strong> \(p\gets B\). inferred[B]&larr;true. \(A\land B\Rightarrow L\)'s count hits 0 &rarr; add \(L\) to queue.</p>
+<p><strong>3)</strong> \(p\gets L\). inferred[L]&larr;true. \(B\land L\Rightarrow M\)'s count hits 0 &rarr; add \(M\) to queue.</p>
+<p><strong>4)</strong> \(p\gets M\). inferred[M]&larr;true. \(L\land M\Rightarrow P\)'s count hits 0 &rarr; add \(P\) to queue.</p>
+<p><strong>5)</strong> \(p\gets P\). inferred[P]&larr;true. \(P\Rightarrow Q\)'s count hits 0 &rarr; add \(Q\) to queue.</p>
+<p><strong>6)</strong> \(p\gets Q\). \(p=q\) &rarr; <strong>return true.</strong></p>
+</div>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Note \(A\land P\Rightarrow L\) never actually fires (its count only reaches 1, since \(P\) isn't known until step 5, by which point \(L\) is already inferred via the other rule) — a reminder that with two ways to reach the same conclusion, forward chaining only needs one of them to succeed.</p>
+</section>
+
+<section class="slide" id="p6-backward-chaining">
+<span class="slide-tag">Slides 91–98</span>
+<h3>11. Backward Chaining</h3>
+<div class="an">
+<span class="box-label">The idea — work backwards from the query</span>
+<p>To prove \(q\) by backward chaining: if \(q\) is already known true, there's nothing to do. Otherwise, prove by backward chaining <strong>all</strong> premises of some implication in KB whose conclusion is \(q\) (each premise becomes a new <strong>subgoal</strong>). For every new subgoal: (i) <strong>avoid loops</strong> — check if it's already on the current goal stack; (ii) <strong>avoid repeated work</strong> — check if it's already been proved true or already failed. If all subgoals are proven, the goal is proven; otherwise the attempt fails.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Pseudocode — Backward Chaining (PL-BC-ENTAILS?)</span>
+<pre class="pseudocode" style="background:var(--code-bg);color:var(--code-ink);padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.8em;line-height:1.55;"><b>function</b> PL-BC-ENTAILS?(KB, q) <b>returns</b> true or false
+    <b>return</b> BC-OR(KB, q, {})  <span class="cm" style="opacity:.75">({} = empty set of goals already on the path)</span>
+
+<b>function</b> BC-OR(KB, q, path) <b>returns</b> true or false
+    <span class="cm" style="opacity:.75">q: the current goal; path: symbols already being proved (cycle detection)</span>
+    <b>if</b> q is known to be true in KB <b>then return</b> true
+    <b>if</b> q &isin; path <b>then return</b> false  <span class="cm" style="opacity:.75">(q depends on itself)</span>
+    <b>for each</b> clause c in KB <b>where</b> q = c.CONCLUSION <b>do</b>
+        <b>if</b> BC-AND(KB, c.PREMISE, {q} &cup; path) <b>then return</b> true
+    <b>return</b> false
+
+<b>function</b> BC-AND(KB, premises, path) <b>returns</b> true or false
+    <b>if</b> premises = {} <b>then return</b> true
+    p &larr; FIRST(premises); rest &larr; REST(premises)
+    <b>return</b> BC-OR(KB, p, path) <b>and</b> BC-AND(KB, rest, path)</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">BC-OR tries every rule that could conclude \(q\) (an OR over rules); BC-AND requires every premise of one chosen rule to succeed (an AND over premises). The two functions call each other, exactly mirroring the AND-OR structure of the proof tree below.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked Example 1</span>
+<p>KB: \(D,\ E,\ A\land B\Rightarrow C,\ D\Rightarrow B,\ E\Rightarrow A\). Query \(q=C\).</p>
+</div>
+<div style="text-align:center;margin:14px 0;">
+<svg viewBox="0 0 420 340" width="100%" style="max-width:360px;">
+<g font-family="EB Garamond" font-size="14" font-weight="700" text-anchor="middle">
+<rect x="150" y="10" width="110" height="36" rx="8" fill="#f1eaf6" stroke="#8c63a8"/><text x="205" y="33">C (goal)</text>
+<rect x="130" y="80" width="150" height="36" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="205" y="103">A&and;B&rArr;C (AND)</text>
+<rect x="60" y="150" width="100" height="36" rx="8" fill="#f1eaf6" stroke="#8c63a8"/><text x="110" y="173">A (goal)</text>
+<rect x="260" y="150" width="100" height="36" rx="8" fill="#f1eaf6" stroke="#8c63a8"/><text x="310" y="173">B (goal)</text>
+<rect x="45" y="220" width="130" height="36" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="110" y="243">E&rArr;A</text>
+<rect x="245" y="220" width="130" height="36" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="310" y="243">D&rArr;B</text>
+<rect x="70" y="290" width="80" height="36" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="110" y="313">E</text>
+<rect x="270" y="290" width="80" height="36" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="310" y="313">D</text>
+</g>
+<g stroke="#999" stroke-width="1.2" fill="none">
+<line x1="205" y1="46" x2="205" y2="80"/>
+<line x1="180" y1="116" x2="110" y2="150"/><line x1="230" y1="116" x2="310" y2="150"/>
+<line x1="110" y1="186" x2="110" y2="220"/><line x1="310" y1="186" x2="310" y2="220"/>
+<line x1="110" y1="256" x2="110" y2="290"/><line x1="310" y1="256" x2="310" y2="290"/>
+</g>
+</svg>
+</div>
+<p>Both \(A\) (via \(E\Rightarrow A\), and \(E\) is a fact) and \(B\) (via \(D\Rightarrow B\), and \(D\) is a fact) are proven — so the AND at \(A\land B\Rightarrow C\) succeeds, and \(C\) is proven.</p>
+
+<div class="ex">
+<span class="box-label">Worked Example 2 — a failed branch, and backtracking to a successful one</span>
+<p>KB: \(A,\ B,\ M,\ \neg P\lor Q,\ \neg L\lor\neg M\lor Q,\ \neg A\lor\neg P\lor L,\ \neg B\lor L\). Query \(q=Q\).</p>
+<p>As implications: \(P\Rightarrow Q\) (clause 1), \(L\land M\Rightarrow Q\) (clause 2), \(A\land P\Rightarrow L\) (clause 3), \(B\Rightarrow L\) (clause 4), \(\mathbf{T}\Rightarrow A\) (clause 5), \(\mathbf{T}\Rightarrow B\) (clause 6), \(\mathbf{T}\Rightarrow M\) (clause 7). Notice: <strong>\(P\) has no defining clause at all</strong> — anything requiring \(P\) is doomed to fail.</p>
+</div>
+<div style="text-align:center;margin:14px 0;">
+<svg viewBox="0 0 620 340" width="100%" style="max-width:600px;">
+<g font-family="EB Garamond" font-size="13" font-weight="700" text-anchor="middle">
+<rect x="250" y="10" width="100" height="34" rx="7" fill="#f1eaf6" stroke="#8c63a8"/><text x="300" y="32">Q (OR)</text>
+<rect x="80" y="70" width="140" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"/><text x="150" y="92">clause 1: P&rArr;Q</text>
+<rect x="380" y="70" width="180" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="470" y="92">clause 2: L&and;M&rArr;Q</text>
+<rect x="80" y="140" width="100" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"><title/></rect><text x="130" y="162" font-family="EB Garamond" font-weight="700">P</text>
+<rect x="410" y="140" width="100" height="34" rx="7" fill="#f1eaf6" stroke="#8c63a8"/><text x="460" y="162">L (OR)</text>
+<rect x="530" y="140" width="80" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="570" y="162">M</text>
+<rect x="330" y="210" width="180" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"/><text x="420" y="232">clause 3: A&and;P&rArr;L</text>
+<rect x="530" y="210" width="80" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="570" y="232">clause 4: B&rArr;L</text>
+<rect x="310" y="280" width="70" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="345" y="302">A</text>
+<rect x="400" y="280" width="70" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"/><text x="435" y="302">P</text>
+<rect x="530" y="280" width="70" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="565" y="302">B</text>
+</g>
+<g stroke="#ccc" stroke-width="1.2" fill="none">
+<line x1="270" y1="44" x2="150" y2="70"/><line x1="330" y1="44" x2="470" y2="70"/>
+<line x1="150" y1="104" x2="130" y2="140"/>
+<line x1="440" y1="104" x2="460" y2="140"/><line x1="500" y1="104" x2="570" y2="140"/>
+<line x1="460" y1="174" x2="420" y2="210"/><line x1="460" y1="174" x2="570" y2="210"/>
+<line x1="400" y1="244" x2="345" y2="280"/><line x1="440" y1="244" x2="435" y2="280"/>
+<line x1="570" y1="244" x2="565" y2="280"/>
+</g>
+</svg>
+</div>
+<p><strong>Tracing it through:</strong> Q(OR) first tries clause 1 (\(P\Rightarrow Q\)) — needs \(P\), which has no defining clause, so this branch <strong>fails, backtracks.</strong> Q(OR) then tries clause 2 (\(L\land M\Rightarrow Q\), an AND) — needs both \(L\) and \(M\). \(M\) succeeds immediately (fact). For \(L\)(OR): first tries clause 3 (\(A\land P\Rightarrow L\)) — \(A\) succeeds (fact), but \(P\) fails again (no defining clause) — clause 3 <strong>fails</strong> even though half of it succeeded. \(L\)(OR) then tries clause 4 (\(B\Rightarrow L\)) — \(B\) succeeds (fact) — so \(L\) succeeds via clause 4. With both \(L\) and \(M\) proven, clause 2's AND succeeds, and <strong>Q is proven true.</strong></p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">This example exists specifically to show backward chaining <strong>recovering</strong> from a dead end — failing down the clause-3 path doesn't sink the whole proof, because \(L\)(OR) simply tries its next alternative, clause 4.</p>
+
+<div class="key">
+<span class="box-label">Key takeaway</span>
+<p>Backward chaining does a <strong>Depth-First Search</strong> of the AND-OR graph of the KB, starting from the node corresponding to the query.</p>
+</div>
+</section>
+
+<section class="slide" id="p6-fc-vs-bc">
+<span class="slide-tag">Slide 98</span>
+<h3>12. Comparison: Forward Chaining vs. Backward Chaining</h3>
+<table class="grid">
+<tr><th>Forward Chaining</th><th>Backward Chaining</th></tr>
+<tr><td><strong>Data-driven</strong> — starts from known facts and works toward whatever they imply.</td><td><strong>Goal-driven</strong> — starts from the query and works backward toward facts.</td></tr>
+<tr><td>Time complexity is <strong>linear</strong> in the size of the KB (total number of literals across all definite/Horn clauses).</td><td>Time complexity can be <strong>much less than linear</strong> in the size of the KB — though in the worst case, it can still be linear.</td></tr>
+</table>
+
+<div class="key">
+<span class="box-label">What this whole part adds up to</span>
+<p>Five algorithms, one underlying question: given what an agent knows, what else <em>must</em> be true? TT-ENTAILS? answers this by brute force (every model, checked exhaustively). Resolution answers it by refutation (assume the opposite, derive a contradiction). DPLL answers a closely related question — is this even satisfiable at all? — using the same refutation idea, sped up with two genuinely simple heuristics. And once the knowledge base is restricted to Horn clauses, Forward and Backward Chaining answer it directly and efficiently, from opposite ends of the same AND-OR graph. Every one of these is really the same core idea — entailment as "no escaping model" — wearing a different, progressively more efficient, disguise.</p>
+</div>
+</section>
+
+
 <section class="slide" id="recap">
   <span class="slide-tag">Full-course recap</span>
   <h3>Recap: how all three parts connect</h3>
@@ -2187,6 +3018,7 @@
     <tr><td><strong>3. Local Search</strong></td><td>What if I only care about the final state, not the path?</td><td>Hill Climbing greedily improves one state but gets stuck. Simulated Annealing escapes local optima by sometimes accepting worse moves, cooling over time. Genetic/Evolutionary Algorithms evolve a whole population via selection, crossover, and mutation.</td></tr>
     <tr><td><strong>4. Adversarial Search</strong></td><td>How do I find the best move when an opponent is actively working against me?</td><td>The Minimax value backs up terminal utilities through alternating MAX/MIN levels; Alpha-Beta pruning gets the exact same answer while skipping provably-irrelevant branches; with perfect move ordering the effective branching factor drops from \(b\) to \(\sqrt b\); real engines add depth cutoffs, evaluation functions, and (in modern systems) learned evaluation via MCTS and self-play.</td></tr>
     <tr><td><strong>5. Constraint Satisfaction</strong></td><td>What if I only care about a valid final assignment, not a path to it?</td><td>Backtracking search explores partial assignments depth-first, undoing bad choices; AC-3 prunes provably-impossible values from domains <em>before</em> or <em>during</em> search, often collapsing the search tree dramatically — though arc consistency alone is blind to genuinely 3-way inconsistencies, which is exactly what the k-consistency hierarchy generalises to fix (at an exponential cost of its own).</td></tr>
+    <tr><td><strong>6. Logical Agents</strong></td><td>Given what an agent knows, what else must be true?</td><td>Entailment means "no escaping model" — checkable by brute force (TT-ENTAILS?), by refutation (Resolution, DPLL), or, once the KB is restricted to Horn clauses, directly and efficiently from either end of the same AND-OR graph (Forward Chaining from facts, Backward Chaining from the query).</td></tr>
   </table>
 
   <h4>Mini glossary</h4>
@@ -2212,11 +3044,16 @@
     <tr><td><strong>Arc consistency</strong></td><td>A variable \(X_i\) is arc consistent w.r.t. \(X_j\) if every remaining value in \(D_i\) has at least one compatible value left in \(D_j\).</td></tr>
     <tr><td><strong>AC-3</strong></td><td>The standard algorithm for enforcing arc consistency across an entire CSP, by repeatedly revising domains until no arc can shrink any further.</td></tr>
     <tr><td><strong>k-consistency</strong></td><td>The general pattern behind node/arc/path consistency: any consistent assignment to \(k-1\) variables can always be extended to a \(k\)th, for every choice of that \(k\)th variable.</td></tr>
+    <tr><td><strong>Entailment (KB &#8872; &alpha;)</strong></td><td>Every model that satisfies KB also satisfies &alpha; — there's no escaping model. Equivalent to KB&and;&not;&alpha; being unsatisfiable.</td></tr>
+    <tr><td><strong>CNF</strong></td><td>Conjunctive Normal Form — a sentence written as a conjunction of clauses (disjunctions of literals). Every propositional sentence can be rewritten this way.</td></tr>
+    <tr><td><strong>Resolution</strong></td><td>The single inference rule that resolves two clauses on a complementary literal pair; repeatedly applying it to KB&and;&not;&alpha; until the empty clause appears proves KB&#8872;&alpha;.</td></tr>
+    <tr><td><strong>Horn clause</strong></td><td>A clause with at most one positive literal — always expressible as an implication, and the basis for both Forward and Backward Chaining.</td></tr>
+    <tr><td><strong>Forward / Backward Chaining</strong></td><td>Two ways to decide entailment over a Horn-clause KB: forward chains from known facts toward the query (data-driven); backward chains from the query toward known facts (goal-driven), via an AND-OR graph search.</td></tr>
   </table>
 </section>
 
 <footer>
-  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, and the backtracking and AC-3 trace tables in Part 5.
+  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems &middot; Logical Agents &amp; Propositional Logic (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, the backtracking and AC-3 trace tables in Part 5, and every TT-ENTAILS?, Resolution, DPLL, Forward Chaining, and Backward Chaining trace in Part 6.
 </footer>
 </main>
 </div>

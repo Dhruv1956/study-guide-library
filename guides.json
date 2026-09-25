@@ -11,14 +11,21 @@
     "course": "EEFM",
     "courseName": "Engineering Economics and Financial Management",
     "path": "guides/eefm/eefm-explanation.html",
-    "dateAdded": "2026-09-12"
+    "dateAdded": "2026-09-25"
+  },
+  {
+    "title": "Time Value of Money \u2014 Complete Worked Solutions",
+    "course": "EEFM",
+    "courseName": "Engineering Economics and Financial Management",
+    "path": "guides/eefm/tvm-complete-solutions.html",
+    "dateAdded": "2026-09-25"
   },
   {
     "title": "Intro to AI \u2014 Beginner Guide (Agents, Search, Local Search)",
     "course": "AI",
     "courseName": "Artificial Intelligence",
     "path": "guides/ai/intro-to-ai-guide.html",
-    "dateAdded": "2026-09-21"
+    "dateAdded": "2026-09-25"
   },
   {
     "title": "Multivariate Analysis \u2014 Beginner Guide (MND, Hotelling, Correlation, Wishart)",
