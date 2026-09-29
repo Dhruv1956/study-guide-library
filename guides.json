@@ -4,7 +4,7 @@
     "course": "ACC",
     "courseName": "Algorithms and Computational Complexity",
     "path": "guides/acc/acc-complete-guide.html",
-    "dateAdded": "2026-09-10"
+    "dateAdded": "2026-09-29"
   },
   {
     "title": "EEFM \u2014 Explanation Guide",
@@ -39,6 +39,6 @@
     "course": "FML",
     "courseName": "Foundations of Machine Learning",
     "path": "guides/fml/ml-numerical-ia-prep.html",
-    "dateAdded": "2026-09-21"
+    "dateAdded": "2026-09-29"
   }
 ]

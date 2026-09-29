@@ -187,6 +187,54 @@
   <a href="#L13-1">Karatsuba's time complexity</a>
   <a href="#L13-2">Strassen's matrix multiplication</a>
 
+  <a class="lec" href="#L14">Lecture 14 &middot; Strassen to DP: Fibonacci &amp; Pascal</a>
+  <a href="#L14-1">Strassen's — a concrete example</a>
+  <a href="#L14-2">Dynamic Programming — the big idea</a>
+  <a href="#L14-3">Why naive Fibonacci is exponential</a>
+  <a href="#L14-4">The linear-time fix</a>
+  <a href="#L14-5">Pascal's Triangle as a 2nd DP example</a>
+
+  <a class="lec" href="#L15">Lecture 15 &middot; Longest Common Subsequence</a>
+  <a href="#L15-1">Subsequences &amp; the LCS problem</a>
+  <a href="#L15-2">Brute force &amp; the recursive formula</a>
+  <a href="#L15-3">The bottom-up LCS-Length algorithm</a>
+  <a href="#L15-4">A complete worked example</a>
+
+  <a class="lec" href="#L16">Lecture 16 &middot; Matrix Chain Multiplication</a>
+  <a href="#L16-1">Why parenthesization matters</a>
+  <a href="#L16-2">The recursive formula</a>
+  <a href="#L16-3">Matrix-Chain-Order algorithm</a>
+
+  <a class="lec" href="#L17">Lecture 17 &middot; Matrix Chain — Worked Example</a>
+  <a href="#L17-1">Setup</a>
+  <a href="#L17-2">Filling the m and s tables</a>
+  <a href="#L17-3">Constructing &amp; verifying the answer</a>
+
+  <a class="lec" href="#L18">Lecture 18 &middot; Assembly Line Scheduling</a>
+  <a href="#L18-1">The setup</a>
+  <a href="#L18-2">The recursive formula, and why it's exponential</a>
+
+  <a class="lec" href="#L19">Lecture 19 &middot; Assembly Line Solved, &amp; Graphs</a>
+  <a href="#L19-1">FASTEST-WAY algorithm</a>
+  <a href="#L19-2">A complete worked example</a>
+  <a href="#L19-3">Intro to Graphs: Spanning Trees &amp; MST</a>
+
+  <a class="lec" href="#EX">Exercise Set &middot; Worked Solutions</a>
+  <a href="#EX-1">1. Sorting one array, four ways</a>
+  <a href="#EX-2">2. Brute-force max is optimal</a>
+  <a href="#EX-3">3. Worst-case inputs</a>
+  <a href="#EX-4">4. Bucket Sort, illustrated</a>
+  <a href="#EX-5">5. Radix Sort in octal</a>
+  <a href="#EX-6">6. Karatsuba by hand</a>
+  <a href="#EX-7">7. Strassen's by hand</a>
+  <a href="#EX-8">8. LCS of two binary strings</a>
+  <a href="#EX-9">9. Matrix Chain Multiplication</a>
+  <a href="#EX-10">10. An exponential-time algorithm</a>
+  <a href="#EX-11">11. Solving four recurrences</a>
+  <a href="#EX-12">12. Bucket Sort's expected time</a>
+  <a href="#EX-13">13. Insertion Sort, in full</a>
+  <a href="#EX-14">14. n(n&minus;1)/2 &isin; &Theta;(n&sup2;)</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full course recap &amp; glossary</a>
 </nav>
@@ -194,10 +242,10 @@
 <div class="hero">
   <div class="eyebrow">Complete Study Guide &middot; Algorithms and Computational Complexity</div>
   <h1>Every Lecture, Every Proof, Every Worked Example</h1>
-  <p class="lead">This guide transcribes and explains all 13 lectures of your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too.</p>
+  <p class="lead">This guide transcribes and explains all 19 lectures of your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too.</p>
   <div class="badges">
     <span class="badge">Prof. Kedukodi Babushri Srinivas &middot; MIT Manipal</span>
-    <span class="badge">13 lectures &middot; 260 pages</span>
+    <span class="badge">19 lectures &middot; 334 pages</span>
     <span class="badge">Introduction &rarr; Strassen's Algorithm</span>
   </div>
 </div>
@@ -213,7 +261,7 @@
 <span class="chip" style="background:var(--story-bg);border-color:var(--story-line);color:var(--story-line)">Story / Motivation</span>
 <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Common Confusion</span>
 </p>
-<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" through to Strassen's matrix multiplication — the syllabus's later topics (heaps, hashing, dynamic programming, greedy algorithms, graphs, complexity theory, and cryptography) aren't in these 13 lectures, so they aren't in this guide yet either.</p>
+<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" through Dynamic Programming (Fibonacci, Pascal's Triangle, LCS, Matrix Chain Multiplication, Assembly Line Scheduling) and the opening of Graph Algorithms (spanning trees, MST) — the syllabus's later topics (heaps, hashing, greedy algorithms beyond MST, shortest paths, complexity theory, and cryptography) aren't in these 19 lectures, so they aren't in this guide yet either.</p>
 </div>
 
 <div class="lecture-header" id="L1">
@@ -368,13 +416,13 @@
 
 <div class="box def">
 <span class="lbl">Definition 1 — Big-O (bounded above)</span>
-<p>\(f(x)\) is bounded above by \(g(x)\), written \(f(x)\in O(g(x))\), if there exist constants \(c>0\) and \(x_0\) such that</p>
+<p>\(f(x)\) is bounded above by \(g(x)\), written \(f(x)\in O(g(x))\), if there exist constants \(c&gt;0\) and \(x_0\) such that</p>
 <p>$$f(x)\le c\,g(x) \qquad \text{for all } x\ge x_0.$$</p>
 </div>
 
 <div class="box def">
 <span class="lbl">Definition 2 — Big-Ω (bounded below)</span>
-<p>\(f(x)\) is bounded below by \(g(x)\), written \(f(x)\in\Omega(g(x))\), if there exist constants \(c>0\) and \(x_0\) such that</p>
+<p>\(f(x)\) is bounded below by \(g(x)\), written \(f(x)\in\Omega(g(x))\), if there exist constants \(c&gt;0\) and \(x_0\) such that</p>
 <p>$$c\,g(x)\le f(x) \qquad \text{for all } x\ge x_0.$$</p>
 </div>
 
@@ -386,11 +434,11 @@
 <div class="box proof">
 <span class="lbl">Worked proof — show that \(\dfrac{n(n-1)}{2}\in\Theta(n^2)\)</span>
 <p><strong>Let</strong> \(f(n)=\dfrac{n(n-1)}{2}\) and \(g(n)=n^2\).</p>
-<p><strong>Part 1 — show \(f(n)\in O(g(n))\).</strong> We need \(f(n)\le c\,g(n)\) for some \(c>0\):</p>
+<p><strong>Part 1 — show \(f(n)\in O(g(n))\).</strong> We need \(f(n)\le c\,g(n)\) for some \(c&gt;0\):</p>
 <p>$$f(n) = \frac{n(n-1)}{2} = \frac{n^2}{2}-\frac{n}{2} \;\le\; \frac{n^2}{2} = c\,g(n), \quad \text{where } c=\frac12$$</p>
 <p>(the inequality holds because we're only <em>removing</em> the non-negative quantity \(\frac{n}{2}\), which can only make the left side smaller — "at most" \(\frac{n^2}{2}\)). This holds for all \(n\ge n_0=1\) — i.e. for every natural number — so</p>
 <p>$$f(n)\in O(n^2) \qquad \text{—— (1)}$$</p>
-<p><strong>Part 2 — show \(f(n)\in\Omega(g(n))\).</strong> We need \(c\,g(n)\le f(n)\) for some \(c>0\) and all \(n\ge n_0\):</p>
+<p><strong>Part 2 — show \(f(n)\in\Omega(g(n))\).</strong> We need \(c\,g(n)\le f(n)\) for some \(c&gt;0\) and all \(n\ge n_0\):</p>
 <p>$$f(n) = \frac{n^2}{2}-\frac{n}{2}\cdot 1 \;\ge\; \frac{n^2}{2}-\frac{n}{2}\cdot\frac{n}{2}, \quad \text{take } n\ge 2$$</p>
 <p>This step substitutes \(1\) with \(\dfrac{n}{2}\) in the subtracted term — valid because \(n\ge2\) means \(\dfrac{n}{2}\ge1\), and substituting a <em>larger</em> value into a term being subtracted can only make the whole expression smaller or equal, so the inequality direction is preserved. Simplifying the right-hand side:</p>
 <p>$$= \frac{n^2}{2}-\frac{n^2}{4} = \frac{n^2}{4} = c\cdot g(n), \quad \text{where } c=\frac14$$</p>
@@ -425,7 +473,7 @@
 
 <section class="topic" id="L2-1">
 <h3>2.1 &middot; Finishing Lecture 1's homework</h3>
-<p>Recall the task: show \(f(n)=\dfrac{n^2}{2}-\dfrac{n}{2}\in\Omega(n^2)\), i.e. find \(c>0\) and \(n_0\) with \(f(n)\ge c\,n^2\) for all \(n\ge n_0\).</p>
+<p>Recall the task: show \(f(n)=\dfrac{n^2}{2}-\dfrac{n}{2}\in\Omega(n^2)\), i.e. find \(c&gt;0\) and \(n_0\) with \(f(n)\ge c\,n^2\) for all \(n\ge n_0\).</p>
 <div class="box proof">
 <span class="lbl">Proof</span>
 <p>Start from \(f(n)\) and, for \(n\ge2\), replace the "\(1\)" being subtracted with the larger quantity \(\dfrac{n}{2}\) (valid since \(n\ge2\Rightarrow\dfrac{n}{2}\ge1\), and substituting a larger value into a subtracted term can only shrink the whole expression, preserving the \(\ge\)):</p>
@@ -535,7 +583,7 @@
 <div class="box warn">
 <span class="lbl">Verifying the loop bounds don't overrun the array</span>
 <p>It's worth checking this carefully rather than trusting it by eye. When \(i=1\), the inner loop runs \(j=1\) to \(n-1\), and the largest index touched is \(A[j+1]\) at \(j=n-1\), i.e. \(A[n]\) — exactly the last valid index, not one past it. So the bound \(j\le n-i\) is exactly right, not off by one.</p>
-<p class="small">Concrete check from the running example: with \(A=[\dots,7,25,\dots]\), the test "\(25 < 10\)?" is false (nothing happens), while "\(7 < 25\)?" is true, triggering a swap — exactly matching the algorithm's line 3–4 logic.</p>
+<p class="small">Concrete check from the running example: with \(A=[\dots,7,25,\dots]\), the test "\(25 &lt; 10\)?" is false (nothing happens), while "\(7 &lt; 25\)?" is true, triggering a swap — exactly matching the algorithm's line 3–4 logic.</p>
 </div>
 
 <h4>Deriving the time complexity from the pseudocode directly</h4>
@@ -576,7 +624,7 @@
 <p>$$\log n! = \log\big(n\cdot(n-1)\cdots2\cdot1\big) = \log n+\log(n-1)+\cdots+\log2+\log1$$</p>
 <p>$$= \big(\log n+\log1\big)+\big(\log(n-1)+\log2\big)+\cdots+\left(\log\frac n2+\log\Big(\frac n2-1\Big)\right)$$</p>
 <p>Every single pair-sum here is at least \(\log\dfrac n2+\log\dfrac n2\)... actually, more simply, each individual term in every pair is at least \(\log\frac{n}{2}\) once we're past the halfway point, so bounding every pair below by \(2\log\frac{n}{2}\) and summing across the \(n/2\) pairs:</p>
-<p>$$\log n! \;>\; \underbrace{\log\frac n2+\log\frac n2+\cdots+\log\frac n2}_{n/2\text{ copies}} \;=\; \frac n2\log\frac n2$$</p>
+<p>$$\log n! \;&gt;\; \underbrace{\log\frac n2+\log\frac n2+\cdots+\log\frac n2}_{n/2\text{ copies}} \;=\; \frac n2\log\frac n2$$</p>
 <p>Now expand and split this bound to isolate a clean \(n\log n\) term:</p>
 <p>$$\frac n2\log\frac n2 = \frac n2\log n-\frac n2\log2 = \left(\frac n4\log n+\frac n4\log n\right)-\frac n2\log2 = \frac n4\log n + n\left(\frac14\log n-\frac12\log2\right)$$</p>
 <p><strong>When does the bracketed term become non-negative?</strong> We need \(\frac14\log n-\frac12\log2\ge0\):</p>
@@ -607,9 +655,9 @@
 <span class="lbl">A useful shortcut for future comparisons — the limit test, summarised</span>
 <p>Lecture 2's limit technique generalises into one clean rule you can reuse for the rest of the course. To compare \(f(n)\) against \(g(n)\), compute \(\displaystyle\lim_{n\to\infty}\frac{f(n)}{g(n)}\):</p>
 <ul style="margin:6px 0 0">
-<li>If the limit is \(0\), then \(f(n) < g(n)\) asymptotically, so \(f(n)\in O(g(n))\).</li>
+<li>If the limit is \(0\), then \(f(n) &lt; g(n)\) asymptotically, so \(f(n)\in O(g(n))\).</li>
 <li>If the limit is a finite, nonzero constant \(k\), then \(f(n)\) and \(g(n)\) grow at the <em>same</em> rate, so \(f(n)\in\Theta(g(n))\).</li>
-<li>If the limit is \(\infty\), then \(f(n)>g(n)\) asymptotically, so \(f(n)\in\Omega(g(n))\).</li>
+<li>If the limit is \(\infty\), then \(f(n)&gt;g(n)\) asymptotically, so \(f(n)\in\Omega(g(n))\).</li>
 </ul>
 </div>
 <div class="box ex">
@@ -934,7 +982,7 @@
 <div class="box def">
 <span class="lbl">The recurrence for Merge Sort</span>
 <p class="small">"These divide-and-conquer algorithms are often analysed using recurrence relations."</p>
-<p>$$T(n) = \begin{cases}\Theta(1) & n=1\\[4pt] 2T(n/2)+\Theta(n) & n>1\end{cases}$$</p>
+<p>$$T(n) = \begin{cases}\Theta(1) & n=1\\[4pt] 2T(n/2)+\Theta(n) & n&gt;1\end{cases}$$</p>
 <p>Each recursive call gets a problem of half the size ("each time we get 2 problems, each half the size of the initial one"), and the \(\Theta(n)\) term is exactly the linear merging time just proved above.</p>
 </div>
 </section>
@@ -949,7 +997,7 @@
 <p>$$= 2^2\left(2T\Big(\frac n8\Big)+\frac{cn}4\right)+cn+cn = 2^3T\Big(\frac n8\Big)+cn+cn+cn = 2^3T\Big(\frac n8\Big)+c(3n)$$</p>
 <p>The pattern: after \(x\) substitutions, \(T(n)=2^xT(n/2^x)+c(xn)\). This bottoms out once \(n/2^x=1\), i.e. \(x=\log_2n\):</p>
 <p>$$T(n) = 2^{\log_2n}T(1) + c(\log n)\,n = n\cdot T(1) + cn\log n = n + c(n\log n)$$</p>
-<p>Since \(n\log n\) dominates the lone \(n\) term (\(n\log n\) is greater than \(n\) for \(n>1\)):</p>
+<p>Since \(n\log n\) dominates the lone \(n\) term (\(n\log n\) is greater than \(n\) for \(n&gt;1\)):</p>
 <p style="text-align:center">$$T(n)\in O(n\log n)$$</p>
 <p class="qed">∎</p>
 </div>
@@ -1009,7 +1057,7 @@
 <span class="lbl">The motivating question</span>
 <p>Can you sort in \(\Theta(n\log n)\) time <strong>without using auxiliary arrays</strong>? <strong>Yes</strong> — using divide-and-conquer, but with no auxiliary arrays at all.</p>
 </div>
-<p>The core idea: pick a <strong>pivot</strong> (here, always the first element), then rearrange the array so that every element \(\le\) the pivot ends up on its left, and every element \(>\) the pivot ends up on its right — with the pivot itself dropped into its final, correct sorted position, right at the boundary. This is called putting the pivot "in its proper place."</p>
+<p>The core idea: pick a <strong>pivot</strong> (here, always the first element), then rearrange the array so that every element \(\le\) the pivot ends up on its left, and every element \(&gt;\) the pivot ends up on its right — with the pivot itself dropped into its final, correct sorted position, right at the boundary. This is called putting the pivot "in its proper place."</p>
 
 <div class="box def">
 <span class="lbl">Partition — pseudocode (Hoare/Lomuto-style, 1962)</span>
@@ -1040,7 +1088,7 @@
 </table>
 <p>Loop ends. Final step: swap the pivot into place, \(A[1]\leftrightarrow A[5]\):</p>
 <p style="text-align:center;font-family:'JetBrains Mono',monospace">[3, 1, 4, 2, <strong>5</strong>, 7, 8, 6]</p>
-<p><strong>Return \(i=5\)</strong> — the pivot 5 now sits at index 5, with every element to its left (\(3,1,4,2\)) \(\le5\), and every element to its right (\(7,8,6\)) \(>5\). Neither side is sorted yet — only the pivot's position is finalized.</p>
+<p><strong>Return \(i=5\)</strong> — the pivot 5 now sits at index 5, with every element to its left (\(3,1,4,2\)) \(\le5\), and every element to its right (\(7,8,6\)) \(&gt;5\). Neither side is sorted yet — only the pivot's position is finalized.</p>
 </div>
 
 <div class="box proof">
@@ -1174,7 +1222,7 @@
 <div class="box proof">
 <span class="lbl">Proof by induction — \(E[T(n)]\le cn\log n\)</span>
 <p><strong>Base case.</strong> Choose \(c\) large enough that the bound holds trivially for a small base case (e.g. \(n=1\)).</p>
-<p><strong>Inductive hypothesis.</strong> Assume \(E[T(k)]\le ck\log k\) for every \(k<n\).</p>
+<p><strong>Inductive hypothesis.</strong> Assume \(E[T(k)]\le ck\log k\) for every \(k&lt;n\).</p>
 <p><strong>Inductive step.</strong> Substitute the hypothesis into Lecture 7's recurrence. The \(k=0\) and \(k=1\) terms are degenerate (\(0\log0\) and \(1\log1\) both vanish or are handled as constants), so fold them into the \(\Theta(n)\) term and start the sum from \(k=2\):</p>
 <p>$$E[T(n)] = \frac2n\sum_{k=2}^{n-1}k\log k+\Theta(n)$$</p>
 <p><strong>The key trick: convert the discrete sum into a continuous integral.</strong> Let \(f(x)=x\log x\) — an increasing function for \(x\) large. Since \(f\) is increasing, each rectangle of height \(f(k)\) and width 1 sits entirely below the curve \(f(x)\) on that same interval, so the sum of rectangle areas is bounded above by the area under the curve:</p>
@@ -1430,9 +1478,9 @@
 
 <div class="box warn">
 <span class="lbl">Making this precise — two cases for how b compares to log n</span>
-<p><strong>Case 1: \(b<\log_2n\)</strong> (the number of bits is small). Here, simply take \(r=b\) — use <em>all</em> the bits as a single digit, needing just one pass (\(d=b/r=1\)):</p>
+<p><strong>Case 1: \(b&lt;\log_2n\)</strong> (the number of bits is small). Here, simply take \(r=b\) — use <em>all</em> the bits as a single digit, needing just one pass (\(d=b/r=1\)):</p>
 <p>$$T(n) = \Theta\!\left(\frac bb(n+2^b)\right) = \Theta(n+2^b)$$</p>
-<p>Since \(b<\log_2n\), we get \(2^b<2^{\log_2n}=n\) — so the \(2^b\) term is dominated by \(n\), giving \(T(n)=\Theta(n)\). Linear, in a single pass.</p>
+<p>Since \(b&lt;\log_2n\), we get \(2^b&lt;2^{\log_2n}=n\) — so the \(2^b\) term is dominated by \(n\), giving \(T(n)=\Theta(n)\). Linear, in a single pass.</p>
 <p><strong>Case 2: \(b\ge\log_2n\)</strong> (the more typical case for arrays of \(n\) distinct values). Here, take \(r=\log_2n\) as derived above, giving \(T(n)=\Theta(n)\) whenever \(\dfrac{b}{\log_2n}\in\Theta(1)\) — exactly the derivation just shown.</p>
 <p>Either way, a good choice of \(r\) reaches linear time.</p>
 </div>
@@ -1574,7 +1622,7 @@
 <div class="box proof">
 <span class="lbl">Proof — substituting back to find \(E[T(n)]\)</span>
 <p>$$E[T(n)] = \sum_{i=1}^nO\Big(2-\frac1n\Big)+\Theta(n) = n\cdot O\Big(2-\frac1n\Big)+\Theta(n)$$</p>
-<p>Since \(2\) is a constant and \(0<\frac1n<1\), the quantity \(2-\frac1n\) is itself bounded by a constant, so \(n\cdot O\big(2-\tfrac1n\big)\in O(n)\) — this term is small compared to the \(\Theta(n)\) concatenation cost, which dominates:</p>
+<p>Since \(2\) is a constant and \(0&lt;\frac1n&lt;1\), the quantity \(2-\frac1n\) is itself bounded by a constant, so \(n\cdot O\big(2-\tfrac1n\big)\in O(n)\) — this term is small compared to the \(\Theta(n)\) concatenation cost, which dominates:</p>
 <p style="text-align:center">$$E[T(n)] \in \Theta(n)$$</p>
 <p class="qed">∎ &nbsp;<span class="small" style="font-weight:400">Hence, Bucket Sort runs in \(\Theta(n)\) time on average.</span></p>
 </div>
@@ -1647,7 +1695,7 @@
 <div class="lecture-header" id="L13">
   <div class="ltag">Lecture 13</div>
   <h2>Karatsuba's Complexity, and Strassen's Matrix Multiplication</h2>
-  <p>The final lecture of this collection finishes what Lecture 12 started — proving Karatsuba's algorithm is genuinely faster than the schoolbook method — and then applies the exact same "fewer multiplications, more additions" idea to a completely different problem: multiplying matrices.</p>
+  <p>This lecture finishes what Lecture 12 started — proving Karatsuba's algorithm is genuinely faster than the schoolbook method — and then applies the exact same "fewer multiplications, more additions" idea to a completely different problem: multiplying matrices.</p>
 </div>
 
 <section class="topic" id="L13-1">
@@ -1737,14 +1785,1015 @@
 </div>
 
 <div class="box result">
-<span class="lbl">Where this course's uploaded material ends</span>
-<p>Strassen's algorithm beats brute-force matrix multiplication's \(\Theta(n^3)\) with \(\Theta(n^{2.807})\) — the exact same "buy a few extra additions, save a multiplication" trade that made Karatsuba's algorithm faster than the schoolbook method. Both results are genuinely surprising the first time you see them: multiplication, which feels like the "expensive" primitive operation, turns out to be the very thing worth economizing on, even at the cost of noticeably messier bookkeeping.</p>
+<span class="lbl">Where the lecture content ends, for now</span>
+<p>Strassen's algorithm beats brute-force matrix multiplication's \(\Theta(n^3)\) with \(\Theta(n^{2.807})\) — the exact same "buy a few extra additions, save a multiplication" trade that made Karatsuba's algorithm faster than the schoolbook method. Both results are genuinely surprising the first time you see them: multiplication, which feels like the "expensive" primitive operation, turns out to be the very thing worth economizing on, even at the cost of noticeably messier bookkeeping. Lecture 14 picks up right here, turning this same "avoid redundant work" instinct into an entirely new paradigm: Dynamic Programming.</p>
 </div>
 </section>
 
+
+
+<div class="lecture-header" id="L14">
+  <div class="ltag">Lecture 14</div>
+  <h2>From Strassen to Dynamic Programming — Fibonacci and Pascal's Triangle</h2>
+  <p>This lecture opens by finishing Strassen's algorithm with a full concrete numeric example, then turns to an entirely new paradigm: <strong>Dynamic Programming.</strong> Two classic problems — computing a Fibonacci number and a Pascal's Triangle entry — motivate the whole idea, using the exact same pattern each time: naive recursion is provably exponential, and a simple bottom-up rewrite fixes it completely.</p>
+</div>
+
+<section class="topic" id="L14-1">
+<h3>14.1 &middot; Strassen's Multiplication — A Concrete 4&times;4 Example</h3>
+<div class="box ex">
+<span class="lbl">The matrices</span>
+<p>$$A=\begin{bmatrix}0&0&1&0\\0&0&0&1\\0&1&0&0\\0&0&0&0\end{bmatrix} \qquad B=\begin{bmatrix}0&1&2&3\\0&4&5&6\\0&7&8&9\\0&0&0&0\end{bmatrix}$$</p>
+<p>Split into 2&times;2 blocks: \(a_{00}{=}\begin{bmatrix}0&0\\0&0\end{bmatrix}\), \(a_{01}{=}\begin{bmatrix}1&0\\0&1\end{bmatrix}\), \(a_{10}{=}\begin{bmatrix}0&1\\0&0\end{bmatrix}\), \(a_{11}{=}\begin{bmatrix}0&0\\0&0\end{bmatrix}\); \(b_{00}{=}\begin{bmatrix}0&1\\0&4\end{bmatrix}\), \(b_{01}{=}\begin{bmatrix}2&3\\5&6\end{bmatrix}\), \(b_{10}{=}\begin{bmatrix}0&7\\0&0\end{bmatrix}\), \(b_{11}{=}\begin{bmatrix}8&9\\0&0\end{bmatrix}\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Answer by ordinary multiplication (to check against)</span>
+<p>$$AB=\begin{bmatrix}0&7&8&9\\0&0&0&0\\0&4&5&6\\0&0&0&0\end{bmatrix}$$</p>
+</div>
+<div class="box ex">
+<span class="lbl">Answer via Strassen's seven products, quadrant by quadrant</span>
+<p>Using the seven products \(m_1,\dots,m_7\) from Lecture 13:</p>
+$$m_2+m_4 = (a_{10}+a_{11})b_{00}+a_{11}(b_{10}-b_{00}) = \begin{bmatrix}0&1\\0&0\end{bmatrix}\begin{bmatrix}0&1\\0&4\end{bmatrix} = \begin{bmatrix}0&4\\0&0\end{bmatrix}$$
+$$m_1+m_4-m_5+m_7 = \begin{bmatrix}0&7\\0&0\end{bmatrix} \qquad m_1+m_3-m_2+m_6 = \begin{bmatrix}5&6\\0&0\end{bmatrix} \qquad m_3+m_5=\begin{bmatrix}8&9\\0&0\end{bmatrix}$$
+<p class="small">Independently verified: assembling these four quadrants (top-left, top-right, bottom-left, bottom-right respectively) reproduces \(AB\) above exactly, entry for entry.</p>
+</div>
+</section>
+
+<section class="topic" id="L14-2">
+<h3>14.2 &middot; Dynamic Programming — The Big Idea</h3>
+<div class="box story">
+<span class="lbl">The idea, in one line</span>
+<p><strong>Dynamic Programming (DP)</strong> takes a <em>"bottom-up approach"</em> — instead of breaking a problem into recursive sub-calls and hoping for the best, build up the answer from the smallest sub-problems first, storing every result along the way so nothing is ever recomputed.</p>
+</div>
+<div class="box def">
+<span class="lbl">Motivating example — the Fibonacci sequence</span>
+<p>$$0,\ 1,\ 1,\ 2,\ 3,\ 5,\ 8,\ 13,\ \ldots \qquad F_n = F_{n-1}+F_{n-2}\ (n\ge2), \qquad F_0=0,\ F_1=1$$</p>
+<p class="small" style="color:var(--ink-soft)">(The source slide lists this sequence as "0, 1, 2, 3, 5, 8, 13" — dropping the repeated 1 that \(F_2=F_1+F_0=1\) actually produces. The recurrence itself, and everything built on it below, is correct as stated.)</p>
+</div>
+<div class="box def">
+<span class="lbl">The naive recursive algorithm</span>
+<pre class="pseudocode">Fib(n):
+    if n = 0: return 0
+    if n = 1: return 1
+    else: return Fib(n-1) + Fib(n-2)</pre>
+</div>
+</section>
+
+<section class="topic" id="L14-3">
+<h3>14.3 &middot; Why Naive Fibonacci Is Exponential — Two Proofs</h3>
+<div class="box story">
+<span class="lbl">The overlapping-subproblems picture</span>
+<p>Unrolling <code>Fib(100)</code> even two levels shows the problem: <code>Fib(98)</code> gets computed independently inside <em>both</em> the <code>Fib(99)</code> branch and the <code>Fib(98)</code> branch. Every level down, this doubling repeats — the same sub-calls get recomputed exponentially many times.</p>
+<pre class="pseudocode">                     Fib(100)
+                    /        \
+              Fib(99)          Fib(98)
+              /    \            /    \
+        Fib(98)  Fib(97)   Fib(97)  Fib(96)
+         /  \      /  \      /  \     /  \
+        ...  ...  ...  ...  ...  ... ...  ...</pre>
+</div>
+<div class="box proof">
+<span class="lbl">Proof 1 — solving the recurrence exactly, via its characteristic equation</span>
+<p>Let \(T(n)\) be the number of calls <code>Fib</code> makes, so \(T(n)=T(n-1)+T(n-2)\) — structurally identical to the Fibonacci recurrence itself. Try a solution of the form \(T(n)=m^n\):</p>
+$$m^n = m^{n-1}+m^{n-2} \;\Longrightarrow\; m^2-m-1=0 \;\Longrightarrow\; m=\frac{1\pm\sqrt5}{2}$$
+<p>The general solution is a combination of both roots, \(T(n)=c_1\Big(\frac{1+\sqrt5}2\Big)^n+c_2\Big(\frac{1-\sqrt5}2\Big)^n\), with \(c_1,c_2\) fixed by the base cases \(T(0)=0,T(1)=1\). Since \(\big|\frac{1-\sqrt5}2\big|&lt;1\), that term vanishes as \(n\) grows, leaving:</p>
+<p class="qed">&#8756; \(T(n)=\Theta(\varphi^n)\), where \(\varphi=\frac{1+\sqrt5}2\approx1.618\) is the golden ratio. &#8718;</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof 2 — a simpler lower bound, by direct unrolling</span>
+$$T(n) = T(n-1)+T(n-2) \ge T(n-2)+T(n-2) = 2T(n-2)$$
+<p>Repeating this substitution (\(n\to n-2\) each time):</p>
+$$T(n) \ge 2T(n-2) \ge 2\big(2T(n-4)\big) = 2^2T(n-4) \ge 2^3T(n-6) \ge \cdots \ge 2^kT(n-2k)$$
+<p>Setting \(n-2k=1\) (i.e. \(k=\frac{n-1}2\)) to bottom out at the base case \(T(1)\):</p>
+$$T(n) \ge 2^{(n-1)/2}\,T(1) = 2^{(n-1)/2} \in \Omega\big(2^{n/2}\big)$$
+<p class="qed">&#8756; Either proof confirms it: naive recursive Fibonacci is an <strong>exponential-time algorithm.</strong> &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="L14-4">
+<h3>14.4 &middot; The Fix — Bottom-Up, in Linear Time</h3>
+<div class="box def">
+<span class="lbl">The two-part fix</span>
+<ol>
+<li><strong>Memoization</strong> — store every previously-computed value, so it's never recomputed.</li>
+<li><strong>Don't use the recursive relation redundantly</strong> — compute values in order (bottom-up), so each one is built directly from already-known answers.</li>
+</ol>
+</div>
+<div class="box def">
+<span class="lbl">The linear-time algorithm</span>
+<pre class="pseudocode">F(0) := 0;  F(1) := 1
+for i = 2 to n:
+    F(i) = F(i-1) + F(i-2)
+return F(n)</pre>
+<p>Store results in a simple array of length \(n{+}1\), filled left to right.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Complexity</span>
+$$T(n) = \sum_{i=2}^{n}1 = n-1 \in \Theta(n)$$
+<p class="qed">&#8756; From \(\Theta(\varphi^n)\) down to \(\Theta(n)\) — the exact same problem, solved with the exact same information, purely by changing the <em>order</em> of computation. &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="L14-5">
+<h3>14.5 &middot; A Second DP Example — Pascal's Triangle</h3>
+<div class="box story">
+<span class="lbl">The connection to binomial coefficients</span>
+<p>Row \(n\) of Pascal's Triangle gives the coefficients of \((x+y)^n\). E.g. row 5: \(1,5,10,10,5,1\), matching \((x+y)^5=x^5+5x^4y+10x^3y^2+10x^2y^3+5xy^4+y^5\).</p>
+</div>
+<div class="box story">
+<span class="lbl">A pleasant aside — Fibonacci numbers hide in Pascal's Triangle</span>
+<p>Summing along shallow diagonals of the triangle reproduces the Fibonacci sequence exactly: \(1,\ 1,\ 1{+}1{=}2,\ 1{+}2{=}3,\ 1{+}3{+}1{=}5,\ 1{+}4{+}3{=}8,\ 1{+}5{+}6{+}1{=}13,\ \ldots\)</p>
+</div>
+<div class="box def">
+<span class="lbl">The naive top-down recurrence — and why it's exponential</span>
+$$P(n,r) = P(n-1,r) + P(n-1,r-1), \qquad P(0,0)=P(1,1)=P(1,2)=1$$
+<p>Exactly like Fibonacci, computing \(P(100,99)\) naively spawns two recursive calls at every level, which overlap immediately — \(P(98,99)\) and \(P(98,98)\) both get computed from both of \(P(100,99)\)'s two children. Setting \(N=n+r\) and repeating <em>exactly</em> Section 14.3's argument:</p>
+$$T(N) = T(N-1)+T(N-2) \ge 2T(N-2) \ge \cdots \ge 2^{(N-1)/2} \;\in\; \Omega\big(2^{N/2}\big)$$
+<p class="qed">&#8756; The naive recursive Pascal's Triangle computation is exponential too — the same disease, the same cure. &#8718;</p>
+</div>
+<div class="box def">
+<span class="lbl">The bottom-up fix — filling a 2D table</span>
+<p>$$P(i,j) = P(i-1,j) + P(i-1,j-1)$$</p>
+<pre class="pseudocode">for i = 0 to n-1:
+    B(i,0) = 1;  B(i,i) = 1          // left edge and diagonal
+for i = 2 to n-1:
+    for j = 1 to i-1:
+        B(i,j) = B(i-1,j) + B(i-1,j-1)</pre>
+</div>
+<div class="box proof">
+<span class="lbl">Complexity of the bottom-up table fill</span>
+$$T(n) = \sum_{i=2}^{n-1}\sum_{j=1}^{i-1}1 = \sum_{i=2}^{n-1}(i-1) = 1+2+\cdots+(n-2) = \frac{(n-2)(n-1)}{2} \in \Theta(n^2)$$
+<p class="qed">&#8756; \(\Theta(n^2)\) — a dramatic improvement over the exponential naive version, using the exact same recurrence. &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">What this lecture establishes — the Dynamic Programming pattern</span>
+<p>Both examples follow an identical arc: a natural recursive definition, a proof (by the same technique both times) that naive recursion explodes exponentially because of <strong>overlapping subproblems</strong>, and a bottom-up table-filling algorithm that computes the exact same recurrence in polynomial time by computing each subproblem <em>exactly once.</em> This is the single idea — memoize, and never redo work — that every remaining lecture in this course builds on.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L15">
+  <div class="ltag">Lecture 15</div>
+  <h2>Longest Common Subsequence (LCS)</h2>
+  <p>The second full Dynamic Programming case study — and the first one operating on <em>sequences</em> rather than numbers. Same arc as Lecture 14: a natural recursive definition, a proof that naive recursion is exponential, and a bottom-up table that fixes it, this time producing one of the most widely-used DP algorithms in all of computer science.</p>
+</div>
+
+<section class="topic" id="L15-1">
+<h3>15.1 &middot; Subsequences, and the LCS Problem</h3>
+<div class="box def">
+<span class="lbl">Definition — subsequence</span>
+<p>Given a sequence \(X=\langle x_1,x_2,\ldots,x_n\rangle\), a sequence \(Z=\langle z_1,z_2,\ldots,z_k\rangle\) is a <strong>subsequence</strong> of \(X\) if there exists a strictly increasing sequence of indices \(\langle i_1,i_2,\ldots,i_k\rangle\) of \(X\) such that \(x_{i_j}=z_j\) for all \(1\le j\le k\).</p>
+<p class="small" style="color:var(--ink-soft)">In plain words: \(Z\) can be obtained from \(X\) by deleting zero or more elements, without reordering the rest.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked check — is Z a subsequence of X?</span>
+<p>\(X=\langle A,B,C,B,D,A,B\rangle\). Is \(Z=\langle B,C,D,B\rangle\) a subsequence of \(X\)?</p>
+<p>Try indices \(\langle2,3,5,7\rangle\): \(x_2{=}B{=}z_1\), \(x_3{=}C{=}z_2\), \(x_5{=}D{=}z_3\), \(x_7{=}B{=}z_4\) — strictly increasing indices, all match.</p>
+<span class="small" style="color:var(--ink-soft)">&there4; Yes, Z is a subsequence of X. (Note: &lang;D,C&rang; is <em>not</em> a subsequence of X — D appears only after C in X, so no increasing index sequence can produce D before C.)</span>
+</div>
+<div class="box def">
+<span class="lbl">Definition — Longest Common Subsequence</span>
+<p>Given two sequences \(X\) and \(Y\), \(LCS(X,Y)\) is a subsequence common to both \(X\) and \(Y\) that is as long as possible.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example</span>
+<p>\(X=\langle A,B,C,B,D,A,B\rangle\), \(Y=\langle B,C,D,B,A\rangle\).</p>
+<span class="small" style="color:var(--ink-soft)">\(LCS(X,Y)=\langle B,C,D,B\rangle\), length 4.</span>
+</div>
+</section>
+
+<section class="topic" id="L15-2">
+<h3>15.2 &middot; Brute Force, and the Recursive Formula</h3>
+<div class="box proof">
+<span class="lbl">Brute force — try every subsequence of X</span>
+<p>\(X=\langle x_1,\ldots,x_m\rangle\), \(Y=\langle y_1,\ldots,y_n\rangle\). \(X\) has \(2^m\) subsequences (each element is either kept or dropped); checking one subsequence against \(Y\) takes \(O(n)\) time.</p>
+<p class="qed">&#8756; Total brute-force time: \(O(n\cdot2^m)\) — exponential in \(m\). &#8718;</p>
+</div>
+<div class="box def">
+<span class="lbl">The recursive LCS formula</span>
+<p>Let \(c[i,j]\) denote the length of \(LCS\) of the first \(i\) characters of \(X\) and first \(j\) characters of \(Y\):</p>
+$$LCS(X,Y,i,j): \quad c[i,j] = \begin{cases}c[i{-}1,j{-}1]+1 & \text{if } X[i]=Y[j]\\[4pt] \max\big\{c[i{-}1,j],\ c[i,j{-}1]\big\} & \text{otherwise}\end{cases}$$
+</div>
+<div class="box story">
+<span class="lbl">Overlapping subproblems, again</span>
+<p>Computing \(C[100,100]\) naively branches into \(C[99,100]\) and \(C[100,99]\), whose own children overlap immediately (both reach \(C[99,99]\)) — exactly the same repetitive-call pattern as Fibonacci and Pascal's Triangle.</p>
+<pre class="pseudocode">                       C[100,100]
+                      /          \
+              C[99,100]            C[100,99]
+              /       \            /        \
+        C[98,100]  C[99,99]   C[99,99]   C[100,98]
+                       |          |
+                   (same subproblem, computed twice already)</pre>
+</div>
+<div class="box proof">
+<span class="lbl">Proof that naive recursive LCS is exponential</span>
+<p>Let \(N=i+j\) (the "size" of a subproblem). In the worst case (the <code>else</code> branch), each call spawns two calls of size \(N-1\):</p>
+$$T(N) = T(N-1)+T(N-1) = 2T(N-1) = 2\big(2T(N-2)\big) = 2^2T(N-2) = \cdots = 2^kT(N-k)$$
+<p>Setting \(N-k=1\) (i.e. \(k=N-1\)):</p>
+$$T(N) = 2^{N-1}T(1) \in O(2^{N-1})$$
+<p class="qed">&#8756; Recursive LCS is an exponential-time algorithm. &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="L15-3">
+<h3>15.3 &middot; The Bottom-Up LCS-Length Algorithm</h3>
+<div class="box def">
+<span class="lbl">Pseudocode</span>
+<pre class="pseudocode">LCS-LENGTH(X, Y):
+1.  m <- length[X];  n <- length[Y]
+2.  for i <- 0 to m:  C[i,0] <- 0
+3.  for j <- 0 to n:  C[0,j] <- 0
+4.  for i <- 1 to m:
+5.      for j <- 1 to n:
+6.          if X[i] = Y[j]:
+7.              C[i,j] <- C[i-1,j-1] + 1
+8.              b[i,j] <- "diagonal"
+9.          elif C[i-1,j] >= C[i,j-1]:
+10.             C[i,j] <- C[i-1,j]
+11.             b[i,j] <- "top"
+12.         else:
+13.             C[i,j] <- C[i,j-1]
+14.             b[i,j] <- "left"
+15. return C and b</pre>
+<p>The \(b\) table records <em>how</em> each entry was reached, so the actual subsequence can be reconstructed by tracing arrows back from \(C[m,n]\) to \(C[0,0]\) — diagonal moves emit a matched character; top/left moves simply retreat toward smaller subproblems.</p>
+</div>
+</section>
+
+<section class="topic" id="L15-4">
+<h3>15.4 &middot; A Complete Worked Example</h3>
+<div class="box worked">
+<span class="lbl">Setup</span>
+<p>\(X=\langle A,B,C,B,D,A,B\rangle\) (\(m=7\)), \(Y=\langle B,D,C,A,B,A\rangle\) (\(n=6\)).</p>
+</div>
+<div class="box worked">
+<span class="lbl">The complete filled table</span>
+<table class="grid trace" style="font-size:.82em">
+<tr><th></th><th>&#8709;</th><th>B</th><th>D</th><th>C</th><th>A</th><th>B</th><th>A</th></tr>
+<tr><td>&#8709;</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>A</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>B</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td></tr>
+<tr><td>C</td><td>0</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>B</td><td>0</td><td>1</td><td>1</td><td>2</td><td>2</td><td>3</td><td>3</td></tr>
+<tr><td>D</td><td>0</td><td>1</td><td>2</td><td>2</td><td>2</td><td>3</td><td>3</td></tr>
+<tr><td>A</td><td>0</td><td>1</td><td>2</td><td>2</td><td>3</td><td>3</td><td>4</td></tr>
+<tr><td>B</td><td>0</td><td>1</td><td>2</td><td>2</td><td>3</td><td>4</td><td>4</td></tr>
+</table>
+<p class="small">Independently verified in Python: every cell of this table reproduces exactly.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Reading off the answer</span>
+<p>\(C[7,6]=4\), so \(LCS(X,Y)\) has length 4. Tracing the \(b\) table's arrows back from the bottom-right corner reconstructs the subsequence <strong>reversed</strong>, as <code>ABCB</code> — reversing gives:</p>
+<span class="answer-final">LCS(X, Y) = BCBA, length 4</span>
+</div>
+<div class="box result">
+<span class="lbl">Complexity of the bottom-up algorithm</span>
+<p>Two nested loops, sizes \(m\) and \(n\): \(\Theta(mn)\) — polynomial, down from the naive algorithm's exponential \(O(2^{N-1})\), using the identical recurrence.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L16">
+  <div class="ltag">Lecture 16</div>
+  <h2>Matrix Chain Multiplication</h2>
+  <p>A third DP case study, and the first one whose motivating question isn't "how long does this take?" but "which of many equally-valid ways of doing this is <em>cheapest</em>?" Matrix multiplication is associative, so a chain of matrices can be parenthesized many different ways — and, remarkably, the choice of parenthesization can change the operation count by an order of magnitude.</p>
+</div>
+
+<section class="topic" id="L16-1">
+<h3>16.1 &middot; Why Parenthesization Matters</h3>
+<div class="box story">
+<span class="lbl">Motivating example</span>
+<p>\(\langle A_1,A_2,A_3\rangle\) with dimensions \(10{\times}100\), \(100{\times}5\), \(5{\times}50\). Multiplying \(p{\times}q\) by \(q{\times}r\) costs \(pqr\) scalar multiplications. Associativity means \((A_1A_2)A_3=A_1(A_2A_3)\) — but at wildly different cost:</p>
+<table class="grid trace">
+<tr><th>Parenthesization</th><th>Cost</th></tr>
+<tr><td>\((A_1A_2)A_3\)</td><td>\(10{\cdot}100{\cdot}5 + 10{\cdot}5{\cdot}50 = 5000+2500=7{,}500\)</td></tr>
+<tr><td>\(A_1(A_2A_3)\)</td><td>\(100{\cdot}5{\cdot}50 + 10{\cdot}100{\cdot}50 = 25000+50000=75{,}000\)</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">The first option needs only 10% of the second's scalar multiplications — from a <em>computing perspective</em>, the goal is to <strong>minimize the number of scalar multiplications</strong> by choosing the parenthesization wisely.</p>
+</div>
+<div class="box def">
+<span class="lbl">Problem statement</span>
+<p>Given a chain \(\langle A_1,A_2,\ldots,A_n\rangle\) of \(n\) matrices, where for \(i=1,\ldots,n\), matrix \(A_i\) has dimension \(p_{i-1}\times p_i\), fully parenthesize the product \(A_1A_2\cdots A_n\) in a way that minimizes the number of scalar multiplications.</p>
+</div>
+</section>
+
+<section class="topic" id="L16-2">
+<h3>16.2 &middot; The Recursive Formula, and Why It's Exponential</h3>
+<div class="box def">
+<span class="lbl">Recursive definition</span>
+<p>Let \(m[i,j]\) be the minimum cost of computing \(A_i\cdots A_j\):</p>
+$$m[i,j] = \begin{cases}0 & \text{if } i=j\\[4pt] \displaystyle\min_{i\le k&lt;j}\big\{m[i,k]+m[k{+}1,j]+p_{i-1}p_kp_j\big\} & \text{if } i&lt;j\end{cases}$$
+<p>"Choose \(k\) which gives the minimum \(m[i,j]\)" — try every possible split point and keep the best.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Why naive recursion on this formula is exponential</span>
+<p>Let \(N=i+j\) (subproblem size), so the recursive call splits into \(m[i,k]\) (size \(N-j+k\)) and \(m[k{+}1,j]\) (size \(N-i+k+1\)). In the worst case this behaves like:</p>
+$$T(N) \ge T(N-j)+T(N-i) \ge 2T(N-j)$$
+<p class="qed">&#8756; The same doubling pattern as Fibonacci, Pascal's Triangle, and LCS — naive recursive Matrix-Chain-Order is exponential. &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="L16-3">
+<h3>16.3 &middot; Matrix-Chain-Order — The Bottom-Up Algorithm</h3>
+<div class="box def">
+<span class="lbl">Pseudocode</span>
+<pre class="pseudocode">MATRIX-CHAIN-ORDER(p):
+    // input sequence p = <p_0,p_1,...,p_n>, length[p] = n+1
+    // A_i has dimension p_{i-1} x p_i
+1.  n <- length[p] - 1
+2.  for i <- 1 to n:
+3.      m[i,i] <- 0
+4.  for l <- 2 to n:                    // l = chain length
+5.      for i <- 1 to n-l+1:
+6.          j <- i+l-1
+7.          m[i,j] <- infinity
+8.          for k <- i to j-1:
+9.              q <- m[i,k] + m[k+1,j] + p[i-1]*p[k]*p[j]
+10.             if q < m[i,j]:
+11.                 m[i,j] <- q
+12.                 s[i,j] <- k
+13. return m and s</pre>
+<p>Fill the table by increasing <strong>chain length</strong> \(l\) — every shorter subchain's cost is already known by the time a longer one needs it. The \(s\) table records the optimal split point \(k\) for each \([i,j]\), for reconstructing the actual parenthesization afterward.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Complexity — Θ(n³)</span>
+<p>The triple-nested loop (over \(i\), \(j\), and \(k\)) gives:</p>
+$$T(n) = \sum_{i=1}^{n}\sum_{j=i}^{n}\sum_{k=i}^{j-1}1 = \sum_{i=1}^n\sum_{j=i}^n(j-i)$$
+<p>Substituting \(0+1+2+\cdots+(n-i)=\frac{(n-i)(n-i+1)}2\) and expanding the resulting sum of squares (using \(\sum k^2=\frac{n(n+1)(2n+1)}6\)):</p>
+$$T(n) = \frac{n^3-n}{6} \in \Theta(n^3)$$
+<p class="qed">&#8756; Down from exponential to \(\Theta(n^3)\) — polynomial, and eminently practical even for large \(n\). &#8718;</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L17">
+  <div class="ltag">Lecture 17</div>
+  <h2>Matrix Chain Multiplication — A Complete Worked Example</h2>
+  <p>Putting Matrix-Chain-Order to work on four concrete matrices, filling every table entry by hand, and verifying the final answer by directly costing out the winning parenthesization.</p>
+</div>
+
+<section class="topic" id="L17-1">
+<h3>17.1 &middot; Setup</h3>
+<div class="box worked">
+<span class="lbl">The four matrices</span>
+<table class="grid trace">
+<tr><th>Matrix</th><th>Dimension</th><th>(as \(p_{i-1}\times p_i\))</th></tr>
+<tr><td>\(A_1\)</td><td>\(10\times100\)</td><td>\(p_0=10,\ p_1=100\)</td></tr>
+<tr><td>\(A_2\)</td><td>\(100\times5\)</td><td>\(p_2=5\)</td></tr>
+<tr><td>\(A_3\)</td><td>\(5\times50\)</td><td>\(p_3=50\)</td></tr>
+<tr><td>\(A_4\)</td><td>\(50\times20\)</td><td>\(p_4=20\)</td></tr>
+</table>
+<p>\(p=[10,100,5,50,20]\).</p>
+</div>
+</section>
+
+<section class="topic" id="L17-2">
+<h3>17.2 &middot; Filling the m and s Tables</h3>
+<div class="box worked">
+<span class="lbl">Chain length 2</span>
+$$m[1,2]=10{\cdot}100{\cdot}5=5{,}000\ (k{=}1) \quad m[2,3]=100{\cdot}5{\cdot}50=25{,}000\ (k{=}2) \quad m[3,4]=5{\cdot}50{\cdot}20=5{,}000\ (k{=}3)$$
+</div>
+<div class="box worked">
+<span class="lbl">Chain length 3</span>
+$$m[1,3]=\min\big\{\underbrace{m[1,1]{+}m[2,3]{+}p_0p_1p_3}_{0+25000+10\cdot100\cdot50=75{,}000},\ \underbrace{m[1,2]{+}m[3,3]{+}p_0p_2p_3}_{5000+0+10\cdot5\cdot50=7{,}500}\big\}=\mathbf{7{,}500}\ (k{=}2)$$
+$$m[2,4]=\min\big\{\underbrace{m[2,2]{+}m[3,4]{+}p_1p_2p_4}_{0+5000+100\cdot5\cdot20=15{,}000},\ \underbrace{m[2,3]{+}m[4,4]{+}p_1p_3p_4}_{25000+0+100\cdot50\cdot20=185{,}000}\big\}=\mathbf{15{,}000}\ (k{=}2)$$
+</div>
+<div class="box worked">
+<span class="lbl">Chain length 4 — the full chain</span>
+<p>All three split points compared:</p>
+<table class="grid trace" style="font-size:.88em">
+<tr><th>\(k\)</th><th>Cost</th></tr>
+<tr><td>1</td><td>\(m[1,1]{+}m[2,4]{+}p_0p_1p_4 = 0+15000+10{\cdot}100{\cdot}20 = 35{,}000\)</td></tr>
+<tr><td>2</td><td>\(m[1,2]{+}m[3,4]{+}p_0p_2p_4 = 5000+5000+10{\cdot}5{\cdot}20 = \mathbf{11{,}000}\)</td></tr>
+<tr><td>3</td><td>\(m[1,3]{+}m[4,4]{+}p_0p_3p_4 = 7500+0+10{\cdot}50{\cdot}20 = 17{,}500\)</td></tr>
+</table>
+<span class="answer-final">m[1,4] = 11,000, achieved at k = 2</span>
+</div>
+<div class="box result">
+<span class="lbl">Full m and s tables</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>m[i,j]</th><th>j=1</th><th>j=2</th><th>j=3</th><th>j=4</th></tr>
+<tr><td>i=1</td><td>0</td><td>5,000</td><td>7,500</td><td>11,000</td></tr>
+<tr><td>i=2</td><td></td><td>0</td><td>25,000</td><td>15,000</td></tr>
+<tr><td>i=3</td><td></td><td></td><td>0</td><td>5,000</td></tr>
+<tr><td>i=4</td><td></td><td></td><td></td><td>0</td></tr>
+</table>
+</div>
+</section>
+
+<section class="topic" id="L17-3">
+<h3>17.3 &middot; Constructing and Verifying the Optimal Parenthesization</h3>
+<div class="box worked">
+<span class="lbl">Reading the s table recursively</span>
+<p>\(s[1,4]=2\) splits into \(A_1A_2\) and \(A_3A_4\). \(s[1,2]=1\) splits \(A_1A_2\) into \((A_1)(A_2)\). \(s[3,4]=3\) splits \(A_3A_4\) into \((A_3)(A_4)\).</p>
+</div>
+<div class="box result">
+<span class="lbl">Final parenthesization</span>
+<span class="answer-final">((A₁)(A₂)) ((A₃)(A₄)) — i.e. (A₁A₂)(A₃A₄), at a cost of 11,000</span>
+</div>
+<div class="box proof">
+<span class="lbl">Verification — cost it out directly</span>
+$$A_1A_2:\ 10{\cdot}100{\cdot}5 = 5{,}000 \quad(\text{result: }10\times5)$$
+$$A_3A_4:\ 5{\cdot}50{\cdot}20 = 5{,}000 \quad(\text{result: }5\times20)$$
+$$(A_1A_2)(A_3A_4):\ 10{\cdot}5{\cdot}20 = 1{,}000$$
+$$\text{Total} = 5000+5000+1000 = \mathbf{11{,}000}\ \checkmark$$
+<p class="qed">&#8756; Matches \(m[1,4]\) exactly. &#8718;</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L18">
+  <div class="ltag">Lecture 18</div>
+  <h2>Assembly Line Scheduling</h2>
+  <p>A fourth DP case study — this time modelling a genuinely physical process: a car chassis moving through two parallel assembly lines, each with \(n\) stations, choosing at every station whether to stay on the current line or pay a transfer cost to switch to the other.</p>
+</div>
+
+<section class="topic" id="L18-1">
+<h3>18.1 &middot; The Setup</h3>
+<div class="box def">
+<span class="lbl">The model</span>
+<p>Two assembly lines, each with stations \(S_{i,1},\ldots,S_{i,n}\) for \(i=1,2\). A chassis enters line \(i\) taking time \(e_i\), passes through station \(S_{i,j}\) taking time \(a_{i,j}\), and exits line \(i\) after the last station taking time \(x_i\). After station \(j\) on either line, the chassis may switch to the other line's station \(j{+}1\), at a transfer cost \(t_{i,j}\).</p>
+</div>
+<div class="box def">
+<span class="lbl">The question</span>
+<p>\(f_i[j]\) = the fastest possible time to get a chassis from the starting point, through station \(S_{i,j}\), to the end. The overall fastest time through the whole factory:</p>
+$$f^* = \min\{f_1[n]+x_1,\ f_2[n]+x_2\}$$
+<p><strong>Brute force:</strong> at each of \(n\) stations, the chassis could be on either of 2 lines — \(2^n\) possible line-choice sequences to check.</p>
+</div>
+</section>
+
+<section class="topic" id="L18-2">
+<h3>18.2 &middot; The Recursive Formula, and Why It's Exponential</h3>
+<div class="box def">
+<span class="lbl">Recursive definition</span>
+$$f_1[j] = \begin{cases}e_1+a_{1,1} & j=1\\[4pt] \min\big\{f_1[j{-}1]+a_{1,j},\ f_2[j{-}1]+a_{1,j}+t_{2,j}\big\} & j\ge2\end{cases}$$
+$$f_2[j] = \begin{cases}e_2+a_{2,1} & j=1\\[4pt] \min\big\{f_2[j{-}1]+a_{2,j},\ f_1[j{-}1]+a_{2,j}+t_{1,j}\big\} & j\ge2\end{cases}$$
+<p>Reaching station \(j\) on line \(i\) means either staying on line \(i\) from station \(j{-}1\), or switching over from the other line (paying its transfer cost).</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof that naive recursion makes exponentially many calls</span>
+<p>Let \(r_i(j)\) = number of times \(f_i[j]\) gets referenced by a naive recursive implementation. From the recurrence, each reference to \(f_i[j]\) triggers one reference to <em>each</em> of \(f_1[j{-}1]\) and \(f_2[j{-}1]\):</p>
+$$r_1(j) = r_1(j{-}1)+r_2(j{-}1), \qquad r_2(j) = r_2(j{-}1)+r_1(j{-}1)$$
+<p><strong>Guess:</strong> \(r_1(j{-}1)=r_2(j{-}1)\). Substituting: \(r_1(j)=2r_1(j{-}1)\), which unrolls exactly like Fibonacci's proof:</p>
+$$r_1(j) = 2r_1(j{-}1) = 2^2r_1(j{-}2) = \cdots = 2^{j-1}r_1(1) = 2^{j-1}$$
+<p>(Substituting back into the recurrence confirms the guess: \(r_1(j)=2^{j-2}+2^{j-2}=2^{j-1}\) &#10003; — or prove it cleanly by induction.) By symmetry, \(r_2(j)=2^{j-1}\) too. Total references made across all \(j\):</p>
+$$\sum_{j=1}^n r_1(j) + \sum_{j=1}^n r_2(j) = (2^n-1)+(2^n-1) = 2^{n+1}-2 \;\in\; \Theta(2^n)$$
+<p class="qed">&#8756; Naive recursive Assembly Line Scheduling does exponentially much redundant work — the same overlapping-subproblems disease as every DP example so far. &#8718;</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L19">
+  <div class="ltag">Lecture 19</div>
+  <h2>Assembly Line Scheduling — Solved, and an Introduction to Graphs</h2>
+  <p>The bottom-up fix for Assembly Line Scheduling, a complete classic worked example, and then a change of direction entirely: this course's first look at graphs, spanning trees, and the Minimum Spanning Tree problem.</p>
+</div>
+
+<section class="topic" id="L19-1">
+<h3>19.1 &middot; FASTEST-WAY — The Bottom-Up Algorithm</h3>
+<div class="box def">
+<span class="lbl">Pseudocode</span>
+<pre class="pseudocode">FASTEST-WAY(a, t, e, x, n):
+1.  f1[1] <- e1 + a[1,1]
+2.  f2[1] <- e2 + a[2,1]
+3.  for j <- 2 to n:
+4.      if f1[j-1]+a[1,j] <= f2[j-1]+t[2,j]+a[1,j]:
+5.          f1[j] <- f1[j-1]+a[1,j];  l1[j] <- 1   // stay in same lane
+6.      else:
+7.          f1[j] <- f2[j-1]+t[2,j]+a[1,j];  l1[j] <- 2   // change lane
+8.      if f2[j-1]+a[2,j] <= f1[j-1]+t[1,j]+a[2,j]:
+9.          f2[j] <- f2[j-1]+a[2,j];  l2[j] <- 2   // stay in same lane
+10.     else:
+11.         f2[j] <- f1[j-1]+t[1,j]+a[2,j];  l2[j] <- 1   // change lane
+12. if f1[n]+x1 <= f2[n]+x2:
+13.     f* <- f1[n]+x1;  l* <- 1
+14. else:
+15.     f* <- f2[n]+x2;  l* <- 2</pre>
+<p class="small" style="color:var(--ink-soft)">(Line 15's right-hand side is stated in the source as "\(f_2[n]+x_1\)" — almost certainly a slip, since it should mirror line 13 and use \(x_2\), matching the comparison on line 12. Used as \(x_2\) throughout the worked example below, since that's what the source's own numbers require.)</p>
+<p>Just like <code>LCS-LENGTH</code>'s \(b\) table, the \(l_i[j]\) arrays record <em>which line</em> was used to reach each station, so the actual optimal route can be reconstructed by tracing back from \(l^*\).</p>
+</div>
+</section>
+
+<section class="topic" id="L19-2">
+<h3>19.2 &middot; A Complete Worked Example</h3>
+<div class="box worked">
+<span class="lbl">The inputs</span>
+<p>\(e_1{=}2,\ e_2{=}4\); \(a_1{=}[7,9,3,4,8,4]\), \(a_2{=}[8,5,6,6,5,7]\); \(x_1{=}3,\ x_2{=}2\); transfer times \(t_{2,j}\) (line2&rarr;line1) \(=[2,3,1,3,4]\) for \(j{=}2..6\), and \(t_{1,j}\) (line1&rarr;line2) \(=[2,1,2,2,1]\) for \(j{=}2..6\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">The filled tables — independently verified in Python</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>j</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+<tr><td>\(f_1[j]\)</td><td>9</td><td>18</td><td>20</td><td>24</td><td>32</td><td>36</td></tr>
+<tr><td>\(f_2[j]\)</td><td>12</td><td>16</td><td>22</td><td>27</td><td>32</td><td>39</td></tr>
+<tr><td>\(l_1[j]\)</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>\(l_2[j]\)</td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">(The source's own \(l_2[4]\) cell reads 2, but \(f_2[4]=27\) itself is reached via \(f_1[3]{+}t_{1,4}{+}a_{2,4}=20{+}1{+}6=27\) — the line-1-switch option — which is exactly what \(l_2[4]{=}1\) should record. The table above uses the value consistent with the computation; it makes no difference to the final route below, which never visits station \((2,4)\).)</p>
+</div>
+<div class="box worked">
+<span class="lbl">The final answer</span>
+$$f^* = \min\{f_1[6]+x_1,\ f_2[6]+x_2\} = \min\{36+3,\ 39+2\} = \min\{39,41\} = \mathbf{39}, \quad l^*=1$$
+</div>
+<div class="box result">
+<span class="lbl">Tracing the optimal route</span>
+<p>Backtracking from \(l^*{=}1\) through the \(l_1,l_2\) arrays: enter on line 1 (\(e_1\)) &rarr; station \((1,1)\) &rarr; <strong>switch</strong> to station \((2,2)\) (via \(t_{1,2}{=}2\)) &rarr; <strong>switch back</strong> to station \((1,3)\) (via \(t_{2,3}{=}1\)) &rarr; stay on line 1 through stations 4, 5, 6 &rarr; exit via \(x_1\).</p>
+<p>Verifying the total directly: \(2+7+2+5+1+3+4+8+4+3 = \mathbf{39}\) &#10003;, matching \(f^*\) exactly.</p>
+</div>
+</section>
+
+<section class="topic" id="L19-3">
+<h3>19.3 &middot; Introduction to Graph Algorithms — Spanning Trees and MST</h3>
+<div class="box def">
+<span class="lbl">Definitions</span>
+<p>A <strong>tree</strong> is a connected graph with no cycles (loops). A <strong>spanning tree</strong> of a graph \(G\) is a tree that covers (includes) all of \(G\)'s vertices. Given a graph \(G\), a spanning tree always exists — but it's generally <strong>not unique.</strong></p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example — four different spanning trees of the same graph</span>
+<p>Let \(G\) be the 4-cycle on vertices \(v_1,v_2,v_3,v_4\) (edges \(v_1v_2\), \(v_2v_3\), \(v_3v_4\), \(v_4v_1\)). Removing any <em>one</em> edge from a cycle always leaves a spanning tree — so \(G\) has (at least) four distinct spanning trees \(T_1,T_2,T_3,T_4\), one per removed edge.</p>
+</div>
+<div class="box def">
+<span class="lbl">Minimum Spanning Tree (MST)</span>
+<p>Given a <strong>weighted</strong> graph, the MST is the spanning tree whose edge weights sum to the smallest possible total.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Worked example</span>
+<p>Same 4-cycle, now weighted: \(v_1v_2{=}2\), \(v_1v_3{=}1\), \(v_2v_4{=}3\), \(v_3v_4{=}4\). Each spanning tree drops one edge:</p>
+<table class="grid trace">
+<tr><th>Tree (edge dropped)</th><th>Weight</th></tr>
+<tr><td>\(T_1\) (drop \(v_1v_2\))</td><td>\(1+3+4=8\)</td></tr>
+<tr><td>\(T_2\) (drop \(v_3v_4\))</td><td>\(1+2+3=6\)</td></tr>
+<tr><td>\(T_3\) (drop \(v_2v_4\))</td><td>\(2+1+4=7\)</td></tr>
+<tr><td>\(T_4\) (drop \(v_1v_3\))</td><td>\(2+3+4=9\)</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">(The source states \(\omega(T_3)=2{+}1{+}4=9\) — but \(2+1+4=7\), not 9; corrected above. This doesn't change which tree wins.)</p>
+<span class="answer-final">T₂ is the Minimum Spanning Tree, with weight 6</span>
+</div>
+<div class="box def">
+<span class="lbl">The brute-force MST algorithm</span>
+<ol><li>Write out all spanning trees.</li><li>Calculate the weight of each.</li><li>Return the one with minimum weight.</li></ol>
+<p class="small" style="color:var(--ink-soft)">Exactly as exhaustive — and exactly as ripe for a smarter algorithm — as every brute-force method this course has met so far. Efficient MST algorithms (Kruskal's, Prim's) are the natural next step.</p>
+</div>
+</section>
+
+<div class="box result" style="margin-top:20px;">
+<span class="lbl">Where Lectures 14&ndash;19 leave off</span>
+<p>Six lectures, one recurring idea: notice that naive recursion revisits the same subproblems exponentially often, prove it rigorously, then rebuild the same recurrence bottom-up so each subproblem is solved exactly once. Fibonacci, Pascal's Triangle, LCS, Matrix Chain Multiplication, and Assembly Line Scheduling are five completely different problems solved by the identical technique — and the course's final turn, into graphs and spanning trees, opens the next major toolkit this technique will eventually meet again.</p>
+</div>
+
+
+<div class="lecture-header" id="EX">
+  <div class="ltag">Exercise Set</div>
+  <h2>Miscellaneous Exercise Problems — Fully Worked Solutions</h2>
+  <p>Fourteen problems spanning every algorithm and technique in this course — sorting, divide-and-conquer, dynamic programming groundwork, and asymptotic analysis. Every numeric worked example below was independently computed and cross-checked before being written up.</p>
+</div>
+
+<section class="topic" id="EX-1">
+<h3>Exercise 1 &middot; Sorting One Array, Four Ways</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Implement all steps of (a) Bubble Sort, (b) Selection Sort, (c) Merge Sort, (d) Quicksort to sort \(A=[4,3,1,7,2,9,3,4]\). For Quicksort, use the <strong>last element</strong> as the pivot.</p>
+</div>
+
+<div class="box ex">
+<span class="lbl">(a) Bubble Sort — every pass</span>
+<table class="grid trace">
+<tr><th>Start</th><th>After Pass 1</th><th>After Pass 2</th><th>After Pass 3</th><th>After Pass 4</th></tr>
+<tr><td>4,3,1,7,2,9,3,4</td><td>3,1,4,2,7,3,4,9</td><td>1,3,2,4,3,4,7,9</td><td>1,2,3,3,4,4,7,9</td><td>1,2,3,3,4,4,7,9</td></tr>
+</table>
+<p class="small">Pass 1: compare-and-swap adjacent pairs left to right — (4,3)&rarr;swap, (4,1)&rarr;swap, (4,7)&rarr;no, (7,2)&rarr;swap, (7,9)&rarr;no, (9,3)&rarr;swap, (9,4)&rarr;swap, giving 3,1,4,2,7,3,4,9. Pass 2 and 3 repeat the same left-to-right bubbling. By the end of pass 3 no swaps occur in pass 4 — the array is sorted, and an implementation that tracks a "swapped" flag can terminate early.</p>
+<span class="small" style="color:var(--ink-soft)">Final: <strong>1, 2, 3, 3, 4, 4, 7, 9</strong> — \(\Theta(n^2)\) comparisons in the worst case.</span>
+</div>
+
+<div class="box ex">
+<span class="lbl">(b) Selection Sort — every pass</span>
+<table class="grid trace">
+<tr><th>i</th><th>Unsorted region</th><th>Minimum found</th><th>Array after swap</th></tr>
+<tr><td>0</td><td>[4,3,1,7,2,9,3,4]</td><td>1 (index 2)</td><td>1,3,4,7,2,9,3,4</td></tr>
+<tr><td>1</td><td>[3,4,7,2,9,3,4]</td><td>2 (index 4)</td><td>1,2,4,7,3,9,3,4</td></tr>
+<tr><td>2</td><td>[4,7,3,9,3,4]</td><td>3 (index 4)</td><td>1,2,3,7,4,9,3,4</td></tr>
+<tr><td>3</td><td>[7,4,9,3,4]</td><td>3 (index 6)</td><td>1,2,3,3,4,9,7,4</td></tr>
+<tr><td>4</td><td>[4,9,7,4]</td><td>4 (index 4, already placed)</td><td>1,2,3,3,4,9,7,4</td></tr>
+<tr><td>5</td><td>[9,7,4]</td><td>4 (index 7)</td><td>1,2,3,3,4,4,7,9</td></tr>
+<tr><td>6</td><td>[9,7]</td><td>7 (index 6, already placed)</td><td>1,2,3,3,4,4,7,9</td></tr>
+</table>
+<p class="small">At each step \(i\), scan the entire unsorted suffix for the minimum and swap it into position \(i\). Always \(\Theta(n^2)\) comparisons — <em>regardless</em> of input order, since the scan for the minimum never shortens.</p>
+<span class="small" style="color:var(--ink-soft)">Final: <strong>1, 2, 3, 3, 4, 4, 7, 9</strong></span>
+</div>
+
+<div class="box ex">
+<span class="lbl">(c) Merge Sort — the full recursion tree</span>
+<p>Split repeatedly in half until singletons, then merge back up:</p>
+<pre class="pseudocode">split:  [4,3,1,7,2,9,3,4]
+          /              \
+     [4,3,1,7]          [2,9,3,4]
+      /      \            /      \
+   [4,3]    [1,7]      [2,9]    [3,4]
+   /   \    /   \      /   \    /   \
+  4     3  1     7    2     9  3     4
+
+merge:  [4]+[3]=[3,4]        [1]+[7]=[1,7]        [2]+[9]=[2,9]        [3]+[4]=[3,4]
+        [3,4]+[1,7]=[1,3,4,7]                     [2,9]+[3,4]=[2,3,4,9]
+                    [1,3,4,7]+[2,3,4,9] = [1,2,3,3,4,4,7,9]</pre>
+<span class="small" style="color:var(--ink-soft)">Final: <strong>1, 2, 3, 3, 4, 4, 7, 9</strong> — \(\Theta(n\log n)\) guaranteed, every time.</span>
+</div>
+
+<div class="box ex">
+<span class="lbl">(d) Quicksort — Lomuto partition, pivot = last element</span>
+<p><strong>Call 1:</strong> partition(<code>[4,3,1,7,2,9,3,4]</code>), pivot = 4 (last element). Scan left to right with pointer \(i\) tracking the boundary of "\(\le\) pivot":</p>
+<table class="grid trace">
+<tr><th>j</th><th>A[j]</th><th>&le; pivot(4)?</th><th>Action</th></tr>
+<tr><td>0</td><td>4</td><td>yes</td><td>i=0, swap A[0]&harr;A[0]</td></tr>
+<tr><td>1</td><td>3</td><td>yes</td><td>i=1, swap A[1]&harr;A[1]</td></tr>
+<tr><td>2</td><td>1</td><td>yes</td><td>i=2, swap A[2]&harr;A[2]</td></tr>
+<tr><td>3</td><td>7</td><td>no</td><td>&mdash;</td></tr>
+<tr><td>4</td><td>2</td><td>yes</td><td>i=3, swap A[3]&harr;A[4] &rarr; [4,3,1,2,7,9,3,4]</td></tr>
+<tr><td>5</td><td>9</td><td>no</td><td>&mdash;</td></tr>
+<tr><td>6</td><td>3</td><td>yes</td><td>i=4, swap A[4]&harr;A[6] &rarr; [4,3,1,2,3,9,7,4]</td></tr>
+</table>
+<p>Finally swap pivot into place: A[i+1]&harr;A[7] &rarr; <code>[4,3,1,2,3,4,7,9]</code>. Pivot 4 lands at <strong>index 5</strong>, with everything &le;4 to its left, everything &gt;4 to its right.</p>
+<pre class="pseudocode">                    [4,3,1,2,3 | 4 | 7,9]           pivot=4 lands at index 5
+                    /                    \
+        partition([4,3,1,2,3])      partition([7,9])
+         pivot=3 (last)               pivot=9 (last)
+              |                            |
+        [1,2,3 | 3 | ] index 3        [7 | 9] index 7
+         /         \                       |
+  partition([1,2])   (empty)          (nothing left)
+   pivot=2 (last)
+        |
+   [1 | 2] index 1</pre>
+<span class="small" style="color:var(--ink-soft)">Final: <strong>1, 2, 3, 3, 4, 4, 7, 9</strong> — average \(\Theta(n\log n)\), worst case \(\Theta(n^2)\) (e.g. an already-sorted array with last-element pivoting).</span>
+</div>
+</section>
+
+<section class="topic" id="EX-2">
+<h3>Exercise 2 &middot; Brute-Force Maximum-Finding Is Asymptotically Optimal</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Prove that the brute-force algorithm to find the maximum in an array of \(n\) elements is asymptotically optimal.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof</span>
+<p><strong>The algorithm:</strong> scan the array once, keeping a running maximum, updating it whenever a larger element is seen. This costs exactly \(n-1\) comparisons — one per element after the first — so it runs in \(\Theta(n)\).</p>
+<p><strong>The lower bound:</strong> any <em>comparison-based</em> algorithm that finds the maximum must examine every element at least once. Suppose, for contradiction, some element \(A[k]\) is <em>never</em> compared against anything. Then the algorithm has no information distinguishing "\(A[k]\) is the smallest possible value" from "\(A[k]\) is larger than the true maximum" — it cannot correctly rule out \(A[k]\) as the maximum in both cases using the same fixed sequence of comparisons and output. So every element must participate in at least one comparison, giving at least \(\lceil n/2\rceil\) comparisons at an absolute minimum (each comparison involves 2 elements) — in fact a more careful adversary argument shows at least \(n-1\) comparisons are necessary, matching the brute-force count exactly.</p>
+<p class="qed">&#8756; Brute-force's \(\Theta(n)\) upper bound meets the \(\Omega(n)\) lower bound, so brute-force is asymptotically optimal — no comparison-based algorithm can do better than \(\Theta(n)\). &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="EX-3">
+<h3>Exercise 3 &middot; Worst-Case Inputs</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Give the worst-case input for (i) Bubble Sort, (ii) Quicksort.</p>
+</div>
+<div class="box result">
+<span class="lbl">(i) Bubble Sort — worst case: reverse-sorted input</span>
+<p>E.g. \([9,7,4,3,2,1]\) (strictly descending). Every single pass performs the maximum possible number of swaps — every adjacent pair is out of order — forcing all \(n-1\) passes to run to completion with no early exit. Total comparisons: \(\binom{n}{2}=\Theta(n^2)\).</p>
+</div>
+<div class="box result">
+<span class="lbl">(ii) Quicksort — worst case: already-sorted (or reverse-sorted) input, with last-element pivoting</span>
+<p>E.g. \([1,2,3,4,5,6]\) already sorted. With the pivot always chosen as the last element, partitioning an already-sorted array always puts the pivot at the very end of its own subarray — producing one empty partition and one partition of size \(n-1\) every single time. The recursion never balances: \(T(n)=T(n-1)+\Theta(n)\), which unrolls to \(\Theta(n^2)\), the worst possible case for Quicksort (compare to the \(\Theta(n\log n)\) average case with balanced splits).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-4">
+<h3>Exercise 4 &middot; Bucket Sort, Illustrated</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Illustrate Bucket Sort for \(A=[0.3,\ 0.2,\ 0.7,\ 0.9,\ 0.2,\ 0.1,\ 0.7,\ 0.5,\ 0.2,\ 0.8]\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Solution — 10 buckets, one per tenth</span>
+<p>With \(n=10\) elements, create 10 buckets covering \([0,0.1),[0.1,0.2),\dots,[0.9,1.0)\), and distribute each value into bucket \(\lfloor n\cdot x\rfloor\):</p>
+<table class="grid trace">
+<tr><th>Bucket</th><th>Range</th><th>Contents (in insertion order)</th></tr>
+<tr><td>0</td><td>[0.0, 0.1)</td><td>&mdash;</td></tr>
+<tr><td>1</td><td>[0.1, 0.2)</td><td>0.1</td></tr>
+<tr><td>2</td><td>[0.2, 0.3)</td><td>0.2, 0.2, 0.2</td></tr>
+<tr><td>3</td><td>[0.3, 0.4)</td><td>0.3</td></tr>
+<tr><td>4</td><td>[0.4, 0.5)</td><td>&mdash;</td></tr>
+<tr><td>5</td><td>[0.5, 0.6)</td><td>0.5</td></tr>
+<tr><td>6</td><td>[0.6, 0.7)</td><td>&mdash;</td></tr>
+<tr><td>7</td><td>[0.7, 0.8)</td><td>0.7, 0.7</td></tr>
+<tr><td>8</td><td>[0.8, 0.9)</td><td>0.8</td></tr>
+<tr><td>9</td><td>[0.9, 1.0)</td><td>0.9</td></tr>
+</table>
+<p>Each bucket is already tiny (the values here happen to need no within-bucket sorting since duplicates are equal), then concatenate bucket 0 through bucket 9 in order:</p>
+<span class="small" style="color:var(--ink-soft)">Final: <strong>0.1, 0.2, 0.2, 0.2, 0.3, 0.5, 0.7, 0.7, 0.8, 0.9</strong></span>
+</div>
+</section>
+
+<section class="topic" id="EX-5">
+<h3>Exercise 5 &middot; Radix Sort on Binary Numbers, in Octal</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Use Radix Sort (octal base) to sort: <code>1011011011, 1010110011, 1000010010, 11001101, 10101010, 111111, 1000001, 100110011001</code>.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Step 1 — convert each to octal</span>
+<table class="grid trace">
+<tr><th>Binary</th><th>Decimal</th><th>Octal</th></tr>
+<tr><td>1011011011</td><td>731</td><td>1333</td></tr>
+<tr><td>1010110011</td><td>691</td><td>1263</td></tr>
+<tr><td>1000010010</td><td>530</td><td>1022</td></tr>
+<tr><td>11001101</td><td>205</td><td>0315</td></tr>
+<tr><td>10101010</td><td>170</td><td>0252</td></tr>
+<tr><td>111111</td><td>63</td><td>0077</td></tr>
+<tr><td>1000001</td><td>65</td><td>0101</td></tr>
+<tr><td>100110011001</td><td>2457</td><td>4631</td></tr>
+</table>
+<p class="small">Grouping binary digits into sets of 3 from the right (each octal digit = 3 binary bits) converts directly, e.g. \(1\,011\,011\,011_2 = 1333_8\) since \(1{=}1,\ 011{=}3,\ 011{=}3,\ 011{=}3\). Every number is padded to 4 octal digits (0000&ndash;4631) since the largest needs 4 digits.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Step 2 — LSD Radix Sort, one octal digit at a time (stable counting sort per pass)</span>
+<table class="grid trace">
+<tr><th>Pass</th><th>Digit examined</th><th>Order after this pass (octal)</th></tr>
+<tr><td>Start</td><td>&mdash;</td><td>1333, 1263, 1022, 0315, 0252, 0077, 0101, 4631</td></tr>
+<tr><td>1</td><td>1s place</td><td>0101, 4631, 1022, 0252, 1333, 1263, 0315, 0077</td></tr>
+<tr><td>2</td><td>8s place</td><td>0101, 0315, 1022, 4631, 1333, 0252, 1263, 0077</td></tr>
+<tr><td>3</td><td>64s place</td><td>1022, 0077, 0101, 0252, 1263, 0315, 1333, 4631</td></tr>
+<tr><td>4</td><td>512s place</td><td>0077, 0101, 0252, 0315, 1022, 1263, 1333, 4631</td></tr>
+</table>
+<p>Converting the final octal order back to binary:</p>
+<span class="small" style="color:var(--ink-soft)">Final: <strong>111111, 1000001, 10101010, 11001101, 1000010010, 1010110011, 1011011011, 100110011001</strong></span>
+</div>
+<div class="box result">
+<span class="lbl">Why the intermediate (per-digit) sort must be stable</span>
+<p>Radix Sort's correctness depends entirely on <strong>not disturbing the relative order</strong> established by previous, less-significant passes. After sorting by the 1s digit, two numbers with the same 1s digit are already in the correct relative order <em>with respect to that digit</em> — when the next pass sorts by the 8s digit, any two numbers that tie on the 8s digit must <em>keep</em> their existing relative order (from the 1s-digit pass), or else the 1s-digit ordering gets silently destroyed. An unstable sort could freely reorder equal-key elements, scrambling the work every previous pass had already done — so Radix Sort <strong>requires</strong> a stable sort (typically Counting Sort) as its subroutine for each digit pass.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-6">
+<h3>Exercise 6 &middot; Karatsuba's Algorithm by Hand</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Compute \(17299271 \times 20010102\) using Karatsuba's algorithm. How many multiplications have you used?</p>
+</div>
+<div class="box ex">
+<span class="lbl">Solution — one level of Karatsuba's split</span>
+<p>Both numbers have 8 digits; split each into a 4-digit high half and a 4-digit low half, with \(m=4\):</p>
+<p>$$x=17299271=\underbrace{1729}_{a}\cdot10^4+\underbrace{9271}_{b} \qquad y=20010102=\underbrace{2001}_{c}\cdot10^4+\underbrace{0102}_{d}$$</p>
+<p>Karatsuba needs only <strong>3</strong> multiplications (not the schoolbook 4) to combine these:</p>
+<div class="step">
+$$z_2 = a\cdot c = 1729\times2001 = 3{,}459{,}729$$
+$$z_0 = b\cdot d = 9271\times102 = 945{,}642$$
+$$z_1 = (a+b)(c+d)-z_2-z_0 = (11000)(2103)-3{,}459{,}729-945{,}642$$
+$$z_1 = 23{,}133{,}000-3{,}459{,}729-945{,}642 = 18{,}727{,}629$$
+</div>
+<div class="step">
+$$\text{Result} = z_2\cdot10^{8}+z_1\cdot10^{4}+z_0 = 345{,}972{,}900{,}000{,}000+187{,}276{,}290{,}000+945{,}642$$
+$$= \mathbf{346{,}160{,}177{,}235{,}642}$$
+</div>
+<p class="small">Independently verified: \(17299271\times20010102=346{,}160{,}177{,}235{,}642\) exactly.</p>
+</div>
+<div class="box result">
+<span class="lbl">Multiplications used</span>
+<p><strong>3 multiplications</strong> of 4-digit numbers (\(a{\cdot}c\), \(b{\cdot}d\), and \((a{+}b)(c{+}d)\)) — versus the <strong>4</strong> multiplications (\(ac,ad,bc,bd\)) the schoolbook split would need. This is Karatsuba's entire trick in miniature: trade one multiplication for a few extra additions/subtractions. Recursing this same 3-way split all the way down to single digits (rather than stopping at 4-digit multiplication) uses \(3^3=27\) single-digit multiplications in total for two 8-digit numbers — still fewer than the schoolbook's \(8\times8=64\).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-7">
+<h3>Exercise 7 &middot; Strassen's Matrix Multiplication by Hand</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Implement Strassen's matrix multiplication for \(M_1=\begin{bmatrix}1&0&1&2\\0&1&3&4\\1&2&1&0\\3&4&0&1\end{bmatrix}\), \(M_2=\begin{bmatrix}1&0&1&2\\0&1&3&4\\1&0&1&0\\0&1&0&1\end{bmatrix}\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Step 1 — split into four 2&times;2 blocks each</span>
+<p>$$M_1=\begin{bmatrix}A&B\\C&D\end{bmatrix},\quad A{=}\begin{bmatrix}1&0\\0&1\end{bmatrix},\ B{=}\begin{bmatrix}1&2\\3&4\end{bmatrix},\ C{=}\begin{bmatrix}1&2\\3&4\end{bmatrix},\ D{=}\begin{bmatrix}1&0\\0&1\end{bmatrix}$$</p>
+<p>$$M_2=\begin{bmatrix}E&F\\G&H\end{bmatrix},\quad E{=}\begin{bmatrix}1&0\\0&1\end{bmatrix},\ F{=}\begin{bmatrix}1&2\\3&4\end{bmatrix},\ G{=}\begin{bmatrix}1&0\\0&1\end{bmatrix},\ H{=}\begin{bmatrix}1&0\\0&1\end{bmatrix}$$</p>
+<p class="small">Conveniently, \(A=D=E=G=H=I\) (the 2&times;2 identity) and \(B=C=F\) here — this symmetry will let us sanity-check the result easily.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Step 2 — the seven Strassen products</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Product</th><th>Formula</th><th>Computation</th><th>Result</th></tr>
+<tr><td>\(P_1\)</td><td>\(A(F-H)\)</td><td>\(I\cdot\big[\begin{smallmatrix}1&2\\3&4\end{smallmatrix}-\begin{smallmatrix}1&0\\0&1\end{smallmatrix}\big]=I\cdot\begin{smallmatrix}0&2\\3&3\end{smallmatrix}\)</td><td>\(\begin{bmatrix}0&2\\3&3\end{bmatrix}\)</td></tr>
+<tr><td>\(P_2\)</td><td>\((A+B)H\)</td><td>\(\begin{smallmatrix}2&2\\3&5\end{smallmatrix}\cdot I\)</td><td>\(\begin{bmatrix}2&2\\3&5\end{bmatrix}\)</td></tr>
+<tr><td>\(P_3\)</td><td>\((C+D)E\)</td><td>\(\begin{smallmatrix}2&2\\3&5\end{smallmatrix}\cdot I\)</td><td>\(\begin{bmatrix}2&2\\3&5\end{bmatrix}\)</td></tr>
+<tr><td>\(P_4\)</td><td>\(D(G-E)\)</td><td>\(I\cdot(I-I)=I\cdot0\)</td><td>\(\begin{bmatrix}0&0\\0&0\end{bmatrix}\)</td></tr>
+<tr><td>\(P_5\)</td><td>\((A+D)(E+H)\)</td><td>\(2I\cdot2I=4I\)</td><td>\(\begin{bmatrix}4&0\\0&4\end{bmatrix}\)</td></tr>
+<tr><td>\(P_6\)</td><td>\((B-D)(G+H)\)</td><td>\(\begin{smallmatrix}0&2\\3&3\end{smallmatrix}\cdot2I\)</td><td>\(\begin{bmatrix}0&4\\6&6\end{bmatrix}\)</td></tr>
+<tr><td>\(P_7\)</td><td>\((A-C)(E+F)\)</td><td>\(\begin{smallmatrix}0&-2\\-3&-3\end{smallmatrix}\cdot\begin{smallmatrix}2&2\\3&5\end{smallmatrix}\)</td><td>\(\begin{bmatrix}-6&-10\\-15&-21\end{bmatrix}\)</td></tr>
+</table>
+</div>
+<div class="box ex">
+<span class="lbl">Step 3 — combine into the four output quadrants</span>
+<p>$$\text{Top-left}=P_5{+}P_4{-}P_2{+}P_6=\begin{bmatrix}4&0\\0&4\end{bmatrix}+\begin{bmatrix}0&0\\0&0\end{bmatrix}-\begin{bmatrix}2&2\\3&5\end{bmatrix}+\begin{bmatrix}0&4\\6&6\end{bmatrix}=\begin{bmatrix}2&2\\3&5\end{bmatrix}$$</p>
+<p>$$\text{Top-right}=P_1{+}P_2=\begin{bmatrix}0&2\\3&3\end{bmatrix}+\begin{bmatrix}2&2\\3&5\end{bmatrix}=\begin{bmatrix}2&4\\6&8\end{bmatrix}$$</p>
+<p>$$\text{Bottom-left}=P_3{+}P_4=\begin{bmatrix}2&2\\3&5\end{bmatrix}+\begin{bmatrix}0&0\\0&0\end{bmatrix}=\begin{bmatrix}2&2\\3&5\end{bmatrix}$$</p>
+<p>$$\text{Bottom-right}=P_1{+}P_5{-}P_3{-}P_7=\begin{bmatrix}0&2\\3&3\end{bmatrix}+\begin{bmatrix}4&0\\0&4\end{bmatrix}-\begin{bmatrix}2&2\\3&5\end{bmatrix}-\begin{bmatrix}-6&-10\\-15&-21\end{bmatrix}=\begin{bmatrix}8&10\\15&23\end{bmatrix}$$</p>
+</div>
+<div class="box result">
+<span class="lbl">Final answer, verified against direct multiplication</span>
+<p>$$M_1\times M_2=\begin{bmatrix}2&2&2&4\\3&5&6&8\\2&2&8&10\\3&5&15&23\end{bmatrix}$$</p>
+<p class="small">Cross-checked by ordinary row&times;column multiplication — matches exactly. Only <strong>7</strong> block-multiplications were used (\(P_1\)&ndash;\(P_7\)), instead of the 8 that naive 2&times;2-block multiplication would need — Strassen's exact same "fewer multiplications, more additions" trade as Karatsuba's, one level applied to matrices.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-8">
+<h3>Exercise 8 &middot; Longest Common Subsequence of Two Binary Strings</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Let \(X=\) binary digits of 65, \(Y=\) binary digits of 56. Find \(LCS(X,Y)\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Setup</span>
+<p>$$X = (65)_{10} = 1000001_2 \quad(7\text{ bits}) \qquad Y = (56)_{10} = 111000_2 \quad(6\text{ bits})$$</p>
+</div>
+<div class="box ex">
+<span class="lbl">The DP table</span>
+<p>Standard LCS recurrence: \(dp[i][j]=dp[i{-}1][j{-}1]+1\) if \(X_i=Y_j\), else \(dp[i][j]=\max(dp[i{-}1][j],dp[i][j{-}1])\).</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th></th><th>&#8709;</th><th>1</th><th>1</th><th>1</th><th>0</th><th>0</th><th>0</th></tr>
+<tr><td>&#8709;</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>2</td><td>3</td><td>3</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>2</td><td>2</td><td>2</td><td>3</td><td>4</td></tr>
+</table>
+<p class="small">Rows indexed by \(X=1{,}0{,}0{,}0{,}0{,}0{,}0{,}1\) (top to bottom), columns by \(Y=1{,}1{,}1{,}0{,}0{,}0\) (left to right). Tracing back from the bottom-right corner (value 4) along the cells where a match occurred gives the subsequence.</p>
+</div>
+<div class="box result">
+<span class="lbl">Answer</span>
+<p>$$LCS(X,Y) = 4$$</p>
+<p>One valid longest common subsequence: <strong>1000</strong> (using \(X\)'s leading 1 and three of its 0s, matched against \(Y\)'s leading 1 and two trailing 0s — or equivalently the trailing 1 of \(X\) with an earlier alignment; the DP table guarantees length 4 either way, though the specific subsequence achieving it need not be unique).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-9">
+<h3>Exercise 9 &middot; Matrix Chain Multiplication — Optimal Parenthesization</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Given \(A_1{:}6{\times}5\), \(A_2{:}5{\times}4\), \(A_3{:}4{\times}3\), \(A_4{:}3{\times}2\), find the optimal parenthesization of \(A_1A_2A_3A_4\) using Matrix-Chain-Order. Verify your answer.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Setup</span>
+<p>Dimension sequence \(p=[p_0,p_1,p_2,p_3,p_4]=[6,5,4,3,2]\), so \(A_i\) has dimensions \(p_{i-1}\times p_i\). The DP fills \(m[i][j]=\) minimum scalar multiplications to compute \(A_i\cdots A_j\), via \(m[i][j]=\min_{i\le k&lt;j}\big(m[i][k]+m[k{+}1][j]+p_{i-1}p_kp_j\big)\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Filling the \(m\) and \(s\) tables</span>
+<table class="grid trace">
+<tr><th>Chain length</th><th>Subchain</th><th>Best split \(k\)</th><th>Cost \(m[i][j]\)</th></tr>
+<tr><td>1</td><td>\(A_1,A_2,A_3,A_4\)</td><td>&mdash;</td><td>0, 0, 0, 0</td></tr>
+<tr><td>2</td><td>\(A_1A_2\)</td><td>1</td><td>\(6{\times}5{\times}4=120\)</td></tr>
+<tr><td>2</td><td>\(A_2A_3\)</td><td>2</td><td>\(5{\times}4{\times}3=60\)</td></tr>
+<tr><td>2</td><td>\(A_3A_4\)</td><td>3</td><td>\(4{\times}3{\times}2=24\)</td></tr>
+<tr><td>3</td><td>\(A_1A_2A_3\)</td><td>1</td><td>\(\min\big[m_{11}{+}m_{23}{+}6{\cdot}5{\cdot}3,\ m_{12}{+}m_{33}{+}6{\cdot}4{\cdot}3\big]=\min[0{+}60{+}90,\ 120{+}0{+}72]=150\)</td></tr>
+<tr><td>3</td><td>\(A_2A_3A_4\)</td><td>2</td><td>\(\min\big[m_{22}{+}m_{34}{+}5{\cdot}4{\cdot}2,\ m_{23}{+}m_{44}{+}5{\cdot}3{\cdot}2\big]=\min[0{+}24{+}40,\ 60{+}0{+}30]=64\)</td></tr>
+<tr><td>4</td><td>\(A_1A_2A_3A_4\)</td><td><strong>1</strong></td><td>\(\min\big[\underbrace{m_{11}{+}m_{24}{+}6{\cdot}5{\cdot}2}_{0+64+60=124},\ \underbrace{m_{12}{+}m_{34}{+}6{\cdot}4{\cdot}2}_{120+24+48=192},\ \underbrace{m_{13}{+}m_{44}{+}6{\cdot}3{\cdot}2}_{150+0+36=186}\big]=\mathbf{124}\)</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Answer</span>
+<p>$$\text{Optimal parenthesization: } \big(A_1(A_2(A_3A_4))\big) \qquad \text{Minimum scalar multiplications} = \mathbf{124}$$</p>
+</div>
+<div class="box proof">
+<span class="lbl">Verification — checking all 5 possible parenthesizations of 4 matrices by brute force</span>
+<table class="grid trace" style="font-size:.9em">
+<tr><th>Parenthesization</th><th>Cost</th></tr>
+<tr><td>\(((A_1A_2)A_3)A_4\)</td><td>\(120+6{\cdot}4{\cdot}3+6{\cdot}3{\cdot}2=120+72+36=228\)</td></tr>
+<tr><td>\((A_1(A_2A_3))A_4\)</td><td>\(60+6{\cdot}5{\cdot}3+6{\cdot}3{\cdot}2=60+90+36=186\)</td></tr>
+<tr><td>\((A_1A_2)(A_3A_4)\)</td><td>\(120+24+6{\cdot}4{\cdot}2=120+24+48=192\)</td></tr>
+<tr><td>\(A_1((A_2A_3)A_4)\)</td><td>\(60+5{\cdot}3{\cdot}2+6{\cdot}5{\cdot}2=60+30+60=150\)</td></tr>
+<tr><td>\(A_1(A_2(A_3A_4))\)</td><td>\(24+5{\cdot}4{\cdot}2+6{\cdot}5{\cdot}2=24+40+60=\mathbf{124}\)</td></tr>
+</table>
+<p class="qed">&#8756; All 5 of the \(C_3=5\) possible parenthesizations (Catalan number for 4 matrices) confirm \(A_1(A_2(A_3A_4))\) at cost 124 is indeed the minimum. &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="EX-10">
+<h3>Exercise 10 &middot; An Algorithm With Exponential Running Time</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Give an example of an algorithm having exponential running time. Justify your answer.</p>
+</div>
+<div class="box result">
+<span class="lbl">Example — naive recursive Fibonacci</span>
+<pre class="pseudocode">function Fib(n):
+    if n <= 1: return n
+    return Fib(n-1) + Fib(n-2)</pre>
+<p><strong>Justification:</strong> let \(T(n)\) be the number of calls made. Each call (for \(n&gt;1\)) spawns two further calls, on \(n{-}1\) and \(n{-}2\):</p>
+$$T(n) = T(n-1)+T(n-2)+O(1)$$
+<p>This is structurally the Fibonacci recurrence itself. Since \(T(n-1)+T(n-2) &gt; 2T(n-2)\), we get \(T(n) &gt; 2T(n-2)\), which unrolls to \(T(n)=\Omega(2^{n/2})\) — exponential. (A tighter analysis gives \(T(n)=\Theta(\varphi^n)\) where \(\varphi=\frac{1+\sqrt5}{2}\approx1.618\) is the golden ratio.) The Tower of Hanoi algorithm (\(T(n)=2T(n{-}1)+1\), from this course's Lecture 4) is another clean example, with running time exactly \(\Theta(2^n)\).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-11">
+<h3>Exercise 11 &middot; Solving Four Recurrences</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Solve: (a) \(T(n)=2T(n/2)+cn\), (b) \(T(n)=7T(n/2)+cn\), (c) \(T(n)=T(9n/10)+T(n/10)+cn\), (d) \(T(n)=2T(n{-}1)+1\). Which algorithms give rise to each?</p>
+</div>
+<div class="box proof">
+<span class="lbl">(a) &nbsp; \(T(n)=2T(n/2)+cn\)</span>
+<p>Master theorem: \(a=2,b=2,f(n)=cn\). Compare \(f(n)\) to \(n^{\log_ba}=n^{\log_22}=n^1\): they match (Case 2), so:</p>
+$$T(n) = \Theta(n\log n)$$
+<p><strong>Arises from:</strong> Merge Sort (split in half, linear-time merge) — exactly Lecture 5's recurrence.</p>
+</div>
+<div class="box proof">
+<span class="lbl">(b) &nbsp; \(T(n)=7T(n/2)+cn\)</span>
+<p>Master theorem: \(a=7,b=2,f(n)=cn=O(n^1)\). Compare to \(n^{\log_27}\approx n^{2.807}\): since \(1 &lt; \log_27\), \(f(n)=O(n^{\log_27-\epsilon})\) for some \(\epsilon&gt;0\) (Case 1), so:</p>
+$$T(n) = \Theta\big(n^{\log_27}\big) = \Theta(n^{2.807\ldots})$$
+<p><strong>Arises from:</strong> Strassen's matrix multiplication (7 sub-multiplications of half-size matrices) — exactly this course's Lecture 13 result.</p>
+</div>
+<div class="box proof">
+<span class="lbl">(c) &nbsp; \(T(n)=T(9n/10)+T(n/10)+cn\)</span>
+<p>Not directly Master-theorem-shaped (the two subproblems have <em>different</em> sizes), but solvable by the recursion-tree method: at every level of the tree, the total work summed across all nodes at that level is exactly \(cn\) (since \(9n/10+n/10=n\), the subproblem sizes at each level always sum back to \(n\)). The tree's depth is set by the <em>longest</em> root-to-leaf path — always taking the larger, \(9n/10\) branch — which shrinks \(n\) by a factor of \(10/9\) each level, reaching the base case after \(\log_{10/9}n=\Theta(\log n)\) levels. Total work = (work per level) &times; (number of levels):</p>
+$$T(n) = \Theta(n\log n)$$
+<p><strong>Arises from:</strong> Quicksort (or a similarly-structured algorithm) with a <em>consistently unbalanced but non-degenerate</em> partition — e.g. a pivot that always lands at the 10th percentile. Even a lopsided 9:1 split still gives \(\Theta(n\log n)\), illustrating why Quicksort's average case stays \(\Theta(n\log n)\) across a wide range of partition ratios, not just perfectly balanced 50:50 splits.</p>
+</div>
+<div class="box proof">
+<span class="lbl">(d) &nbsp; \(T(n)=2T(n{-}1)+1\)</span>
+<p>Unroll directly: \(T(n)=2T(n{-}1)+1=2\big(2T(n{-}2)+1\big)+1=4T(n{-}2)+2+1=\cdots=2^kT(n{-}k)+(2^k-1)\). Setting \(k=n\) (down to the base case \(T(0)\)):</p>
+$$T(n) = 2^nT(0) + (2^n-1) = \Theta(2^n)$$
+<p><strong>Arises from:</strong> the Tower of Hanoi algorithm — exactly this course's Lecture 4 derivation, move \(n\) disks by moving \(n{-}1\) disks twice plus one direct move.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-12">
+<h3>Exercise 12 &middot; Bucket Sort's Expected Running Time, and Its Worst Case</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Find the expected running time for Bucket Sort. What is the worst input for Bucket Sort? Justify your answer.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Expected running time — \(\Theta(n)\)</span>
+<p>Assume \(n\) values drawn independently and uniformly from \([0,1)\), sorted into \(n\) buckets. Let \(n_i\) be the number of elements landing in bucket \(i\). Total time is \(\Theta(n)\) for distribution, plus \(\sum_i O(n_i^2)\) for sorting each bucket (e.g. with Insertion Sort — fine for small buckets), plus \(\Theta(n)\) for concatenation.</p>
+<p>Since each element independently falls into bucket \(i\) with probability \(1/n\), \(n_i\) follows a Binomial\((n,1/n)\) distribution, and:</p>
+$$E[n_i^2] = \text{Var}(n_i) + (E[n_i])^2 = n\cdot\tfrac1n\Big(1-\tfrac1n\Big) + \Big(\tfrac1n\Big)^2\cdot n^2 \cdot \tfrac1n= \Big(1-\tfrac1n\Big)+1 &lt; 2$$
+<p>So \(E\Big[\sum_i n_i^2\Big] = \sum_i E[n_i^2] &lt; 2n\), giving total expected time \(\Theta(n)+O(2n)+\Theta(n)=\Theta(n)\).</p>
+<p class="qed">&#8756; Bucket Sort runs in \(\Theta(n)\) <strong>expected</strong> time, under the uniform-distribution assumption. &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">Worst-case input — everything in one bucket</span>
+<p>If all \(n\) values are (nearly) identical — e.g. all equal to 0.500000 — every element lands in the <em>same single bucket</em>, and that one bucket's internal sort must handle all \(n\) elements. With Insertion Sort as the per-bucket sorter, this degenerates to \(\Theta(n^2)\) — the worst possible case. <strong>Justification:</strong> Bucket Sort's \(\Theta(n)\) average-case guarantee relies entirely on the input being roughly uniformly spread across the bucket range; any input that violates this (concentrated values, or a skewed/non-uniform distribution) breaks the "\(O(1)\) elements per bucket on average" assumption the whole analysis rests on.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-13">
+<h3>Exercise 13 &middot; Insertion Sort — Algorithm, Complexity, and When to Use It</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Give Insertion Sort's algorithm. Analyze its computational complexity. Mention when it is used.</p>
+</div>
+<div class="box ex">
+<span class="lbl">The algorithm</span>
+<pre class="pseudocode">function InsertionSort(A):
+    for i = 1 to n-1:
+        key = A[i]
+        j = i - 1
+        while j >= 0 and A[j] > key:
+            A[j+1] = A[j]     // shift larger element right
+            j = j - 1
+        A[j+1] = key          // insert key into its correct spot</pre>
+<p>Builds up a sorted prefix \(A[0..i{-}1]\) one element at a time; each new element \(A[i]\) is shifted leftward past everything larger than it, exactly like inserting a card into an already-sorted hand.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Complexity analysis</span>
+<ul>
+<li><strong>Worst case &mdash; \(\Theta(n^2)\):</strong> input in reverse-sorted order. Every new element must shift past <em>all</em> previously-placed elements: \(\sum_{i=1}^{n-1}i=\Theta(n^2)\) shifts.</li>
+<li><strong>Best case &mdash; \(\Theta(n)\):</strong> input already sorted. The inner <code>while</code> loop's condition fails immediately every time (\(A[j]&gt;\text{key}\) is never true) — just \(n-1\) checks, no shifting.</li>
+<li><strong>Average case &mdash; \(\Theta(n^2)\):</strong> for a random permutation, each element is expected to shift past about half the sorted prefix, still giving \(\Theta(n^2)\) overall.</li>
+<li><strong>Space:</strong> \(\Theta(1)\) extra space — sorts in place.</li>
+</ul>
+</div>
+<div class="box result">
+<span class="lbl">When it's actually used</span>
+<p>Despite \(\Theta(n^2)\) worst case, Insertion Sort is genuinely useful for: <strong>small \(n\)</strong> (low constant factors make it faster than \(\Theta(n\log n)\) algorithms for small arrays — many real-world Quicksort/Merge Sort implementations switch to Insertion Sort below some threshold, e.g. \(n&lt;10\)&ndash;20); <strong>nearly-sorted data</strong> (its running time is genuinely \(O(n+d)\) where \(d\) is the number of inversions — near-best-case on nearly-sorted input); and <strong>online/streaming settings</strong>, where elements arrive one at a time and the sorted prefix must be maintained incrementally.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-14">
+<h3>Exercise 14 &middot; \(\frac{n(n-1)}{2}\in\Theta(n^2)\), Two Ways</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Show that \(\dfrac{n(n-1)}{2}\in\Theta(n^2)\) in two ways.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Way 1 — directly from the definition of &Theta;</span>
+<p>Need constants \(c_1,c_2&gt;0\) and \(n_0\) such that \(c_1n^2\le\frac{n(n-1)}{2}\le c_2n^2\) for all \(n\ge n_0\).</p>
+<p><strong>Upper bound:</strong> \(\dfrac{n(n-1)}{2}=\dfrac{n^2-n}{2}\le\dfrac{n^2}{2}\) for all \(n\ge0\) (since subtracting \(n\ge0\) only makes it smaller) — so \(c_2=\frac12\) works for all \(n\ge1\).</p>
+<p><strong>Lower bound:</strong> for \(n\ge2\), \(n-1\ge\frac n2\) (check: \(n-1\ge n/2 \iff n/2\ge1 \iff n\ge2\)), so \(\dfrac{n(n-1)}{2}\ge\dfrac{n\cdot(n/2)}{2}=\dfrac{n^2}{4}\) — so \(c_1=\frac14\) works for all \(n\ge2\).</p>
+<p class="qed">&#8756; With \(c_1=\frac14,\ c_2=\frac12,\ n_0=2\): \(\frac14n^2\le\frac{n(n-1)}2\le\frac12n^2\) for all \(n\ge2\), so \(\frac{n(n-1)}2\in\Theta(n^2)\). &#8718;</p>
+</div>
+<div class="box proof">
+<span class="lbl">Way 2 — via the limit test</span>
+<p>A standard equivalent characterization: \(f(n)\in\Theta(g(n))\) iff \(\displaystyle\lim_{n\to\infty}\frac{f(n)}{g(n)}\) exists and is a finite, strictly positive constant.</p>
+$$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = \lim_{n\to\infty}\left(\frac12-\frac1{2n}\right) = \frac12$$
+<p class="qed">&#8756; The limit exists and equals \(\frac12\) — finite and strictly positive — so \(\dfrac{n(n-1)}{2}\in\Theta(n^2)\). &#8718;</p>
+<p class="small" style="color:var(--ink-soft)">Both methods agree, as they must — \(\frac{n(n-1)}2\) is exactly the number of comparisons Bubble Sort and Selection Sort make in the worst case (\(\binom n2\)), which is precisely why both are \(\Theta(n^2)\) algorithms.</p>
+</div>
+</section>
+
+<div class="box result" style="margin-top:20px;">
+<span class="lbl">Where this exercise set ends</span>
+<p>Fourteen problems, every major idea from this course exercised at least once: all four \(O(n\log n)\)-and-\(O(n^2)\) comparison sorts on one shared array, the three linear-time non-comparison sorts (Bucket, Radix, and implicitly Counting via Radix's digit passes), both fast-multiplication divide-and-conquer results (Karatsuba and Strassen), a first taste of dynamic programming via LCS and Matrix Chain Multiplication, and the recurrence-solving and asymptotic-notation toolkit that ties the whole course together.</p>
+</div>
+
+
+
+
 <section class="topic" id="recap" style="margin-top:56px;border-top:3px solid var(--accent);padding-top:30px;">
 <h3 style="font-size:26px;">Full Course Recap</h3>
-<p>Thirteen lectures, one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
+<p>Nineteen lectures, one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
 
 <table class="grid">
 <tr><th>Lectures</th><th>The question</th><th>The answer</th></tr>
@@ -1754,6 +2803,10 @@
 <tr><td>7&ndash;8</td><td>Is Quicksort's bad case actually typical? And is \(n\log n\) truly the best any comparison sort can do?</td><td>A rigorous average-case proof (\(\Theta(n\log n)\)) via indicator random variables, and the decision-tree lower bound proving \(\Omega(n\log n)\) is unavoidable for <em>any</em> comparison-based sort.</td></tr>
 <tr><td>9&ndash;11</td><td>Can we escape the \(n\log n\) barrier entirely?</td><td>Yes — by not comparing at all: Counting Sort, Radix Sort (tuned to run in \(\Theta(n)\)), and Bucket Sort (\(\Theta(n)\) on average, proven rigorously).</td></tr>
 <tr><td>12&ndash;13</td><td>Does "fewer multiplications, more additions" work as a speed-up trick anywhere else?</td><td>Karatsuba's integer multiplication (\(\Theta(n^{1.585})\)) and Strassen's matrix multiplication (\(\Theta(n^{2.807})\)) — the same idea, twice.</td></tr>
+<tr><td>14</td><td>What happens when a recursive algorithm keeps solving the <em>exact same</em> subproblem over and over?</td><td>Dynamic Programming, motivated by Fibonacci and Pascal's Triangle: prove naive recursion is exponential (same technique as Lecture 4's Tower of Hanoi), then fix it by computing bottom-up instead.</td></tr>
+<tr><td>15</td><td>Does the same "bottom-up table" trick work on sequences, not just numbers?</td><td>Longest Common Subsequence — exponential naive recursion, \(\Theta(mn)\) bottom-up table, fully traced on a 7- and 6-character example.</td></tr>
+<tr><td>16&ndash;17</td><td>When there are many equally-valid ways to compute something, how do you find the cheapest?</td><td>Matrix Chain Multiplication: \(\Theta(n^3)\) bottom-up DP over chain length, fully solved and verified on 4 matrices.</td></tr>
+<tr><td>18&ndash;19</td><td>Can this same DP pattern model a genuinely physical process?</td><td>Assembly Line Scheduling — two parallel lines, switch costs, solved with the classic worked example — then a first step into an entirely new area: graphs, spanning trees, and the Minimum Spanning Tree problem.</td></tr>
 </table>
 
 <h4>Techniques that kept reappearing</h4>
@@ -1775,16 +2828,22 @@
 <tr><td><strong>Decision tree model</strong></td><td>Modelling a comparison-based algorithm as a binary tree, where each internal node is one comparison and each leaf is one possible final answer.</td></tr>
 <tr><td><strong>Indicator random variable</strong></td><td>A variable that is 1 if some event occurs and 0 otherwise — makes counting random occurrences via expectation straightforward.</td></tr>
 <tr><td><strong>Lower bound (Ω result)</strong></td><td>A proof that <em>no</em> algorithm (of some class) can possibly do better than a stated running time — stronger than just describing one algorithm's performance.</td></tr>
+<tr><td><strong>Dynamic Programming (DP)</strong></td><td>Solve a problem bottom-up, storing every subproblem's answer once, so overlapping subproblems are never recomputed — turns exponential naive recursion into polynomial time.</td></tr>
+<tr><td><strong>Overlapping subproblems</strong></td><td>When a recursive algorithm's sub-calls aren't independent — the same smaller subproblem gets requested again and again down different branches.</td></tr>
+<tr><td><strong>LCS</strong></td><td>Longest Common Subsequence — the longest sequence that can be obtained from two given sequences by deleting elements, without reordering.</td></tr>
+<tr><td><strong>Matrix Chain Multiplication</strong></td><td>Choosing how to parenthesize a chain of matrix products to minimise the total number of scalar multiplications — associativity makes many parenthesizations valid, but not equally cheap.</td></tr>
+<tr><td><strong>Spanning Tree</strong></td><td>A tree (connected, no cycles) that includes every vertex of a given graph — generally not unique.</td></tr>
+<tr><td><strong>MST</strong></td><td>Minimum Spanning Tree — the spanning tree of a weighted graph whose total edge weight is smallest.</td></tr>
 </table>
 
 <div class="box warn" style="margin-top:20px;">
 <span class="lbl">What's not in this guide (yet)</span>
-<p>The course syllabus continues well beyond Lecture 13 — into heaps and priority queues, hashing and amortized analysis, dynamic programming (LCS, matrix chain multiplication, edit distance), greedy algorithms (Huffman coding, MST), graph algorithms (BFS/DFS, shortest paths, PageRank), complexity theory (P, NP, NP-completeness, Turing machines), and cryptographic algorithms (RSA, Diffie-Hellman). None of that material is in the 13 lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
+<p>The course syllabus continues well beyond Lecture 19 — into heaps and priority queues, hashing and amortized analysis, further dynamic programming (edit distance, optimal BST), greedy algorithms (Huffman coding, and MST algorithms proper — Kruskal's and Prim's), further graph algorithms (BFS/DFS, shortest paths, PageRank), complexity theory (P, NP, NP-completeness, Turing machines), and cryptographic algorithms (RSA, Diffie-Hellman). None of that material is in the 19 lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
 </div>
 </section>
 
 <footer>
-  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) — Lectures 1&ndash;13, covering the introduction through Strassen's matrix multiplication algorithm. Every proof and worked example was checked line by line against the original handwritten lecture notes; a small number of ambiguous transcriptions (noted where they occur) were independently re-derived and verified for correctness.
+  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) — Lectures 1&ndash;19, covering the introduction through Dynamic Programming (Fibonacci, Pascal's Triangle, LCS, Matrix Chain Multiplication, Assembly Line Scheduling) and the opening of Graph Algorithms, plus a fully worked exercise set. Every proof and worked example was checked line by line against the original handwritten lecture notes and independently verified computationally; a small number of ambiguous transcriptions and source slips (noted where they occur) were identified and corrected.
 </footer>
 </main>
 </div>

@@ -225,6 +225,7 @@
   <a href="#l6-weighted">Weighted k-NN</a>
 
   <a class="lec" href="#L7">Lecture 7 &middot; Naive Bayes</a>
+
   <a href="#l7-probability">Probability Foundations</a>
   <a href="#l7-bayes-theorem">Bayes' Theorem</a>
   <a href="#l7-naive-bayes">The Naive Bayes Classifier</a>
@@ -234,6 +235,17 @@
   <a href="#l7-text">Text Classification with Naive Bayes</a>
   <a href="#l7-laplace">Laplace Smoothing</a>
 
+  <a class="lec" href="#L8">Lecture 8 &middot; Performance Measures (Deep Dive)</a>
+  <a href="#l8-clf-vs-reg">8.1 Classification vs Regression</a>
+  <a href="#l8-metrics-overview">8.2 Evaluation Metrics Overview</a>
+  <a href="#l8-confusion-matrix">8.3 Confusion Matrix In Depth</a>
+  <a href="#l8-classification-report">8.4 The Classification Report</a>
+  <a href="#l8-problems-1-3">8.5 Problems 1&ndash;3 &amp; the Accuracy Paradox</a>
+  <a href="#l8-balanced-precision-recall">8.6 Balanced/Imbalanced, Precision, Recall</a>
+  <a href="#l8-problem4">8.7 Problem 4 &middot; Dog vs Not-Dog</a>
+  <a href="#l8-problems-5-6">8.8 Problems 5 &amp; 6</a>
+  <a href="#l8-auc-roc">8.9 AUC-ROC Curve <span class="numtag">Numerical</span></a>
+  
   <h3>&nbsp;</h3>
   <a href="#sec5">Formula Sheet</a>
   <a href="#sec6">Exam Strategy</a>
@@ -242,8 +254,8 @@
 <header class="title">
   <div class="wrap" style="padding:0;max-width:none;">
     <h1>Fundamentals of Machine Learning</h1>
-    <p>Complete Study Guide — every slide from all 7 lecture decks (CSS 3131), explained in full</p>
-    <span class="tag">7 lectures &middot; 390 slides covered</span>
+    <p>Complete Study Guide — every slide from all 8 lecture decks (CSS 3131), explained in full</p>
+    <span class="tag">8 lectures &middot; 447 slides covered</span>
     <span class="tag">Numericals highlighted in green</span>
     <span class="tag">Key exam topics highlighted in gold</span>
   </div>
@@ -2464,9 +2476,471 @@ $$P(\text{Ham})\times P(\text{words}\mid\text{Ham}) = 0.5\times0.0000822 \approx
 </div>
 
 <div class="box key">
-<div class="box-title">What Lecture 7 — and this whole course — adds up to</div>
+<div class="box-title">What Lecture 7 adds up to</div>
 <p>Naive Bayes closes the loop on a theme running through every lecture in this guide: start from a simple, honest assumption (here, feature independence given the class), derive exactly what that assumption implies mathematically, and then confront where the assumption <em>visibly</em> breaks (the zero-probability problem) with a principled fix (Laplace smoothing) rather than throwing the whole model out. The same pattern — simple model, honest derivation, a known failure mode, and a practical fix — is exactly what made Linear Regression's gradient descent, Logistic Regression's cost function, and k-NN's feature scaling all work the way they do.</p>
 </div>
+
+<div class="lecture-header" id="L8">
+  <div class="ltag">Lecture 8</div>
+  <h2>Performance Measures for Classification</h2>
+  <p>Lecture 5 introduced the confusion matrix and the four core metrics. This lecture — from a second instructor's slides — goes considerably deeper: a fuller treatment of the confusion matrix and scikit-learn's conventions, the full classification report, six worked problems, and an entirely new topic that Lecture 5 didn't cover at all: the <strong>AUC-ROC curve.</strong></p>
+</div>
+
+<h2 class="section-title" id="l8-clf-vs-reg"><span class="num">8.1</span> Classification vs. Regression, Revisited</h2>
+<div class="box concept">
+<div class="box-title">The two main types of supervised learning models</div>
+<ul>
+<li>Both Classification and Regression are <strong>supervised learning</strong> algorithms — both predict outcomes based on input variables, and both work with labelled datasets.</li>
+<li>They differ in their objectives and output formats.</li>
+</ul>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0">
+<div class="box concept" style="margin:0">
+<div class="box-title">Classification Models</div>
+<ul style="margin:4px 0 0">
+<li>Used when the outcome variable is <strong>categorical or binary.</strong></li>
+<li>Objective: assign new observations to one of the predefined categories, based on the input variables.</li>
+<li>Examples: spam detection, image recognition, sentiment analysis.</li>
+<li>Output: a probability or score indicating how likely a new observation is to belong to each category.</li>
+</ul>
+</div>
+<div class="box concept" style="margin:0">
+<div class="box-title">Regression Models</div>
+<ul style="margin:4px 0 0">
+<li>Used when the outcome variable is <strong>continuous or numeric</strong> — it can take any value within a range.</li>
+<li>Objective: predict the value of the outcome variable, based on the input variables.</li>
+<li>Examples: stock price prediction, sales forecasting, weather forecasting.</li>
+<li>Output: a numerical value.</li>
+</ul>
+</div>
+</div>
+
+<div class="box key">
+<div class="box-title">The core visual distinction</div>
+<div style="text-align:center;margin:14px 0;">
+<svg viewBox="0 0 560 220" width="100%" style="max-width:520px;">
+<g font-family="EB Garamond" font-size="13">
+<line x1="40" y1="20" x2="40" y2="180" stroke="#2b2620" stroke-width="1.3"/><line x1="40" y1="180" x2="230" y2="180" stroke="#2b2620" stroke-width="1.3"/>
+<text x="15" y="25">Y</text><text x="235" y="184">X</text>
+<circle cx="70" cy="150" r="3.5" fill="#2b2620"/><circle cx="90" cy="130" r="3.5" fill="#2b2620"/><circle cx="115" cy="105" r="3.5" fill="#2b2620"/><circle cx="140" cy="80" r="3.5" fill="#2b2620"/><circle cx="165" cy="55" r="3.5" fill="#2b2620"/>
+<line x1="65" y1="152" x2="175" y2="48" stroke="#a1522f" stroke-width="1.6" stroke-dasharray="5 3"/>
+<text x="60" y="200" fill="#a1522f">Best-fit line</text>
+<text x="60" y="15" font-weight="700">Regression &rarr; Best-fit relationship</text>
+</g>
+<g font-family="EB Garamond" font-size="13">
+<line x1="330" y1="20" x2="330" y2="180" stroke="#2b2620" stroke-width="1.3"/><line x1="330" y1="180" x2="530" y2="180" stroke="#2b2620" stroke-width="1.3"/>
+<text x="305" y="25">Y</text><text x="535" y="184">X</text>
+<circle cx="360" cy="60" r="3.5" fill="#3f8a5c"/><circle cx="375" cy="75" r="3.5" fill="#3f8a5c"/><circle cx="358" cy="90" r="3.5" fill="#3f8a5c"/><circle cx="372" cy="100" r="3.5" fill="#3f8a5c"/>
+<circle cx="470" cy="55" r="3.5" fill="#8c63a8"/><circle cx="490" cy="70" r="3.5" fill="#8c63a8"/><circle cx="480" cy="90" r="3.5" fill="#8c63a8"/><circle cx="500" cy="95" r="3.5" fill="#8c63a8"/>
+<line x1="430" y1="30" x2="430" y2="180" stroke="#a1522f" stroke-width="1.6" stroke-dasharray="5 3"/>
+<text x="380" y="200" fill="#a1522f">Decision boundary</text>
+<text x="335" y="15" font-weight="700">Classification &rarr; Decision boundary</text>
+</g>
+</svg>
+</div>
+<p>Regression finds the mapping function that maps a continuous input \(x\) to a continuous output \(y\) — it attempts to find the <strong>best-fit line.</strong> Classification finds the mapping function that maps input \(x\) to a <strong>discrete</strong> output \(y\) — it attempts to find the <strong>decision boundary</strong> that divides the dataset into classes.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Side-by-side comparison</div>
+<table>
+<tr><th>Regression Algorithms</th><th>Classification Algorithms</th></tr>
+<tr><td>Output variable must be continuous / real-valued.</td><td>Output variable must be a discrete value.</td></tr>
+<tr><td>Maps input \(x\) to a continuous output \(y\).</td><td>Maps input \(x\) to a discrete output \(y\).</td></tr>
+<tr><td>Used with continuous data.</td><td>Used with discrete data.</td></tr>
+<tr><td>Attempts to find the <strong>best-fit line</strong>, which predicts the output more accurately.</td><td>Attempts to find the <strong>decision boundary</strong>, which divides the dataset into different classes.</td></tr>
+<tr><td>Solves problems like house-price prediction and weather prediction.</td><td>Solves problems like spam-email identification, cancer-cell spotting, speech recognition.</td></tr>
+<tr><td>Further divided into Linear and Non-linear Regression.</td><td>Further divided into Binary and Multi-class Classifiers.</td></tr>
+</table>
+</div>
+
+<div class="box concept">
+<div class="box-title">Types of each</div>
+<p><strong>Types of Regression:</strong> Simple Linear, Multiple Linear, Polynomial, Support Vector Machine, Decision Tree.</p>
+<p><strong>Types of Classification:</strong> Logistic Regression, Naive Bayes, k-NN, Support Vector Machine, Decision Tree.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">A single problem, solved both ways — predicting Likes on a tweet</div>
+<p>A problem that can be solved using <em>either</em> model type: predicting the number of likes on a tweet.</p>
+<ul>
+<li><strong>Regression</strong> — predicts the <em>exact number</em> of likes a tweet will receive, based on inputs like tweet length, hashtags/keywords used, and time of day posted.</li>
+<li><strong>Classification</strong> — categorizes tweets into <em>High</em> or <em>Low</em> engagement categories, based on the number of likes they're likely to receive.</li>
+</ul>
+<p><strong>Where each is used:</strong> the classification model helps social-media marketers quickly identify the most engaging tweets and focus effort there. The regression model gives more precise, tailored predictions for a particular audience or campaign.</p>
+</div>
+
+<h2 class="section-title" id="l8-metrics-overview"><span class="num">8.2</span> Evaluation Metrics Overview</h2>
+<div class="box theory">
+<div class="box-title">Two different toolkits, for two different model types</div>
+<p><strong>Classification models</strong> are evaluated with metrics such as accuracy, precision, recall, F1-score, and ROC-AUC. <strong>Regression models</strong> are evaluated with metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared.</p>
+</div>
+
+<h2 class="section-title" id="l8-confusion-matrix"><span class="num">8.3</span> The Confusion Matrix, in Full Depth</h2>
+<div class="box theory">
+<div class="box-title">Definition</div>
+<ul>
+<li>A <strong>confusion matrix</strong> is a performance evaluation tool representing the accuracy of a classification model.</li>
+<li>It displays the number of true positives, true negatives, false positives, and false negatives.</li>
+<li>It is an <strong>N &times; N matrix</strong>, where N is the total number of target classes — it compares actual target values against those predicted by the model.</li>
+<li>This gives a holistic view of how well the model is performing, and what <em>kinds</em> of errors it's making.</li>
+<li>For binary classification, N=2, giving a 2&times;2 matrix with 4 values. For multi-class classification, the matrix is N&times;N for N classes.</li>
+</ul>
+</div>
+
+<div class="box key">
+<div class="box-title">The four outcomes, precisely — and their error-type names</div>
+<ul>
+<li><strong>True Positive (TP)</strong> — predicted positive, and it's true.</li>
+<li><strong>True Negative (TN)</strong> — predicted negative, and it's true.</li>
+<li><strong>False Positive (FP)</strong> — predicted positive, but it's false. Also called a <strong>Type I error.</strong></li>
+<li><strong>False Negative (FN)</strong> — predicted negative, but it's false. Also called a <strong>Type II error.</strong></li>
+</ul>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Convention: predicted values are described as Positive/Negative; actual values are described as True/False. The diagonal of the matrix (TP, TN) is where the model got it right; the off-diagonal (FP, FN) is where it didn't.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked Example — the running 10-instance dataset <span class="numtag">Numerical</span></div>
+<p>\(\text{actual}=[1,0,0,1,0,0,1,0,0,1]\), \(\text{predicted}=[1,0,0,1,0,0,0,1,0,0]\) (1=positive, 0=negative).</p>
+<table style="font-size:.85em">
+<tr><th>Actual</th><th>Predicted</th><th>Outcome</th></tr>
+<tr><td>1</td><td>1</td><td>TP</td></tr>
+<tr><td>0</td><td>0</td><td>TN</td></tr>
+<tr><td>0</td><td>0</td><td>TN</td></tr>
+<tr><td>1</td><td>1</td><td>TP</td></tr>
+<tr><td>0</td><td>0</td><td>TN</td></tr>
+<tr><td>0</td><td>0</td><td>TN</td></tr>
+<tr><td>1</td><td>0</td><td>FN</td></tr>
+<tr><td>0</td><td>1</td><td>FP</td></tr>
+<tr><td>0</td><td>0</td><td>TN</td></tr>
+<tr><td>1</td><td>0</td><td>FN</td></tr>
+</table>
+<div class="step"><span class="step-label">Tallying up</span>
+$$TP=2,\quad TN=5,\quad FP=1,\quad FN=2$$
+</div>
+<span class="answer-final">Confusion matrix (sklearn layout, rows=actual, cols=predicted): [[5,1],[2,2]]</span>
+</div>
+
+<div class="box key">
+<div class="box-title">scikit-learn's conventions — a genuine gotcha</div>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;"><code>confusion_matrix(actual, predicted, labels=[0, 1, 2])   # labels needed for multiclass
+confusion_matrix(actual, predicted)                       # same as labels=[0, 1]
+tn, fp, fn, tp = confusion_matrix(actual, predicted).reshape(-1)   # unpack order</code></pre>
+<p><code>confusion_matrix()</code> takes <strong>rows as Actual</strong> values and <strong>columns as Predicted</strong> values. Setting <code>labels=[0,1]</code> means the negative class is labelled 0 and the positive class is labelled 1 (the default). Setting <code>labels=[1,0]</code> flips this — the positive class becomes 0 and the negative class becomes 1. <strong>Always check which convention is active before reading off TP/TN/FP/FN</strong> — reshape/ravel order (<code>tn, fp, fn, tp</code>) only matches your intent if the label order matches too.</p>
+</div>
+
+<h2 class="section-title" id="l8-classification-report"><span class="num">8.4</span> The Classification Report</h2>
+<div class="box worked">
+<div class="box-title">Full worked example, continuing the same 10-instance dataset <span class="numtag">Numerical</span></div>
+<p>Support: actual positive = 4, actual negative = 6, total = 10.</p>
+<div class="step"><span class="step-label">The five core metrics</span>
+$$\text{Accuracy} = \frac{TP+TN}{TP+FP+TN+FN} = \frac{2+5}{2+1+5+2} = \frac{7}{10} = 0.70$$
+$$\text{Precision} = \frac{TP}{TP+FP} = \frac{2}{2+1} = \frac23 \approx 0.67$$
+$$\text{Recall} = \frac{TP}{TP+FN} = \frac{2}{2+2} = \frac24 = 0.50$$
+$$F1\text{-Score} = \frac{2\times \text{Recall}\times\text{Precision}}{\text{Recall}+\text{Precision}} = \frac{2\times0.5\times0.67}{0.5+0.67} = \frac{0.67}{1.16} \approx 0.57$$
+$$\text{Specificity} = \frac{TN}{TN+FP} = \frac{5}{5+1} \approx 0.833$$
+</div>
+</div>
+
+<div class="box theory">
+<div class="box-title">Python — generating the report</div>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;line-height:1.5;"><code>from sklearn.metrics import confusion_matrix, classification_report
+actual = [1,0,0,1,0,0,1,0,0,1]
+predicted = [1,0,0,1,0,0,0,1,0,0]
+
+matrix = confusion_matrix(actual, predicted)
+print('Confusion matrix:\n', matrix)
+
+report = classification_report(actual, predicted)
+print('Classification report:\n', report)
+
+# Individual metrics
+from sklearn import metrics
+Accuracy = metrics.accuracy_score(actual, predicted)
+Precision = metrics.precision_score(actual, predicted)
+Sensitivity_recall = metrics.recall_score(actual, predicted)
+Specificity = metrics.recall_score(actual, predicted, pos_label=0)
+F1_score = metrics.f1_score(actual, predicted)</code></pre>
+</div>
+
+<div class="box worked">
+<div class="box-title">The actual output <span class="numtag">Numerical</span></div>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;">Confusion matrix:
+ [[5 1]
+ [2 2]]
+
+              precision    recall  f1-score   support
+           1       0.67      0.50      0.57         4
+           0       0.71      0.83      0.77         6
+
+    accuracy                           0.70        10
+   macro avg       0.69      0.67      0.67        10
+weighted avg       0.70      0.70      0.69        10
+
+{'Accuracy': 0.7, 'Precision': 0.667, 'Sensitivity_recall': 0.5,
+ 'Specificity': 0.833, 'F1_score': 0.571}</pre>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Independently verified with scikit-learn: every number above reproduces exactly.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Reading the report — what the extra rows mean</div>
+<ul>
+<li><strong>Support</strong> — the number of occurrences of each class in the <em>actual</em> values (\(y_{test}\)). Here: class 1 &rarr; 4, class 0 &rarr; 6, total &rarr; 10.</li>
+<li><strong>macro avg</strong> — the simple (unweighted) average of the metric across classes.</li>
+<li><strong>weighted avg</strong> — calculates the metric for each class, then averages weighted by each class's <em>support</em> — classes with more actual instances count more.</li>
+<li><strong>micro avg</strong> — the third extra value scikit-learn's <code>classification_report()</code> can report (not shown in the sample output above, since it isn't included for binary classification with a single positive label) — computed from the total TP/FP/FN pooled across all classes, rather than averaging per-class scores.</li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l8-problems-1-3"><span class="num">8.5</span> Worked Problems — Interpretation, and Why Accuracy Can Mislead</h2>
+<div class="box worked">
+<div class="box-title">Problem Statement 1 — reading a confusion matrix <span class="numtag">Numerical</span></div>
+<p>A classification dataset with 1000 data points is fed to a classifier (e.g. logistic regression or a decision tree), giving: \(TP=560\), \(TN=330\), \(FP=60\), \(FN=50\). Interpret these.</p>
+<ul>
+<li><strong>TP = 560</strong> — the model correctly classified 560 positive-class data points.</li>
+<li><strong>TN = 330</strong> — the model correctly classified 330 negative-class data points.</li>
+<li><strong>FP = 60</strong> — the model incorrectly classified 60 negative-class points as positive.</li>
+<li><strong>FN = 50</strong> — the model incorrectly classified 50 positive-class points as negative.</li>
+</ul>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem Statements 2 &amp; 3 — predicting a contagious virus, and the accuracy paradox <span class="numtag">Numerical</span></div>
+<p>Predict how many people are infected with a contagious virus <em>before</em> they show symptoms, to isolate them from the healthy population. Target values: <strong>Sick</strong> and <strong>Not Sick.</strong> Outcome values: \(TP=30\), \(TN=930\), \(FP=30\), \(FN=10\). <strong>Show that accuracy is not a proper indicator here.</strong></p>
+<div class="step"><span class="step-label">Computing accuracy</span>
+$$\text{Accuracy} = \frac{30+930}{30+930+30+10} = \frac{960}{1000} = 0.96 = 96\%$$
+</div>
+</div>
+
+<div class="box warn">
+<div class="box-title">The accuracy paradox — why 96% is actually a bad result here</div>
+<p>The model reports 96% accuracy, which sounds like "it can predict sick people 96% of the time." <strong>It's doing the opposite</strong> — it's predicting the people who will <em>not</em> get sick with 96% accuracy, while the actually-sick keep spreading the virus.</p>
+<p>This happens because the dataset is <strong>imbalanced</strong> (30 sick vs. 930 not-sick) — accuracy is dominated by whichever class has more examples. If the same model were tested on a set with 60% class A / 40% class B instead, test accuracy would drop to around 60%, exposing how little the model actually learned.</p>
+<p>What we should actually measure: <strong>how many positive (sick) cases we can catch</strong>, to arrest the spread — and <strong>out of our positive predictions, how many are correct</strong>, to check the model's reliability. This is exactly the dual concept of <strong>Precision and Recall.</strong></p>
+</div>
+
+<h2 class="section-title" id="l8-balanced-precision-recall"><span class="num">8.6</span> Balanced vs. Imbalanced Datasets, and Precision vs. Recall</h2>
+<div class="box def">
+<div class="box-title">Balanced vs. Imbalanced (Skewed) datasets</div>
+<p><strong>Balanced datasets</strong> have approximately the same number of positive and negative values. <strong>Imbalanced (skewed) datasets</strong> have a very high difference between the number of positive and negative values — like the 30-vs-930 virus example above.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Precision and Recall, on the same virus example <span class="numtag">Numerical</span></div>
+<div class="step"><span class="step-label">Precision — of everything predicted positive, how much was actually positive?</span>
+$$\text{Precision} = \frac{TP}{TP+FP} = \frac{30}{30+30} = 0.5$$
+<p>50% of the cases predicted positive turned out to actually be positive. Precision matters most when a <strong>False Positive</strong> is the bigger concern — e.g. recommendation systems, e-commerce, where a wrong positive result can cost customer trust.</p>
+</div>
+<div class="step"><span class="step-label">Recall — of everything actually positive, how much did we catch?</span>
+$$\text{Recall} = \frac{TP}{TP+FN} = \frac{30}{30+10} = 0.75 = 75\%$$
+<p>75% of the actual positives were successfully predicted. Recall matters most when a <strong>False Negative</strong> is the bigger concern — exactly this medical scenario: it's fine to raise a false alarm, but an actual infected person must never go undetected (a False Negative here means accidentally discharging a sick person). <strong>Recall is the better metric for this problem</strong> — confirming accuracy was indeed the wrong choice.</p>
+</div>
+</div>
+
+<div class="box theory">
+<div class="box-title">F1-Score — when there's no clear winner between Precision and Recall</div>
+<p>Increasing precision tends to push recall down, and vice versa. The <strong>F1-score</strong> combines both trends into a single value — it's the <strong>harmonic mean</strong> of Precision and Recall (harmonic, not arithmetic, so it punishes extreme imbalance between the two more heavily). It's maximised exactly when Precision equals Recall.</p>
+$$F1\text{-Score} = \frac{2\times\text{Precision}\times\text{Recall}}{\text{Precision}+\text{Recall}}$$
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)"><strong>Limitation:</strong> the interpretability of F1-score is poor, precisely because it collapses precision and recall into one number — you can't tell from F1 alone which of the two your classifier is actually maximising. Use it alongside the individual metrics, not as a replacement for them.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The five-metric summary</div>
+<table>
+<tr><td>Accuracy</td><td>\((TP+TN)/(TP+TN+FP+FN)\)</td></tr>
+<tr><td>Precision</td><td>\(TP/(TP+FP)\)</td></tr>
+<tr><td>Recall (Sensitivity, True Positive Rate)</td><td>\(TP/(TP+FN)\)</td></tr>
+<tr><td>Specificity (True Negative Rate)</td><td>\(TN/(TN+FP)\)</td></tr>
+<tr><td>F1-Score</td><td>\(2\times(\text{Precision}\times\text{Recall})/(\text{Precision}+\text{Recall})\)</td></tr>
+</table>
+</div>
+
+<h2 class="section-title" id="l8-problem4"><span class="num">8.7</span> Worked Problem 4 — Dog / Not-Dog Image Classification</h2>
+<div class="box worked">
+<div class="box-title">Problem <span class="numtag">Numerical</span></div>
+<p>For an image classifier predicting Dog vs. Not Dog, construct the confusion matrix and derive all classification metrics.</p>
+<p><strong>Convention:</strong> TP = both predicted &amp; actual are Dog (1-1). TN = both predicted &amp; actual are Not Dog (0-0). FP = predicted Dog, actually Not Dog (0-1). FN = predicted Not Dog, actually Dog (1-0).</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Python — building and visualising the confusion matrix</div>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.8em;line-height:1.5;"><code>import numpy as np
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+actual = np.array(['Dog','Dog','Dog','Not Dog','Dog','Not Dog','Dog','Dog','Not Dog','Not Dog'])
+predicted = np.array(['Dog','Not Dog','Dog','Not Dog','Dog','Dog','Dog','Dog','Not Dog','Not Dog'])
+
+cm = confusion_matrix(actual, predicted)
+tn, fp, fn, tp = cm.ravel()
+print(tn, fp, fn, tp)
+
+sns.heatmap(cm, annot=True, fmt='g', xticklabels=['Dog','Not Dog'], yticklabels=['Dog','Not Dog'])
+plt.ylabel('Prediction', fontsize=13); plt.xlabel('Actual', fontsize=13)
+plt.title('Confusion Matrix', fontsize=17); plt.show()</code></pre>
+</div>
+
+<div class="box worked">
+<div class="box-title">Tallying the outcomes <span class="numtag">Numerical</span></div>
+<p>Actual Dog count = 6, Actual Not Dog count = 4.</p>
+<table>
+<tr><th>Outcome</th><th>Count</th></tr>
+<tr><td>True Positive</td><td>5</td></tr>
+<tr><td>False Positive</td><td>1</td></tr>
+<tr><td>True Negative</td><td>3</td></tr>
+<tr><td>False Negative</td><td>1</td></tr>
+</table>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Independently verified: walking the 10 actual/predicted pairs by hand reproduces exactly TP=5, TN=3, FP=1, FN=1.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">All four metrics, computed <span class="numtag">Numerical</span></div>
+<div class="step"><span class="step-label">Accuracy — from all classes, how many did we get right?</span>
+$$\text{Accuracy} = \frac{TP+TN}{TP+TN+FP+FN} = \frac{5+3}{5+3+1+1} = \frac{8}{10} = 0.8$$
+</div>
+<div class="step"><span class="step-label">Precision — of everything we called positive, how much really was?</span>
+$$\text{Precision} = \frac{TP}{TP+FP} = \frac{5}{5+1} = \frac{5}{6} \approx 0.8333$$
+</div>
+<div class="step"><span class="step-label">Recall — of everything actually positive, how much did we catch?</span>
+$$\text{Recall} = \frac{TP}{TP+FN} = \frac{5}{5+1} = \frac{5}{6} \approx 0.8333$$
+</div>
+<div class="step"><span class="step-label">F1-Score</span>
+$$F1 = \frac{2\times0.8333\times0.8333}{0.8333+0.8333} = 0.8333$$
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">When Precision equals Recall exactly, F1 always equals that same value too — a direct consequence of F1 being their harmonic mean, maximised precisely at equality.</p>
+</div>
+</div>
+
+<h2 class="section-title" id="l8-problems-5-6"><span class="num">8.8</span> Two More Quick sklearn Examples</h2>
+<div class="box worked">
+<div class="box-title">Problem Statement 5 <span class="numtag">Numerical</span></div>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;"><code>cm = confusion_matrix([1,1,1,0,1,0,1,1,0,0], [1,0,1,0,1,1,1,1,0,0])
+print(cm)
+tn, fp, fn, tp = confusion_matrix([1,1,1,0,1,0,1,1,0,0], [1,0,1,0,1,1,1,1,0,0]).ravel()
+print(tn, fp, fn, tp)</code></pre>
+<span class="answer-final">Output: [[3, 1], [1, 5]] → tn=3, fp=1, fn=1, tp=5 (independently verified)</span>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem Statement 6 <span class="numtag">Numerical</span></div>
+<p>\(\text{actual}=[1,0,1,0,1,1,0,0,1,0]\), \(\text{predicted}=[1,0,1,0,1,0,1,1,1,0]\).</p>
+<p>Walking through: Result = [TP, TN, TP, TN, TP, FN, FP, FP, TP, TN] &rarr; count: TN=3, FP=2, FN=1, TP=4.</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;"><code>from sklearn.metrics import confusion_matrix
+actual = [1, 0, 1, 0, 1, 1, 0, 0, 1, 0]
+predicted = [1, 0, 1, 0, 1, 0, 1, 1, 1, 0]
+conf_matrix = confusion_matrix(actual, predicted)
+print("Confusion Matrix:")
+print(conf_matrix)</code></pre>
+<span class="answer-final">Output: [[3, 2], [1, 4]] (independently verified)</span>
+</div>
+
+<h2 class="section-title" id="l8-auc-roc"><span class="num">8.9</span> The AUC-ROC Curve</h2>
+<div class="box theory">
+<div class="box-title">What AUC-ROC stands for</div>
+<p><strong>AUC-ROC</strong> = "Area Under the Curve" (AUC) of the "Receiver Operating Characteristic" (ROC). Also written <strong>AUROC</strong> — Area Under the Receiver Operating Characteristics curve.</p>
+</div>
+
+<div class="box def">
+<div class="box-title">Two new rates, built from the confusion matrix</div>
+$$TPR\ (\text{Recall/Sensitivity}) = \frac{TP}{TP+FN} \qquad\qquad \text{Specificity} = \frac{TN}{TN+FP}$$
+$$FPR = 1-\text{Specificity} = \frac{FP}{FP+TN}$$
+<p><strong>TPR (True Positive Rate)</strong> — the proportion of positive data points correctly identified as positive, out of <em>all</em> positive points. Higher TPR &rarr; fewer positives missed.</p>
+<p><strong>FPR (False Positive Rate)</strong> — the proportion of negative data points <em>mistakenly</em> flagged as positive, out of <em>all</em> negative points. Higher FPR &rarr; more negatives misclassified.</p>
+<p>The <strong>ROC curve</strong> is plotted with TPR on the y-axis against FPR on the x-axis.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Fully worked example — drawing an ROC curve from scratch <span class="numtag">Numerical</span></div>
+<p>Ten tuples, each with a true class (P/N) and a model's predicted probability of being positive, already sorted in descending order of probability:</p>
+<table style="font-size:.85em">
+<tr><th>Tuple #</th><th>Class</th><th>Prob.</th></tr>
+<tr><td>1</td><td>P</td><td>0.90</td></tr>
+<tr><td>2</td><td>P</td><td>0.80</td></tr>
+<tr><td>3</td><td>N</td><td>0.70</td></tr>
+<tr><td>4</td><td>P</td><td>0.60</td></tr>
+<tr><td>5</td><td>P</td><td>0.55</td></tr>
+<tr><td>6</td><td>N</td><td>0.54</td></tr>
+<tr><td>7</td><td>N</td><td>0.53</td></tr>
+<tr><td>8</td><td>N</td><td>0.51</td></tr>
+<tr><td>9</td><td>P</td><td>0.50</td></tr>
+<tr><td>10</td><td>N</td><td>0.40</td></tr>
+</table>
+<div class="step"><span class="step-label">The method</span>
+<p>Total actual positives = 5 (tuples 1,2,4,5,9), total actual negatives = 5 (tuples 3,6,7,8,10). Walk down the list in probability order, treating each row's probability as the classification threshold in turn. At each step, keep a <strong>running count</strong> of TP and FP seen so far (every P tuple reached so far adds to TP; every N tuple reached so far adds to FP), then compute \(TPR=TP/5\) and \(FPR=FP/5\).</p>
+</div>
+<div class="step"><span class="step-label">The full table, filled in — independently verified row by row</span>
+<table style="font-size:.82em">
+<tr><th>Tuple</th><th>Class</th><th>Prob</th><th>TP</th><th>FP</th><th>TPR</th><th>FPR</th></tr>
+<tr><td>1</td><td>P</td><td>0.90</td><td>1</td><td>0</td><td>0.2</td><td>0</td></tr>
+<tr><td>2</td><td>P</td><td>0.80</td><td>2</td><td>0</td><td>0.4</td><td>0</td></tr>
+<tr><td>3</td><td>N</td><td>0.70</td><td>2</td><td>1</td><td>0.4</td><td>0.2</td></tr>
+<tr><td>4</td><td>P</td><td>0.60</td><td>3</td><td>1</td><td>0.6</td><td>0.2</td></tr>
+<tr><td>5</td><td>P</td><td>0.55</td><td>4</td><td>1</td><td>0.8</td><td>0.2</td></tr>
+<tr><td>6</td><td>N</td><td>0.54</td><td>4</td><td>2</td><td>0.8</td><td>0.4</td></tr>
+<tr><td>7</td><td>N</td><td>0.53</td><td>4</td><td>3</td><td>0.8</td><td>0.6</td></tr>
+<tr><td>8</td><td>N</td><td>0.51</td><td>4</td><td>4</td><td>0.8</td><td>0.8</td></tr>
+<tr><td>9</td><td>P</td><td>0.50</td><td>5</td><td>4</td><td>1.0</td><td>0.8</td></tr>
+<tr><td>10</td><td>N</td><td>0.40</td><td>5</td><td>5</td><td>1.0</td><td>1.0</td></tr>
+</table>
+</div>
+</div>
+
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 420 380" width="100%" style="max-width:400px;">
+<g font-family="EB Garamond" font-size="12">
+<line x1="60" y1="30" x2="60" y2="320" stroke="#2b2620" stroke-width="1.3"/>
+<line x1="60" y1="320" x2="380" y2="320" stroke="#2b2620" stroke-width="1.3"/>
+<text x="20" y="30">1.0</text><text x="20" y="126">0.8</text><text x="20" y="222">0.6</text><text x="30" y="318">0.0</text>
+<text x="55" y="335">0</text><text x="118" y="335">0.2</text><text x="182" y="335">0.4</text><text x="246" y="335">0.6</text><text x="310" y="335">0.8</text><text x="368" y="335">1.0</text>
+<text x="10" y="175" transform="rotate(-90 10,175)">TPR</text>
+<text x="200" y="355">FPR</text>
+</g>
+<polyline points="60,320 60,256 60,192 124,192 188,128 188,64 252,64 316,64 380,64 380,64" fill="none" stroke="#8c63a8" stroke-width="2"/>
+<line x1="60" y1="320" x2="380" y2="64" stroke="#c9c2b4" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="270" y="180" font-family="EB Garamond" font-size="11" fill="#8a8578">Random guessing</text>
+<g fill="#8c63a8">
+<circle cx="60" cy="256" r="3"/><circle cx="60" cy="192" r="3"/><circle cx="124" cy="192" r="3"/><circle cx="188" cy="128" r="3"/><circle cx="188" cy="64" r="3"/><circle cx="252" cy="64" r="3"/><circle cx="316" cy="64" r="3"/><circle cx="380" cy="64" r="3"/>
+</g>
+<text x="130" y="55" font-family="EB Garamond" font-size="12" font-weight="700" fill="#8c63a8">ROC curve</text>
+</svg>
+</div>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">(FPR on the x-axis, TPR on the y-axis, exactly per the definition above.) Since this ROC curve sits well above the diagonal "random guessing" line for most of its length, the model is doing meaningfully better than chance at separating positives from negatives.</p>
+
+<div class="box key">
+<div class="box-title">Interpreting the AUC value</div>
+<ul>
+<li><strong>AUC = 1</strong> — perfect separability. The classifier perfectly distinguishes positive from negative. This happens when the positive and negative classes' probability distributions <strong>don't overlap at all.</strong></li>
+<li><strong>AUC = 0.7</strong> — there's a 70% chance the model can correctly distinguish between the positive and negative classes. The two distributions overlap somewhat, introducing Type I and Type II errors.</li>
+<li><strong>AUC &asymp; 0.5</strong> — the worst realistic case: the model has <strong>no discrimination capacity</strong> at all between the classes (equivalent to random guessing).</li>
+<li><strong>AUC &asymp; 0</strong> — the model is actually <strong>reciprocating</strong> the classes — predicting negative as positive and vice versa.</li>
+</ul>
+</div>
+
+<div style="text-align:center;margin:16px 0;">
+<svg viewBox="0 0 380 160" width="100%" style="max-width:380px;">
+<g font-family="EB Garamond" font-size="11">
+<line x1="20" y1="140" x2="20" y2="20" stroke="#2b2620" stroke-width="1.2"/>
+<line x1="20" y1="140" x2="360" y2="140" stroke="#2b2620" stroke-width="1.2"/>
+<text x="10" y="150">0</text><text x="185" y="150">0.5 (threshold)</text><text x="345" y="150">1</text>
+</g>
+<path d="M25,140 Q75,45 125,140" fill="none" stroke="#7fae5c" stroke-width="2"/>
+<path d="M195,140 Q255,35 315,140" fill="none" stroke="#b0563f" stroke-width="2"/>
+<text x="55" y="110" font-family="EB Garamond" font-size="12" fill="#7fae5c" font-weight="700">TN</text>
+<text x="245" y="110" font-family="EB Garamond" font-size="12" fill="#b0563f" font-weight="700">TP</text>
+<line x1="192" y1="20" x2="192" y2="140" stroke="#9a9284" stroke-width="1" stroke-dasharray="3 2"/>
+<text x="200" y="30" font-family="EB Garamond" font-size="12" font-weight="700">AUC = 1</text>
+</g>
+</svg>
+</div>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Illustrating AUC = 1: the green (True Negative) distribution and red (True Positive) distribution don't overlap at all, split cleanly at the 0.5 threshold — giving the perfect "step function" ROC curve shape (straight up the y-axis, then straight across) exactly like the worked example's curve above.</p>
+
+<div class="box key">
+<div class="box-title">What Lecture 8 adds to Lecture 5, and to the whole course</div>
+<p>Lecture 5 gave you the four core metrics and a sense of when accuracy misleads. Lecture 8 makes that concrete with real confusion-matrix arithmetic, six independently-verified worked problems, the exact scikit-learn conventions (and their gotchas) you'll actually use in code, and — genuinely new — the ROC curve and AUC, which move beyond a single threshold's confusion matrix to ask a deeper question: <em>across every possible threshold, how well can this model separate the two classes at all?</em> That question, and the TPR/FPR machinery built to answer it, is one of the most common ways classifier quality gets reported in practice, well beyond this course.</p>
+</div>
+
+
 <h2 class="section-title" id="sec5"><span class="num">A</span> Appendix: Quick-Reference Formula Sheet</h2>
 
 <div class="box theory formula-sheet">
@@ -2499,8 +2973,8 @@ $$P(\text{Ham})\times P(\text{words}\mid\text{Ham}) = 0.5\times0.0000822 \approx
 
 <h2 class="section-title" id="recap"><span class="num">&#10003;</span> Full Course Recap</h2>
 <div class="box key">
-<div class="box-title">The story of these 7 lectures, in one paragraph</div>
-<p>Lecture 1 asks what ML even is, then opens with the simplest possible algorithm: fit a straight line (Linear Regression). Lecture 2 shows a second way to fit that same line — Gradient Descent — trading an exact formula for an iterative search that scales to problems the exact formula can't touch. Lecture 3 pulls back to ask what makes any model good, giving you the vocabulary (bias, variance, overfitting, parametric vs. non-parametric) to judge everything that follows. Lecture 4 adapts the same "fit a line" idea to classification via the sigmoid function. Lecture 5 gives you the vocabulary to judge a classifier's performance. Lectures 6 and 7 then present two completely different philosophies of classification: k-NN, which memorises the data and looks at neighbours; and Naive Bayes, which builds an explicit probability model — the two ends of the parametric/non-parametric spectrum Lecture 3 set up at the very start.</p>
+<div class="box-title">The story of these 8 lectures, in one paragraph</div>
+<p>Lecture 1 asks what ML even is, then opens with the simplest possible algorithm: fit a straight line (Linear Regression). Lecture 2 shows a second way to fit that same line — Gradient Descent — trading an exact formula for an iterative search that scales to problems the exact formula can't touch. Lecture 3 pulls back to ask what makes any model good, giving you the vocabulary (bias, variance, overfitting, parametric vs. non-parametric) to judge everything that follows. Lecture 4 adapts the same "fit a line" idea to classification via the sigmoid function. Lecture 5 gives you the vocabulary to judge a classifier's performance. Lectures 6 and 7 then present two completely different philosophies of classification: k-NN, which memorises the data and looks at neighbours; and Naive Bayes, which builds an explicit probability model — the two ends of the parametric/non-parametric spectrum Lecture 3 set up at the very start. Lecture 8, from a second instructor, returns to Lecture 5's territory and goes much deeper — six fully worked confusion-matrix problems, the exact scikit-learn conventions, and the ROC/AUC curve, a genuinely new tool for judging a classifier across every threshold at once, not just one.</p>
 </div>
 
 <table>
@@ -2512,6 +2986,7 @@ $$P(\text{Ham})\times P(\text{words}\mid\text{Ham}) = 0.5\times0.0000822 \approx
 <tr><td><strong>5. Evaluation Metrics</strong></td><td>Once you have a classifier, how do you know if it's actually any good?</td><td>Confusion matrix; Accuracy, Precision, Recall, F1; and why Recall often matters more than F1 in high-stakes settings like medical diagnosis.</td></tr>
 <tr><td><strong>6. k-Nearest Neighbors</strong></td><td>What if you don't want to assume any particular equation at all?</td><td>Store the data, measure distance at prediction time, vote/average over the k closest points; feature scaling and choice of k (via cross-validation) are everything.</td></tr>
 <tr><td><strong>7. Naive Bayes</strong></td><td>What if you want an explicit probability model, built from simple counting?</td><td>Bayes' theorem plus a (very) strong independence assumption; astonishingly effective for text classification once Laplace smoothing handles the zero-probability problem.</td></tr>
+<tr><td><strong>8. Performance Measures (Deep Dive)</strong></td><td>Lecture 5 gave the basics — but how do you actually judge a classifier across every possible threshold, not just one?</td><td>Six fully worked confusion-matrix problems, the exact scikit-learn conventions and gotchas, the accuracy paradox on genuinely imbalanced data, and the ROC/AUC curve.</td></tr>
 </table>
 
 <h3>Mini glossary</h3>
@@ -2526,15 +3001,20 @@ $$P(\text{Ham})\times P(\text{words}\mid\text{Ham}) = 0.5\times0.0000822 \approx
 <tr><td><strong>k-NN</strong></td><td>A lazy, instance-based classifier/regressor that predicts from the k closest stored training points.</td></tr>
 <tr><td><strong>Naive Bayes</strong></td><td>A probabilistic classifier built on Bayes' theorem plus a feature-independence assumption.</td></tr>
 <tr><td><strong>Laplace Smoothing</strong></td><td>Adding 1 to every count (and the vocabulary size to every denominator) to avoid a zero probability wiping out an entire prediction.</td></tr>
+<tr><td><strong>Specificity</strong></td><td>\(TN/(TN+FP)\) — the True Negative Rate; how well the model avoids false alarms.</td></tr>
+<tr><td><strong>Type I / Type II Error</strong></td><td>False Positive / False Negative, respectively.</td></tr>
+<tr><td><strong>TPR / FPR</strong></td><td>True/False Positive Rate — TPR=\(TP/(TP+FN)\) (same as Recall), FPR=\(FP/(FP+TN)\); the two axes of an ROC curve.</td></tr>
+<tr><td><strong>ROC Curve</strong></td><td>A plot of TPR (y-axis) against FPR (x-axis) as the classification threshold varies, showing how well a model separates classes across <em>every</em> threshold at once.</td></tr>
+<tr><td><strong>AUC</strong></td><td>Area Under the ROC Curve — 1 is perfect separation, 0.5 is random guessing, 0 means the model has the classes backwards.</td></tr>
 </table>
 
 <div class="box note">
-<div class="box-title">What's beyond these 7 lectures</div>
+<div class="box-title">What's beyond these 8 lectures</div>
 <p>This course's official syllabus (CSS 3131) continues well past Naive Bayes — into Decision Trees, Support Vector Machines, Bayesian Belief Networks, Ridge/Lasso Regression, Bagging and Random Forests, Boosting (AdaBoost, XGBoost), Artificial Neural Networks, and PCA. None of that is in these 7 uploaded decks, so none of it is in this guide yet. If further lecture decks are uploaded, this guide can be extended the same way the first 7 were.</p>
 </div>
 
 <footer>
-  Built as a complete study companion for <em>Fundamentals of Machine Learning</em> (CSS 3131, MIT Manipal) — all 7 lecture decks, covering Introduction &amp; Linear Regression through Naive Bayes. Every worked numerical example was independently recomputed and cross-checked in Python; several small inconsistencies in the original slides (a decimal-point slip, a mislabelled Tall/Short table, an SGD update-rule discrepancy, an unlabelled RMSE plot, and two "solve it yourself" exercises) were identified, verified, and clearly flagged rather than silently corrected or repeated as-is.
+  Built as a complete study companion for <em>Fundamentals of Machine Learning</em> (CSS 3131, MIT Manipal) — all 8 lecture decks, covering Introduction &amp; Linear Regression through the AUC-ROC Curve. Every worked numerical example was independently recomputed and cross-checked in Python; several small inconsistencies in the original slides (a decimal-point slip, a mislabelled Tall/Short table, an SGD update-rule discrepancy, an unlabelled RMSE plot, and two "solve it yourself" exercises) were identified, verified, and clearly flagged rather than silently corrected or repeated as-is.
 </footer>
 </main>
 </div>
