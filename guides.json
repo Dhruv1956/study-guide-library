@@ -11,7 +11,7 @@
     "course": "EEFM",
     "courseName": "Engineering Economics and Financial Management",
     "path": "guides/eefm/eefm-explanation.html",
-    "dateAdded": "2026-09-25"
+    "dateAdded": "2026-10-26"
   },
   {
     "title": "Time Value of Money \u2014 Complete Worked Solutions",
@@ -25,20 +25,20 @@
     "course": "AI",
     "courseName": "Artificial Intelligence",
     "path": "guides/ai/intro-to-ai-guide.html",
-    "dateAdded": "2026-09-25"
+    "dateAdded": "2026-10-26"
   },
   {
     "title": "Multivariate Analysis \u2014 Beginner Guide (MND, Hotelling, Correlation, Wishart)",
     "course": "MVA",
     "courseName": "Multivariate Analysis",
     "path": "guides/mva/mva-beginner-guide.html",
-    "dateAdded": "2026-09-21"
+    "dateAdded": "2026-10-26"
   },
   {
     "title": "ML Numerical IA Prep",
     "course": "FML",
     "courseName": "Foundations of Machine Learning",
     "path": "guides/fml/ml-numerical-ia-prep.html",
-    "dateAdded": "2026-09-29"
+    "dateAdded": "2026-10-26"
   }
 ]

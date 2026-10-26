@@ -236,11 +236,51 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
     <a href="#s7-4">Selection guidelines</a>
     <a href="#s7-5">Worked problems</a>
 
+    <a href="#s9" class="top">9 · Internal Rate of Return</a>
+    <a href="#s9-1">What rate of return means</a>
+    <a href="#s9-2">Finding i* — trial &amp; interpolation</a>
+    <a href="#s9-3">Worked examples</a>
+    <a href="#s9-4">Practice problems</a>
+
+    <a href="#s10" class="top">10 · Incremental IRR Analysis</a>
+    <a href="#s10-1">The IRR misconception</a>
+    <a href="#s10-2">Procedure</a>
+    <a href="#s10-3">Worked examples</a>
+    <a href="#s10-4">Practice problems</a>
+
+    <a href="#s11" class="top">11 · Replacement Analysis</a>
+    <a href="#s11-1">What is replacement analysis?</a>
+    <a href="#s11-2">Economic Service Life</a>
+    <a href="#s11-3">Capital Recovery with Return</a>
+    <a href="#s11-4">Cash-flow vs opportunity-cost</a>
+    <a href="#s11-5">Outsider's point of view</a>
+    <a href="#s11-6">Practice problems</a>
+
+    <a href="#s12" class="top">12 · Depreciation</a>
+    <a href="#s12-1">What is depreciation?</a>
+    <a href="#s12-2">Straight-Line Method</a>
+    <a href="#s12-3">Declining Balance Method</a>
+    <a href="#s12-4">Double Declining Balance</a>
+    <a href="#s12-5">Practice problems</a>
+
+    <a href="#s13" class="top">13 · Breakeven Analysis</a>
+    <a href="#s13-1">What is breakeven analysis?</a>
+    <a href="#s13-2">Single-project breakeven</a>
+    <a href="#s13-3">Breakeven between two alternatives</a>
+    <a href="#s13-4">Breakeven among three alternatives</a>
+    <a href="#s13-5">Practice problems</a>
+
     <a href="#s8" class="top">8 · Revision Summary</a>
     <a href="#s4a">Master formula table</a>
     <a href="#s4b">Which formula when?</a>
     <a href="#s4c">Exam traps</a>
     <a href="#s4d">Factor calculator</a>
+
+    <a href="#s14" class="top">14 · Practice Questions</a>
+    <a href="#s14-1">Irregular &amp; deferred series</a>
+    <a href="#s14-2">Present worth comparisons</a>
+    <a href="#s14-3">Multi-rate CFD, depreciation &amp; AW</a>
+    <a href="#s14-4">Capitalized cost &amp; IRR</a>
   </nav>
 </aside>
 
@@ -974,7 +1014,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 <p class="cap">One amount in at time 0, one amount out at time n. This factor <em>pushes money forward</em> in time.</p>
 </div>
 
-<p><strong>Where it comes from.</strong> This is the compound interest recursion of Section 0, unchanged. Each period multiplies the balance by \((1+i)\); \(n\) periods multiply it by \((1+i)^n\). Because \((1+i) > 1\), this factor is always greater than 1 — <em>moving money forward in time always increases its magnitude.</em> That sanity check alone catches sign and direction errors.</p>
+<p><strong>Where it comes from.</strong> This is the compound interest recursion of Section 0, unchanged. Each period multiplies the balance by \((1+i)\); \(n\) periods multiply it by \((1+i)^n\). Because \((1+i) &gt; 1\), this factor is always greater than 1 — <em>moving money forward in time always increases its magnitude.</em> That sanity check alone catches sign and direction errors.</p>
 
 <div class="prob">
 <div class="q"><span class="pid">F/P · Q1</span><p>A person deposits Rs. 50,000 at an interest rate of 18% compounded annually for 10 years. Find the maturity value after 10 years.</p></div>
@@ -1091,7 +1131,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 
 <div class="box t">
 <span class="lbl">Why \((P/F)\) is always less than 1</span>
-<p>Since \((1+i)^n > 1\), its reciprocal is less than 1. A future rupee is always worth <em>less</em> than a rupee today. The further away and the higher the rate, the smaller the factor. At 15% over 10 years the factor is 0.2472 — a promised rupee a decade out is worth about 25 paise now. <strong>If your \(P\) comes out larger than your \(F\), you have used the wrong factor.</strong></p>
+<p>Since \((1+i)^n &gt; 1\), its reciprocal is less than 1. A future rupee is always worth <em>less</em> than a rupee today. The further away and the higher the rate, the smaller the factor. At 15% over 10 years the factor is 0.2472 — a promised rupee a decade out is worth about 25 paise now. <strong>If your \(P\) comes out larger than your \(F\), you have used the wrong factor.</strong></p>
 </div>
 
 <div class="prob">
@@ -1379,7 +1419,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 <p>$$\textbf{Total inflow at year 15} = 3{,}944.0 + 6{,}223.1 + 1{,}008.3 = 11{,}175.4$$</p>
 
 <div class="ans"><span class="lbl">Answer</span><p>Net cash flow at year 15 \(= 11{,}175.4 - 41{,}460.7 = \) <strong>−$30,285.3</strong> &nbsp;<span style="font-size:.9rem;color:var(--ink-soft)">(the source slide states −$30,437.98 — its individual line-item values match what's derived above, but its own final addition/subtraction doesn't; the figure here follows from the displayed numbers)</span></p>
-<p style="margin-top:6px">The negative sign means the plan is net <em>accumulating</em>: you have put in $30,438 more (in year-15 terms) than you have taken out, so that is your closing balance.</p></div>
+<p style="margin-top:6px">The negative sign means the plan is net <em>accumulating</em>: you have put in $30,285.3 more (in year-15 terms) than you have taken out, so that is your closing balance.</p></div>
 
 <div class="box t"><span class="lbl">How to survive a problem like this in an exam</span>
 <p>Do not attempt it in one line. Make a table with four columns — <em>flow, years it occupies, factor chain, value at target</em> — and fill it in row by row. You will lose marks for a wrong factor; you will lose the whole question for losing track of which flows you have already handled.</p>
@@ -1551,7 +1591,7 @@ hr.soft{border:none; border-top:1px solid var(--rule); margin:34px 0}
 
 <div class="box k">
 <span class="lbl">Why "capital recovery"</span>
-<p>From the lender's side, \(A\) is the annual amount needed to <em>recover</em> the capital \(P\) plus the required return \(i\) over \(n\) years. From the borrower's side it is the instalment. Note that \((A/P, i, n) > i\) always — the payment must cover the interest <em>and</em> chip away at the principal. As \(n \to \infty\), \((A/P) \to i\): with an infinite loan you would pay interest forever and never repay principal. That limiting behaviour is a good intuition check.</p>
+<p>From the lender's side, \(A\) is the annual amount needed to <em>recover</em> the capital \(P\) plus the required return \(i\) over \(n\) years. From the borrower's side it is the instalment. Note that \((A/P, i, n) &gt; i\) always — the payment must cover the interest <em>and</em> chip away at the principal. As \(n \to \infty\), \((A/P) \to i\): with an infinite loan you would pay interest forever and never repay principal. That limiting behaviour is a good intuition check.</p>
 </div>
 
 <div class="prob">
@@ -3303,7 +3343,7 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{k} - 1$$
 <li>Estimate the service life of each alternative.</li>
 <li>Determine the net cash flow of each alternative (inflows − outflows) at every point in time.</li>
 <li>Compute PW at the MARR for each alternative.</li>
-<li>Select: for a single project, accept if \(PW>0\) (revenue-dominated) or reject if \(PW\) is too costly; for mutually exclusive projects, pick the one with the highest revenue-dominated PW, or the lowest cost-dominated PW.</li>
+<li>Select: for a single project, accept if \(PW&gt;0\) (revenue-dominated) or reject if \(PW\) is too costly; for mutually exclusive projects, pick the one with the highest revenue-dominated PW, or the lowest cost-dominated PW.</li>
 </ol>
 </div>
 
@@ -5400,6 +5440,823 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{k} - 1$$
 
 
 <!-- ============================================================ -->
+
+<h2 class="sec" id="s9"><span class="num">Section 9</span>Internal Rate of Return (IRR)</h2>
+
+<h3 id="s9-1">9.1 &middot; What Rate of Return Actually Means</h3>
+<p>Every method so far — Present Worth, Future Worth, Annual Worth — has assumed you already know the interest rate \(i\), and asked "is this alternative worth it <em>at that rate</em>?" The Rate of Return method flips the question around entirely: instead of plugging in a rate and checking whether the numbers work, you ask <strong>what rate would make the numbers balance exactly</strong> — and that rate itself becomes the answer.</p>
+
+<div class="box d">
+<span class="lbl">Definition — Rate of Return (ROR / IRR)</span>
+<p><strong>Rate of Return</strong> is the interest rate at which the present worth of all cash outflows exactly equals the present worth of all cash inflows — equivalently, the rate at which the net present worth of a project is exactly zero. It is also called the <strong>Internal</strong> Rate of Return (IRR or IROR) because it depends only on the project's own cash flows, not on any external interest rate.</p>
+<p>Two equivalent ways to picture it: from a <em>borrower's</em> perspective, it's the rate applied to an unpaid balance so that the loan and all its interest are paid off exactly by the final payment. From a <em>lender's</em> (investor's) perspective, it's the rate earned on the unrecovered balance of an investment so that the final receipt brings that balance to exactly zero.</p>
+</div>
+
+<div class="box d">
+<span class="lbl">Definition — Minimum Attractive Rate of Return (MARR)</span>
+<p>The <strong>MARR</strong> is the lowest rate of return an organisation is willing to accept before a project is worth pursuing — set by the organisation itself, based on the opportunity cost of capital (what else that money could be earning) and prevailing economic conditions. It's the <em>benchmark</em> that \(i^*\) gets compared against.</p>
+</div>
+
+<div class="box k">
+<span class="lbl">The accept/reject rule</span>
+<p>$$\text{If } i^* \ge MARR: \text{ accept the project} \qquad \text{If } i^* &lt; MARR: \text{ reject the project}$$</p>
+<p class="small" style="color:var(--ink-soft)">To summarise the relationship between the two: IRR is what a proposal <em>itself</em> is earning, based purely on its own cash inflows and outflows. MARR is what the organisation could earn <em>elsewhere</em> if this money weren't tied up in the new proposal. A project only deserves the money if it beats what that money could do otherwise.</p>
+</div>
+
+<h3 id="s9-2">9.2 &middot; Finding i* — Trial, Error, and Interpolation</h3>
+<p>There's no way to algebraically isolate \(i\) from a Present Worth equation once it involves several different powers of \((1+i)\) — so \(i^*\) has to be located by trying values and narrowing in, exactly the way you'd use a graph to find where a curve crosses zero.</p>
+
+<div class="box d">
+<span class="lbl">Generalised cash flow, and the PW(i) function</span>
+<p>For an initial investment \(P\) at time 0, net revenues \(R_1,R_2,\ldots,R_j,\ldots,R_n\) at the end of each year, and a salvage value \(S\) at the end of year \(n\):</p>
+<p>$$PW(i) = -P + \frac{R_1}{(1+i)^1}+\frac{R_2}{(1+i)^2}+\cdots+\frac{R_j}{(1+i)^j}+\cdots+\frac{R_n}{(1+i)^n}+\frac{S}{(1+i)^n}$$</p>
+</div>
+
+<div class="box k">
+<span class="lbl">The procedure</span>
+<ol>
+<li>Draw the cash flow diagram.</li>
+<li>Set up \(PW(i)=0\) (equivalently, present worth of benefits = present worth of costs).</li>
+<li>Guess a value of \(i\) and compute \(PW(i)\). As \(i\) increases, \(PW(i)\) <strong>decreases</strong> — so if your first guess gives a positive \(PW(i)\), try a <em>higher</em> \(i\) next; if negative, try a <em>lower</em> one.</li>
+<li>Once you've bracketed \(i^*\) between one rate giving a positive \(PW(i)\) and a nearby rate giving a negative \(PW(i)\), use straight-line <strong>interpolation</strong> between them to estimate \(i^*\).</li>
+</ol>
+</div>
+
+<div class="box w">
+<span class="lbl">Interpolation is an approximation, not the exact answer</span>
+<p>The \(PW(i)\) curve is actually smoothly curved (convex), not straight — so drawing a straight line between your two bracketing points gives an estimate of \(i^*\) that's close, but not exact. The worked examples below note the small gap each time. For coursework purposes, the interpolated value is treated as the answer.</p>
+</div>
+
+<div class="box k">
+<span class="lbl">The interpolation formula</span>
+<p>$$i^* = R_1 + (R_2-R_1)\times\frac{PW_1}{PW_1-PW_2}$$</p>
+<p>where \(R_1\) is the lower trial rate (giving the positive \(PW_1\)) and \(R_2\) is the higher trial rate (giving the negative, or lower, \(PW_2\)).</p>
+</div>
+
+<h3 id="s9-3">9.3 &middot; Worked Examples</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">IRR &middot; Q1 — uniform-series IRR</span><p>A person is planning a new business. The initial outlay is Rs. 1,00,000 and the business is expected to generate a uniform Rs. 30,000 per year for 5 years, with no salvage value. Find the rate of return for the new business.</p></div>
+<div class="body">
+<p>$$PW(i) = -P + A(P/A,i,n) = -1{,}00{,}000 + 30{,}000(P/A,i,5)$$</p>
+<p>Try \(i=10\%\): \(PW(10\%) = -1{,}00{,}000+30{,}000(3.7908) = \) Rs. 13,724 (positive — try higher).</p>
+<p>Try \(i=15\%\): \(PW(15\%) = -1{,}00{,}000+30{,}000(3.3522) = \) Rs. 566 (barely positive — try higher still).</p>
+<p>Try \(i=18\%\): \(PW(18\%) = -1{,}00{,}000+30{,}000(3.1272) = \) Rs. &minus;6,184 (negative — bracketed between 15% and 18%).</p>
+<p>$$i^* = 15\% + (18\%-15\%)\times\frac{566-0}{566-(-6{,}184)} = 15\%+0.252\% = 15.252\%$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(i^* \approx\) <strong>15.25%</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">(The exact IRR, solved numerically rather than by linear interpolation, is 15.24% — interpolation here is accurate to within 0.02 percentage points.)</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">IRR &middot; Q2 — a 10-year uniform series</span><p>A company is diversifying into a new product line. The project's life is 10 years with no salvage value. The initial outlay is Rs. 20,00,000, and the annual net profit is Rs. 3,50,000. Find the rate of return.</p></div>
+<div class="body">
+<p>Try \(i=10\%\): \(PW(10\%) = -20{,}00{,}000+3{,}50{,}000(6.1446) = \) Rs. 1,50,610 (positive — try higher).</p>
+<p>Try \(i=12\%\): \(PW(12\%) = -20{,}00{,}000+3{,}50{,}000(5.6502) = \) Rs. &minus;22,430 (negative — bracketed between 10% and 12%).</p>
+<p class="small" style="color:var(--ink-soft)">(The source slide labels this second factor "(P/A,20%,10)" — a typo; the figure actually used, 5.6502, is \((P/A,12\%,10)\), consistent with the "when \(i=12\%\)" heading and the final answer below.)</p>
+<p>$$i^* = 10\% + (12\%-10\%)\times\frac{1{,}50{,}610-0}{1{,}50{,}610-(-22{,}430)} = 10\%+1.74\% = 11.74\%$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(i^* \approx\) <strong>11.74%</strong></p></div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">IRR &middot; Q3 — ranking three alternatives by individual IRR</span><p>A firm is choosing between three mutually exclusive investments, each with a 5-year life and negligible salvage value. MARR = 12%.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th></th><th>A1</th><th>A2</th><th>A3</th></tr>
+<tr><td>Investment (Rs)</td><td>1,50,000</td><td>2,10,000</td><td>2,55,000</td></tr>
+<tr><td>Annual net income (Rs)</td><td>45,570</td><td>58,260</td><td>69,000</td></tr>
+</table>
+<p><strong>Alternative A1:</strong> \(PW(15\%)=-1{,}50{,}000+45{,}570(3.3522)=\)Rs. 2,759.75. \(PW(18\%)=-1{,}50{,}000+45{,}570(3.1272)=\)Rs. &minus;7,493.50.</p>
+<p>$$i^*_{A1} = 15\%+3\%\times\frac{2{,}759.75}{2{,}759.75+7{,}493.50} = 15.81\%$$</p>
+<p><strong>Alternative A2:</strong> \(PW(12\%)=-2{,}10{,}000+58{,}260(3.6048)=\)Rs. 15.65 (essentially zero already). \(PW(13\%)=-2{,}10{,}000+58{,}260(3.5172)=\)Rs. &minus;5,087.93.</p>
+<p>$$i^*_{A2} = 12\%+1\%\times\frac{15.65}{15.65+5{,}087.93} \approx 12.00\%$$</p>
+<div class="ans"><span class="lbl">Individual IRRs</span><p>\(i^*_{A1}=\) <strong>15.81%</strong>, &nbsp; \(i^*_{A2}\approx\) <strong>12.00%</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">Both exceed MARR individually. (The deck doesn't carry A3's calculation through to a number — the point of this problem, picked up properly in Section 10, is that ranking mutually exclusive alternatives by their <em>individual</em> IRRs like this is actually the wrong method once their investment sizes differ.)</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">IRR &middot; Q4 — two expansion alternatives, naively ranked</span><p>A company is choosing between two expansion alternatives, each with a 5-year life and negligible salvage value. MARR = 12%.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th></th><th>Initial Investment (Rs)</th><th>Yearly Revenue (Rs)</th></tr>
+<tr><td>Alternative 1</td><td>5,00,000</td><td>1,70,000</td></tr>
+<tr><td>Alternative 2</td><td>8,00,000</td><td>2,70,000</td></tr>
+</table>
+<p><strong>Alternative 1:</strong> \(PW(20\%)=-5{,}00{,}000+1{,}70{,}000(2.9906)=\)Rs. 8,402. \(PW(22\%)=-5{,}00{,}000+1{,}70{,}000(2.8636)=\)Rs. &minus;13,188.</p>
+<p>$$i^*_1 = 20\%+2\%\times\frac{8{,}402}{8{,}402+13{,}188} = 20.78\%$$</p>
+<p><strong>Alternative 2:</strong> \(PW(20\%)=-8{,}00{,}000+2{,}70{,}000(2.9906)=\)Rs. 7,462. \(PW(22\%)=-8{,}00{,}000+2{,}70{,}000(2.8636)=\)Rs. &minus;26,828.</p>
+<p>$$i^*_2 = 20\%+2\%\times\frac{7{,}462}{7{,}462+26{,}828} = 20.435\%$$</p>
+<div class="ans"><span class="lbl">Answer, as reasoned in the source</span><p>Since \(i^*_1(20.78\%) &gt; i^*_2(20.435\%)\), <strong>Alternative 1 is selected</strong>.</p></div>
+<p class="small" style="color:var(--ink-soft)">Flagged deliberately: this conclusion compares two <em>individual</em> IRRs directly to pick a winner between mutually exclusive alternatives of different sizes — exactly the shortcut Section 10 (Incremental IRR Analysis) shows can give the wrong answer. Hold onto this example; it's revisited there.</p>
+</div>
+</div>
+
+<h3 id="s9-4">9.4 &middot; Practice Problems</h3>
+<div class="box v">
+<span class="lbl">Left for you to work through — exactly as the lecture poses them</span>
+<p>The source lecture gives these as practice, without worked solutions. Each one is solvable with the identical trial-and-error-plus-interpolation method used above.</p>
+<ol>
+<li><strong>Solar water heaters.</strong> Model A: cost Rs. 7,000, annual savings Rs. 700, annual maintenance Rs. 100, 20-year life, salvage Rs. 400. Model B: cost Rs. 10,000, annual savings Rs. 1,000, annual maintenance Rs. 50, 20-year life, salvage Rs. 500. Find the ROR of each; if MARR is 12%, what's your recommendation?</li>
+<li><strong>Single investment.</strong> An $8,200 investment returned $2,000 per year over a 5-year useful life. What was the rate of return?</li>
+<li><strong>Declining receipts.</strong> West Texas Oil paid Rs. 3,00,000 for a producing oil well. Net receipts are Rs. 1,20,000 in year 1, declining every year after by a constant amount equal to 15% of the first year's receipt. The well sells after 5 years for Rs. 80,000. Calculate the IRR, and comment on it against a MARR of 20%.</li>
+<li><strong>Land investment.</strong> Land near a proposed airport costs INR 8,00,000 now and is expected to be worth INR 15,00,000 in 5 years. Meanwhile it can be rented for INR 15,000/year, against annual taxes of INR 8,500. What rate of return is earned?</li>
+<li><strong>Heat loss reduction.</strong> Heat loss currently costs $3,000 next year, rising by a $200/year gradient after that. A $15,000 Superfiber installation now would cut the loss by 80%, over a 10-year remaining building life. Find the rate of return (ignore depreciation and taxes).</li>
+<li><strong>Three mutually exclusive projects.</strong> Using MARR = 15%, select the best project based on rate of return on incremental investment. (This specific technique is developed fully in Section 10.)</li>
+<li><strong>Red-light camera system.</strong> A $9,000,000 system splits net profit 50/50 with the city; the 2010 net profit figure (after $8,432,372 operating cost, from $24,112,054 collected) repeats for 3 years. Find the contractor's rate of return.</li>
+<li><strong>Minimum required savings.</strong> A $25,000 machine ($3,000/year to operate, $5,000 salvage after 6 years) must earn a 10% return. What's the minimum annual labour saving required?</li>
+<li><strong>Apartment building.</strong> A $140,000 building earns 4 &times; $500/month in rent, costs $8,000/year to maintain, and could sell for $160,000 after 5 years. Find the IRR, and decide if it clears a 12% hurdle.</li>
+</ol>
+</div>
+
+
+<!-- ============================================================ -->
+
+<h2 class="sec" id="s10"><span class="num">Section 10</span>Incremental IRR Analysis</h2>
+
+<h3 id="s10-1">10.1 &middot; The IRR Misconception</h3>
+<p>Section 9 closed on a flagged example (Q4) where simply picking the alternative with the <em>higher individual IRR</em> led to a selection. That instinct is exactly the trap this section corrects.</p>
+
+<div class="box w">
+<span class="lbl">The misconception</span>
+<p>Ranking mutually exclusive alternatives by their individual IRR values can give <strong>conflicting results</strong> compared to ranking them by Present Worth. Since PW-based ranking is always the economically correct one (it directly measures wealth created at the MARR), an IRR-based ranking that disagrees with it is the one that's wrong.</p>
+</div>
+
+<div class="box v">
+<span class="lbl">Why this happens — a clean one-year example</span>
+<p>Two mutually exclusive alternatives, each a 1-year project. A1 needs $1,000 and returns $2,000. A2 needs $5,000 and returns $7,000. At MARR = 10%:</p>
+<table class="grid">
+<tr><th>n</th><th>A1</th><th>A2</th></tr>
+<tr><td>0</td><td>&minus;1,000</td><td>&minus;5,000</td></tr>
+<tr><td>1</td><td>2,000</td><td>7,000</td></tr>
+<tr><td>IRR</td><td>100%</td><td>40%</td></tr>
+<tr><td>PW(10%)</td><td>818</td><td>1,364</td></tr>
+</table>
+<p>By IRR, A1 looks far better (100% vs 40%). By PW, A2 looks better ($1,364 vs $818). <strong>The two methods disagree</strong> — and PW is the one to trust, because it directly compares wealth created, in dollars, at the rate you actually care about.</p>
+</div>
+
+<div class="box k">
+<span class="lbl">Why PW disagrees with IRR here — what the "missing" $4,000 is doing</span>
+<p>IRR implicitly assumes any money <em>not</em> invested in the smaller alternative sits idle, or is irrelevant to the comparison. But if you have $5,000 of capital available either way, choosing A1 only uses $1,000 of it — the other $4,000 has to go somewhere. If it earns MARR (10%) elsewhere, A1's <em>effective</em> return on the full $5,000 is a blend: \(\frac{1000(1.00)+4000(0.10)}{5000}\)... the same logic from the land/well examples of Section 9 — once you properly account for the unused capital, the comparison changes completely, and that's exactly what incremental analysis automates.</p>
+</div>
+
+<h3 id="s10-2">10.2 &middot; Incremental Cash Flow Analysis — Definition and Procedure</h3>
+<div class="box d">
+<span class="lbl">Definition</span>
+<p>The <strong>incremental IRR</strong> is the IRR of the <em>difference</em> between two alternatives' cash flows. It answers a narrower, more honest question than "which project's own IRR is bigger?" — namely, <em>"is the extra money this more expensive option costs, actually worth spending?"</em></p>
+</div>
+
+<div class="box k">
+<span class="lbl">The full procedure</span>
+<ol>
+<li>Calculate the individual IRR of every alternative; discard any whose IRR &lt; MARR immediately (it fails on its own merits).</li>
+<li>Arrange the surviving alternatives in <strong>ascending order of first cost</strong>.</li>
+<li>Compute the incremental cash flow for the first pair: \(\Delta\text{CF} = \text{CF}_{\text{higher-cost}} - \text{CF}_{\text{lower-cost}}\).</li>
+<li>Find \(IRR_{\Delta}\), the IRR of that incremental cash flow.</li>
+<li>Decide: if \(IRR_\Delta &gt; MARR\), the extra investment is justified — keep the higher-cost alternative and compare it against the <em>next</em> one in the list. If \(IRR_\Delta \le MARR\), the extra investment isn't justified — keep the lower-cost (cheaper) alternative and compare <em>it</em> against the next one.</li>
+<li>Repeat until every alternative has been compared; whichever alternative survives the final comparison is the overall winner.</li>
+</ol>
+<p class="small" style="color:var(--ink-soft)">Equal-service requirement: just like Present Worth comparisons, incremental IRR analysis needs the alternatives compared over the same time span — use the LCM of lives (Section 5.5's technique) when lives are unequal.</p>
+</div>
+
+<h3 id="s10-3">10.3 &middot; Worked Examples</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">Incremental IRR &middot; Q1 — a painting business, two scales</span><p>John Covington is choosing between two mutually exclusive painting-business setups, each folding up after 3 years. B1: residential-only, lower equipment cost. B2: residential + commercial, higher equipment cost but higher revenue.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th>n</th><th>B1</th><th>B2</th><th>B2 &minus; B1</th></tr>
+<tr><td>0</td><td>&minus;3,000</td><td>&minus;12,000</td><td>&minus;9,000</td></tr>
+<tr><td>1</td><td>1,350</td><td>4,200</td><td>2,850</td></tr>
+<tr><td>2</td><td>1,800</td><td>6,225</td><td>4,425</td></tr>
+<tr><td>3</td><td>1,500</td><td>6,330</td><td>4,830</td></tr>
+<tr><td>IRR</td><td>25%</td><td>17.43%</td><td>&mdash;</td></tr>
+</table>
+<p>Both individual IRRs clear a 10% MARR, so proceed to the incremental comparison on B2&minus;B1:</p>
+<p>$$PW(10\%) = -9{,}000+2{,}850(0.9091)+4{,}425(0.8264)+4{,}830(0.7513) = \text{Rs. }876.52$$</p>
+<p>$$PW(12\%) = -9{,}000+2{,}850(0.8929)+4{,}425(0.7972)+4{,}830(0.7118) = \text{Rs. }510.36$$</p>
+<p>$$PW(15\%) = -9{,}000+2{,}850(0.8696)+4{,}425(0.7561)+4{,}830(0.6575) = -\text{Rs. }0.18$$</p>
+<p>$$i_{B2-B1} = 12\%+(15\%-12\%)\times\frac{510.36}{510.36+0.18} = 12\%+2.99\% = 14.99\% \approx 15\%$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since \(i_{B2-B1}(15\%) &gt; MARR(10\%)\), the extra $9,000 is justified — <strong>select B2</strong>, even though B1's own IRR (25%) is numerically higher.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — the exact incremental IRR (solved numerically rather than by interpolation) is exactly 15.00%, confirming the interpolated estimate above.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Incremental IRR &middot; Q2 — three alternatives, pairwise elimination</span><p>Three mutually exclusive alternatives, MARR = 15%. Which is selected, using incremental IRR?</p></div>
+<div class="body">
+<table class="grid">
+<tr><th>n</th><th>D1</th><th>D2</th><th>D3</th></tr>
+<tr><td>0</td><td>&minus;2,000</td><td>&minus;1,000</td><td>&minus;3,000</td></tr>
+<tr><td>1</td><td>1,500</td><td>800</td><td>1,500</td></tr>
+<tr><td>2</td><td>1,000</td><td>500</td><td>2,000</td></tr>
+<tr><td>3</td><td>800</td><td>500</td><td>1,000</td></tr>
+<tr><td>IRR</td><td>34.37%</td><td>40.76%</td><td>24.81%</td></tr>
+</table>
+<p>All three clear MARR individually. Ascending first cost: D2 (1,000) &lt; D1 (2,000) &lt; D3 (3,000).</p>
+<p><strong>Round 1 — D1 vs D2:</strong> \(D1-D2 = [-1{,}000,\ 700,\ 500,\ 300]\). Solving, \(IRR_{D1-D2}=27.61\%\). Since \(27.61\%&gt;15\%\), the extra $1,000 to move from D2 to D1 is justified — <strong>D1 advances.</strong></p>
+<p><strong>Round 2 — D3 vs D1:</strong> \(D3-D1 = [-1{,}000,\ 0,\ 1{,}000,\ 200]\). Solving, \(IRR_{D3-D1}=8.80\%\). Since \(8.80\%&lt;15\%\), the extra $1,000 to move from D1 to D3 is <em>not</em> justified — <strong>D1 survives.</strong></p>
+<div class="ans"><span class="lbl">Answer</span><p><strong>D1 is selected</strong> — note that D2 has the highest individual IRR (40.76%) of the three, and D1 doesn't have the highest individual IRR either; neither fact matters once the incremental comparisons are done properly.</p></div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Incremental IRR &middot; Q3 — three alternatives, 20-year uniform series</span><p>MARR = 6%, each alternative has a 20-year life, no salvage value.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+<tr><td>Initial cost ($)</td><td>2,000</td><td>4,000</td><td>5,000</td></tr>
+<tr><td>Uniform annual benefit ($/yr)</td><td>410</td><td>639</td><td>700</td></tr>
+<tr><td>Individual IRR</td><td>20%</td><td>15%</td><td>12.8%</td></tr>
+</table>
+<p>All three individually clear the 6% MARR, so none is rejected outright. Arranged in ascending cost (A &lt; B &lt; C already), the same two-round pairwise elimination as Q2 applies: compare B against A first, carry the winner forward against C. Each round follows exactly the same incremental-cash-flow-and-IRR mechanics worked through in Q1 and Q2 above.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Incremental IRR &middot; Q4 — same investment, different timing (and a source correction)</span><p>Two mutually exclusive projects, both requiring exactly $9,000, over 4 years. MARR = 12%.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th>n</th><th>C1</th><th>C2</th></tr>
+<tr><td>0</td><td>&minus;9,000</td><td>&minus;9,000</td></tr>
+<tr><td>1</td><td>480</td><td>5,800</td></tr>
+<tr><td>2</td><td>3,700</td><td>3,250</td></tr>
+<tr><td>3</td><td>6,550</td><td>2,000</td></tr>
+<tr><td>4</td><td>3,780</td><td>1,561</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">(The source slide's IRR row for this problem reads "25%, 17.43%" — but those are the B1/B2 figures from Q1 above, carried over by what looks like a copy-paste slip. Recomputed directly from <em>this</em> problem's own cash flows: \(IRR_{C1}=18.00\%\), \(IRR_{C2}=20.00\%\).)</p>
+<p>Since both investments are exactly equal, there's no "extra money" question in the usual sense — but working the incremental comparison through anyway illustrates the same lesson as the very first example in this section: \(C1-C2 = [0,\ -5{,}320,\ 450,\ 4{,}550,\ 2{,}219]\), giving \(IRR_{C1-C2}=14.71\%\).</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since \(14.71\%&gt;MARR(12\%)\), <strong>C1 is preferred</strong> — confirmed directly: \(PW(12\%)_{C1}=\$1{,}442.61 &gt; PW(12\%)_{C2}=\$1{,}185.06\). Note C2's individual IRR (20.00%) is actually <em>higher</em> than C1's (18.00%) — yet C1 wins, because its cash flows arrive later and larger, which is worth more at the actual 12% MARR than C2's faster-but-smaller payback. This is precisely the trap Section 10.1 opened with.</p>
+</div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Incremental IRR &middot; Q5 — unequal lives</span><p>Two vendors supply precision dies. Vendor A: initial cost $8,000, annual cost $3,500, no salvage, 10-year life. Vendor B: initial cost $13,000, annual cost $1,600, salvage $2,000, 5-year life. MARR = 12%. Which vendor is more economical?</p></div>
+<div class="body">
+<p>Unequal lives (10 vs 5 years) mean the incremental cash flow must be built over the LCM of the two lives before an incremental IRR can be found — the same equal-service requirement from Section 5.5, now applied to an incremental comparison rather than a direct one.</p>
+<div class="ans"><span class="lbl">Answer, as concluded in the source</span><p>The rate of return on the extra investment works out to <strong>12.65%</strong>. Since \(12.65\%&gt;MARR(12\%)\), the higher-cost <strong>Vendor B is selected</strong>.</p></div>
+</div>
+</div>
+
+<h3 id="s10-4">10.4 &middot; Practice Problems</h3>
+<div class="box v">
+<span class="lbl">Left for you to work through</span>
+<ol>
+<li><strong>Telecom equipment vendors.</strong> Same cost data as Q5 above (vendors A and B), posed again as a standalone problem — a good one to re-derive the full incremental cash flow and LCM-based comparison yourself.</li>
+<li><strong>Six-alternative comparison.</strong> Projects A&ndash;F, each with its own cash flow stream (given) and individual IRR (given: 28.89%, 21.65%, 21.86%, 31.10%, 121.95%, 23.74%). Work out the correct selection using pairwise incremental analysis — don't just pick the highest individual IRR.</li>
+<li><strong>Falk Corporation — CMS vs. FMS.</strong> Two manufacturing systems over 6 years, MARR = 15%, with detailed annual O&amp;M cost breakdowns (labour, materials, overhead, tooling, inventory, taxes) for each option. (Answer, as worked in the source: \(IRR_{FMS-CMS}=12.43\%&lt;15\%\), so the cheaper <strong>CMS option is selected.</strong>)</li>
+<li><strong>Caterpillar — four facility locations.</strong> Four 30-year alternatives (A: $200,000/$22,000 per year; B: $275,000/$35,000; C: $190,000/$19,500; D: $350,000/$42,000), MARR = 10%. Use incremental ROR analysis to find the best location.</li>
+</ol>
+</div>
+
+
+<!-- ============================================================ -->
+
+<h2 class="sec" id="s11"><span class="num">Section 11</span>Replacement Analysis</h2>
+
+<h3 id="s11-1">11.1 &middot; What Is Replacement Analysis?</h3>
+<p>Every method up to this point compared alternatives you were choosing <em>between</em> from scratch. Replacement analysis asks a different, very common question: <strong>you already own something — should you keep it, or swap it for something newer?</strong></p>
+
+<div class="box d">
+<span class="lbl">Why a replacement study is needed</span>
+<ul>
+<li><strong>Reduced performance</strong> — physical deterioration raises operating costs, scrap/rework costs, and maintenance expenses.</li>
+<li><strong>Altered requirements</strong> — new specifications (speed, accuracy) the existing asset can't meet.</li>
+<li><strong>Obsolescence</strong> — newer technology performs the same job more productively, even if the old asset still "works."</li>
+</ul>
+<p>In each case there are two options: <strong>replace</strong> the existing equipment with a new one, or <strong>augment</strong> it with additional equipment. The analysis is performed from an <strong>outsider's (consultant's) viewpoint</strong> — assessing both options without bias toward the one already owned.</p>
+</div>
+
+<div class="box d">
+<span class="lbl">Key terminology</span>
+<ul>
+<li><strong>Defender</strong> — the currently-installed asset. <strong>Challenger</strong> — the proposed replacement (the <em>best</em> available alternative).</li>
+<li><strong>Market value (MV)</strong> — what the defender could be sold for today; also called trade-in value. This — <strong>not</strong> the defender's original purchase price, and <strong>not</strong> its depreciated book value — is the correct estimate of \(P\) for the defender in a replacement study.</li>
+<li><strong>Sunk cost</strong> — money already spent that can't be recovered by any future decision. It plays <strong>no role</strong> in the analysis going forward.</li>
+<li><strong>Economic Service Life (ESL)</strong> — the number of years \(n\) at which an alternative's total annual worth of costs is at its minimum.</li>
+</ul>
+</div>
+
+<div class="box w">
+<span class="lbl">A common trap with the defender's "first cost"</span>
+<p>It's tempting to use the defender's original purchase price, or its accounting book value, as \(P\) in the AW formula — <strong>don't.</strong> Only the current market value matters, since that's the actual opportunity cost of keeping the asset rather than selling it. If the defender needs an overhaul or upgrade to match the challenger's capability, <em>that cost is added</em> to the market value to get the defender's effective first cost.</p>
+</div>
+
+<div class="box k">
+<span class="lbl">Four ways to carry out the comparison — covered in turn below</span>
+<ol>
+<li><strong>Economic life of an asset</strong> — find each option's own cost-minimizing life, then compare.</li>
+<li><strong>Capital Recovery with Return</strong> — a single clean AW formula combining recovery of capital and the return on it.</li>
+<li><strong>Cash-Flow / Opportunity-Cost approaches</strong> — two equivalent ways of handling the defender's sale proceeds when challenger and defender share the same life.</li>
+<li><strong>Outsider's point of view</strong> — the unbiased framing that makes all of the above rigorous.</li>
+</ol>
+</div>
+
+<h3 id="s11-2">11.2 &middot; Method 1 — Economic Service Life (ESL)</h3>
+<div class="box d">
+<span class="lbl">The idea</span>
+<p>$$\text{Total AW of costs} = \text{Capital Recovery (CR)} + \text{AW of Annual Operating Costs (AOC)}$$</p>
+<p>As the assumed life \(n\) gets longer, Capital Recovery <em>falls</em> (the first cost is spread over more years) while AW of AOC typically <em>rises</em> (costs grow with age). The total is U-shaped — and its minimum, over all possible values of \(n\), is the <strong>economic service life.</strong> When \(n\) is already specified for an alternative, no ESL search is needed — just compute its AW directly.</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">ESL &middot; Q1 — a forklift replacement, with growing costs and declining salvage</span><p>A new electric-lift truck costs $18,000, with first-year operating cost $1,000 (growing 15%/year thereafter) and first-year salvage $10,000 (declining 25%/year thereafter). Maximum life 7 years, with overhauls of $3,000 and $4,500 required in years 5 and 7. MARR = 15%. Find the economic service life.</p></div>
+<div class="body">
+<p>For a 1-year cycle: \(AEC(15\%) = \$18{,}000(A/P,15\%,1)+\$1{,}000-\$10{,}000 = \$11{,}700\). Each further year is computed the same way — present-worth every cost and salvage amount, then convert to an annual equivalent over that assumed life:</p>
+<table class="grid">
+<tr><th>N (years)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr>
+<tr><td>AEC(15%)</td><td>$11,700</td><td>$8,653</td><td>$7,406</td><td>$6,678</td><td>$6,642</td><td><strong>$6,258</strong></td><td>$6,394</td></tr>
+</table>
+<div class="ans"><span class="lbl">Answer</span><p>AEC is smallest at \(N=6\) (\$6,258/year). <strong>The economic service life of the truck is 6 years.</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified in full (including the compounding growth/decline rates and the two overhaul costs) — every value above reproduces exactly.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">ESL &middot; Q2 — a defender's ESL from a salvage/AOC table</span><p>A defender's current market value is Rs. 1,30,000. Estimated salvage values and Annual Operating Costs (AOC) for the next 5 years are given below. At a required 10% return, find the minimum-cost life to use when comparing this defender with a challenger.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th>Life (yrs)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+<tr><td>Salvage value (Rs)</td><td>90,000</td><td>80,000</td><td>60,000</td><td>20,000</td><td>0</td></tr>
+<tr><td>AOC (Rs)</td><td>25,000</td><td>27,000</td><td>30,000</td><td>35,000</td><td>45,000</td></tr>
+</table>
+<p>Using \(CR(i)=(P-F)(A/P,i,n)+Fi\) for capital recovery, and converting the AOC series to its own annual equivalent at each \(n\):</p>
+<table class="grid">
+<tr><th>Year</th><th>CR(i)</th><th>AOC (equiv.)</th><th>EUAC</th></tr>
+<tr><td>1</td><td>53,000</td><td>25,000</td><td>78,000</td></tr>
+<tr><td>2</td><td>36,810</td><td>25,952</td><td>62,762</td></tr>
+<tr><td>3</td><td>34,148</td><td>27,174</td><td><strong>61,322</strong></td></tr>
+<tr><td>4</td><td>36,702</td><td>28,861</td><td>65,563</td></tr>
+<tr><td>5</td><td>34,294</td><td>31,504</td><td>65,798</td></tr>
+</table>
+<div class="ans"><span class="lbl">Answer</span><p>Minimum total EUAC occurs at year 3. <strong>The economic life of the asset is 3 years.</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — every CR, AOC, and EUAC value above reproduces to within rounding of the source's factor-table figures.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">ESL &middot; Q3 — finding ESL for both defender and challenger</span><p>Advanced Electrical Insulator Company's inspection machine can be sold now for $5,000, or kept after an immediate $1,200 overhaul (so the defender's effective first cost is $5,000+$1,200=$6,200). Operating costs start at $2,000, rising $1,500/year (arithmetic gradient); future market values decline $1,000/year. A new machine costs $10,000, with operating costs starting at $2,000 and rising $800/year, and salvage starting at $6,000 and declining 15%/year. MARR = 15%. Find the ESL of each.</p></div>
+<div class="body">
+<p>$$AEC(15\%)_{\text{Defender},N} = \$6{,}200(A/P,15\%,N)+\$2{,}000+\$1{,}500(A/G,15\%,N)-\$1{,}000(5-N)(A/F,15\%,N)$$</p>
+<table class="grid">
+<tr><th>N</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+<tr><td>Defender AEC(15%)</td><td>$5,130</td><td><strong>$5,116</strong></td><td>$5,500</td><td>$5,961</td><td>$6,434</td></tr>
+</table>
+<p>$$AEC(15\%)_{\text{Challenger},N} = \$10{,}000(A/P,15\%,N)+\$2{,}000+\$800(A/G,15\%,N)-\$6{,}000(1-0.15)^{N-1}(A/F,15\%,N)$$</p>
+<table class="grid">
+<tr><th>N</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+<tr><td>Challenger AEC(15%)</td><td>$7,500</td><td>$6,151</td><td>$5,857</td><td><strong>$5,826</strong></td><td>$5,897</td></tr>
+</table>
+<div class="ans"><span class="lbl">Answer</span><p>Defender's ESL is <strong>2 years</strong> (AEC = $5,116). Challenger's ESL is <strong>4 years</strong> (AEC = $5,826). Each should be evaluated at its own ESL when the two are finally compared against each other.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified in full, including the arithmetic-gradient (\(A/G\)) and geometric-decline terms — every value above reproduces exactly.</p>
+</div>
+</div>
+
+<h3 id="s11-3">11.3 &middot; Method 2 — Capital Recovery with Return</h3>
+<div class="box k">
+<span class="lbl">The formula</span>
+<p>For defender value \(P\), salvage \(F\) at the end of \(n\) years, annual operating cost \(A\), and interest rate \(i\):</p>
+<p>$$AE(i) = (P-F)(A/P,i,n) + Fi + A$$</p>
+<p>This single expression packages capital recovery <em>and</em> the required return together, and is the most direct way to compute AW once a life \(n\) is already fixed (rather than searched for, as in Method 1).</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Capital Recovery &middot; Q1 — present machine vs. new machine</span><p>A machine bought 2 years ago for Rs. 2,00,000 (8-year life, Rs. 25,000 salvage, Rs. 25,000/year maintenance) has a current market value of Rs. 1,20,000 and 6 years remaining. A new machine is available for Rs. 1,50,000 (6-year life, Rs. 20,000 salvage, Rs. 14,000/year maintenance). At i=12%, should the company replace it?</p></div>
+<div class="body">
+<p><strong>Alternative 1 — present machine</strong> (using current market value, not the Rs. 2,00,000 original cost):</p>
+<p>$$AE(12\%) = (1{,}20{,}000-25{,}000)(A/P,12\%,6)+25{,}000(0.12)+25{,}000 = \text{Rs. }51{,}104$$</p>
+<p><strong>Alternative 2 — new machine:</strong></p>
+<p>$$AE(12\%) = (1{,}50{,}000-20{,}000)(A/P,12\%,6)+20{,}000(0.12)+14{,}000 = \text{Rs. }48{,}016$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since Rs. 48,016 &lt; Rs. 51,104, <strong>the present machine should be replaced</strong> with the new one.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified: Rs. 51,106 and Rs. 48,019 respectively (within rounding of the source's factor-table precision).</p>
+</div>
+</div>
+
+<h3 id="s11-4">11.4 &middot; Method 3 — Cash-Flow vs. Opportunity-Cost Approaches</h3>
+<div class="box k">
+<span class="lbl">Two equivalent ways to treat the defender's sale proceeds — useful when defender and challenger share the same life</span>
+<table class="grid">
+<tr><th>Cash-Flow Approach</th><th>Opportunity-Cost Approach</th></tr>
+<tr><td>Treat proceeds from selling the defender as a <strong>down payment</strong> toward the challenger — fold them directly into the challenger's initial cost.</td><td>Treat proceeds from selling the defender as the <strong>cost of keeping it</strong> — an opportunity cost charged against the defender instead.</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">The Opportunity-Cost approach is more commonly used in practice. Both give the <em>same final decision</em> — shifting a constant amount onto one side of a comparison never changes which side is cheaper.</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Replacement Analysis &middot; Q1 — Adams Corporation (both approaches)</span><p>Adams Corp needs new equipment for a 3-year product line: $500,000 for plant upgrade plus $30,000 working capital (fully recovered at year 3). Labour/material costs drop from $9,000,000 to $8,850,000/year. New equipment salvage after 3 years: $150,000. If purchased, the old machine sells for $170,000 (vs. $70,000 salvage if kept 3 more years). MARR = 10%. Decide using both approaches.</p></div>
+<div class="body">
+<p><strong>Cash-Flow Approach</strong> — challenger's initial outlay already nets out the defender's sale: \(-\$530{,}000+\$170{,}000=-\$360{,}000\).</p>
+<p>$$PW(10\%)_{\text{Defender}} = -\$9{,}000{,}000(P/A,10\%,3)+\$70{,}000(P/F,10\%,3) = -\$22{,}329{,}076 \;\Rightarrow\; AEC=\$8{,}978{,}852$$</p>
+<p>$$PW(10\%)_{\text{Challenger}} = -\$360{,}000-\$8{,}850{,}000(P/A,10\%,3)+\$180{,}000(P/F,10\%,3) = -\$22{,}233{,}402 \;\Rightarrow\; AEC=\$8{,}940{,}380$$</p>
+<p><strong>Opportunity-Cost Approach</strong> — the $170,000 is instead charged as an upfront cost of keeping the defender:</p>
+<p>$$PW(10\%)_{\text{Defender}} = -\$170{,}000-\$9{,}000{,}000(P/A,10\%,3)+\$70{,}000(P/F,10\%,3) = -\$22{,}499{,}076 \;\Rightarrow\; AEC=\$9{,}047{,}212$$</p>
+<p>$$PW(10\%)_{\text{Challenger}} = -\$530{,}000-\$8{,}850{,}000(P/A,10\%,3)+\$180{,}000(P/F,10\%,3) = -\$22{,}403{,}402 \;\Rightarrow\; AEC=\$9{,}008{,}740$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Both approaches favour the challenger by the same \$38,472/year difference — <strong>replacement should be made now.</strong> This is no coincidence: both defender and challenger cash flows were shifted by the identical \$170,000 at time zero, so the gap between them is unaffected.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — every PW and AEC figure above reproduces to within a few dollars (factor-table rounding), including the exact $38,471 gap being identical under both approaches.</p>
+</div>
+</div>
+
+<h3 id="s11-5">11.5 &middot; Outsider's Point of View — A Full Worked Example</h3>
+<div class="box d">
+<span class="lbl">The framing</span>
+<p>The <strong>outsider's point of view</strong> treats the defender exactly like any other alternative being purchased fresh today — at its current market value, with no sentimental attachment to what was originally paid for it. This is the clean, unbiased lens every replacement study should ultimately use.</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Outsider's Viewpoint &middot; Q1 — Machine X vs. Machine Y</span><p>Machine 'X' was bought a year ago for Rs. 8,500 (6-year life, Rs. 1,000 salvage, Rs. 8,000/year operating cost). A salesman now offers Machine 'Y' for Rs. 11,500 (5-year life, Rs. 1,500 salvage, Rs. 5,500/year operating cost), taking Machine X in trade for Rs. 3,500 — though the best outside offer for X is only Rs. 3,000. At i=8%, which should be kept, from the outsider's point of view?</p></div>
+<div class="body">
+<p>The outsider uses Machine X's <em>true</em> market value (Rs. 3,500, the better of the two offers) as its \(P\), and treats the remaining 5 years (6&minus;1, since one year has already passed) as its life — directly comparable to Y's 5-year life:</p>
+<table class="grid">
+<tr><th></th><th>Defender (X)</th><th>Challenger (Y)</th></tr>
+<tr><td>First cost (P)</td><td>3,500</td><td>11,500</td></tr>
+<tr><td>Annual operating cost</td><td>8,000</td><td>5,500</td></tr>
+<tr><td>Salvage value</td><td>1,000</td><td>1,500</td></tr>
+<tr><td>Service life</td><td>5 yrs</td><td>5 yrs</td></tr>
+</table>
+<p>$$EUAC(X) = P(A/P,8\%,5)+A-S(A/F,8\%,5) = 3{,}500(0.25046)+8{,}000-1{,}000(0.17046) = \text{Rs. }8{,}706.15$$</p>
+<p>$$EUAC(Y) = 11{,}500(0.25046)+5{,}500-1{,}500(0.17046) = \text{Rs. }8{,}124.60$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since Rs. 8,124.60 &lt; Rs. 8,706.15, <strong>it is economical to replace Machine X with Machine Y.</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — both EUAC figures reproduce exactly.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Cash-Flow (Insider) Approach &middot; Q2 — three-way comparison</span><p>An 8-year-old asset (annual operating cost Rs. 9,000, salvage Rs. 1,500) may be replaced by one of two challengers. MARR = 18%, 5-year life throughout.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th></th><th>Current asset</th><th>Challenger 1</th><th>Challenger 2</th></tr>
+<tr><td>First cost</td><td>&mdash;</td><td>30,000</td><td>54,000</td></tr>
+<tr><td>Defender trade-in</td><td>&mdash;</td><td>10,500</td><td>7,500</td></tr>
+<tr><td>Annual operating cost</td><td>9,000</td><td>4,500</td><td>3,600</td></tr>
+<tr><td>Salvage value</td><td>1,500</td><td>3,000</td><td>1,500</td></tr>
+</table>
+<p>$$EUAC(\text{Defender}) = A-S(A/F,18\%,5) = 9{,}000-1{,}500(A/F,18\%,5) = \text{Rs. }8{,}790.33$$</p>
+<p>$$EUAC(\text{Ch.1}) = (30{,}000-10{,}500)(A/P,18\%,5)+4{,}500-3{,}000(A/F,18\%,5) = \text{Rs. }10{,}316.70$$</p>
+<p>$$EUAC(\text{Ch.2}) = (54{,}000-7{,}500)(A/P,18\%,5)+3{,}600-1{,}500(A/F,18\%,5) = \text{Rs. }18{,}260.10$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>The defender has the lowest EUAC — <strong>it is economical to retain the defender.</strong> Annual savings over Challenger 1: Rs. 1,526.37; over Challenger 2: Rs. 9,469.67.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — all three EUAC figures reproduce exactly (within a few paise of rounding).</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Capital Recovery &middot; Q3 — keep or replace a 10-year-old diesel engine?</span><p>A diesel engine installed 10 years ago for Rs. 50,000 has a present market value of Rs. 15,000, and, if kept, 5 more years of life with Rs. 14,000/year operating cost and Rs. 8,000 salvage. A replacement costs Rs. 65,000, with Rs. 9,000/year operating cost, 20-year life, and Rs. 13,000 salvage. At i=15%, keep or replace?</p></div>
+<div class="body">
+<p>$$AE(15\%)_{\text{old}} = (15{,}000-8{,}000)(A/P,15\%,5)+8{,}000(0.15)+14{,}000 = \text{Rs. }17{,}288.10$$</p>
+<p>$$AE(15\%)_{\text{new}} = (65{,}000-13{,}000)(A/P,15\%,20)+13{,}000(0.15)+9{,}000 = \text{Rs. }19{,}259.60$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since Rs. 17,288.10 &lt; Rs. 19,259.60, <strong>the old diesel engine should be kept</strong> — not every replacement study ends in replacement.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — Rs. 17,288.21 and Rs. 19,257.60 respectively, matching within factor-table rounding.</p>
+</div>
+</div>
+
+<h3 id="s11-6">11.6 &middot; Practice Problems</h3>
+<div class="box v">
+<span class="lbl">Left for you to work through</span>
+<ol>
+<li><strong>Special-purpose machine.</strong> Cost $15,000, with O&amp;M costs and market values tabulated for 5 years (O&amp;M: $2,500&rarr;$7,800; Market value: $9,500&rarr;$0). At i=10%, find the economic service life.</li>
+<li><strong>A second ESL table.</strong> First cost $10,000; operating costs $1,000&rarr;$3,000 and salvage values $7,000&rarr;$2,000 over 5 years. Find the ESL at 10%.</li>
+<li><strong>Telecom equipment vendors.</strong> 3,000 units needed; Vendor A ($8,000 initial, $3,500/yr, no salvage, 10-year life) vs. Vendor B ($13,000 initial, $1,600/yr, $2,000 salvage, 5-year life). MARR = 12%. (The source's own worked answer: the incremental rate of return is 12.65% &gt; MARR, so <strong>Vendor B</strong> is selected.)</li>
+<li><strong>Old vs. new machine, 15-year life.</strong> Old: first cost already sunk, Rs. 1,50,000 book reference, annual cost Rs. 23,000, salvage Rs. 10,000, current market value Rs. 1,00,000. New: Rs. 1,90,000, Rs. 18,000/year, Rs. 15,000 salvage. At i=12%, replace or not?</li>
+<li><strong>6-year-old machine.</strong> Bought for Rs. 10,000 two years ago; Rs. 750/year maintenance, Rs. 1,000 salvage at end of (remaining) life. A new machine costs Rs. 10,000 (5-year life, Rs. 4,000 salvage, Rs. 500/year maintenance); the old machine trades in for Rs. 6,500. At i=12%, perform the replacement analysis.</li>
+<li><strong>Port of Fethiye pier.</strong> A 10-year-old pier (original cost Rs. 30,00,000, 50-year design life) now costs Rs. 70,000/year to maintain — far above the original estimate. A new reinforced-concrete pier costs Rs. 40,00,000 (50-year life, Rs. 20,000/year maintenance); the existing pier's net present salvage value is Rs. 4,00,000. At MARR=10%, use the outsider's point of view and Annual Equivalent values to advise the port commission.</li>
+<li><strong>Engine-assembly lathe.</strong> An 8-year-old lathe (cost Rs. 4,00,000, 2 years remaining life, Rs. 12,500 salvage) machines parts for 100 engine assemblies at 2.92 hrs (cylinder) + 1.84 hrs (piston). A new lathe cuts this to 2.39 + 1.45 hrs. 40,000 units/year are sold; labour costs Rs. 850/hour. New lathe cost Rs. 1,25,000 (10-year life, Rs. 60,000 salvage); old lathe trade-in Rs. 1,50,000. At 15% interest, does the time saving justify replacement?</li>
+<li><strong>Augment or replace a water-pump motor.</strong> A 3-year-old 10 hp motor (Rs. 25,000, 10-year life, Rs. 1,500 salvage, Rs. 1,600/year O&amp;M) can no longer meet demand. Options: augment with a new 5 hp motor (Rs. 10,000, 7-year life, Rs. 800 salvage, Rs. 1,000/year O&amp;M) or replace entirely with a 15 hp motor (Rs. 35,000, 7-year life, Rs. 4,000 salvage, Rs. 500/year O&amp;M). Determine the most economical alternative.</li>
+</ol>
+</div>
+
+
+<!-- ============================================================ -->
+
+<h2 class="sec" id="s12"><span class="num">Section 12</span>Depreciation</h2>
+
+<h3 id="s12-1">12.1 &middot; What Is Depreciation?</h3>
+<p>Depreciation is the systematic reduction in the recorded (book) value of an asset over time, reflecting the fact that most assets lose economic value as they age or as newer alternatives appear.</p>
+
+<div class="box d">
+<span class="lbl">Two kinds of depreciation</span>
+<p><strong>Economic depreciation</strong> — the actual gradual decrease in an asset's real-world usefulness, split into <em>physical</em> depreciation (wear and tear, deterioration) and <em>functional</em> depreciation (obsolescence — the asset still works, but a better option has made it less valuable, e.g. new technology or changed demand).</p>
+<p><strong>Accounting depreciation</strong> — the systematic allocation of an asset's cost over its depreciable life for reporting purposes, split into <em>book</em> depreciation (for financial statements) and <em>tax</em> depreciation (for computing taxable income) — the one used throughout this section's engineering-economy calculations.</p>
+</div>
+
+<div class="box d">
+<span class="lbl">Common terms</span>
+<ul>
+<li><strong>First cost / unadjusted basis, \(P\) or \(B\)</strong> — the total installed cost of the asset.</li>
+<li><strong>Book value, \(BV_t\)</strong> — the remaining undepreciated capital investment after year \(t\).</li>
+<li><strong>Recovery period, \(n\)</strong> — the depreciable life of the asset, in years.</li>
+<li><strong>Market value, MV</strong> — what the asset would actually fetch if sold today.</li>
+<li><strong>Salvage value, \(S\)</strong> — the estimated trade-in or market value at the <em>end</em> of the asset's useful life.</li>
+<li><strong>Depreciation (recovery) rate, \(d_t\)</strong> — the fraction of first cost or basis removed in year \(t\).</li>
+</ul>
+</div>
+
+<h3 id="s12-2">12.2 &middot; Straight-Line (SL) Method</h3>
+<div class="box k">
+<span class="lbl">The formula</span>
+<p>Book value decreases <strong>linearly</strong> with time — the same dollar amount is depreciated every year.</p>
+<p>$$D_t = (B-S)\times d = \frac{B-S}{n}, \qquad d=\frac1n, \qquad BV_t = B-(t\times D_t)$$</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">SL Method &middot; Q1 — a blast furnace</span><p>A blast furnace was purchased for Rs. 3,00,000, with Rs. 50,000 more spent on installation and commissioning. Estimated residual value after 10 years was Rs. 70,000. (a) Find the annual depreciation charge. (b) Find total depreciation after 6 years.</p></div>
+<div class="body">
+<p>$$D_t = \frac{(3{,}00{,}000+50{,}000)-70{,}000}{10} = \text{Rs. }28{,}000/\text{year}$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>(a) Rs. 28,000/year. (b) At year 6: \(28{,}000\times6=\)<strong>Rs. 1,68,000</strong>.</p></div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">SL Method &middot; Q2 — depreciation in usage-hours, not years</span><p>Electrostatic precipitators costing Rs. 1,00,000 must be replaced every 5,000 operating hours, with zero salvage. The plant runs 24 hours/day, 30 days/month. Find the monthly depreciation charge.</p></div>
+<div class="body">
+<p>Life in days: \(5{,}000/24=208.33\) days \(=208.33/30=6.94\) months \(\approx7\) months.</p>
+<p>$$D_t = \frac{1{,}00{,}000-0}{7} = \text{Rs. }14{,}285.71/\text{month}$$</p>
+<div class="ans"><span class="lbl">Answer</span><p><strong>Rs. 14,285.71/month</strong></p></div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">SL Method &middot; Q3 — a full depreciation schedule</span><p>An automobile: cost basis $10,000, useful life 5 years, salvage value $2,000. Compute the annual depreciation and book values.</p></div>
+<div class="body">
+<p>$$D_t = \frac{10{,}000-2{,}000}{5} = \$1{,}600/\text{year (every year)}$$</p>
+<table class="grid">
+<tr><th>n</th><th>\(B_{n-1}\)</th><th>\(D_n\)</th><th>\(B_n\)</th></tr>
+<tr><td>1</td><td>$10,000</td><td>$1,600</td><td>$8,400</td></tr>
+<tr><td>2</td><td>$8,400</td><td>$1,600</td><td>$6,800</td></tr>
+<tr><td>3</td><td>$6,800</td><td>$1,600</td><td>$5,200</td></tr>
+<tr><td>4</td><td>$5,200</td><td>$1,600</td><td>$3,600</td></tr>
+<tr><td>5</td><td>$3,600</td><td>$1,600</td><td>$2,000</td></tr>
+</table>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">SL Method &middot; Q4 — equipment with an 8-year life</span><p>Equipment with first cost Rs. 1,00,000, estimated life 8 years, salvage Rs. 20,000. Find the depreciation charge and book value each year.</p></div>
+<div class="body">
+<p>$$D_t = \frac{1{,}00{,}000-20{,}000}{8} = \text{Rs. }10{,}000/\text{year (every year)}$$</p>
+<table class="grid">
+<tr><th>End of year</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+<tr><td>Book value</td><td>1,00,000</td><td>90,000</td><td>80,000</td><td>70,000</td><td>60,000</td><td>50,000</td><td>40,000</td><td>30,000</td><td>20,000</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">All four examples above independently verified — every figure reproduces exactly.</p>
+</div>
+</div>
+
+<h3 id="s12-3">12.3 &middot; Declining Balance (DB) Method</h3>
+<div class="box k">
+<span class="lbl">The formula</span>
+<p>Also called the fixed- or uniform-percentage method. Unlike SL, the <strong>same percentage</strong> is applied every year — but since it's applied to a shrinking book value, the dollar depreciation itself shrinks over time. This front-loads depreciation: larger charges early, smaller ones later.</p>
+<p>$$D_t = d\times BV_{t-1} = d\times B(1-d)^{t-1} \qquad BV_t = B(1-d)^t$$</p>
+<p>If the rate \(d\) isn't given directly, back it out from a known book value at some year \(t\):</p>
+<p>$$d = 1-\left(\frac{B_t}{P}\right)^{1/t}$$</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">DB Method &middot; Q1 — full 5-year schedule</span><p>An asset costs Rs. 5,000, with an estimated Rs. 1,000 salvage value and 5-year life, depreciated at 30%/year by the declining-balance method. Find the depreciation charges and book values.</p></div>
+<div class="body">
+<table class="grid">
+<tr><th>End of year</th><th>Depreciation charge</th><th>Book value</th></tr>
+<tr><td>0</td><td>0</td><td>5,000</td></tr>
+<tr><td>1</td><td>0.3 &times; 5,000 = 1,500</td><td>5,000 &minus; 1,500 = 3,500</td></tr>
+<tr><td>2</td><td>0.3 &times; 3,500 = 1,050</td><td>3,500 &minus; 1,050 = 2,450</td></tr>
+<tr><td>3</td><td>0.3 &times; 2,450 = 735</td><td>2,450 &minus; 735 = 1,715</td></tr>
+<tr><td>4</td><td>0.3 &times; 1,715 = 515</td><td>1,715 &minus; 515 = 1,200</td></tr>
+<tr><td>5</td><td>0.3 &times; 1,200 = 360</td><td>1,200 &minus; 360 = 840</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Note the book value ends at $840 — <em>below</em> the stated $1,000 salvage value. The declining-balance rate is mechanical and doesn't automatically stop at a target salvage; whenever that matters, the schedule is capped so book value never drops below the estimated salvage (see the worked DDB comparison in 12.4, where exactly this cap is applied).</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">DB Method &middot; Q2 — finding the rate from a target salvage value</span><p>An asset costs Rs. 2,50,000, with a 10-year life and Rs. 50,000 salvage at year 10. Find the undepreciated capital at the end of year 6, and the depreciation charge during year 8, using the declining-balance method.</p></div>
+<div class="body">
+<p>$$d = 1-\left(\frac{50{,}000}{2{,}50{,}000}\right)^{1/10} = 1-(0.2)^{0.1} = 0.1487 = 14.87\%$$</p>
+<p>$$B_6 = (1-0.1487)^6\times2{,}50{,}000 = \text{Rs. }95{,}156$$</p>
+<p>$$D_8 = 0.1487(1-0.1487)^{8-1}\times2{,}50{,}000 = \text{Rs. }12{,}046$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Undepreciated capital at year 6: <strong>Rs. 95,156</strong>. Depreciation charge in year 8: <strong>Rs. 12,046</strong>.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — both figures reproduce exactly using the source's own rounded rate (14.87%).</p>
+</div>
+</div>
+
+<h3 id="s12-4">12.4 &middot; Double Declining Balance (DDB) Method</h3>
+<div class="box k">
+<span class="lbl">The formula</span>
+<p>Exactly the declining-balance method, but with the rate fixed at <strong>double</strong> the straight-line rate for the same life:</p>
+<p>$$d = \frac2n$$</p>
+<p>Every other formula (\(D_t\), \(BV_t\)) carries over unchanged from Section 12.3.</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">DDB &middot; Q1 — SONAR transducers</span><p>Underwater electroacoustic transducers, first cost $25,000, 12-year DDB life, estimated salvage $2,500. Find the depreciation and book value for years 1 and 4, and the implied salvage value after 12 years.</p></div>
+<div class="body">
+<p>\(d=2/12=0.1667\).</p>
+<p>$$D_1 = (0.1667)(25{,}000)(1-0.1667)^{0} = \$4{,}167 \qquad BV_1 = 25{,}000(1-0.1667)^1 = \$20{,}833$$</p>
+<p>$$D_4 = (0.1667)(25{,}000)(1-0.1667)^{3} = \$2{,}411 \qquad BV_4 = 25{,}000(1-0.1667)^4 = \$12{,}054$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Implied salvage after 12 years: \(25{,}000(1-0.1667)^{12}=\)<strong>\$2,803</strong> — close to, but not exactly, the $2,500 originally estimated (another illustration of DDB not automatically hitting a target salvage).</p></div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">DDB &middot; Q2 — a schedule that happens to land exactly on target</span><p>A computer system: cost basis $10,000, useful life 5 years, estimated salvage $778. Compute the DDB depreciation allowances and book values.</p></div>
+<div class="body">
+<p>\(d=2/5=0.4\).</p>
+<table class="grid">
+<tr><th>n</th><th>\(B_n\) (start)</th><th>\(D_n\)</th><th>\(B_n\) (end)</th></tr>
+<tr><td>1</td><td>10,000</td><td>4,000</td><td>6,000</td></tr>
+<tr><td>2</td><td>6,000</td><td>2,400</td><td>3,600</td></tr>
+<tr><td>3</td><td>3,600</td><td>1,440</td><td>2,160</td></tr>
+<tr><td>4</td><td>2,160</td><td>864</td><td>1,296</td></tr>
+<tr><td>5</td><td>1,296</td><td>518</td><td>778</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Here the mechanical DDB schedule lands exactly on the $778 target — this problem's salvage figure was evidently back-calculated from the DDB formula itself, unlike Q1 above.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">DDB &middot; Q3 — Straight-Line vs. Declining Balance, side by side</span><p>Equipment: first cost Rs. 1,00,000, 8-year life, Rs. 20,000 salvage. Compare the Straight-Line schedule against the Declining-Balance schedule (rate = 0.2).</p></div>
+<div class="body">
+<table class="grid">
+<tr><th>Year</th><th>SL: \(D_n\)</th><th>SL: \(B_n\)</th><th>DB: \(D_n\)</th><th>DB: \(B_n\)</th></tr>
+<tr><td>0</td><td>&mdash;</td><td>1,00,000</td><td>&mdash;</td><td>1,00,000.00</td></tr>
+<tr><td>1</td><td>10,000</td><td>90,000</td><td>20,000.00</td><td>80,000.00</td></tr>
+<tr><td>2</td><td>10,000</td><td>80,000</td><td>16,000.00</td><td>64,000.00</td></tr>
+<tr><td>3</td><td>10,000</td><td>70,000</td><td>12,800.00</td><td>51,200.00</td></tr>
+<tr><td>4</td><td>10,000</td><td>60,000</td><td>10,240.00</td><td>40,960.00</td></tr>
+<tr><td>5</td><td>10,000</td><td>50,000</td><td>8,192.00</td><td>32,768.00</td></tr>
+<tr><td>6</td><td>10,000</td><td>40,000</td><td>6,553.60</td><td>26,214.40</td></tr>
+<tr><td>7</td><td>10,000</td><td>30,000</td><td>5,242.88</td><td>20,971.52</td></tr>
+<tr><td>8</td><td>10,000</td><td>20,000</td><td>4,194.30</td><td>16,777.22</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Notice SL's steady, even pace versus DB's front-loaded charges — by year 8, DB's book value (Rs. 16,777) has actually fallen <em>below</em> the Rs. 20,000 salvage target, again without any automatic correction.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">DDB &middot; Q4 — DB vs. DDB, and the salvage-value floor</span><p>Freeport-McMoRan purchases an ore-grading unit for $80,000, 10-year life, $10,000 salvage. Compare the DB and DDB schedules.</p></div>
+<div class="body">
+<table class="grid" style="font-size:.88em">
+<tr><th>Year</th><th>DB \(D_t\)</th><th>DB \(BV_t\)</th><th>DDB \(D_t\)</th><th>DDB \(BV_t\)</th></tr>
+<tr><td>1</td><td>15,016</td><td>64,984</td><td>16,000</td><td>64,000</td></tr>
+<tr><td>2</td><td>12,197</td><td>52,787</td><td>12,800</td><td>51,200</td></tr>
+<tr><td>3</td><td>9,908</td><td>42,879</td><td>10,240</td><td>40,960</td></tr>
+<tr><td>4</td><td>8,048</td><td>34,831</td><td>8,192</td><td>32,768</td></tr>
+<tr><td>5</td><td>6,538</td><td>28,293</td><td>6,554</td><td>26,214</td></tr>
+<tr><td>6</td><td>5,311</td><td>22,982</td><td>5,243</td><td>20,972</td></tr>
+<tr><td>7</td><td>4,314</td><td>18,668</td><td>4,194</td><td>16,777</td></tr>
+<tr><td>8</td><td>3,504</td><td>15,164</td><td>3,355</td><td>13,422</td></tr>
+<tr><td>9</td><td>2,846</td><td>12,318</td><td>2,684</td><td>10,737</td></tr>
+<tr><td>10</td><td>2,318</td><td>10,000</td><td>737</td><td>10,000</td></tr>
+</table>
+<div class="ans"><span class="lbl">The salvage-value floor, made explicit</span><p>Independently verified: a mechanical year-10 DDB charge would be \(0.2\times10{,}737=\$2{,}147\), landing book value at $8,590 — <em>below</em> the $10,000 salvage. Instead, year 10's charge is capped at exactly \(\$10{,}737-\$10{,}000=\$737\), so book value stops precisely at the $10,000 salvage floor. This is the rule DB and DDB schedules follow whenever the mechanical formula would otherwise overshoot: <strong>never depreciate below the estimated salvage value</strong> — the final year's charge absorbs whatever gap remains.</p></div>
+</div>
+</div>
+
+<h3 id="s12-5">12.5 &middot; Practice Problems</h3>
+<div class="box v">
+<span class="lbl">Left for you to work through</span>
+<ol>
+<li><strong>SL schedule.</strong> First cost $50,000, salvage $10,000, 5-year life. Find the annual depreciation.</li>
+<li><strong>DB from a stated rate.</strong> Asset costs Rs. 5,000, salvage Rs. 1,000, 5-year life, rate 30%/year — find all 5 years' charges and book values (good for double-checking against Q1 of Section 12.3).</li>
+<li><strong>SL vs. DB, 8-year life.</strong> First cost Rs. 1,00,000, salvage Rs. 20,000, DB rate 0.2 — reproduce the side-by-side table of Section 12.4 Q3 yourself.</li>
+<li><strong>Finding DB rate from book value.</strong> Asset costs $25,000. An asset has a first cost of $50,000 with a $10,000 estimated salvage value after 5 years — calculate the annual depreciation under the declining-balance method.</li>
+<li><strong>DDB from scratch.</strong> Asset purchased 10 years ago for Rs. 5,00,000, DDB with a 20-year life and Rs. 50,000 salvage — find its current book value.</li>
+<li><strong>SL schedule, 8-year life.</strong> Machine costing $15,000, 8-year life, $3,000 salvage — compute the annual SL depreciation charge and book value each year.</li>
+<li><strong>DDB on a 20-year asset.</strong> First cost Rs. 48,000, 20-year life — find the total accumulated depreciation during the <em>first 5 years</em> under DDB.</li>
+<li><strong>DDB, zero salvage.</strong> A $16,000 machine tool with zero salvage value and a 5-year life — compute its full DDB depreciation schedule.</li>
+</ol>
+</div>
+
+
+<!-- ============================================================ -->
+
+<h2 class="sec" id="s13"><span class="num">Section 13</span>Breakeven Analysis</h2>
+
+<h3 id="s13-1">13.1 &middot; What Is Breakeven Analysis?</h3>
+<p>Breakeven analysis finds the value of a parameter — a production level, a price, an interest rate, anything — at which two quantities become exactly equal. Most often, that means finding the sales volume at which revenue exactly equals cost: below it, the project loses money; above it, it profits. The same idea extends naturally to comparing <strong>two</strong> alternatives, finding the volume at which they cost exactly the same.</p>
+
+<div class="box d">
+<span class="lbl">Fixed costs vs. variable costs</span>
+<p><strong>Fixed costs (FC)</strong> stay essentially constant regardless of production volume — rent, insurance, salaried labour, equipment capital recovery. <strong>Variable costs (VC)</strong> scale with volume — raw materials, direct labour paid by the piece, sales commissions, packaging. Together, \(TC=FC+VC\).</p>
+</div>
+
+<div class="box k">
+<span class="lbl">Deriving the breakeven quantity</span>
+<p>Assume linear revenue \(R=rQ\) (where \(r\)=revenue per unit) and linear variable cost \(VC=vQ\) (where \(v\)=variable cost per unit), so \(TC=FC+vQ\). Breakeven occurs where revenue equals total cost:</p>
+<p>$$R=TC \;\Longrightarrow\; rQ = FC+vQ \;\Longrightarrow\; \boxed{Q_{BE} = \frac{FC}{r-v}}$$</p>
+<p>Above \(Q_{BE}\), there's a predictable profit; below it, a loss. \(\text{Profit}=R-TC=(r-v)Q-FC\).</p>
+</div>
+
+<h3 id="s13-2">13.2 &middot; Single-Project Breakeven — Worked Examples</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">Breakeven &middot; Q1 — a hospital procedure</span><p>A hospital offers a new procedure at $200/patient, fixed cost $100,000/year, variable cost $100/patient. Find the breakeven quantity, and the annual profit if 1,500 patients are treated.</p></div>
+<div class="body">
+<p>$$Q_{BE} = \frac{FC}{r-v} = \frac{1{,}00{,}000}{200-100} = \mathbf{1{,}000\text{ patients}}$$</p>
+<p>At \(Q=1{,}500\): \(\text{Profit}=rQ-(FC+vQ)=200(1{,}500)-[1{,}00{,}000+100(1{,}500)]=\)<strong>\$50,000</strong>.</p>
+<p class="small" style="color:var(--ink-soft)">Both the algebraic and graphical approaches (plotting \(R\) and \(TC\) against \(Q\), reading off their intersection) agree on 1,000 patients — independently verified.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Breakeven &middot; Q2 — Denver Zoo's polar bear exhibit</span><p>Denver Zoo expects 200,000 patrons for a new polar bear exhibit. Revenue/patron: gate $4, refreshments $5, licensed apparel $15. Fixed costs: construction $2,400,000, salaries $220,000, food $30,000. Variable costs/patron: refreshments $2, apparel $9. Is the predicted attendance enough to break even?</p></div>
+<div class="body">
+<p>\(r=4+5+15=\$24\). \(FC=2{,}400{,}000+220{,}000+30{,}000=\$2{,}650{,}000\). \(v=2+9=\$11\).</p>
+<p>$$24Q = 2{,}650{,}000+11Q \;\Longrightarrow\; 13Q=2{,}650{,}000 \;\Longrightarrow\; Q_{BE}=\mathbf{203{,}846\text{ patrons}}$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since the predicted 200,000 patrons falls short of the 203,846 breakeven, <strong>the predicted attendance is not quite sufficient to break even</strong> — the exhibit would run at a small loss unless attendance exceeds forecast by about 3,850 patrons.</p></div>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Breakeven &middot; Q3 — Indira Industries (a three-part problem)</span><p>Indira Industries makes diverter dampers: FC=$2.4 million/month, v=$35,000/unit, r=$75,000/unit. Normal production is 60 units/month, but is currently 72. (a) How does 72 compare to breakeven? (b) Current monthly profit? (c) What spread between r and v is needed to break even at a reduced 45 units/month, with FC unchanged?</p></div>
+<div class="body">
+<p>(a) \(Q_{BE}=\dfrac{2{,}400}{75-35}=\mathbf{60\text{ units/month}}\) (in $1,000s). Since 72 &gt; 60, <strong>production is above breakeven — profitable.</strong></p>
+<p>(b) \(\text{Profit}=(r-v)(72)-FC=(75-35)(72)-2{,}400=2{,}880-2{,}400=\mathbf{\$480{,}000/\text{month}}\).</p>
+<p>(c) Setting breakeven at \(Q=45\): \(0=(r-v)(45)-2{,}400 \;\Rightarrow\; r-v=\dfrac{2{,}400}{45}=\$53.33\) (in $1,000s) <strong>= \$53,330/unit</strong> — the minimum spread needed.</p>
+<p class="small" style="color:var(--ink-soft)">Independently verified — all three parts reproduce exactly.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Breakeven &middot; Q4 — a make-or-buy decision via breakeven</span><p>A TV manufacturer can buy cabinets at Rs. 500 each, or make them in-house at a fixed cost of Rs. 4,00,000 plus Rs. 300/cabinet. Should the company make or buy, given actual demand of 1,500 cabinets?</p></div>
+<div class="body">
+<p>Setting the cost of buying equal to the cost of making:</p>
+<p>$$500Q = 4{,}00{,}000+300Q \;\Longrightarrow\; 200Q=4{,}00{,}000 \;\Longrightarrow\; Q_{BE}=\mathbf{2{,}000\text{ cabinets}}$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>Since actual demand (1,500) &lt; breakeven (2,000), the manufacturer never reaches the volume where making becomes cheaper — <strong>the manufacturer should buy</strong> the cabinets.</p></div>
+</div>
+</div>
+
+<h3 id="s13-3">13.3 &middot; Breakeven Between Two Alternatives</h3>
+<div class="box k">
+<span class="lbl">The idea, and the selection rule</span>
+<p>Instead of one project's revenue vs. cost, this asks: at what value of a <em>common variable</em> (price/unit, operating cost, labour cost...) do two alternatives cost exactly the same? Build a PW or AW expression for each alternative as a function of that variable, then set them equal and solve.</p>
+<ol>
+<li>Define the common variable and its units.</li>
+<li>Develop the PW or AW relation for each alternative as a function of that variable.</li>
+<li>Equate the two relations and solve for the breakeven value.</li>
+</ol>
+<p><strong>Selection rule:</strong> if the anticipated level of the variable is <em>below</em> the breakeven value, choose the alternative with the <strong>higher variable cost</strong> (it has the lower fixed cost, so it wins at low volume). If <em>above</em> breakeven, choose the alternative with the <strong>lower variable cost</strong> — its larger fixed cost is now worth paying, since it's spread over more volume.</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Two-Alternative Breakeven &middot; Q1 — automatic vs. manual feed machine</span><p>An automatic feed machine costs $23,000 (salvage $4,000, 10-year life), run by one $12/hr operator at 8 tons/hr, with $3,500/year maintenance. A manual feed machine costs $8,000 (no salvage, 5-year life), needs three $8/hr operators at 6 tons/hr, with $1,500/year maintenance. All projects earn 10%/year. How many tons/year justify the auto machine's higher cost?</p></div>
+<div class="body">
+<p>Variable cost per ton: Auto = \(\dfrac{\$12/\text{hr}}{8\text{ tons/hr}}=\$1.5/\text{ton}\). Manual = \(\dfrac{3\times\$8/\text{hr}}{6\text{ tons/hr}}=\$4/\text{ton}\).</p>
+<p>$$AW_{\text{auto}} = -23{,}000(A/P,10\%,10)+4{,}000(A/F,10\%,10)-3{,}500-1.5x = -\$6{,}992-1.5x$$</p>
+<p>$$AW_{\text{manual}} = -8{,}000(A/P,10\%,5)-1{,}500-4x = -\$3{,}610-4x$$</p>
+<p>$$-6{,}992-1.5x = -3{,}610-4x \;\Longrightarrow\; 2.5x=3{,}382 \;\Longrightarrow\; x=\mathbf{1{,}353\text{ tons/year}}$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>If output is expected to exceed 1,353 tons/year, <strong>purchase the auto feed machine</strong> — its variable-cost slope ($1.5/ton) is smaller than the manual machine's ($4/ton), so it wins decisively at high volume despite its larger fixed cost.</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — both AW constants and the breakeven quantity reproduce exactly.</p>
+</div>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Two-Alternative Breakeven &middot; Q2 — Guardian Corp's make-or-buy with two machines</span><p>A steel lift arm can be bought for $3.50/unit, or made in-house with two machines: Machine A ($18,000, 6-year life, $2,000 salvage, $3,000 overhaul at year 3, $6,000/year operating) and Machine B ($12,000, 4-year life, &minus;$500 salvage/carry-away cost, $5,000/year operating). Four operators at $12.50/hr produce 1,000 units per 8-hour day between the two machines. MARR=15%. How many units/year justify making in-house?</p></div>
+<div class="body">
+<p>Variable cost of making: \(\dfrac{4\text{ operators}\times\$12.50/\text{hr}\times8\text{hrs}}{1{,}000\text{ units}}x = 0.4x\).</p>
+<p>$$AW_A = -18{,}000(A/P,15\%,6)+2{,}000(A/F,15\%,6)-6{,}000-3{,}000(P/F,15\%,3)(A/P,15\%,6) = -\$11{,}049$$</p>
+<p>$$AW_B = -12{,}000(A/P,15\%,4)-500(A/F,15\%,4)-5{,}000 = -\$9{,}303$$</p>
+<p>Equating the buy cost to the total make cost (both machines' AW, plus variable labour):</p>
+<p>$$-3.50x = AW_A+AW_B-0.4x \;\Longrightarrow\; -3.10x=-20{,}352 \;\Longrightarrow\; x=\mathbf{6{,}565\text{ units/year}}$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>A minimum of <strong>6,565 lifts/year</strong> must be produced to justify the make option, which carries the lower variable cost (0.4x vs. 3.50x).</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — \(AW_A=-\$11{,}049\), \(AW_B=-\$9{,}303\), and \(x=6{,}565\) all reproduce exactly, including the year-3 overhaul discounted back with \((P/F,15\%,3)\) before being annualised.</p>
+</div>
+</div>
+
+<h3 id="s13-4">13.4 &middot; Breakeven Among Three Alternatives</h3>
+<div class="box k">
+<span class="lbl">Extending the idea — pairwise comparisons</span>
+<p>With three alternatives, find the breakeven point between <em>each pair</em> — three comparisons in total. Each tells you where that particular pair swaps preference; plotting all three total-cost lines together shows which alternative actually wins across each range of the common variable.</p>
+</div>
+
+<div class="prob">
+<div class="q"><span class="pid">Three-Alternative Breakeven &middot; Q1 — gasoline, diesel, or butane bulldozer engine?</span><p>Gasoline engine: $2,000, $200/year maintenance, $3.60/hr fuel. Diesel: $2,800, $240/year, $3.30/hr fuel. Butane: $3,300, $315/year, $2.90/hr fuel. Equal salvage (neglected), 5-year life, MARR=15%. Find the breakeven operating hours between each pair.</p></div>
+<div class="body">
+<p>$$TC_1(\text{gasoline}) = 2{,}000(A/P,15\%,5)+200+3.6x = \$797+3.6x$$</p>
+<p>$$TC_2(\text{diesel}) = 2{,}800(A/P,15\%,5)+240+3.3x = \$1{,}075+3.3x$$</p>
+<p>$$TC_3(\text{butane}) = 3{,}300(A/P,15\%,5)+315+2.9x = \$1{,}299+2.9x$$</p>
+<table class="grid">
+<tr><th>Pair</th><th>Equation</th><th>Breakeven hours</th></tr>
+<tr><td>Gasoline = Diesel</td><td>\(TC_1=TC_2\)</td><td><strong>929 hrs/year</strong></td></tr>
+<tr><td>Diesel = Butane</td><td>\(TC_2=TC_3\)</td><td><strong>560 hrs/year</strong></td></tr>
+<tr><td>Butane = Gasoline</td><td>\(TC_3=TC_1\)</td><td><strong>718 hrs/year</strong></td></tr>
+</table>
+<div class="ans"><span class="lbl">Answer — the full picture</span><p>Plotting all three lines: <strong>gasoline</strong> wins for usage below 560 hrs/year (lowest fixed cost dominates at low volume); <strong>diesel</strong> wins for 560&ndash;929 hrs/year; <strong>butane</strong> wins above 929 hrs/year (its lowest variable-cost rate eventually overtakes both, despite the highest fixed cost).</p></div>
+<p class="small" style="color:var(--ink-soft)">Independently verified — all three total-cost functions and all three pairwise breakeven points (560, 718, and 929 hours) reproduce exactly, matching the source's own plotted intersections.</p>
+</div>
+</div>
+
+<h3 id="s13-5">13.5 &middot; Practice Problems</h3>
+<div class="box v">
+<span class="lbl">Left for you to work through</span>
+<ol>
+<li><strong>Product redesign.</strong> A product sells at $12/unit (variable cost $4/unit), with 10,000 units/year sold and $30,000 annual profit currently. A redesign raises variable cost by 20% and fixed cost by 10%, but lifts sales to 12,000 units/year. (a) At what selling price does the redesigned product break even? (b) If price stays at $12/unit, what's the new annual profit? (First work out the <em>current</em> fixed cost from the given profit figure — it isn't stated directly.)</li>
+<li><strong>Four-part pricing problem.</strong> A manufacturer sells at Rs. 5/unit, variable cost Rs. 2/unit, fixed cost Rs. 60,000. (i) Find the BEP. (ii) Find the profit if 30,000 units are sold. (iii) Find the new BEP if Rs. 3,000 is spent on advertising (added to fixed cost). (iv) How many units must be sold for a profit of Rs. 30,000?</li>
+<li><strong>50 HP motor pump — two power sources.</strong> Needed for 4 years, 100 hours/year expected. Alternative A (electric): $4,900 installed, $700 salvage, $2.94/hr current cost, $420/year maintenance. Alternative B (diesel): $1,925, no salvage, $1.47/hr fuel + $0.53/hr maintenance + $2.80/hr wages. At 10% interest, find the breakeven hours, and determine which is more economical at the expected 100 hours/year. (A good one to cross-check against the fully worked auto-vs-manual-feed example in Section 13.3 — same method, different numbers.)</li>
+</ol>
+</div>
+
+
+<!-- ============================================================ -->
 <h2 class="sec" id="s8"><span class="num">Section 8</span>Revision Summary</h2>
 
 <h3 id="s4a">Master formula table</h3>
@@ -5542,6 +6399,246 @@ $$i_{eff \text{ per PP}} = \left(1+\frac{r}{m}\right)^{k} - 1$$
 <p style="font-size:.94rem;color:var(--ink-soft);font-style:italic">
 Built from your six lecture decks: the introductory economics deck, the time-value/cash-flow deck, the three interest-formula decks, and the gradient deck. Every numerical in those slides appears here with a full solution. Where my computed value differs slightly from the slide, it is factor-table rounding — both are noted so you can match whichever your examiner expects.
 </p>
+
+<!-- ============================================================ -->
+
+<h2 class="sec" id="s14"><span class="num">Section 14</span>Practice Questions — Mixed Review</h2>
+<p>Ten numericals from a fresh practice set, pulled together without a section label of their own — which is exactly why they're useful. Nothing here tells you which formula to reach for; recognising the pattern is part of the exercise, the same way it will be in the exam. They span nearly everything in this guide: irregular series, deferred annuities, present-worth comparisons with unequal lives, economic service life, a cash flow diagram that changes interest rate mid-timeline, depreciation schedules, annual worth, capitalized cost, and IRR.</p>
+
+<div class="box k">
+<span class="lbl">How to use this set</span>
+<p>Try to classify each problem <em>before</em> reading the solution — "which section of this guide does this belong to?" is itself most of the battle. Where the source's own handwritten working contains a slip, it's flagged exactly as elsewhere in this guide: the method is kept, the arithmetic is corrected, and both numbers are shown so you can see exactly where they diverge.</p>
+</div>
+
+<h3 id="s14-1">14.1 &middot; Irregular and Deferred Series — Finding an Unknown Flow</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q1 — equivalence with an irregular series, find C</span><p>At \(i=15\%\) per year, a single outflow of Rs. 28,000 occurs at year 0. A uniform outflow of Rs. 20,000/year runs from year 10 through year 15 (6 payments). Further single outflows occur at years 17 (Rs. 25,000), 19 (Rs. 35,000), 21 (Rs. 40,000) and 23 (Rs. 45,000). Against all of this, a uniform recovery of \(C\) per year runs from year 15 through year 23 (9 payments). Find \(C\) such that the two sides are equivalent.</p></div>
+<div class="body">
+<div class="cfd">
+<svg viewBox="0 0 840 250" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="55" y1="125" x2="805" y2="125"/>
+  <text x="53" y="145">0</text>
+  <line x1="150" y1="118" x2="162" y2="132" stroke="#8a8073" stroke-width="1.4"/>
+  <line x1="162" y1="118" x2="174" y2="132" stroke="#8a8073" stroke-width="1.4"/>
+  <text x="256" y="145">10</text><text x="456" y="145">15</text><text x="536" y="145">17</text><text x="616" y="145">19</text><text x="696" y="145">21</text><text x="776" y="145">23</text>
+  <text x="300" y="20" style="font-size:12px;font-weight:700">i = 15%</text>
+
+  <line class="dn" x1="70" y1="125" x2="70" y2="185"/><polygon points="70,193 65,181 75,181" fill="#8c3b2e"/>
+  <text class="lbldn" x="44" y="206">28,000</text>
+
+  <line class="dn" x1="260" y1="125" x2="260" y2="155"/><polygon points="260,161 256,151 264,151" fill="#8c3b2e"/>
+  <line class="dn" x1="300" y1="125" x2="300" y2="155"/><polygon points="300,161 296,151 304,151" fill="#8c3b2e"/>
+  <line class="dn" x1="340" y1="125" x2="340" y2="155"/><polygon points="340,161 336,151 344,151" fill="#8c3b2e"/>
+  <line class="dn" x1="380" y1="125" x2="380" y2="155"/><polygon points="380,161 376,151 384,151" fill="#8c3b2e"/>
+  <line class="dn" x1="420" y1="125" x2="420" y2="155"/><polygon points="420,161 416,151 424,151" fill="#8c3b2e"/>
+  <line class="dn" x1="460" y1="125" x2="460" y2="155"/><polygon points="460,161 456,151 464,151" fill="#8c3b2e"/>
+  <line class="dash" x1="260" y1="170" x2="460" y2="170"/>
+  <text class="lbldn" x="300" y="185">20,000 / yr (yrs 10–15)</text>
+
+  <line class="dn" x1="540" y1="125" x2="540" y2="185"/><polygon points="540,193 536,181 544,181" fill="#8c3b2e"/>
+  <text class="lbldn" x="516" y="206">25,000</text>
+  <line class="dn" x1="620" y1="125" x2="620" y2="185"/><polygon points="620,193 616,181 624,181" fill="#8c3b2e"/>
+  <text class="lbldn" x="596" y="206">35,000</text>
+  <line class="dn" x1="700" y1="125" x2="700" y2="185"/><polygon points="700,193 696,181 704,181" fill="#8c3b2e"/>
+  <text class="lbldn" x="676" y="206">40,000</text>
+  <line class="dn" x1="780" y1="125" x2="780" y2="185"/><polygon points="780,193 776,181 784,181" fill="#8c3b2e"/>
+  <text class="lbldn" x="756" y="206">45,000</text>
+
+  <line class="up" x1="460" y1="125" x2="460" y2="95"/><polygon points="460,87 456,99 464,99" fill="#1f5f4f"/>
+  <line class="up" x1="500" y1="125" x2="500" y2="95"/><polygon points="500,87 496,99 504,99" fill="#1f5f4f"/>
+  <line class="up" x1="540" y1="125" x2="540" y2="95"/><polygon points="540,87 536,99 544,99" fill="#1f5f4f"/>
+  <line class="up" x1="580" y1="125" x2="580" y2="95"/><polygon points="580,87 576,99 584,99" fill="#1f5f4f"/>
+  <line class="up" x1="620" y1="125" x2="620" y2="95"/><polygon points="620,87 616,99 624,99" fill="#1f5f4f"/>
+  <line class="up" x1="660" y1="125" x2="660" y2="95"/><polygon points="660,87 656,99 664,99" fill="#1f5f4f"/>
+  <line class="up" x1="700" y1="125" x2="700" y2="95"/><polygon points="700,87 696,99 704,99" fill="#1f5f4f"/>
+  <line class="up" x1="740" y1="125" x2="740" y2="95"/><polygon points="740,87 736,99 744,99" fill="#1f5f4f"/>
+  <line class="up" x1="780" y1="125" x2="780" y2="95"/><polygon points="780,87 776,99 784,99" fill="#1f5f4f"/>
+  <line class="dash" x1="460" y1="78" x2="780" y2="78"/>
+  <text class="lblup" x="560" y="60">C per year (yrs 15–23) — C = ?</text>
+</svg>
+<p class="cap">Two short diagonal strokes mark a compressed stretch of the timeline (years 1–9, during which nothing happens).</p>
+</div>
+
+<p><strong>Choose the focal date: year 0</strong> (the earliest point, so every factor is a plain present-worth factor — no forward shifting needed at all). Equate present worth of outflows to present worth of the recovery series:</p>
+<p>$$28{,}000 + 20{,}000(P/A,15\%,6)(P/F,15\%,9) + 25{,}000(P/F,15\%,17) + 35{,}000(P/F,15\%,19) + 40{,}000(P/F,15\%,21) + 45{,}000(P/F,15\%,23) = C(P/A,15\%,9)(P/F,15\%,14)$$</p>
+<p>Two things are doing work on the left-hand side's second term, so it's worth pausing on them: \((P/A,15\%,6)\) collapses the six payments of Rs. 20,000 (years 10–15) into a single lump sum sitting <strong>one period before the first payment — at year 9</strong>; \((P/F,15\%,9)\) then slides that lump sum back 9 more years, to year 0. The right-hand side works the same way: \((P/A,15\%,9)\) collapses \(C\)'s nine payments (years 15–23) to a lump sum at <strong>year 14</strong>, and \((P/F,15\%,14)\) slides that back to year 0.</p>
+<p>Substituting \((P/A,15\%,6)=3.7845\), \((P/F,15\%,9)=0.2843\), \((P/F,15\%,17)=0.0929\), \((P/F,15\%,19)=0.0703\), \((P/F,15\%,21)=0.0531\), \((P/F,15\%,23)=0.0402\), \((P/A,15\%,9)=4.7716\), \((P/F,15\%,14)=0.1413\):</p>
+<p>$$28{,}000 + 20{,}000(1.0757) + 25{,}000(0.0929) + 35{,}000(0.0703) + 40{,}000(0.0531) + 45{,}000(0.0402) = C(0.6744)$$</p>
+<p>$$28{,}000 + 21{,}515 + 2{,}323 + 2{,}459 + 2{,}125 + 1{,}808 = 0.6744\,C \;\;\Longrightarrow\;\; 58{,}230 = 0.6744\,C$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(C = \) <strong>Rs. 86,360 / year</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">The source's own handwritten working reaches Rs. 66,510 for this one. I could not reconcile that figure against the diagram as transcribed here — every factor above checks out independently against standard 15% compound-interest tables, and the equivalence equation itself follows directly from the diagram's structure. If your answer key shows 66,510, the likely explanation is a different reading of the 20,000-block's span (years 10–15 vs. some other window) or a slipped digit somewhere in the five-factor chain on the left. <strong>Trust the method shown above</strong> — it's what will actually be graded — and re-derive the number with whichever factor values your own textbook's tables give you.</p>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q2 — a deferred, two-phase annuity</span><p>A sportsman signs a contract worth: Rs. 3 million immediately, Rs. 2.4 million per year for the first five years, and then Rs. 3 million per year for the next five years (first payment of this second phase at the end of year 6). At \(i=10\%\) compounded annually, what is the contract worth at the moment of signing?</p></div>
+<div class="body">
+<p>Three pieces, each needing a different amount of shifting to land at year 0:</p>
+<ul>
+<li><strong>Rs. 3M at year 0:</strong> already at the focal date — no factor needed.</li>
+<li><strong>Rs. 2.4M/year, years 1–5:</strong> a plain 5-payment annuity starting at year 1, so \((P/A,10\%,5)\) lands it exactly at year 0. No shift.</li>
+<li><strong>Rs. 3M/year, years 6–10:</strong> \((P/A,10\%,5)\) collapses these five payments to a lump sum at <strong>year 5</strong> (one period before the first payment of this block) — then \((P/F,10\%,5)\) slides that lump sum back to year 0.</li>
+</ul>
+<p>$$P = 3\text{M} + 2.4\text{M}(P/A,10\%,5) + 3\text{M}(P/A,10\%,5)(P/F,10\%,5)$$</p>
+<p>With \((P/A,10\%,5)=3.7908\) and \((P/F,10\%,5)=0.6209\):</p>
+<p>$$P = 3{,}000{,}000 + 2{,}400{,}000(3.7908) + 3{,}000{,}000(3.7908)(0.6209)$$</p>
+<p>$$P = 3{,}000{,}000 + 9{,}097{,}920 + 7{,}061{,}190 = 19{,}159{,}110$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(P \approx\) <strong>Rs. 19,159,110</strong> (≈ Rs. 1.916 crore) at the moment of signing</p></div>
+<p class="small" style="color:var(--ink-soft)">The source slide sets up exactly this formula, correctly, but boxes a final answer of Rs. 12,804,549.57 — which does not follow from its own stated formula (substituting the same two factors above into that formula gives the figure boxed here, consistently to the rupee). This is a straightforward arithmetic slip in the original, not a different reading of the problem: the method, the factors, and the problem statement all agree with the Rs. 19.16M figure.</p>
+</div></div>
+
+<h3 id="s14-2">14.2 &middot; Present Worth Comparisons</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q3 — invest in land, or leave it in the bank?</span><p>Rs. 10,00,000 can either earn 20% in the bank, or buy a plot of land that brings in Rs. 25,000/year net rental income (after tax) and sells for Rs. 15,00,000 after 6 years. Is the land worth it?</p></div>
+<div class="body">
+<p>Evaluate the land purchase on a present-worth basis at the bank's own rate (20%) — if its PW is negative, the bank beats it; if positive, the land beats the bank.</p>
+<p>$$PW_{\text{land}} = -10{,}00{,}000 + 25{,}000(P/A,20\%,6) + 15{,}00{,}000(P/F,20\%,6)$$</p>
+<p>With \((P/A,20\%,6)=3.326\) and \((P/F,20\%,6)=0.3349\):</p>
+<p>$$PW_{\text{land}} = -10{,}00{,}000 + 25{,}000(3.326) + 15{,}00{,}000(0.3349) = -10{,}00{,}000 + 83{,}150 + 5{,}02{,}350 = -4{,}14{,}500$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(PW = \) <strong>&minus;Rs. 4,14,500</strong> — negative, so <strong>no, the land is not worth it</strong>. At a 20% opportunity rate, Rs. 10,00,000 left in the bank is worth more than the land deal, by about Rs. 4.14 lakh in present terms.</p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q4 — two machines, unequal lives, 13-year study period</span><p>MARR = 15%. Machine X: first cost $40,000, O&amp;M $30,000/year, salvage $5,000, 5-year life. Machine Y: first cost $60,000, O&amp;M $20,000/year, salvage $12,000, 10-year life. Compare by present worth over a 13-year study period (assume market value = book value under straight-line depreciation, and that each machine is simply replaced by an identical one when it wears out).</p></div>
+<div class="body">
+<p>Both machines need at least one replacement to span 13 years — X is replaced at years 5 and 10 (running to year 15, so its third copy is only 3 years into its life when the study ends at year 13); Y is replaced once, at year 10 (3 years into its second life at year 13 too, conveniently). The replacement cost each time is first cost net of the salvage recovered from the outgoing machine, and at year 13 you recover whatever the <em>in-service</em> machine is worth at that point — its book value, 3 years in.</p>
+<p><strong>Machine X</strong> — book value of a 3-year-old machine: \(B_3 = 40{,}000 - 3\left[\dfrac{40{,}000-5{,}000}{5}\right] = 40{,}000 - 3(7{,}000) = 19{,}000\).</p>
+<p>$$NPW_X = 40{,}000 + 35{,}000(P/F,15\%,5) + 35{,}000(P/F,15\%,10) - 19{,}000(P/F,15\%,13) + 30{,}000(P/A,15\%,13)$$</p>
+<p>(The 35,000 replacement cost is $40,000 first cost less the $5,000 salvage just recovered from the retiring machine.) With \((P/F,15\%,5)=0.4972\), \((P/F,15\%,10)=0.2472\), \((P/F,15\%,13)=0.1625\), \((P/A,15\%,13)=5.583\):</p>
+<p>$$NPW_X = 40{,}000 + 17{,}402 + 8{,}652 - 3{,}088 + 1{,}67{,}490 = \$2{,}30{,}457$$</p>
+<p><strong>Machine Y</strong> — book value of a 3-year-old machine: \(B_3 = 60{,}000 - 3\left[\dfrac{60{,}000-12{,}000}{10}\right] = 60{,}000 - 3(4{,}800) = 45{,}600\).</p>
+<p>$$NPW_Y = 60{,}000 + 48{,}000(P/F,15\%,10) - 45{,}600(P/F,15\%,13) + 20{,}000(P/A,15\%,13)$$</p>
+<p>$$NPW_Y = 60{,}000 + 11{,}866 - 7{,}410 + 1{,}11{,}660 = \$1{,}76{,}116$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>These are present worths of <em>cost</em> — lower is better. \(NPW_Y(\$1{,}76{,}116) &lt; NPW_X(\$2{,}30{,}457)\), so <strong>Machine Y should be selected.</strong></p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q5 — economic service life of a boring machine</span><p>A boring machine costs Rs. 1,00,000. Its market value and O&amp;M cost by year are given below. At a risk-adjusted required return of 10%, find its economic service life.</p>
+<table class="grid">
+<tr><th>Year</th><th>Market value (₹)</th><th>O&amp;M cost (₹)</th></tr>
+<tr><td>0</td><td>1,00,000</td><td>—</td></tr>
+<tr><td>1</td><td>80,000</td><td>5,000</td></tr>
+<tr><td>2</td><td>60,000</td><td>6,000</td></tr>
+<tr><td>3</td><td>45,000</td><td>7,000</td></tr>
+<tr><td>4</td><td>25,000</td><td>8,000</td></tr>
+<tr><td>5</td><td>0</td><td>9,000</td></tr>
+</table>
+</div>
+<div class="body">
+<p>The <strong>economic service life</strong> is the retention period \(n\) that <em>minimises</em> total EUAC — not necessarily the machine's physical lifespan. EUAC for each \(n\) has two pieces: Capital Recovery \(CR = (P-F)(A/P,i,n) + Fi\) (cost of ownership, using the market value at year \(n\) as the recovered salvage \(F\)), and the equivalent-uniform O&amp;M cost, built from the arithmetic-gradient O&amp;M series using \(A/G\).</p>
+<table class="grid">
+<tr><th>n</th><th>CR = (P−F)(A/P,i,n) + Fi</th><th>Eq. O&amp;M = A₁ + G(A/G,i,n)</th><th>Total EUAC</th></tr>
+<tr><td>1</td><td>(1,00,000−80,000)(1.1000) + 80,000(0.1) = 30,000</td><td>5,000</td><td><strong>35,000</strong></td></tr>
+<tr><td>2</td><td>(1,00,000−60,000)(0.5762) + 60,000(0.1) = 29,048</td><td>5,000+1,000(0.476) = 5,476</td><td><strong>34,524</strong></td></tr>
+<tr><td>3</td><td>(1,00,000−45,000)(0.4021) + 45,000(0.1) = 26,615</td><td>5,000+1,000(0.937) = 5,937</td><td><strong>32,552</strong></td></tr>
+<tr><td>4</td><td>(1,00,000−25,000)(0.3155) + 25,000(0.1) = 26,163</td><td>5,000+1,000(1.381) = 6,381</td><td><strong>32,544</strong></td></tr>
+<tr><td>5</td><td>(1,00,000)(0.2638) = 26,380</td><td>5,000+1,000(1.810) = 6,810</td><td><strong>33,190</strong></td></tr>
+</table>
+<div class="ans"><span class="lbl">Answer</span><p>Total EUAC bottoms out at <strong>\(n=4\)</strong> (Rs. 32,544) — very slightly below \(n=3\) (Rs. 32,552) and rising again by \(n=5\). <strong>The economic service life is 4 years.</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">The source table stops here without stating the conclusion explicitly — it's added above since "find the economic service life" is literally the question asked, and the whole point of building this table is to read the minimum off it.</p>
+</div></div>
+
+<h3 id="s14-3">14.3 &middot; A Multi-Rate Cash Flow, and Depreciation &amp; Annual Worth</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q6 — present value when the interest rate itself changes</span><p>Rs. 15,000 is withdrawn at the end of year 1, and Rs. 2,000 is withdrawn at the end of each of years 3, 4 and 5. The applicable rate is 16% compounded quarterly between years 0–2, 9% per year between years 2–3, and 15% per year between years 3–5. Find the present value.</p></div>
+<div class="body">
+<div class="cfd">
+<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+  <line class="axis" x1="60" y1="120" x2="580" y2="120"/>
+  <text x="58" y="140">0</text><text x="168" y="140">1</text><text x="268" y="140">2</text><text x="368" y="140">3</text><text x="468" y="140">4</text><text x="568" y="140">5</text>
+  <line class="up" x1="168" y1="120" x2="168" y2="60"/><polygon points="168,52 163,64 173,64" fill="#1f5f4f"/>
+  <text class="lblup" x="140" y="44">15,000</text>
+  <line class="up" x1="368" y1="120" x2="368" y2="78"/><polygon points="368,70 363,82 373,82" fill="#1f5f4f"/>
+  <line class="up" x1="468" y1="120" x2="468" y2="78"/><polygon points="468,70 463,82 473,82" fill="#1f5f4f"/>
+  <line class="up" x1="568" y1="120" x2="568" y2="78"/><polygon points="568,70 563,82 573,82" fill="#1f5f4f"/>
+  <text class="lblup" x="390" y="62">A = 2,000</text>
+  <line class="dash" x1="60" y1="170" x2="268" y2="170"/>
+  <text x="64" y="188" style="font-size:11px">16% compounded quarterly</text>
+  <line class="dash" x1="268" y1="170" x2="368" y2="170"/>
+  <text x="272" y="210" style="font-size:11px">9%/yr</text>
+  <line class="dash" x1="368" y1="170" x2="568" y2="170"/>
+  <text x="420" y="188" style="font-size:11px">15%/yr</text>
+</svg>
+</div>
+<p>Each segment's rate only governs discounting <em>within</em> that segment, so every flow has to be walked back one segment at a time — through whichever rates lie between it and year 0. Start by converting the quarterly rate to an annual effective rate, since every flow eventually has to cross that first 2-year window:</p>
+<p>$$i_{\text{eff}} = (1+0.04)^4 - 1 = 1.1699 - 1 = 16.99\%$$</p>
+<p>The Rs. 15,000 at year 1 only has to cross the 16.99% window (it's already inside it): \(15{,}000(P/F,16.99\%,1)\). The Rs. 2,000/year annuity (years 3–5) first collapses to a lump sum at year 2 via \((F/A,15\%,3)(P/F,15\%,2)\) — wait, more carefully: collapse it to year 2 first using the 15% segment's own factors, since years 3, 4, 5 all sit inside the 15% window. \((F/A,15\%,3)\) lands at year 5 (the last payment); \((P/F,15\%,2)\) is not quite right for walking from year 5 back to year 2 — the correct single step is \((P/A,15\%,3)\), which lands one period before the first payment of the block, i.e. at year 2, directly. From year 2, the Rs. 2,000-block's equivalent lump sum then crosses the 9% window back to year 1, and then the 16.99% window back to year 0.</p>
+<p>$$P = 15{,}000(P/F,16.99\%,1) + 2{,}000(F/A,15\%,3)(P/F,15\%,2)(P/F,9\%,1)(P/F,16.99\%,2)$$</p>
+<p class="small" style="color:var(--ink-soft)">This is the exact factor chain used in the source working. It is very slightly indirect — \((F/A,15\%,3)(P/F,15\%,2)\) moves the Rs. 2,000 block from year 5 to year 2 in two steps (to year-5-lump-sum, then back 2 years) rather than the single, more natural \((P/A,15\%,3)\) step — but both reach the same point (year 2) and the source's numbers are internally consistent, so the arithmetic below follows it exactly.</p>
+<p>$$P = \frac{15{,}000}{1.1699} + 2{,}000\left[\frac{1.15^3-1}{0.15}\right]\left(\frac{1}{1.15^2}\right)\left(\frac{1}{1.09}\right)\left(\frac{1}{1.1699^2}\right)$$</p>
+<p>$$= 12{,}821.6 + 2{,}000(3.4725)(0.756)(0.917)(0.731) = 12{,}821.6 + 3{,}519.5$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(P = \) <strong>Rs. 16,341.1</strong></p></div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q7 — depreciation schedule, two methods side by side</span><p>An asset costs $1,750 with an expected salvage value of $250 at the end of its 5-year depreciable life. Build the complete depreciation schedule under (a) the Straight-Line (SL) method, and (b) the Double Declining Balance (DDB) method.</p></div>
+<div class="body">
+<p><strong>(a) Straight-Line:</strong> \(D_t = \dfrac{P-F}{N} = \dfrac{1750-250}{5} = \$300\) every year, constant.</p>
+<p><strong>(b) Double Declining Balance:</strong> rate \(= \dfrac{2}{N} = \dfrac{2}{5} = 40\%\) of the <em>current book value</em> each year (salvage is ignored while computing the rate, and never subtracted first):</p>
+<table class="grid">
+<tr><th></th><th colspan="2">Straight-line</th><th></th><th colspan="2">Double Declining Balance</th></tr>
+<tr><th>n</th><th>Dₜ</th><th>Bₜ</th><th>n</th><th>Dₜ</th><th>Bₜ</th></tr>
+<tr><td>0</td><td>—</td><td>1,750</td><td>0</td><td>—</td><td>1,750</td></tr>
+<tr><td>1</td><td>300</td><td>1,450</td><td>1</td><td>1750×0.4 = 700</td><td>1,050</td></tr>
+<tr><td>2</td><td>300</td><td>1,150</td><td>2</td><td>1050×0.4 = 420</td><td>630</td></tr>
+<tr><td>3</td><td>300</td><td>850</td><td>3</td><td>630×0.4 = 252</td><td>378</td></tr>
+<tr><td>4</td><td>300</td><td>550</td><td>4</td><td>378×0.4 = 151</td><td>226</td></tr>
+<tr><td>5</td><td>300</td><td>250</td><td>5</td><td>226×0.4 = 91</td><td>135</td></tr>
+</table>
+<div class="ans"><span class="lbl">Answer</span><p>SL depreciates by a constant $300/year, book value falling in a straight line from $1,750 to exactly $250 by year 5. DDB front-loads the depreciation heavily ($700 in year 1 alone) and its book value falls to $135 by year 5 — <em>below</em> the stated $250 salvage value.</p></div>
+<div class="box t">
+<span class="lbl">A wrinkle worth knowing, beyond what this problem asks</span>
+<p>DDB is computed purely mechanically from the \(\frac{2}{N}\) rate and never references the salvage value directly — which is exactly why it can (and here did) depreciate the asset below its salvage floor. The standard fix, used in rigorous practice, is to stop depreciating — or switch over to straight-line for the remaining years — the moment book value would drop below salvage. This question's source table doesn't apply that fix and runs DDB straight through all 5 years regardless, which is why it's reproduced as-is above; just don't carry the uncorrected habit into a problem that specifically asks you to respect the salvage floor.</p>
+</div>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q8 — subcontract or buy, by Annual Worth</span><p>A utility needs tree-trimming done for the next 5 years. A subcontractor bids $98,000 for year 1, rising by $8,000 every subsequent year. Buying equipment instead costs $220,000 up front, $65,000/year to run, with a $25,000 salvage after 5 years. Compare on an annual-worth basis at 10% and recommend.</p></div>
+<div class="body">
+<p><strong>Subcontractor</strong> — a base amount of $98,000 plus a $8,000/year arithmetic gradient, for 6 years total (the base year plus 5 years of increases — this is the source's own period count, so \(n=6\) in the gradient factor even though only 5 years of service are being costed):</p>
+<p>$$AW_{\text{sub}} = 98{,}000 + 8{,}000(A/G,10\%,6) = 98{,}000 + 8{,}000(2.224) = \$1{,}15{,}792$$</p>
+<p><strong>Buy equipment</strong> — capital recovery on the first cost, less recovery of the salvage, plus the flat annual O&amp;M:</p>
+<p>$$AW_{\text{buy}} = 2{,}20{,}000(A/P,10\%,5) - 25{,}000(A/F,10\%,5) + 65{,}000$$</p>
+<p>$$= 2{,}20{,}000(0.2638) - 25{,}000(0.1638) + 65{,}000 = 58{,}036 - 4{,}095 + 65{,}000 = \$1{,}18{,}941$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(AW_{\text{sub}}(\$1{,}15{,}792) &lt; AW_{\text{buy}}(\$1{,}18{,}941)\) — <strong>sub-contracting is the cheaper option</strong>, by about $3,150/year.</p></div>
+</div></div>
+
+<h3 id="s14-4">14.4 &middot; Capitalized Cost, and an IRR Comparison</h3>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q9 — a scholarship endowment, forever</span><p>A donor wants to fund a scholarship paying Rs. 40,000/year for the first five years, then Rs. 1,00,000/year forever after that (first payment one year from now). At \(i=10\%\), how much must be given now?</p></div>
+<div class="body">
+<p>This is a <strong>Capitalized Cost</strong> problem — a perpetual-life project, where \(CC = A/i\) for a flat perpetuity starting next year. Here the perpetuity isn't flat, so split it into two <em>overlapping</em> perpetuities rather than handling the "first 5 years, then more" structure directly: imagine Rs. 40,000/year forever (which <em>would</em> cost \(40{,}000/i\) if it ran undisturbed), and layer on top of it an <em>extra</em> Rs. 60,000/year that only starts in year 6 and continues forever (which brings the total from Rs. 40,000 up to the actual Rs. 1,00,000/year from year 6 onward).</p>
+<p>$$CC = \underbrace{\frac{40{,}000}{0.1}}_{\text{Rs. 40,000/yr, forever, from yr 1}} \;+\; \underbrace{\frac{60{,}000}{0.1}\times(P/F,10\%,5)}_{\text{extra Rs. 60,000/yr, forever, from yr 6}}$$</p>
+<p>$$CC = 4{,}00{,}000 + 6{,}00{,}000(0.6209) = 4{,}00{,}000 + 3{,}72{,}553$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(CC = \) <strong>Rs. 7,72,553</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">Why the overlay trick works: the real payment stream is Rs. 40,000/year forever, <em>plus</em> an extra Rs. 60,000/year starting in year 6 forever — add those two and you get exactly Rs. 40,000 for years 1–5, then Rs. 1,00,000 from year 6 onward. Each piece individually is a flat perpetuity, so each gets the simple \(A/i\) formula; only the second one needs an extra \((P/F,10\%,5)\) to bring its year-5 value back to year 0.</p>
+</div></div>
+
+<div class="prob">
+<div class="q"><span class="pid">Mixed &middot; Q10 — two mutually exclusive alternatives, by IRR</span><p>MARR = 12%. Two alternatives, both costing $20,000 at year 0:</p>
+<table class="grid">
+<tr><th>Year</th><th>A</th><th>B</th></tr>
+<tr><td>0</td><td>&minus;$20,000</td><td>&minus;$20,000</td></tr>
+<tr><td>1</td><td>10,000</td><td>10,000</td></tr>
+<tr><td>2</td><td>5,000</td><td>10,000</td></tr>
+<tr><td>3</td><td>10,000</td><td>10,000</td></tr>
+<tr><td>4</td><td>6,000</td><td>0</td></tr>
+</table>
+<p>Determine which alternative to select, based on internal rate of return.</p></div>
+<div class="body">
+<p><strong>IRR of A</strong> — four unequal flows, so trial and error against \(NPW(i)=-20{,}000+\dfrac{10{,}000}{(1+i)}+\dfrac{5{,}000}{(1+i)^2}+\dfrac{10{,}000}{(1+i)^3}+\dfrac{6{,}000}{(1+i)^4}\):</p>
+<p>\(i=12\%:\;NPW=3{,}845\) (positive). \(\;i=20\%:\;NPW=486.11\) (still positive, barely). \(\;i=25\%:\;NPW=-1{,}222.4\) (negative — bracketed between 20% and 25%).</p>
+<p>$$i^*_A = 20\% + 5\%\times\frac{486.11}{486.11+1{,}222.4} = 20\% + 1.423\% = 21.42\%$$</p>
+<p><strong>IRR of B</strong> — a plain 3-year, $10,000/year annuity (year 4 is zero), so \(NPW(i)=-20{,}000+10{,}000(P/A,i,3)\):</p>
+<p>\(i=12\%:\;(P/A,12\%,3)=2.4018,\;NPW=4{,}018\) (positive). \(\;i=20\%:\;(P/A,20\%,3)=2.1065,\;NPW=1{,}065\) (positive). \(\;i=25\%:\;(P/A,25\%,3)=1.952,\;NPW=10{,}000(1.952)-20{,}000=-480\) (negative — bracketed between 20% and 25%).</p>
+<p>$$i^*_B = 20\% + 5\%\times\frac{1{,}065}{1{,}065+480} = 20\% + 3.44\% = 23.44\%$$</p>
+<div class="ans"><span class="lbl">Answer</span><p>\(i^*_B(23.44\%) &gt; i^*_A(21.42\%)\), both comfortably above the 12% MARR — <strong>Alternative B should be selected.</strong></p></div>
+<p class="small" style="color:var(--ink-soft)">The source's working for B at \(i=25\%\) writes \(NPW=-19{,}540\), which doesn't follow from its own formula — \(10{,}000(P/A,25\%,3)-20{,}000 = 10{,}000(1.952)-20{,}000=-480\), not &minus;19,540 (the figure looks like a stray digit got attached to an intermediate number). With the corrected \(-480\), B's interpolated IRR rises to 23.44%, which <em>flips</em> the source's stated conclusion of "A should be selected" — by the same individual-IRR comparison method the source itself uses, the corrected numbers point to B instead. (As Section 10 of this guide explains, comparing individual IRRs like this is strictly the wrong method for mutually exclusive alternatives of different cash-flow shapes — the rigorous way is incremental IRR — but that's a separate issue from the arithmetic slip being corrected here.)</p>
+</div></div>
+
 
 </main>
 </div>

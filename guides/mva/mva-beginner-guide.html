@@ -32,14 +32,14 @@
   *{box-sizing:border-box;}
   body{
     margin:0; background:var(--cream); color:var(--ink);
-    font-family:'EB Garamond', Georgia, 'Times New Roman', serif;
-    font-size:19px; line-height:1.65;
+    font-family:'Palatino Linotype', Palatino, 'Book Antiqua', 'EB Garamond', Georgia, serif;
+    font-size:16px; line-height:1.3;
   }
   @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
   code, .mono, pre, .pseudocode, .kbd{ font-family:'JetBrains Mono', monospace; }
 
   a{color:var(--accent);}
-  h1,h2,h3,h4{ font-family:'EB Garamond', serif; font-weight:700; color:#221e19; line-height:1.25; }
+  h1,h2,h3,h4{ font-family:'Palatino Linotype', Palatino, 'Book Antiqua', serif; font-weight:700; color:#221e19; line-height:1.25; }
 
   .shell{ display:flex; max-width:1400px; margin:0 auto; }
   .sidebar{
@@ -51,7 +51,7 @@
   .sidebar h3:first-child{ margin-top:0; }
   .sidebar a{ display:block; text-decoration:none; color:var(--ink-soft); font-size:14.5px; padding:4px 0 4px 10px; border-left:2px solid transparent; }
   .sidebar a:hover{ color:var(--accent); border-left-color:var(--accent); }
-  .sidebar .toc-title{ font-family:'EB Garamond',serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:4px;}
+  .sidebar .toc-title{ font-family:'Palatino Linotype', Palatino, 'Book Antiqua', serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:4px;}
   .sidebar .toc-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:14px; }
   .main{ flex:1; min-width:0; padding:40px 56px 100px; }
 
@@ -177,17 +177,52 @@
   <a href="#p4-cr-formula">6. The confidence region formula</a>
   <a href="#p4-cr-worked">7. Worked example (two-sample CR)</a>
 
+  <h3>Part 5 · MANOVA</h3>
+  <a href="#p5-intro">1. What problem does MANOVA solve?</a>
+  <a href="#p5-model">2. The one-way model &amp; T = B + W</a>
+  <a href="#p5-wilks">3. The MANOVA table &amp; Wilk's Lambda</a>
+  <a href="#p5-worked1">4. Worked example — SSP matrices</a>
+  <a href="#p5-worked2">5. Worked example — full hypothesis test</a>
+
+  <h3>Part 6 · Multivariate Linear Regression</h3>
+  <a href="#p6-setup">1. From MLR to MvLR</a>
+  <a href="#p6-model">2. The MvLR model in matrix form</a>
+  <a href="#p6-estimation">3. Estimating β: least squares</a>
+  <a href="#p6-worked">4. Worked example</a>
+
+  <h3>Part 7 · PCA, Factor Analysis, Discriminant Analysis &amp; Clustering</h3>
+  <a href="#p7-pca-intro">1. What PCA does</a>
+  <a href="#p7-pca-population">2. Population principal components</a>
+  <a href="#p7-pca-worked1">3. Worked example — population PCA</a>
+  <a href="#p7-pca-worked2">4. Worked example — sample PCA</a>
+  <a href="#p7-fa-intro">5. Factor Analysis &amp; the orthogonal model</a>
+  <a href="#p7-fa-covstructure">6. Covariance structure &amp; communality</a>
+  <a href="#p7-fa-estimation">7. Principal Component method</a>
+  <a href="#p7-fa-mle">8. Maximum Likelihood method</a>
+  <a href="#p7-da-intro">9. Discriminant Analysis &amp; Classification</a>
+  <a href="#p7-da-fisher">10. Fisher's Linear Discriminant Function</a>
+  <a href="#p7-da-rule">11. The classification rule</a>
+  <a href="#p7-da-worked">12. Worked examples</a>
+  <a href="#p7-cluster-intro">13. Cluster Analysis</a>
+  <a href="#p7-cluster-algo">14. Agglomerative HCA algorithm</a>
+  <a href="#p7-cluster-worked">15. Worked example — linkage methods</a>
+
+  <h3>Part 8 · Practice Questions</h3>
+  <a href="#p8-q1-5">Questions 1–5</a>
+  <a href="#p8-q6-10">Questions 6–10</a>
+  <a href="#p8-q11-15">Questions 11–15</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full recap &amp; glossary</a>
 </nav>
 <main class="main">
 <div class="hero">
   <div class="eyebrow">Study Guide · Multivariate Analysis</div>
-  <h1>MND, Hotelling's T², Correlation &amp; Wishart — Explained Slowly</h1>
-  <p class="lead">This guide walks through all four of your MVA notes — <em>MND and Hotelling's T-square</em>, <em>Multiple and Partial Correlation</em>, <em>Wishart Distribution and MLE</em>, and <em>Likelihood Ratio Tests &amp; Confidence Regions</em> — page by page, in plain English, building every formula up from a concrete picture before the matrix algebra shows up.</p>
+  <h1>MND, Hotelling's T², Correlation, Wishart, MANOVA, MvLR, PCA &amp; More — Explained Slowly</h1>
+  <p class="lead">This guide walks through all eight of your MVA notes — <em>MND and Hotelling's T-square</em>, <em>Multiple and Partial Correlation</em>, <em>Wishart Distribution and MLE</em>, <em>Likelihood Ratio Tests &amp; Confidence Regions</em>, <em>MANOVA</em>, <em>Multivariate Linear Regression</em>, <em>PCA / Factor Analysis / Discriminant Analysis / Clustering</em>, and a full set of <em>Practice Questions</em> — page by page, in plain English, building every formula up from a concrete picture before the matrix algebra shows up.</p>
   <div class="badges">
     <span class="badge">MIT Manipal · Handwritten notes</span>
-    <span class="badge">4 documents · 64 pages covered</span>
+    <span class="badge">8 documents · 128 pages covered</span>
     <span class="badge">All worked examples independently re-checked</span>
   </div>
 </div>
@@ -203,7 +238,7 @@
     <span class="chip" style="background:var(--key-bg);border-color:var(--key-line);color:var(--key-line)">Key Takeaway</span>
     <span class="chip" style="background:var(--fix-bg);border-color:var(--fix-line);color:var(--fix-line)">Correction to your notes</span>
   </p>
-  <p class="small" style="margin-top:10px;">Every calculation from your notes was redone independently while building this guide. Almost everything checked out exactly — the one place it didn't is flagged clearly in Part 1, Section 9, with the corrected working.</p>
+  <p class="small" style="margin-top:10px;">Every calculation from your notes was redone independently while building this guide. Almost everything checked out exactly — the two places it didn't are flagged clearly, with the corrected working: Part 1, Section 9, and Part 7, Section 3.</p>
 </div>
 <div class="def" id="formula-sheet-top">
 <span class="box-label">Quick-Reference Formula Sheet — every formula in this guide, in one place</span>
@@ -254,10 +289,40 @@
 <tr><td>\(\boxed{n(\bar X-\mu)'S^{-1}(\bar X-\mu) \le \dfrac{p(n-1)}{n-p}F_{p,n-p}(\alpha)}\)</td><td>\(100(1-\alpha)\%\) confidence region for a single mean vector \(\mu\).</td></tr>
 <tr><td>\(\dfrac{n_An_B}{n_A+n_B}\big[(\bar X_A-\bar X_B)-\delta\big]'S_p^{-1}\big[(\bar X_A-\bar X_B)-\delta\big] \le \dfrac{(n_A+n_B-2)p}{n_A+n_B-p-1}F_{p,\,n_A+n_B-p-1}(\alpha)\)</td><td>Confidence region for a difference of mean vectors \(\delta=\mu_A-\mu_B\).</td></tr>
 </table>
+
+<h4 style="margin-top:18px;">Part 5 — MANOVA</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(T=\sum_i\sum_j(X_{ij}-\bar X)(X_{ij}-\bar X)'\)</td><td>Total (corrected) SSP matrix.</td></tr>
+<tr><td>\(B=\sum_i n_i(\bar X_i-\bar X)(\bar X_i-\bar X)'\)</td><td>Between (Treatment) SSP matrix.</td></tr>
+<tr><td>\(W=\sum_i(n_i-1)S_i\)</td><td>Within (Residual) SSP matrix. \(\boxed{T=B+W}\)</td></tr>
+<tr><td>\(\Lambda^*=\dfrac{|W|}{|B+W|}=\dfrac{|W|}{|T|}\)</td><td>Wilk's Lambda — small \(\Lambda^*\) is evidence against \(H_0:\mu_1=\cdots=\mu_K\).</td></tr>
+<tr><td>\(\dfrac{N-K-1}{K-1}\left(\dfrac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}}\right)\sim F_{2(K-1),\,2(N-K-1)}\)</td><td>Exact sampling distribution of Wilk's Lambda for \(p=2\), any \(K\ge2\).</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 6 — Multivariate Linear Regression</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(Y_{n\times q}=X_{n\times(p+1)}\beta_{(p+1)\times q}+\epsilon_{n\times q}\)</td><td>MvLR model equation — same shape as MLR, with \(q\) dependent variables instead of 1.</td></tr>
+<tr><td>\(\boxed{\hat\beta=(X'X)^{-1}X'Y}\)</td><td>Least-squares estimator — identical formula to MLR, column \(j\) of \(\hat\beta\) belongs to \(Y_j\).</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 7 — PCA, Factor Analysis, Discriminant Analysis &amp; Clustering</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(Z_i=e_i'X\), with \(V(Z_i)=\lambda_i\), \(\text{Cov}(Z_i,Z_k)=0\)</td><td>\(i\)-th principal component — built from the \(i\)-th eigenpair of \(\Sigma\).</td></tr>
+<tr><td>\(\lambda_k\big/\textstyle\sum_i\lambda_i\)</td><td>Proportion of total variance explained by the \(k\)-th principal component.</td></tr>
+<tr><td>\(\rho_{Z_i,X_k}=e_{ik}\sqrt{\lambda_i}\big/\sqrt{\sigma_{kk}}\)</td><td>Correlation between component \(Z_i\) and original variable \(X_k\).</td></tr>
+<tr><td>\(\boxed{\Sigma=LL'+\Psi}\), &nbsp; \(\sigma_{ii}=h_i^2+\psi_i\)</td><td>Orthogonal factor model's covariance structure; communality + specific variance.</td></tr>
+<tr><td>\(\hat L=\big[\sqrt{\hat\lambda_1}\hat e_1\ \vdots\cdots\vdots\ \sqrt{\hat\lambda_m}\hat e_m\big]\), \ \(\hat\psi_i=s_{ii}-\sum_j\hat\ell_{ij}^2\)</td><td>Principal Component method's estimates of loadings &amp; specific variances.</td></tr>
+<tr><td>\(\boxed{\ell^0=\Sigma^{-1}(\mu_1-\mu_2)}\)</td><td>Fisher's Linear Discriminant Function direction (population case).</td></tr>
+<tr><td>Assign \(x_0\) to \(\pi_1\) if \((\bar X_1-\bar X_2)'S_p^{-1}x_0 > \tfrac12(\bar X_1-\bar X_2)'S_p^{-1}(\bar X_1+\bar X_2)\)</td><td>Sample classification rule (else assign to \(\pi_2\)).</td></tr>
+<tr><td>\(d_{(uv),w}=\min(d_{uw},d_{vw})\) / \(\max(d_{uw},d_{vw})\) / \(\dfrac{\sum\sum d_{ik}}{N_{uv}N_w}\)</td><td>Single / Complete / Average linkage distance update in agglomerative HCA.</td></tr>
+</table>
 </div>
 
 <div class="part-header">
-  <div class="ptag">Part 1 of 4</div>
+  <div class="ptag">Part 1 of 8</div>
   <h2>Multivariate Normal Distribution &amp; Hotelling's T²</h2>
   <p>Everything in univariate statistics you already know — means, variances, the normal curve, the t-test — has a "multivariate" version, built for when you're measuring <em>several</em> things about each individual at once instead of just one. This part builds that whole picture from scratch, ending at Hotelling's T², the multivariate cousin of the t-test.</p>
 </div>
@@ -670,7 +735,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 2 of 4</div>
+  <div class="ptag">Part 2 of 8</div>
   <h2>Multiple &amp; Partial Correlation</h2>
   <p>Ordinary correlation only ever looks at two variables at a time — and can be seriously misleading when a third variable is secretly influencing both. This part builds the two tools multivariate analysis uses to fix that.</p>
 </div>
@@ -826,7 +891,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 3 of 4</div>
+  <div class="ptag">Part 3 of 8</div>
   <h2>Wishart Distribution &amp; Maximum Likelihood Estimation</h2>
   <p>Part 1 used the sample covariance matrix \(S\) as if we already knew its distribution — this part derives exactly that (the Wishart distribution), and then derives \(S\) itself from first principles, by finding the maximum likelihood estimators of \(\mu\) and \(\Sigma\).</p>
 </div>
@@ -1040,7 +1105,7 @@
 </section>
 
 <div class="part-header">
-  <div class="ptag">Part 4 of 4</div>
+  <div class="ptag">Part 4 of 8</div>
   <h2>Likelihood Ratio Tests &amp; Confidence Regions</h2>
   <p>Every hypothesis test so far in this guide — the \(t\)-test, Hotelling's \(T^2\) — was built for one specific job. This part introduces a completely general recipe, the <strong>Likelihood Ratio Test (LRT)</strong>, that can test almost any hypothesis about almost any parameter, and then uses that same idea to build <strong>confidence regions</strong> — the multivariate generalisation of a confidence interval.</p>
 </div>
@@ -1181,11 +1246,11 @@
 <line x1="30" y1="150" x2="430" y2="150" stroke="#565f6b" stroke-width="1"/>
 <line x1="130" y1="150" x2="130" y2="105" stroke="#a1522f" stroke-dasharray="4 3"/>
 <line x1="330" y1="150" x2="330" y2="105" stroke="#a1522f" stroke-dasharray="4 3"/>
-<text x="105" y="168" font-family="EB Garamond" font-size="14">&#8722;t&#8342;&#8342;&#8322;</text>
-<text x="325" y="168" font-family="EB Garamond" font-size="14">+t&#8342;&#8342;&#8322;</text>
-<text x="205" y="90" font-family="EB Garamond" font-size="15" fill="#3b6ea5">1&#8722;&#945;</text>
-<text x="10" y="145" font-family="EB Garamond" font-size="12" fill="#8c3b2e">&#945;/2</text>
-<text x="420" y="145" font-family="EB Garamond" font-size="12" fill="#8c3b2e">&#945;/2</text>
+<text x="105" y="168" font-family="Palatino" font-size="14">&#8722;t&#8342;&#8342;&#8322;</text>
+<text x="325" y="168" font-family="Palatino" font-size="14">+t&#8342;&#8342;&#8322;</text>
+<text x="205" y="90" font-family="Palatino" font-size="15" fill="#3b6ea5">1&#8722;&#945;</text>
+<text x="10" y="145" font-family="Palatino" font-size="12" fill="#8c3b2e">&#945;/2</text>
+<text x="420" y="145" font-family="Palatino" font-size="12" fill="#8c3b2e">&#945;/2</text>
 </svg>
 </div>
 <p>\((1-\alpha)\) represents the probability in the central region — the "confidence level." The small areas outside \(\pm t_{\alpha/2}\) are the values that our confidence procedure does <em>not</em> cover.</p>
@@ -1309,15 +1374,639 @@
 </div>
 
 
+<div class="part-header">
+  <div class="ptag">Part 5 of 8</div>
+  <h2>MANOVA — Multivariate Analysis of Variance</h2>
+  <p>ANOVA tests whether several groups share the same <em>mean</em> on one variable. MANOVA asks the same question when each observation carries <em>several</em> variables at once — do \(K\) populations share the same <strong>mean vector</strong>? This part builds the one-way MANOVA model from the univariate ANOVA decomposition you already know, then works two full examples end to end.</p>
+</div>
+
+<section class="slide" id="p5-intro">
+  <span class="slide-tag">Page 1</span>
+  <h3>1. What problem does MANOVA solve?</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p>The problem of testing the equality of several (\(K>2\)) mean <strong>vectors</strong> of multivariate populations having a common dispersion (covariance) matrix is called the problem of <strong>MANOVA</strong> (Multivariate Analysis of Variance).</p>
+  </div>
+  <p>We observe \(K\) independent samples, one from each population:</p>
+  <p>\[ \text{Population }1: X_{11},X_{12},\dots,X_{1n_1} \qquad \text{Population }2: X_{21},\dots,X_{2n_2} \qquad \cdots \qquad \text{Population }K: X_{K1},\dots,X_{Kn_K} \]</p>
+  <p>MANOVA is used first to investigate <strong>whether</strong> the population mean vectors are the same, and if not, <strong>which mean components</strong> differ significantly. It's the direct multivariate generalisation of one-way ANOVA, so the whole derivation mirrors the univariate case — every scalar sum of squares becomes a matrix of sums of squares and cross-products (an "SSP matrix").</p>
+  <div class="key">
+    <span class="box-label">Assumptions for one-way MANOVA</span>
+    <ol>
+      <li>\(X_{i1},X_{i2},\dots,X_{in_i}\ (i=1,\dots,K)\) is a random sample of size \(n_i\) from a population with mean \(\mu_i\). The samples from different populations are independent.</li>
+      <li>All populations share a <strong>common covariance matrix</strong> \(\Sigma\).</li>
+      <li>Each population is <strong>multivariate normal</strong>.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide" id="p5-model">
+  <span class="slide-tag">Page 2</span>
+  <h3>2. The one-way MANOVA model &amp; the T = B + W decomposition</h3>
+  <p>Let \(X_{i1},\dots,X_{in_i}\ (i=1,\dots,K)\) be the observations of the \(i\)-th random sample. We want to test</p>
+  <p>\[ H_0:\mu_1=\mu_2=\cdots=\mu_K \quad \text{vs.} \quad H_1: \text{not all } \mu_i \text{ equal (two-sided)} \]</p>
+  <div class="def">
+    <span class="box-label">MANOVA model (one-way)</span>
+    <p>\[ X_{ij} = \mu + \tau_i + e_{ij} \qquad (j=1,\dots,n_i;\ i=1,\dots,K) \]</p>
+    <p>where the \(e_{ij}\) are independent \(N_p(0,\Sigma)\) residual (error) vectors. \(\mu\) is an overall mean vector and \(\tau_i\) is the \(i\)-th treatment effect, with the constraint \(\sum_{i=1}^K n_i\tau_i=0\). Each <em>component</em> of \(X_{ij}\) satisfies the familiar univariate model \(x_{ij}=\mu+\tau_i+e_{ij}\) — MANOVA is just this, stacked across \(p\) variables at once.</p>
+  </div>
+  <p>Exactly as in ANOVA, any observation vector decomposes as</p>
+  <p>\[ \underbrace{X_{ij}}_{\text{observation}} = \underbrace{\bar X}_{\text{overall mean}} + \underbrace{(\bar X_i - \bar X)}_{\text{estimated treatment effect }\hat\tau_i} + \underbrace{(X_{ij}-\bar X_i)}_{\text{residual }\hat e_{ij}} \]</p>
+  <p>Writing \((X_{ij}-\bar X)(X_{ij}-\bar X)'\) and adding/subtracting \(\bar X_i\) inside both factors, the cross terms vanish when summed over \(j\) (because \(\sum_j(X_{ij}-\bar X_i)=0\) — deviations from a mean always sum to zero). What survives is the multivariate analogue of the ANOVA sum-of-squares split:</p>
+  <p>\[ \underbrace{\sum_{i=1}^K\sum_{j=1}^{n_i}(X_{ij}-\bar X)(X_{ij}-\bar X)'}_{T\ \text{— Total (corrected) SSP}} \;=\; \underbrace{\sum_{i=1}^K n_i(\bar X_i-\bar X)(\bar X_i-\bar X)'}_{B\ \text{— Between (Treatment) SSP}} \;+\; \underbrace{\sum_{i=1}^K\sum_{j=1}^{n_i}(X_{ij}-\bar X_i)(X_{ij}-\bar X_i)'}_{W\ \text{— Within (Residual) SSP}} \]</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>\[ \boxed{T = B + W} \]</p>
+    <p>Every scalar in the univariate ANOVA table (\(SS_{total}=SS_{treatment}+SS_{error}\)) becomes a \(p\times p\) matrix here — a "sum of squares and cross-products" (SSP) matrix. The within matrix \(W\) can equivalently be written as \(W=(n_1-1)S_1+(n_2-1)S_2+\cdots+(n_K-1)S_K\), where \(S_i\) is the sample covariance matrix of the \(i\)-th group — i.e. \(W\) is just the (unscaled) pooled covariance matrix.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>If ANOVA splits "how spread out the numbers are" into between-group and within-group pieces, MANOVA splits "how spread out the <em>points</em> are in \(p\)-dimensional space" into the same two pieces — except now "spread" is an ellipsoid (described by a matrix), not a single number.</p>
+  </div>
+</section>
+
+<section class="slide" id="p5-wilks">
+  <span class="slide-tag">Pages 3–5</span>
+  <h3>3. The MANOVA table &amp; Wilk's Lambda</h3>
+  <table class="grid">
+    <tr><th>Source of Variation</th><th>Matrix of SS &amp; Cross-Products</th><th>d.f.</th></tr>
+    <tr><td>Treatment</td><td>\(B\)</td><td>\(K-1\)</td></tr>
+    <tr><td>Error (Residual)</td><td>\(W\)</td><td>\(\sum n_i - K = N-K\)</td></tr>
+    <tr><td>Total (corrected)</td><td>\(T=B+W\)</td><td>\(\sum n_i - 1 = N-1\)</td></tr>
+  </table>
+  <p>where \(N=\sum_{i=1}^K n_i\). The hypothesis \(H_0:\mu_1=\cdots=\mu_K\) is equivalent to \(H_0:\tau_1=\cdots=\tau_K=0\) (no treatment effect). To test it we use <strong>Wilk's Lambda</strong>, proposed by Wilks as the multivariate analogue of the univariate \(F\)-test:</p>
+  <div class="def">
+    <span class="box-label">Definition — Wilk's Lambda</span>
+    <p>\[ \Lambda^* = \frac{|W|}{|B+W|} = \frac{|W|}{|T|} \]</p>
+    <p>Small \(\Lambda^*\) (close to 0) means the between-group spread \(B\) is large relative to the within-group spread \(W\) — strong evidence <em>against</em> \(H_0\). \(\Lambda^*\) close to 1 means \(B\) is negligible next to \(W\) — consistent with \(H_0\).</p>
+  </div>
+  <p>Depending on the number of variables \(p\) and number of groups \(K\), \(\Lambda^*\) (or a simple transform of it) converts <em>exactly</em> into an \(F\)-distributed statistic:</p>
+  <table class="grid">
+    <tr><th>No. of variables</th><th>No. of groups</th><th>Exact sampling distribution</th></tr>
+    <tr><td>\(p=1\)</td><td>\(K\ge2\)</td><td>\(\dfrac{N-K}{K-1}\left(\dfrac{1-\Lambda^*}{\Lambda^*}\right)\sim F_{K-1,\,N-K}\)</td></tr>
+    <tr><td>\(p=2\)</td><td>\(K\ge2\)</td><td>\(\dfrac{N-K-1}{K-1}\left(\dfrac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}}\right)\sim F_{2(K-1),\,2(N-K-1)}\)</td></tr>
+    <tr><td>\(p\ge1\)</td><td>\(K=2\)</td><td>\(\dfrac{N-p-1}{p}\left(\dfrac{1-\Lambda^*}{\Lambda^*}\right)\sim F_{p,\,N-p-1}\)</td></tr>
+    <tr><td>\(p\ge1\)</td><td>\(K=3\)</td><td>\(\dfrac{N-p-2}{p}\left(\dfrac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}}\right)\sim F_{2p,\,2(N-p-2)}\)</td></tr>
+  </table>
+  <p class="small">These are the four special cases your notes give where Wilk's Lambda has an <em>exact</em> F-distribution; for general \(p,K\) one uses an approximation (Bartlett's or Rao's), which lies beyond what's needed here.</p>
+</section>
+
+<section class="slide" id="p5-worked1">
+  <span class="slide-tag">Pages 6–7</span>
+  <h3>4. Worked Example 1 — Total, Between &amp; Within SSP matrices</h3>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes</span>
+    <p>For some experiment the sample sizes are \(n_1=n_2=n_3=10\), and we have:</p>
+    <p>\[ \bar X_1=\begin{bmatrix}20.20\\6.50\end{bmatrix},\quad \bar X_2=\begin{bmatrix}17.90\\6.70\end{bmatrix},\quad \bar X_3=\begin{bmatrix}20.60\\7.50\end{bmatrix} \]</p>
+    <p>\[ S_1=\begin{bmatrix}1.51&0.11\\0.11&1.17\end{bmatrix},\quad S_2=\begin{bmatrix}1.43&0.52\\0.52&0.68\end{bmatrix},\quad S_3=\begin{bmatrix}0.93&-0.11\\-0.11&0.72\end{bmatrix} \]</p>
+    <p><strong>Compute the Total, Between, and Within SSP matrices.</strong></p>
+    <p style="margin-top:14px"><strong>Step 1 — Grand mean.</strong> Since all three sample sizes are equal, \(\bar X=\tfrac13(\bar X_1+\bar X_2+\bar X_3) = \begin{bmatrix}19.57\\6.90\end{bmatrix}\).</p>
+    <p><strong>Step 2 — Between matrix.</strong> \(B=\sum_i n_i(\bar X_i-\bar X)(\bar X_i-\bar X)'\). Summing the three rank-1 contributions (each scaled by \(n_i=10\)):</p>
+    <p>\[ B = \begin{bmatrix}42.47 & 7.00\\7.00 & 5.60\end{bmatrix} \]</p>
+    <p><strong>Step 3 — Within matrix.</strong> \(W=(n_1-1)S_1+(n_2-1)S_2+(n_3-1)S_3 = 9(S_1+S_2+S_3)\):</p>
+    <p>\[ W = \begin{bmatrix}34.90 & 4.70\\4.70 & 23.10\end{bmatrix} \]</p>
+    <p><strong>Step 4 — Total.</strong> \(T=B+W=\begin{bmatrix}77.37 & 11.70\\11.70 & 28.70\end{bmatrix}\).</p>
+  </div>
+</section>
+
+<section class="slide" id="p5-worked2">
+  <span class="slide-tag">Pages 8–11</span>
+  <h3>5. Worked Example 2 — The full MANOVA hypothesis test</h3>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes</span>
+    <p>Three populations give these data points (\(p=2\)):</p>
+    <p>Population 1: \((9,3),(6,2),(9,7)\)&nbsp; (\(n_1=3\)) &nbsp;&nbsp; Population 2: \((0,4),(2,0)\)&nbsp; (\(n_2=2\)) &nbsp;&nbsp; Population 3: \((3,8),(1,9),(2,7)\)&nbsp; (\(n_3=3\))</p>
+    <p><strong>Perform MANOVA and test the difference of mean vectors at 5%.</strong></p>
+    <p style="margin-top:14px"><strong>Step 1 — Group means and grand mean.</strong></p>
+    <p>\[ \bar X_1=\begin{bmatrix}8\\4\end{bmatrix},\ \ \bar X_2=\begin{bmatrix}1\\2\end{bmatrix},\ \ \bar X_3=\begin{bmatrix}2\\8\end{bmatrix},\qquad \bar X=\frac{3\bar X_1+2\bar X_2+3\bar X_3}{8}=\begin{bmatrix}4\\5\end{bmatrix} \]</p>
+    <p><strong>Step 2 — Between matrix \(B\).</strong></p>
+    <p>\[ B = 3\begin{bmatrix}4\\-1\end{bmatrix}\begin{bmatrix}4&-1\end{bmatrix} + 2\begin{bmatrix}-3\\-3\end{bmatrix}\begin{bmatrix}-3&-3\end{bmatrix} + 3\begin{bmatrix}-2\\3\end{bmatrix}\begin{bmatrix}-2&3\end{bmatrix} = \begin{bmatrix}78&-12\\-12&48\end{bmatrix} \]</p>
+    <p><strong>Step 3 — Within matrix \(W\).</strong> Computing each \(S_i\) from its own group (e.g. for Population 1, \(S_{11}=\tfrac12[(9-8)^2+(6-8)^2+(9-8)^2]=3\), etc.) gives \(S_1=\begin{bmatrix}3&3\\3&7\end{bmatrix}\), \(S_2=\begin{bmatrix}2&-4\\-4&8\end{bmatrix}\), \(S_3=\begin{bmatrix}1&-0.5\\-0.5&1\end{bmatrix}\). Then:</p>
+    <p>\[ W=(3-1)S_1+(2-1)S_2+(3-1)S_3 = \begin{bmatrix}10&1\\1&24\end{bmatrix} \]</p>
+    <p><strong>Step 4 — Total.</strong> \(T=B+W=\begin{bmatrix}88&-11\\-11&72\end{bmatrix}\).</p>
+    <p><strong>Step 5 — Wilk's Lambda.</strong></p>
+    <p>\[ \Lambda^*=\frac{|W|}{|T|} = \frac{10(24)-1(1)}{88(72)-(-11)(-11)} = \frac{239}{6215} = 0.0384 \]</p>
+    <p><strong>Step 6 — Test statistic.</strong> Here \(K=3\), \(p=2\), \(N=8\), so we use the \(p=2,\,K\ge2\) exact distribution:</p>
+    <p>\[ \frac{N-K-1}{K-1}\left(\frac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}}\right) = \frac{8-3-1}{3-1}\left(\frac{1-\sqrt{0.0384}}{\sqrt{0.0384}}\right) = 2\times\frac{1-0.1961}{0.1961} = 2\times4.099 = 8.20 \]</p>
+    <p>which follows \(F_{2(K-1),\,2(N-K-1)} = F_{4,8}\) under \(H_0\).</p>
+    <div class="key">
+      <span class="box-label">Decision</span>
+      <p>\(F_{4,8}(0.01)=7.01\). Since the calculated statistic \(8.20 > 7.01\), we <strong>reject \(H_0\)</strong> — even at the stricter 1% level (and so certainly at 5%) — and conclude that a genuine treatment (group) difference exists among the three population mean vectors.</p>
+    </div>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 6 of 8</div>
+  <h2>Multivariate Linear Regression (MvLR)</h2>
+  <p>Ordinary (multiple) linear regression predicts <em>one</em> dependent variable from several independent variables. Multivariate Linear Regression predicts <strong>several</strong> dependent variables from the same set of independent variables, all at once — and remarkably, the least-squares estimator comes out to exactly the same clean formula, just with matrices instead of vectors.</p>
+</div>
+
+<section class="slide" id="p6-setup">
+  <span class="slide-tag">Pages 1–2</span>
+  <h3>1. From MLR to MvLR</h3>
+  <p>In ordinary Multiple Linear Regression (MLR), a single dependent variable \(Y\) is explained by independent variables \(X_1,X_2,\dots,X_p\) (plus the intercept \(X_0=1\)). In MvLR, there isn't just one \(Y\) — there are <em>several</em> dependent variables \(Y_1,Y_2,\dots,Y_q\), and <strong>all of them depend on the same set</strong> of independent variables \(X_1,\dots,X_p\):</p>
+  <p>\[ Y_1=\beta_{10}+\beta_{11}X_1+\beta_{12}X_2+\cdots+\beta_{1p}X_p+\epsilon_1 \]</p>
+  <p>\[ Y_2=\beta_{20}+\beta_{21}X_1+\beta_{22}X_2+\cdots+\beta_{2p}X_p+\epsilon_2 \]</p>
+  <p>\[ \vdots \]</p>
+  <p>\[ Y_q=\beta_{q0}+\beta_{q1}X_1+\beta_{q2}X_2+\cdots+\beta_{qp}X_p+\epsilon_q \]</p>
+  <table class="grid">
+    <tr><th></th><th>MLR</th><th>MvLR</th></tr>
+    <tr><td>No. of DVs</td><td>1</td><td>\(q>1\)</td></tr>
+    <tr><td>No. of IVs</td><td>\(p\)</td><td>\(p\) (same set, shared by every DV)</td></tr>
+    <tr><td>\(\beta\) shape</td><td>\((p+1)\times1\)</td><td>\((p+1)\times q\) — one column of coefficients per DV</td></tr>
+  </table>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Picture \(p\) independent-variable boxes all feeding into \(q\) separate dependent-variable circles, each with its own error term \(\epsilon_i\). Every arrow from an \(X\) to a \(Y_i\) carries its own regression coefficient \(\beta_{ij}\); adding a second (or third...) dependent variable to the picture is exactly what turns MLR into MvLR.</p>
+  </div>
+</section>
+
+<section class="slide" id="p6-model">
+  <span class="slide-tag">Page 3</span>
+  <h3>2. The MvLR model in matrix form</h3>
+  <p>Suppose we collect \(n\) data points on \(q\) dependent variables and \(p\) independent variables. Stack the dependent-variable observations into an \(n\times q\) data matrix \(Y\), and the independent variables (with a leading column of 1's for the intercept) into the \(n\times(p+1)\) <strong>design matrix</strong> \(X\):</p>
+  <p>\[ X = \begin{bmatrix} 1 & x_{11}&x_{12}&\cdots&x_{1p}\\ 1& x_{21}&x_{22}&\cdots&x_{2p}\\ \vdots&&&&\vdots\\ 1&x_{n1}&x_{n2}&\cdots&x_{np}\end{bmatrix}_{n\times(p+1)} \]</p>
+  <p>Taking the \(i\)-th observation on \(Y\) and \(X\) for \(i=1,\dots,n\) and stacking all \(q\) equations, repeated across all \(n\) observations, gives the full <strong>MvLR model equation</strong>:</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>\[ \boxed{\,Y_{n\times q} \;=\; X_{n\times(p+1)}\ \beta_{(p+1)\times q} \;+\; \epsilon_{n\times q}\,} \]</p>
+    <p>This is <em>identical in form</em> to the ordinary MLR equation \(Y_{n\times1}=X_{n\times(p+1)}\beta_{(p+1)\times1}+\epsilon_{n\times1}\) — the only thing that changes is that \(Y\), \(\beta\) and \(\epsilon\) pick up an extra column for each additional dependent variable. \(\beta\)'s \(j\)-th column holds the regression coefficients for \(Y_j\) alone: \(\beta=\big[\beta_1\ \vdots\ \beta_2\ \vdots\ \cdots\ \vdots\ \beta_q\big]\), each \(\beta_j\) being \((p+1)\times1\).</p>
+  </div>
+</section>
+
+<section class="slide" id="p6-estimation">
+  <span class="slide-tag">Pages 4–6</span>
+  <h3>3. Estimating \(\beta\): least squares in matrix form</h3>
+  <p><strong>Assumptions</strong> (mirroring ordinary MLR): the conditional mean \(E(Y\mid X=x_i)\) lies on the regression hyperplane (linearity); the errors are homoscedastic; observations are independent; and \(\epsilon\sim N_q(0,\Sigma)\) for every row, with \(\Sigma\) common to all \(n\) rows.</p>
+  <p>Just as in MLR, we minimise the error sum of squares. For a single regression \(Y_1=X\beta_1+\epsilon_1\), minimising \(\epsilon_1'\epsilon_1=(Y_1-X\beta_1)'(Y_1-X\beta_1)\) by setting \(\partial SSE/\partial\beta=0\) gives the familiar normal-equations solution \(\hat\beta_1=(X'X)^{-1}X'Y_1\). The same derivation applies <strong>column-by-column</strong> for every \(Y_j\) in MvLR, since each dependent variable uses the same design matrix \(X\):</p>
+  <p>\[ \hat\beta_j = (X'X)^{-1}X'Y_j \qquad j=1,\dots,q \]</p>
+  <p>Stacking all \(q\) of these column solutions side by side is exactly equivalent to solving the whole matrix equation at once:</p>
+  <div class="def">
+    <span class="box-label">Definition — MvLR least-squares estimator</span>
+    <p>\[ \boxed{\hat\beta = (X'X)^{-1}X'Y} \]</p>
+    <p>where \(Y=[Y_1\ \vdots\ Y_2\ \vdots\cdots\vdots\ Y_q]\) is now the full \(n\times q\) data matrix. This is derived by minimising the <strong>trace</strong> of the error sum-of-squares-and-cross-products matrix \(\epsilon'\epsilon\) (a \(q\times q\) matrix, no longer a scalar once \(q>1\)):</p>
+    <p>\[ \epsilon'\epsilon = \begin{bmatrix}\sum\epsilon_{i1}^2 & \sum\epsilon_{i1}\epsilon_{i2}&\cdots\\ \sum\epsilon_{i1}\epsilon_{i2} & \sum\epsilon_{i2}^2 &\cdots\\ \vdots&&\ddots\end{bmatrix}_{q\times q} = \text{SSCP}_E \]</p>
+    <p>\(\text{tr}(\text{SSCP}_E)=\sum_i(\epsilon_{i1}^2+\epsilon_{i2}^2+\cdots+\epsilon_{iq}^2)\) is exactly the total error sum of squares, summed across <em>all</em> dependent variables — minimising this trace with respect to every \(\beta_{kj}\) reproduces the same normal equations as the single-variable case, giving the single clean formula above.</p>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>\(\hat\beta=(X'X)^{-1}X'Y\) looks identical to ordinary MLR — because it <em>is</em> identical, with \(Y\) simply holding \(q\) columns instead of 1. There's no new matrix algebra to learn here: the entire jump from MLR to MvLR is just "do the same regression once per dependent variable, using the one shared design matrix \(X\)" — and the matrix formula packages that into a single multiplication.</p>
+  </div>
+</section>
+
+<section class="slide" id="p6-worked">
+  <span class="slide-tag">Pages 7–8</span>
+  <h3>4. Worked example</h3>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes</span>
+    <p>With \(q=2\) dependent variables and \(p=2\) independent variables, \(n=3\) observations:</p>
+    <p>\[ Y_{3\times2}=\begin{bmatrix}10&100\\12&110\\11&105\end{bmatrix} \qquad X_{3\times2}=\begin{bmatrix}9&62\\8&58\\7&64\end{bmatrix} \]</p>
+    <p><strong>Step 1 — Build the design matrix</strong> (add the intercept column):</p>
+    <p>\[ X_{3\times3}=\begin{bmatrix}1&9&62\\1&8&58\\1&7&64\end{bmatrix} \]</p>
+    <p><strong>Step 2 — Compute \(X'X\) and invert it:</strong></p>
+    <p>\[ X'X=\begin{bmatrix}3&24&184\\24&194&1470\\184&1470&11304\end{bmatrix} \qquad (X'X)^{-1}\approx\begin{bmatrix}320.76&-8.16&-4.16\\-8.16&0.56&0.06\\-4.16&0.06&0.06\end{bmatrix} \]</p>
+    <p><strong>Step 3 — Compute \(X'Y\):</strong></p>
+    <p>\[ X'Y=\begin{bmatrix}1&1&1\\9&8&7\\62&58&64\end{bmatrix}\begin{bmatrix}10&100\\12&110\\11&105\end{bmatrix}=\begin{bmatrix}33&315\\263&2515\\2020&19300\end{bmatrix} \]</p>
+    <p><strong>Step 4 — \(\hat\beta=(X'X)^{-1}X'Y\):</strong></p>
+    <p>\[ \hat\beta=\begin{bmatrix}35.80&229\\-0.80&-4.00\\-0.30&-1.50\end{bmatrix} = \begin{bmatrix}\hat\beta_{10}&\hat\beta_{20}\\\hat\beta_{11}&\hat\beta_{21}\\\hat\beta_{12}&\hat\beta_{22}\end{bmatrix} \]</p>
+    <p>So the first column gives the regression of \(Y_1\) on \(X_1,X_2\), and the second column gives the regression of \(Y_2\) on the <em>same</em> \(X_1,X_2\):</p>
+    <p>\[ \hat Y_1 = 35.80 - 0.80X_1 - 0.30X_2 + \epsilon_1 \qquad\qquad \hat Y_2 = 229 - 4.00X_1 - 1.50X_2 + \epsilon_2 \]</p>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>It's tempting to write \(Y=X\hat\beta\) as one big matrix product and then try to read \(Y_1=X_1\hat\beta_{10}+X_2\hat\beta_{20}+\cdots\) straight off the matrix layout — but the columns of \(\hat\beta\) don't mix with each other, and the rows of \(\hat\beta\) don't mix with the columns of \(Y\) the way you'd read a table. The correct reading is column-wise: column \(j\) of \(\hat\beta\) belongs entirely to \(Y_j\), giving the \(q\) separate regression equations shown above — never combine coefficients across columns.</p>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 7 of 8</div>
+  <h2>PCA, Factor Analysis, Discriminant Analysis &amp; Clustering</h2>
+  <p>Your fourth source document runs across four related "dimension reduction / grouping" techniques: Principal Component Analysis compresses many correlated variables into a few uncorrelated ones; Factor Analysis explains the covariance structure through a handful of hidden factors; Discriminant Analysis finds the best rule for sorting new observations into known groups; and Cluster Analysis groups observations when the groups themselves aren't known in advance. This part works through all four in the order your notes present them.</p>
+</div>
+
+<section class="slide" id="p7-pca-intro">
+  <span class="slide-tag">Page 1</span>
+  <h3>1. What Principal Component Analysis does</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Principal Component Analysis (PCA)</strong> is concerned with explaining the variance–covariance structure of a set of variables through a <em>few</em> linear combinations of those variables. Its general objectives are: (1) <strong>data reduction</strong>, and (2) <strong>interpretation</strong>.</p>
+  </div>
+  <p>Although \(p\) components are required to reproduce the total variability in the system exactly, often <em>most</em> of that variability can be accounted for by a small number \(k\) of principal components. If so, there is (almost) as much information in those \(k\) components as in the original \(p\) variables — and the data set can be reduced from \(n\) measurements on \(p\) variables to \(n\) measurements on just \(k\) principal components, with very little loss.</p>
+  <div class="an">
+    <span class="box-label">Analogy</span>
+    <p>Imagine a cloud of points scattered mostly along a diagonal line, with only a little scatter perpendicular to it. PCA finds that diagonal direction — the direction of <em>maximum variability</em> — and calls it the first principal component. It then finds the next-best, <em>uncorrelated</em>, direction, and so on. For many real data sets, the first one or two directions already capture most of what's "going on," which is the whole point of the technique.</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-pca-population">
+  <span class="slide-tag">Pages 2–4</span>
+  <h3>2. Population principal components</h3>
+  <p>Algebraically, principal components are particular linear combinations of the \(p\) random variables \(X_1,X_2,\dots,X_p\). Geometrically, they represent a new coordinate system obtained by <strong>rotating</strong> the original axes \(X_1,\dots,X_p\) — the new axes point in the directions of maximum variability, which gives a simpler description of the covariance structure.</p>
+  <p>Let the random vector \(X=(X_1,\dots,X_p)'\) have covariance matrix \(\Sigma\) with eigenvalues \(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0\). Consider the linear combinations</p>
+  <p>\[ Z_1=a_1'X,\quad Z_2=a_2'X,\quad \dots,\quad Z_p=a_p'X \]</p>
+  <p>with \(V(Z_i)=a_i'\Sigma a_i\) and \(\text{Cov}(Z_i,Z_k)=a_i'\Sigma a_k\). The <strong>principal components</strong> are those uncorrelated linear combinations \(Z_1,\dots,Z_p\) whose variances are as <em>large</em> as possible:</p>
+  <table class="grid">
+    <tr><th>Component</th><th>Defining optimisation</th></tr>
+    <tr><td>1st PC</td><td>maximise \(V(a_1'X)=a_1'\Sigma a_1\) subject to \(a_1'a_1=1\)</td></tr>
+    <tr><td>2nd PC</td><td>maximise \(V(a_2'X)\) subject to \(a_2'a_2=1\) <strong>and</strong> \(\text{Cov}(a_1'X,a_2'X)=0\)</td></tr>
+    <tr><td>\(i\)-th PC</td><td>maximise \(V(a_i'X)\) subject to \(a_i'a_i=1\) and \(\text{Cov}(a_i'X,a_k'X)=0\) for all \(k<i\)</td></tr>
+  </table>
+  <div class="an">
+    <span class="box-label">Picture: rotating the axes</span>
+    <p>If you rotate the original \((X_1,X_2)\) axes anticlockwise by some angle \(\theta\) onto new axes \((Z_1,Z_2)\), you can choose \(\theta\) so that the data cloud's major axis lines up exactly with \(Z_1\). In this rotated frame the data forms an <strong>uncorrelated structure</strong>: \(V(Z_1)\gg V(Z_2)\), the two axes are orthogonal, and (unlike the original correlated \(X_1,X_2\) picture, where the ellipse's major axis is tilted away from both axes) almost all the "spread" now lives along \(Z_1\) alone. PCA finds this rotation in \(p\) dimensions, not just two.</p>
+  </div>
+  <div class="key">
+    <span class="box-label">Result 1 — the principal components, explicitly</span>
+    <p>Let \(\Sigma\) have eigenvalue–eigenvector pairs \((\lambda_1,e_1),(\lambda_2,e_2),\dots,(\lambda_p,e_p)\) with \(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_p\ge0\). Then the \(i\)-th principal component is</p>
+    <p>\[ Z_i = e_i'X = e_{i1}X_1+e_{i2}X_2+\cdots+e_{ip}X_p \qquad (i=1,\dots,p) \]</p>
+    <p>and with these choices, \(V(Z_i)=e_i'\Sigma e_i=\lambda_i\) and \(\text{Cov}(Z_i,Z_k)=e_i'\Sigma e_k=0\ (i\ne k)\). In words: <strong>the eigenvectors of \(\Sigma\) are the directions of the principal components, and the eigenvalues are their variances.</strong></p>
+  </div>
+  <div class="key">
+    <span class="box-label">Result 2 — total variance &amp; proportion explained</span>
+    <p>\[ \sigma_{11}+\sigma_{22}+\cdots+\sigma_{pp} = \text{tr}(\Sigma) = \sum_{i=1}^p V(X_i) = \lambda_1+\lambda_2+\cdots+\lambda_p = \sum_{i=1}^p V(Z_i) \]</p>
+    <p>So the <strong>total variance</strong> is unchanged by the rotation — PCA doesn't create or destroy variability, it only reorganises where it "lives." Consequently, the <strong>proportion of total variance due to the \(k\)-th principal component</strong> is</p>
+    <p>\[ \frac{\lambda_k}{\lambda_1+\lambda_2+\cdots+\lambda_p} \qquad k=1,\dots,p \]</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Result 3 — correlation between a component and a variable</span>
+    <p>If \(Z_1=e_1'X,\dots,Z_p=e_p'X\) are the principal components of \(\Sigma\), then</p>
+    <p>\[ \rho_{Z_i,X_k} = \frac{e_{ik}\sqrt{\lambda_i}}{\sqrt{\sigma_{kk}}} \qquad i,k=1,\dots,p \]</p>
+    <p>are the correlation coefficients between component \(Z_i\) and the original variable \(X_k\) — useful for deciding which original variables a given component is "mostly about."</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-pca-worked1">
+  <span class="slide-tag">Pages 7–9</span>
+  <h3>3. Worked Example — population PCA from \(\Sigma\)</h3>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes</span>
+    <p>\(X_1,X_2,X_3\) have covariance matrix \(\Sigma=\begin{bmatrix}1&-2&0\\-2&5&0\\0&0&2\end{bmatrix}\), with eigenpairs \(\lambda_1=5.83,\ e_1'=(-0.383,-0.924,0)\); \(\lambda_2=2.00,\ e_2'=(0,0,1)\); \(\lambda_3=0.17,\ e_3'=(0.924,0.383,0)\).</p>
+    <p><strong>(i) The principal components</strong> are</p>
+    <p>\[ Z_1=-0.383X_1-0.924X_2+0X_3,\qquad Z_2=X_3,\qquad Z_3=0.924X_1+0.383X_2+0X_3 \]</p>
+    <p>\(X_3\) is itself one of the principal components, because it's already uncorrelated with the other two variables.</p>
+    <p><strong>(ii) Total variability</strong> \(=\sigma_{11}+\sigma_{22}+\sigma_{33}=1+5+2=8=\lambda_1+\lambda_2+\lambda_3=5.83+2.00+0.17\).</p>
+    <p><strong>(iii) Proportion explained:</strong> \(\lambda_1/8=5.83/8=0.73\) (73%, by \(Z_1\) alone); \(\lambda_2/8=0.25\) (25%); \(\lambda_3/8=0.0213\) (2%).</p>
+    <p><strong>(iv) Correlation of \(Z_1\) with each variable:</strong> \(\rho_{Z_1,X_1}=\dfrac{-0.383\sqrt{5.83}}{\sqrt{1}}=-0.924\); &nbsp; \(\rho_{Z_1,X_2}=\dfrac{-0.924\sqrt{5.83}}{\sqrt{5}}=-0.998\); &nbsp; \(\rho_{Z_1,X_3}=0\) (since the eigenvector component for \(X_3\) in \(e_1\) is zero).</p>
+  </div>
+  <div class="fix">
+    <span class="box-label">Correction to your notes</span>
+    <p>Your notes compute \(\rho_{Z_1,X_2}\) using \(\sqrt{\lambda_2}=\sqrt{2.00}\) instead of \(\sqrt{\lambda_1}=\sqrt{5.83}\) (the eigenvalue of the component actually being correlated, \(Z_1\)), giving \(-0.584\). The correlation formula always uses the eigenvalue of the <em>component in question</em> — here \(Z_1\), so \(\lambda_1\) — giving the corrected value \(-0.998\) shown above.</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-pca-worked2">
+  <span class="slide-tag">Pages 9–10</span>
+  <h3>4. Worked Example — sample PCA from \(S\)</h3>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes</span>
+    <p>\(S=\begin{bmatrix}14&-11\\-11&23\end{bmatrix}\), \(n=50\). Find the first principal component and the variance it explains.</p>
+    <p><strong>Eigenvalues</strong> from \(|S-\lambda I|=0\): \((14-\lambda)(23-\lambda)-121=\lambda^2-37\lambda+201=0\), giving \(\lambda=\dfrac{37\pm\sqrt{565}}{2}\), so \(\lambda_1=30.40,\ \lambda_2=6.60\).</p>
+    <p><strong>Eigenvector for \(\lambda_1\):</strong> from \((14-\lambda_1)e_1-11e_2=0 \Rightarrow e_1=-0.6708\,e_2\). Choosing \(e_2=1\) and normalising (\(\lVert(-0.6708,1)\rVert=1.2042\)) gives \(e_1=(-0.5571,\,0.8305)\).</p>
+    <p>\[ Z_1 = -0.5571X_1+0.8305X_2 \]</p>
+    <p><strong>Variance explained by \(Z_1\):</strong> \(\dfrac{\lambda_1}{\lambda_1+\lambda_2}=\dfrac{30.40}{37.00}=0.8212\), i.e. about <strong>82.1%</strong> of the total sample variance.</p>
+  </div>
+</section>
+<section class="slide" id="p7-fa-intro">
+  <span class="slide-tag">Pages 11–12</span>
+  <h3>5. Factor Analysis — motivation &amp; the orthogonal factor model</h3>
+  <p>Real datasets often contain many correlated variables. In a consumer survey, variables like Taste, Flavour, Aroma, Freshness might all be driven by one hidden factor, "Food Quality." In a health survey, Blood Pressure, Cholesterol, and Heart Rate might all relate to a single hidden factor, "Cardiovascular Health." The question Factor Analysis asks: <strong>can we reduce the observed variables into a smaller number of unobserved factors that explain most of the variation?</strong></p>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Factor Analysis</strong> is a set of techniques that permits the reduction of a large number of interrelated variables to a smaller number of hidden dimensions ("factors") that explain the maximum variability of the original set. Its essential purpose is to describe the covariance relationships among many variables in terms of a few underlying, unobservable random quantities called <strong>factors</strong>. Grouping is done so that variables within a subset are mutually highly correlated, while variables in different subsets are relatively uncorrelated.</p>
+  </div>
+  <div class="def">
+    <span class="box-label">Definition — the orthogonal factor model</span>
+    <p>The observable vector \(X\) (\(p\) components, mean \(\mu\), covariance \(\Sigma\)) is postulated to depend linearly on \(m\) unobservable common factors \(F_1,\dots,F_m\), plus \(p\) additional sources of variation \(\epsilon_1,\dots,\epsilon_p\) called <strong>specific factors</strong> (errors):</p>
+    <p>\[ X_i-\mu_i = \ell_{i1}F_1+\ell_{i2}F_2+\cdots+\ell_{im}F_m+\epsilon_i \qquad i=1,\dots,p \]</p>
+    <p>or in matrix form, \(X_{(p\times1)}-\mu_{(p\times1)} = L_{(p\times m)}F_{(m\times1)}+\epsilon_{(p\times1)}\). The coefficient \(\ell_{ij}\) is the <strong>loading</strong> of the \(i\)-th variable on the \(j\)-th factor, so \(L\) is the matrix of factor loadings.</p>
+  </div>
+  <p>\(F\) and \(\epsilon\) satisfy: \(E(F)=0,\ \text{Cov}(F)=I_{m\times m}\) (so \(E(FF')=I\)); \(E(\epsilon)=0,\ \text{Cov}(\epsilon)=\Psi\), a diagonal matrix \(\text{diag}(\psi_1,\dots,\psi_p)\); and \(F,\epsilon\) are independent, so \(\text{Cov}(\epsilon,F)=0\).</p>
+</section>
+
+<section class="slide" id="p7-fa-covstructure">
+  <span class="slide-tag">Pages 13–14</span>
+  <h3>6. Covariance structure, communality &amp; specific variance</h3>
+  <p>From \(X-\mu=LF+\epsilon\): \((X-\mu)(X-\mu)'=(LF+\epsilon)(LF+\epsilon)'=LF(LF)'+\epsilon(LF)'+LF(\epsilon)'+\epsilon\epsilon'\). Taking expectations (and using \(F,\epsilon\) independent with \(E(FF')=I\), \(\text{Cov}(\epsilon)=\Psi\)):</p>
+  <div class="key">
+    <span class="box-label">Key takeaway — covariance structure of the factor model</span>
+    <p>\[ \boxed{\Sigma = LL' + \Psi} \qquad\text{equivalently}\qquad V(X_i)=\sigma_{ii}=\underbrace{\ell_{i1}^2+\ell_{i2}^2+\cdots+\ell_{im}^2}_{\text{communality } h_i^2} + \underbrace{\psi_i}_{\text{specific variance}} \]</p>
+    <p>The \(i\)-th <strong>communality</strong> \(h_i^2\) is the portion of \(X_i\)'s variance contributed by the \(m\) common factors — the sum of squares of the loadings of the \(i\)-th variable on all common factors. The <strong>specific variance</strong> \(\psi_i\) is the portion left over, due to \(X_i\)'s own specific factor alone.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes — \(m=1\) factor model</span>
+    <p>\(\Sigma=\begin{bmatrix}1&-0.13&0.09\\-0.13&1&-0.63\\0.09&-0.63&1\end{bmatrix}\) for \((X_1,X_2,X_3)\), with \(m=1\). Find the loading matrix \(L\), the specific-variance matrix \(\Psi\), and the communalities.</p>
+    <p>With \(m=1\), \(L=(\ell_{11},\ell_{21},\ell_{31})'\) is a single column, and \(\Sigma=LL'+\Psi\) gives off-diagonal equations \(\ell_{11}\ell_{21}=-0.13\), \(\ell_{21}\ell_{31}=-0.63\), \(\ell_{11}\ell_{31}=0.09\). Solving these three simultaneously (multiply the first and third, divide by the second, then back-substitute) gives</p>
+    <p>\[ L = \begin{bmatrix}0.0186\\-0.9531\\0.6610\end{bmatrix},\qquad \hat\Psi = \begin{bmatrix}0.9814&0&0\\0&0.0916&0\\0&0&0.5631\end{bmatrix} \]</p>
+    <p>and communalities \(h_1^2=\ell_{11}^2=1-\psi_1=0.0186\), \(h_2^2=\ell_{21}^2=1-\psi_2=0.9084\), \(h_3^2=\ell_{31}^2=1-\psi_3=0.4369\) (since \(\Sigma_{ii}=1\) here, each communality is simply \(1-\psi_i\)); total communality \(\approx1.364\).</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-fa-estimation">
+  <span class="slide-tag">Pages 17–18</span>
+  <h3>7. Method of estimation 1 — the Principal Component method</h3>
+  <p>In practice \(L\) and \(\Psi\) are unknown and must be <em>estimated</em> from a sample. The two most popular methods are the <strong>Principal Component method</strong> and the <strong>Maximum Likelihood method</strong>.</p>
+  <div class="def">
+    <span class="box-label">Definition — Principal Component method</span>
+    <p>Let \(\Sigma\) have eigenpairs \((\lambda_i,e_i)\), \(\lambda_1\ge\cdots\ge\lambda_p\ge0\). Then \(\Sigma=\lambda_1e_1e_1'+\cdots+\lambda_pe_pe_p' = LL'\) with \(L=\big[\sqrt{\lambda_1}e_1\ \vdots\ \sqrt{\lambda_2}e_2\ \vdots\cdots\big]\) — this fits the factor model exactly when \(m=p\) and \(\Psi=0\). Keeping only the first \(m<p\) columns (the \(m\) largest eigenvalues) gives the <strong>estimated</strong> loading matrix from a sample covariance matrix \(S\) (or correlation matrix \(R\)):</p>
+    <p>\[ \hat L = \big[\sqrt{\hat\lambda_1}\,\hat e_1\ \vdots\ \sqrt{\hat\lambda_2}\,\hat e_2\ \vdots\cdots\vdots\ \sqrt{\hat\lambda_m}\,\hat e_m\big] \]</p>
+    <p>and the estimated specific variances are the diagonal entries of \(S-\hat L\hat L'\): \(\hat\psi_i=s_{ii}-\sum_{j=1}^m\hat\ell_{ij}^2\). Communalities are estimated as \(\hat h_i^2=\hat\ell_{i1}^2+\cdots+\hat\ell_{im}^2\), and the proportion of total sample variance explained by the \(j\)-th factor is \(\hat\lambda_j/(s_{11}+\cdots+s_{pp})\) — or \(\hat\lambda_j/p\) when working from the correlation matrix \(R\), since each diagonal entry of \(R\) is 1.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example 1 — from a correlation matrix</span>
+    <p>\(P=\begin{bmatrix}1.0&0.63&0.45\\0.63&1.0&0.35\\0.45&0.35&1.0\end{bmatrix}\), \(\lambda_1=1.96,\ e_1'=(0.625,0.593,0.507)\); \(\lambda_2=0.68\); \(\lambda_3=0.36\). Assuming \(m=1\):</p>
+    <p>\[ \hat L=\sqrt{1.96}\begin{bmatrix}0.625\\0.593\\0.507\end{bmatrix}=\begin{bmatrix}0.875\\0.830\\0.710\end{bmatrix} \]</p>
+    <p>\(\hat\psi_i=1-\hat\ell_{i1}^2\) gives \(\hat\Psi=\text{diag}(0.234,\,0.311,\,0.496)\). Proportion of total variance explained by the first common factor: \(\lambda_1/p=1.96/3=0.653\), i.e. <strong>65.3%</strong>.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example 2 — from a covariance matrix</span>
+    <p>\(S=\begin{bmatrix}100&40&0\\40&60&0\\0&0&30\end{bmatrix}\), \(\hat\lambda_1=124.72,\ \hat\lambda_2=35.28,\ \hat\lambda_3=30\). Find the eigenvector for \(\hat\lambda_1\), the loading matrix, and the communality for \(X_2\).</p>
+    <p>Solving \((S-\hat\lambda_1I)\hat e=0\) gives \(-24.72\hat e_1+40\hat e_2=0\) and \(-94.72\hat e_3=0 \Rightarrow \hat e_3=0\), so \(\hat e_1=1.618\hat e_2\). Normalising, \(\hat e=(0.8506,\,0.5257,\,0)\).</p>
+    <p>\[ \hat L=\sqrt{124.72}\begin{bmatrix}0.8506\\0.5257\\0\end{bmatrix}=\begin{bmatrix}9.4999\\5.8713\\0\end{bmatrix} \]</p>
+    <p>Communality for \(X_2\): \(\hat h_2^2=\hat\ell_{21}^2=(5.8713)^2=34.47\). Estimated specific variance: \(\hat\psi_2=s_{22}-\hat h_2^2=60-34.47=25.53\).</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-fa-mle">
+  <span class="slide-tag">Pages 23–24</span>
+  <h3>8. Method of estimation 2 — Maximum Likelihood</h3>
+  <p>If the common factors \(F\) and specific factors \(\epsilon\) are assumed normally distributed, the observations \(X_j-\mu_j=LF_j+\epsilon_j\) are normal too, and the joint likelihood can be maximised numerically (subject to \(L'\Psi^{-1}L\) being diagonal, for a unique solution) to give MLEs \(\hat L,\hat\Psi\) and \(\hat\mu=\bar X\). As before, \(\hat h_i^2=\hat\ell_{i1}^2+\cdots+\hat\ell_{im}^2\), and the proportion of variance due to factor \(j\) is \(\big(\hat\ell_{1j}^2+\cdots+\hat\ell_{pj}^2\big)/(s_{11}+\cdots+s_{pp})\).</p>
+  <div class="ex">
+    <span class="box-label">Worked example from your notes (completed in full)</span>
+    <p>\(S=10^{-3}\begin{bmatrix}11.072&8.019&8.160\\8.019&6.417&6.005\\8.160&6.005&6.773\end{bmatrix}\) for variables length, width, height. The MLE factor loadings for an \(m=1\) model were found to be \(\hat L=(0.1022,\,0.0752,\,0.0765)'\).</p>
+    <p><strong>(a) Specific variances</strong> \(\hat\psi_i=s_{ii}-\hat\ell_{i1}^2\): \(\hat\psi_1=0.011072-0.01044=0.00063\); \(\hat\psi_2=0.006417-0.00566=0.00076\); \(\hat\psi_3=0.006773-0.00585=0.00092\) (all \(\times1\), i.e. these are already the raw, unscaled values).</p>
+    <p><strong>(b) Communalities</strong> \(\hat h_i^2=\hat\ell_{i1}^2\): \(\hat h_1^2=0.01044\), \(\hat h_2^2=0.00566\), \(\hat h_3^2=0.00585\).</p>
+    <p><strong>(c) Proportion of variance explained by \(F_1\):</strong> \(\dfrac{\hat h_1^2+\hat h_2^2+\hat h_3^2}{s_{11}+s_{22}+s_{33}}=\dfrac{0.02195}{0.02426}=0.905\) — about <strong>90.5%</strong>.</p>
+    <p><strong>(d) Residual matrix</strong> \(S-\hat L\hat L'-\hat\Psi\): since each diagonal entry of \(\hat L\hat L'+\hat\Psi\) reconstructs \(s_{ii}\) exactly by construction, the diagonal of the residual is <strong>0</strong>; the off-diagonal residuals are small (\(\approx0.0003\)), confirming the \(m=1\) model fits this data well.</p>
+  </div>
+</section>
+<section class="slide" id="p7-da-intro">
+  <span class="slide-tag">Pages 25–27</span>
+  <h3>9. Discriminant Analysis &amp; Classification</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Discriminant Analysis</strong> is a statistical technique used to classify a set of observations into predefined classes. The goal is to model the difference between classes by finding a decision boundary, or <strong>discriminant function</strong>. <strong>Classification</strong> is the related task of assigning a <em>new</em> observation to the appropriate population using that discriminant function.</p>
+  </div>
+  <div class="an">
+    <span class="box-label">Worked examples from your notes</span>
+    <p>A bank classifies loan applications into High/Medium/Low risk, and must decide where a new application belongs based on past history and other features — a classification problem. A hospital might classify a patient's parameters as Critical / Not Critical, then decide whether a new patient is critical — also classification.</p>
+  </div>
+  <p>Formally: let \(X_1,\dots,X_n\) be multidimensional feature (characteristic) vectors, \(X_1,\dots,X_n\in\mathcal X\) (the measurement space containing every possible feature vector), and suppose the cases fall into one of \(J\) classes \(C=\{1,2,\dots,J\}\). A <strong>classification rule</strong> assigns a class membership to every feature vector: for a given \(x\in\mathcal X\), a <strong>discriminant function</strong> \(d(x)\) maps \(x\) to one of the \(J\) classes, and the rule \(d\) is called a classification rule. Equivalently, a classifier <strong>partitions</strong> \(\mathcal X\) into \(J\) disjoint subsets \(A_1,\dots,A_J\) (\(A_i\cap A_j=\emptyset\) for \(i\ne j\), \(\bigcup_j A_j=\mathcal X\)) such that for every \(x\in A_j\), the predicted class is \(j\) — there is no ambiguity in assignment.</p>
+</section>
+
+<section class="slide" id="p7-da-fisher">
+  <span class="slide-tag">Pages 27–29</span>
+  <h3>10. Fisher's Linear Discriminant Function</h3>
+  <p>Consider a two-population classification problem: \(\pi_1\) with \((\mu_1,\Sigma)\) and \(\pi_2\) with \((\mu_2,\Sigma)\) — the two populations differ in their <strong>mean vectors</strong> but share a common covariance matrix \(\Sigma\). We linearise the problem by changing \(X\) to a linear combination \(\ell'X\), turning both populations into <em>univariate</em> ones:</p>
+  <p>\[ \pi_1: \ell'X\mid\pi_1 \sim N(\ell'\mu_1,\,\ell'\Sigma\ell) \qquad\qquad \pi_2: \ell'X\mid\pi_2\sim N(\ell'\mu_2,\,\ell'\Sigma\ell) \]</p>
+  <p>Same variance, different means — so the two univariate populations are separated best by <strong>maximising the (squared, standardised) distance between their means</strong>, choosing \(\ell\) freely:</p>
+  <p>\[ \text{Maximise}_{\ell}\ \frac{\big[\ell'(\mu_1-\mu_2)\big]^2}{\ell'\Sigma\ell} \]</p>
+  <p>Using the substitution \(a=\Sigma^{1/2}\ell\) and the Cauchy–Schwarz inequality \(|a'b|^2\le(a'a)(b'b)\) with \(b=\Sigma^{-1/2}(\mu_1-\mu_2)\), one shows</p>
+  <p>\[ \frac{\big[\ell'(\mu_1-\mu_2)\big]^2}{\ell'\Sigma\ell} \;\le\; (\mu_1-\mu_2)'\Sigma^{-1}(\mu_1-\mu_2) \qquad \text{(the Mahalanobis distance between }\mu_1\text{ and }\mu_2\text{)} \]</p>
+  <p>with equality exactly when \(\ell' = (\mu_1-\mu_2)'\Sigma^{-1}\), i.e. \(\ell^0=\Sigma^{-1}(\mu_1-\mu_2)\). This optimal \(\ell\) gives <strong>Fisher's Linear Discriminant Function (FLDF)</strong>:</p>
+  <div class="key">
+    <span class="box-label">Key takeaway</span>
+    <p>\[ \boxed{\ell'X=(\mu_1-\mu_2)'\Sigma^{-1}X} \]</p>
+    <p>This is the single linear combination of \(X\) that <em>best separates</em> the two populations — maximising the standardised distance between their means over every possible direction \(\ell\).</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-da-rule">
+  <span class="slide-tag">Pages 29–30</span>
+  <h3>11. The classification rule</h3>
+  <p>Given a new observation \(x_0\), we must decide \(\pi_1\) or \(\pi_2\). Since \(E(\ell'X\mid\pi_i)=(\mu_1-\mu_2)'\Sigma^{-1}\mu_i=m_i\), and \(m_1>m_2\) whenever \(\mu_1\ne\mu_2\) (because \(\Sigma\) is positive-definite), the natural rule is to assign \(x_0\) to whichever population its score \(y_0=(\mu_1-\mu_2)'\Sigma^{-1}x_0\) sits closer to — equivalently, compare \(y_0\) against the midpoint \(\tfrac12(m_1+m_2)\):</p>
+  <div class="def">
+    <span class="box-label">Definition — population classification rule</span>
+    <p>Assign \(x_0\) to \(\pi_1\) if \(y_0=(\mu_1-\mu_2)'\Sigma^{-1}x_0 > \tfrac12(\mu_1-\mu_2)'\Sigma^{-1}(\mu_1+\mu_2)\); &nbsp; assign to \(\pi_2\) otherwise.</p>
+  </div>
+  <p>In practice \(\mu_1,\mu_2,\Sigma\) are unknown and are replaced by their sample analogues — the <strong>Fisher sample linear discriminant function</strong> uses sample means \(\bar X_1,\bar X_2\) and the <strong>pooled</strong> covariance matrix \(S_{pooled}=\dfrac{(n_1-1)S_1+(n_2-1)S_2}{n_1+n_2-2}\):</p>
+  <div class="key">
+    <span class="box-label">Key takeaway — sample classification rule</span>
+    <p>Define \(L(x_0)=(\bar X_1-\bar X_2)'S_{pooled}^{-1}x_0 - \tfrac12(\bar X_1-\bar X_2)'S_{pooled}^{-1}(\bar X_1+\bar X_2)\). Assign \(x_0\) to \(\pi_1\) if \(L(x_0)>0\); assign to \(\pi_2\) if \(L(x_0)<0\).</p>
+  </div>
+</section>
+
+<section class="slide" id="p7-da-worked">
+  <span class="slide-tag">Pages 31–33</span>
+  <h3>12. Worked examples</h3>
+  <div class="ex">
+    <span class="box-label">Worked example 1</span>
+    <p>\(\pi_1\): \(X_1=\{(3,7),(2,4),(4,7)\}\); \(\pi_2\): \(X_2=\{(6,9),(5,7),(4,8)\}\); \(S_{pooled}=\begin{bmatrix}1&1\\1&2\end{bmatrix}\). Classify \(x_0=(2,7)\).</p>
+    <p>Means: \(\bar X_1=(3,6)\), \(\bar X_2=(5,8)\); &nbsp; \(\bar X_1-\bar X_2=(-2,-2)\); &nbsp; \(S_{pooled}^{-1}=\begin{bmatrix}2&-1\\-1&1\end{bmatrix}\) (since \(\det=1\)).</p>
+    <p>\(L(x_0)=(\bar X_1-\bar X_2)'S_{pooled}^{-1}x_0 - \tfrac12(\bar X_1-\bar X_2)'S_{pooled}^{-1}(\bar X_1+\bar X_2)\). First term: \((-2,-2)\begin{bmatrix}2&-1\\-1&1\end{bmatrix}\begin{bmatrix}2\\7\end{bmatrix}=(-2,-2)\cdot(-3,5)=6-10=-4\). Second term: \(\tfrac12(-2,-2)\begin{bmatrix}2&-1\\-1&1\end{bmatrix}\begin{bmatrix}8\\14\end{bmatrix}=\tfrac12(-2,-2)\cdot(2,6)=\tfrac12(-4-12)=-8\).</p>
+    <p>\(L(x_0)=-4-(-8)=4>0\ \Rightarrow\) classify \((2,7)\) into <strong>\(\pi_1\)</strong>.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example 2 — AHF blood-sample study</span>
+    <p>Two groups of women (carriers vs. non-carriers of the haemophilia gene) measured on AHF activity (\(X_1\)) and AHF-like antigen (\(X_2\)): \(\bar X_1=(-0.0065,-0.0390)\), \(\bar X_2=(-0.2483,0.0262)\), \(S_{pooled}^{-1}=\begin{bmatrix}131.158&-90.423\\-90.423&108.147\end{bmatrix}\). For \(x_0=(-0.210,-0.044)\), the notes compute \(\hat y_0=-6.62\) against midpoint \(m=-4.61\). Since \(\hat y_0<m\), <strong>classify into \(\pi_2\)</strong> (known haemophilia-A carriers).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Worked example 3 (left as an exercise in your notes — completed here)</span>
+    <p>\(\bar X_1=(-1,-1)\), \(\bar X_2=(2,1)\), \(n_1=11,\ n_2=12\), \(S_{pooled}=\begin{bmatrix}7.3&-1.1\\-1.1&4.8\end{bmatrix}\). Construct the FLDF and classify \(x_0'=(0,1)\).</p>
+    <p>\(\bar X_1-\bar X_2=(-3,-2)\); \(\det(S_{pooled})=7.3(4.8)-(-1.1)^2=33.83\); \(S_{pooled}^{-1}=\tfrac1{33.83}\begin{bmatrix}4.8&1.1\\1.1&7.3\end{bmatrix}\). This gives \(\ell'=(\bar X_1-\bar X_2)'S_{pooled}^{-1}=(-0.4907,\,-0.5291)\), so the FLDF is \(L(x)=-0.4907x_1-0.5291x_2 - m\), with \(m=\tfrac12\ell'(\bar X_1+\bar X_2)=\tfrac12(-0.4907)(1)=-0.2454\).</p>
+    <p>For \(x_0=(0,1)\): \(\ell'x_0=-0.5291\). Since \(-0.5291 < -0.2454\), <strong>classify \(x_0\) into \(\pi_2\)</strong>.</p>
+  </div>
+</section>
+<section class="slide" id="p7-cluster-intro">
+  <span class="slide-tag">Page 34</span>
+  <h3>13. Cluster Analysis</h3>
+  <div class="def">
+    <span class="box-label">Definition</span>
+    <p><strong>Statistical Cluster Analysis</strong> groups heterogeneous multi-dimensional objects into homogeneous groups, based purely on their mutual distances — it's an exploratory data-analysis technique (unlike Discriminant Analysis, the groups are <em>not</em> known in advance). There are two broad families of methods: <strong>Hierarchical Cluster Analysis (HCA)</strong> and <strong>Non-Hierarchical Cluster Analysis</strong>.</p>
+  </div>
+  <p>In HCA, observation vectors ("cases") are grouped together on the basis of their mutual distances, usually visualised through a <strong>dendrogram</strong> — a nested set of partitions represented as a tree diagram. Reading the dendrogram at any particular "threshold distance" height tells you the clustering at that level of resolution; as the threshold increases, more and more cases merge, until at the very top all cases form a single cluster.</p>
+  <div class="key">
+    <span class="box-label">Characteristics of Hierarchical Cluster Analysis</span>
+    <ol>
+      <li>Sectioning the tree at any particular level produces a partition into some number of disjoint groups.</li>
+      <li>If two groups are chosen from different partitions, either the groups are disjoint, or one is totally contained within the other — clusters never "partially overlap."</li>
+      <li>A numerical value is associated with each point where branches join: this value measures the distance (dissimilarity) between the two merging clusters.</li>
+      <li>Different distance measures give rise to different hierarchical structures.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide" id="p7-cluster-algo">
+  <span class="slide-tag">Pages 35–36</span>
+  <h3>14. Agglomerative HCA — the algorithm</h3>
+  <p>There are two directions of approach — <strong>Agglomerative HCA</strong> (bottom-up: start with every case in its own cluster, then successively merge) and <strong>Divisive HCA</strong> (top-down: start with one big cluster, then successively split). Agglomerative HCA is the more frequently adopted approach, and runs as follows:</p>
+  <table class="grid">
+    <tr><th>Step</th><th>What happens</th></tr>
+    <tr><td>1</td><td>Start with \(n\) clusters, each a single object, and an \(n\times n\) symmetric distance matrix \(D=(d_{ij})\).</td></tr>
+    <tr><td>2</td><td>Find the nearest (most similar) pair of clusters, \(u\) and \(v\), with distance \(d_{uv}=\min_{i,j} d_{ij}\).</td></tr>
+    <tr><td>3</td><td>Merge \(u\) and \(v\) into one new cluster \((u,v)\). Update the distance matrix: delete the rows/columns for \(u\) and \(v\), and add a row/column giving the distance between \((u,v)\) and every remaining cluster.</td></tr>
+    <tr><td>4</td><td>Repeat steps 2–3 a total of \((n-1)\) times, recording the identity and distance level of every merger.</td></tr>
+    <tr><td>5</td><td>Draw the dendrogram from the recorded mergers and merge levels.</td></tr>
+  </table>
+  <p>What changes between <em>linkage methods</em> is exactly how step 3 computes the distance between a newly merged cluster \((u,v)\) and any other cluster \(w\):</p>
+  <table class="grid">
+    <tr><th>Linkage method</th><th>Distance between \((u,v)\) and \(w\)</th><th>Interpretation</th></tr>
+    <tr><td><strong>Single linkage</strong></td><td>\(d_{(uv),w}=\min(d_{uw},d_{vw})\)</td><td>Nearest-neighbour (minimum) distance between the two groups.</td></tr>
+    <tr><td><strong>Complete linkage</strong></td><td>\(d_{(uv),w}=\max(d_{uw},d_{vw})\)</td><td>Farthest-neighbour (maximum) distance between the two groups.</td></tr>
+    <tr><td><strong>Average linkage</strong></td><td>\(d_{(uv),w}=\dfrac{\sum_i\sum_k d_{ik}}{N_{uv}N_w}\)</td><td>Average of all pairwise distances across the two groups (\(N_{uv},N_w\) = number of cases in each).</td></tr>
+    <tr><td><strong>Centroid linkage</strong></td><td>distance between the two clusters' centroids</td><td>Treats each cluster by its "center of mass."</td></tr>
+  </table>
+  <p class="small">All other steps of the general agglomerative algorithm stay the same regardless of which linkage rule is used — only the step-3 update formula changes.</p>
+</section>
+
+<section class="slide" id="p7-cluster-worked">
+  <span class="slide-tag">Practice Q10 &amp; Q12</span>
+  <h3>15. Worked example — single &amp; complete linkage on the same data</h3>
+  <div class="ex">
+    <span class="box-label">Worked example</span>
+    <p>Five objects \(\{1,2,3,4,5\}\) have the distance matrix \(D=\begin{bmatrix}0&&&&\\4&0&&&\\7&3&0&&\\9&5&6&0&\\1&3&6&8&0\end{bmatrix}\) (i.e. \(d_{12}=4,d_{13}=7,d_{23}=3,d_{14}=9,d_{24}=5,d_{34}=6,d_{15}=1,d_{25}=3,d_{35}=6,d_{45}=8\)). Cluster using both single and complete linkage, and draw each dendrogram.</p>
+    <p style="margin-top:12px"><strong>Single linkage (Practice Q12):</strong></p>
+    <table class="grid">
+      <tr><th>Step</th><th>Merge</th><th>Distance level</th><th>Rule used</th></tr>
+      <tr><td>1</td><td>\(\{1,5\}\)</td><td>1</td><td>global minimum, \(d_{15}=1\)</td></tr>
+      <tr><td>2</td><td>\(\{1,2,5\}\)</td><td>3</td><td>\(d_{\{15\},2}=\min(d_{12},d_{52})=\min(4,3)=3\)</td></tr>
+      <tr><td>3</td><td>\(\{1,2,3,5\}\)</td><td>3</td><td>\(d_{\{125\},3}=\min(6,3)=3\)</td></tr>
+      <tr><td>4</td><td>\(\{1,2,3,4,5\}\)</td><td>5</td><td>\(d_{\{1235\},4}=\min(5,6)=5\)</td></tr>
+    </table>
+    <p style="margin-top:12px"><strong>Complete linkage (Practice Q10):</strong></p>
+    <table class="grid">
+      <tr><th>Step</th><th>Merge</th><th>Distance level</th><th>Rule used</th></tr>
+      <tr><td>1</td><td>\(\{1,5\}\)</td><td>1</td><td>global minimum, \(d_{15}=1\)</td></tr>
+      <tr><td>2</td><td>\(\{2,3\}\)</td><td>3</td><td>smallest remaining entry, \(d_{23}=3\)</td></tr>
+      <tr><td>3</td><td>\(\{2,3,4\}\)</td><td>6</td><td>\(d_{\{23\},4}=\max(d_{24},d_{34})=\max(5,6)=6\)</td></tr>
+      <tr><td>4</td><td>\(\{1,2,3,4,5\}\)</td><td>9</td><td>\(d_{\{15\},\{234\}}=\max(d_{\{15\}2},d_{\{15\}3},d_{\{15\}4})=\max(4,7,9)=9\)</td></tr>
+    </table>
+  </div>
+  <div class="warn">
+    <span class="box-label">Common confusion</span>
+    <p>Single and complete linkage are run on the <em>exact same</em> raw distance matrix, and their very first merge always agrees (both pick the global minimum distance). They diverge from the second merge onward, because that's where "distance from a merged cluster" starts being computed differently — min for single linkage, max for complete linkage. It's worth tracing both tables above side by side to see exactly where they part ways: single linkage keeps chaining object 1's nearest neighbours together (1 ➝ 1,2,5 ➝ 1,2,3,5), while complete linkage lets a separate \(\{2,3\}\) pair form and grow independently before finally joining the \(\{1,5\}\) group.</p>
+  </div>
+</section>
+<div class="part-header">
+  <div class="ptag">Part 8 of 8</div>
+  <h2>Practice Questions — Worked Solutions</h2>
+  <p>Fifteen practice questions spanning every part of this guide, from the mean vector and MND basics in Part 1 through MANOVA, PCA, Factor Analysis and Clustering. Each is solved in full below, in the same notation used throughout the guide.</p>
+</div>
+
+<section class="slide" id="p8-q1-5">
+  <span class="slide-tag">Q1 – Q5</span>
+  <h3>Questions 1–5</h3>
+  <div class="ex">
+    <span class="box-label">Q1 — mean vector &amp; sample covariance matrix</span>
+    <p>\(X_1\) (income, ₹ lakh), \(X_2\) (expenditure, ₹ '000) for 4 individuals: \((5,45),(6,50),(4,42),(7,55)\).</p>
+    <p>\(\bar X_1=5.5,\ \bar X_2=48\). Deviations: \((-0.5,-3),(0.5,2),(-1.5,-6),(1.5,7)\).</p>
+    <p>\(S_{11}=\tfrac13(0.25+0.25+2.25+2.25)=1.667\); \ \(S_{22}=\tfrac13(9+4+36+49)=32.667\); \ \(S_{12}=\tfrac13(1.5+1+9+10.5)=7.333\).</p>
+    <p>\[ \bar X=\begin{bmatrix}5.5\\48\end{bmatrix} \qquad S=\begin{bmatrix}1.667&7.333\\7.333&32.667\end{bmatrix} \]</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q2 — conditional distributions, \(X\sim N_3(\mu,\Sigma)\)</span>
+    <p>\(\mu=(1,2,3)'\), \(\Sigma=\begin{bmatrix}4&1&0\\1&5&2\\0&2&3\end{bmatrix}\).</p>
+    <p><strong>(i) \(X_3\mid X_1=x_1,X_2=x_2\):</strong> with \(\Sigma_{11}=\begin{bmatrix}4&1\\1&5\end{bmatrix}\), \(\Sigma_{12}=(0,2)'\), \(\Sigma_{11}^{-1}=\tfrac1{19}\begin{bmatrix}5&-1\\-1&4\end{bmatrix}\): mean \(=3+(-0.1053,\,0.4211)\cdot(x_1-1,x_2-2)\), variance \(=3-0.8421=2.158\).</p>
+    <p><strong>(ii) \(X_1\mid X_2=4\):</strong> mean \(=1+\tfrac15(4-2)=1.4\); variance \(=4-\tfrac{1^2}{5}=3.8\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q3 — Hotelling's \(T^2\), one sample</span>
+    <p>\(X=\begin{bmatrix}6&8\\7&9\\8&19\end{bmatrix}\), \(\mu_0=(7,9)'\). \(\bar X=(7,12)\); \(S=\begin{bmatrix}1&5.5\\5.5&37\end{bmatrix}\); \(\det S=6.75\).</p>
+    <p>\(\bar X-\mu_0=(0,3)\). \(T^2=n(\bar X-\mu_0)'S^{-1}(\bar X-\mu_0)=3\times\dfrac{9}{6.75}=\boxed{4.0}\).</p>
+    <p>Sampling distribution: \(T^2\sim\dfrac{(n-1)p}{n-p}F_{p,n-p}=4\,F_{2,1}\) — so the observed \(T^2=4.0\) corresponds to \(F=1.0\) on \(F_{2,1}\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q4 — principal components from \(\Sigma\)</span>
+    <p>\(\Sigma=\begin{bmatrix}5&2&0\\2&2&0\\0&0&1\end{bmatrix}\); \(\lambda_1=6,\lambda_2=1,\lambda_3=1\); \(e_1'=(0.894,0.447,0)\), \(e_2'=(0,0,1)\), \(e_3'=(-0.447,0.894,0)\).</p>
+    <p><strong>(i)</strong> \(Z_1=0.894X_1+0.447X_2\); \ \(Z_2=X_3\); \ \(Z_3=-0.447X_1+0.894X_2\).</p>
+    <p><strong>(ii)</strong> Total variance \(=5+2+1=8=\lambda_1+\lambda_2+\lambda_3\). \ <strong>(iii)</strong> Proportion by \(Z_1\): \(6/8=\boxed{75\%}\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q5 — mean &amp; covariance of linear combinations</span>
+    <p>\(\mu=(1,0,2)'\), \(\Sigma=\begin{bmatrix}2&0.4&0.1\\0.4&1.5&0.2\\0.1&0.2&1\end{bmatrix}\). \(W_1=2X_1-X_2+3X_3\), \(W_2=X_1+X_2-X_3\), i.e. \(a_1=(2,-1,3)'\), \(a_2=(1,1,-1)'\).</p>
+    <p>\(E(W_1)=2(1)-0+3(2)=8\); \ \(E(W_2)=1+0-2=-1\).</p>
+    <p>\(\Sigma a_1=(3.9,-0.1,3.0)'\Rightarrow V(W_1)=a_1'\Sigma a_1=16.9\). \ \(\Sigma a_2=(2.3,1.7,-0.7)'\Rightarrow V(W_2)=4.7\). \ \(\text{Cov}(W_1,W_2)=a_1'\Sigma a_2=0.8\).</p>
+    <p>\[ E\!\begin{bmatrix}W_1\\W_2\end{bmatrix}=\begin{bmatrix}8\\-1\end{bmatrix} \qquad \text{Cov}(W)=\begin{bmatrix}16.9&0.8\\0.8&4.7\end{bmatrix} \]</p>
+  </div>
+</section>
+
+<section class="slide" id="p8-q6-10">
+  <span class="slide-tag">Q6 – Q10</span>
+  <h3>Questions 6–10</h3>
+  <div class="ex">
+    <span class="box-label">Q6 — one-way MANOVA</span>
+    <p>\(\bar X_1=(6,8),S_1=\begin{bmatrix}2.5&-2\\-2&2\end{bmatrix},n_1=5\); \ \(\bar X_2=(2,4),S_2=\begin{bmatrix}1&-1.5\\-1.5&3\end{bmatrix},n_2=3\); \ \(\bar X_3=(3,2),S_3=\begin{bmatrix}2&-1.33\\-1.33&1.33\end{bmatrix},n_3=4\). Critical value \(=4.773\).</p>
+    <p>\(N=12\); grand mean \(\bar X=\tfrac{5\bar X_1+3\bar X_2+4\bar X_3}{12}=(4,5)\).</p>
+    <p>\(B=\sum n_i(\bar X_i-\bar X)(\bar X_i-\bar X)'=\begin{bmatrix}36&48\\48&84\end{bmatrix}\); \quad \(W=4S_1+2S_2+3S_3=\begin{bmatrix}18&-14.99\\-14.99&17.99\end{bmatrix}\); \quad \(T=B+W=\begin{bmatrix}54&33.01\\33.01&101.99\end{bmatrix}\).</p>
+    <p>\(\Lambda^*=|W|/|T|=99.12/4417.8=0.0224\). Test statistic (\(p=2,K=3,N=12\)): \(\dfrac{N-K-1}{K-1}\!\left(\dfrac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}}\right)=4\times5.676=\boxed{22.70}\), which is \(\sim F_{4,16}\).</p>
+    <p>Since \(22.70 > 4.773\), <strong>reject \(H_0\)</strong> at 1% — the three population mean vectors differ significantly.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q7 — independence from a covariance matrix</span>
+    <p>\(S=\begin{bmatrix}4&2&0\\2&5&0\\0&0&3\end{bmatrix}\). <strong>(i)</strong> \(\text{Cov}(X_1,X_2)=2\ne0\), so \(X_1\) and \(X_2\) are <strong>not independent</strong>. <strong>(ii)</strong> \(Y_1=X_1+X_2,\ Y_2=X_3\): \(\text{Cov}(Y_1,Y_2)=\text{Cov}(X_1,X_3)+\text{Cov}(X_2,X_3)=0+0=0\). Since \(Y_1,Y_2\) are linear combinations of a (jointly normal) multivariate vector, zero covariance here does imply <strong>independence</strong>.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q8 — communalities &amp; specific variances from factor loadings</span>
+    <p>Using \(h_i^2=\ell_{i1}^2+\ell_{i2}^2\) and \(\psi_i=1-h_i^2\) (working from standardised/correlation-scale variables):</p>
+    <table class="grid">
+      <tr><th>Variable</th><th>\(F_1\)</th><th>\(F_2\)</th><th>\(h^2\)</th><th>\(\psi\)</th></tr>
+      <tr><td>Groceries</td><td>0.80</td><td>-0.30</td><td>0.73</td><td>0.27</td></tr>
+      <tr><td>Entertainment</td><td>-0.60</td><td>0.70</td><td>0.85</td><td>0.15</td></tr>
+      <tr><td>Utilities</td><td>0.70</td><td>-0.50</td><td>0.74</td><td>0.26</td></tr>
+      <tr><td>Clothing</td><td>-0.50</td><td>0.80</td><td>0.89</td><td>0.11</td></tr>
+      <tr><td>Education</td><td>0.30</td><td>0.90</td><td>0.90</td><td>0.10</td></tr>
+    </table>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q9 — conditional distributions, \(Y\sim N_3(\mu,\Sigma)\)</span>
+    <p>\(\mu=(-3,1,4)'\), \(\Sigma=\begin{bmatrix}1&-2&0\\-2&5&0\\0&0&2\end{bmatrix}\).</p>
+    <p><strong>(i) \(Y_1\mid Y_2=1\):</strong> mean \(=-3+\tfrac{-2}{5}(1-1)=-3\); variance \(=1-\tfrac{(-2)^2}{5}=0.2\).</p>
+    <p><strong>(ii) \(Y_2\mid Y_1=y_1,Y_3=y_3\):</strong> with \(\Sigma_{(Y_1,Y_3)}=\begin{bmatrix}1&0\\0&2\end{bmatrix}\), \(\Sigma_{Y_2,(Y_1,Y_3)}=(-2,0)\): mean \(=1+(-2)(y_1+3)+0(y_3-4)=-5-2y_1\); variance \(=5-\big[(-2)(1)(-2)\big]=5-4=1\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q10 — hierarchical clustering, complete linkage</span>
+    <p>See Part 7, Section 15 above: with \(D\) exactly as given, complete linkage merges \(\{1,5\}\) at level 1, \(\{2,3\}\) at level 3, \(\{2,3,4\}\) at level 6, and finally everything at level 9.</p>
+  </div>
+</section>
+
+<section class="slide" id="p8-q11-15">
+  <span class="slide-tag">Q11 – Q15</span>
+  <h3>Questions 11–15</h3>
+  <div class="ex">
+    <span class="box-label">Q11 — principal components from \(\Sigma\)</span>
+    <p>\(\Sigma=\begin{bmatrix}4&2&1\\2&3&1\\1&1&2\end{bmatrix}\); \(\lambda_1=6,\lambda_2=2,\lambda_3=1\); eigenvectors as given.</p>
+    <p><strong>(i)</strong> \(Z_1=0.707X_1+0.612X_2+0.354X_3\); \(Z_2=0.408X_1-0.790X_2+0.456X_3\); \(Z_3=-0.577X_1+0.052X_2+0.815X_3\).</p>
+    <p><strong>(ii)</strong> Total variance \(=4+3+2=9=6+2+1\). \ <strong>(iii)</strong> Proportion by \(Z_1\): \(6/9=\boxed{66.7\%}\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q12 — hierarchical clustering, single linkage</span>
+    <p>See Part 7, Section 15 above: with the same \(D\), single linkage merges \(\{1,5\}\) at level 1, \(\{1,2,5\}\) at level 3, \(\{1,2,3,5\}\) at level 3, and finally everything at level 5.</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q13 — distribution of three linear combinations</span>
+    <p>\(\mu=(3,-1,2)'\), \(\Sigma=\begin{bmatrix}4&1&0.5\\1&3&-0.2\\0.5&-0.2&2\end{bmatrix}\). \(Y_1=X_1-2X_2+X_3\), \(Y_2=3X_1+X_2\), \(Y_3=2X_2-X_3\) (rows \(a_1,a_2,a_3\)).</p>
+    <p>Means: \(E(Y_1)=3+2+2=7\); \(E(Y_2)=9-1=8\); \(E(Y_3)=-2-2=-4\).</p>
+    <p>\(\Sigma a_1=(2.5,-5.2,2.9)'\), \(\Sigma a_2=(13,6,1.3)'\), \(\Sigma a_3=(1.5,6.2,-2.4)'\). Variances: \(V(Y_1)=a_1'\Sigma a_1=15.8\); \(V(Y_2)=a_2'\Sigma a_2=45\); \(V(Y_3)=a_3'\Sigma a_3=14.8\). Covariances: \(\text{Cov}(Y_1,Y_2)=2.3\); \(\text{Cov}(Y_1,Y_3)=-13.3\); \(\text{Cov}(Y_2,Y_3)=10.7\).</p>
+    <p>\[ Y\sim N_3\!\left(\begin{bmatrix}7\\8\\-4\end{bmatrix},\ \begin{bmatrix}15.8&2.3&-13.3\\2.3&45&10.7\\-13.3&10.7&14.8\end{bmatrix}\right) \]</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q14 — PCA from a sample covariance matrix</span>
+    <p>\(S=\begin{bmatrix}5&1\\1&2\end{bmatrix}\), \(n=40\). Characteristic equation \(\lambda^2-7\lambda+9=0\Rightarrow\lambda=\dfrac{7\pm\sqrt{13}}{2}\): \(\lambda_1=5.303,\ \lambda_2=1.697\).</p>
+    <p><strong>(a)</strong> Eigenvector for \(\lambda_1\): \(-0.303e_1+e_2=0\Rightarrow\) normalised \(e_1=(0.957,0.290)\), giving \(Z_1=0.957X_1+0.290X_2\). For \(\lambda_2\): \(e_2=(0.290,-0.957)\), giving \(Z_2=0.290X_1-0.957X_2\).</p>
+    <p><strong>(b)</strong> Proportion explained by \(Z_1\): \(5.303/7=\boxed{75.8\%}\).</p>
+    <p><strong>(c)</strong> \(\rho_{Z_1,X_1}=\dfrac{0.957\sqrt{5.303}}{\sqrt5}=0.986\); \quad \(\rho_{Z_1,X_2}=\dfrac{0.290\sqrt{5.303}}{\sqrt2}=0.472\).</p>
+  </div>
+  <div class="ex">
+    <span class="box-label">Q15 — Fisher's linear discriminant function</span>
+    <p>\(\pi_1\): \(\{(4,6),(5,5),(6,7)\}\), \ \(\pi_2\): \(\{(8,9),(7,8),(9,10)\}\); \(S_{pooled}=\begin{bmatrix}2&1\\1&2\end{bmatrix}\).</p>
+    <p>\(\bar X_1=(5,6)\), \(\bar X_2=(8,9)\); \(\bar X_1-\bar X_2=(-3,-3)\); \(S_{pooled}^{-1}=\tfrac13\begin{bmatrix}2&-1\\-1&2\end{bmatrix}\).</p>
+    <p><strong>(a)</strong> \(\ell'=(\bar X_1-\bar X_2)'S_{pooled}^{-1}=(-1,-1)\), so \(L(x)=-x_1-x_2-m\) with \(m=\tfrac12\ell'(\bar X_1+\bar X_2)=\tfrac12(-1)(13)+\tfrac12(-1)(15)=-14\).</p>
+    <p><strong>(b)</strong> For \(y_0'=(6,8)\): \(\ell'y_0=-6-8=-14\), exactly equal to \(m=-14\). This observation lands <strong>exactly on the decision boundary</strong> \(L(x)=0\) — it is equidistant (in the Mahalanobis sense) from both populations, so Fisher's rule alone cannot break the tie; a tie-break would need extra information such as prior probabilities or misclassification costs.</p>
+  </div>
+</section>
+
+
 <section class="slide" id="recap">
   <span class="slide-tag">Full-course recap</span>
-  <h3>Recap: how all three parts connect</h3>
+  <h3>Recap: how all eight parts connect</h3>
   <table class="grid">
     <tr><th>Part</th><th>Core question</th><th>Big idea</th></tr>
     <tr><td><strong>1. MND &amp; Hotelling's T²</strong></td><td>How do mean, variance, and the normal curve generalise to many variables at once?</td><td>Mean vector, covariance matrix, and the Mahalanobis distance replace their univariate counterparts. The MND has powerful special properties (linear combos stay normal, zero covariance ⟹ independence, conditionals stay normal). Hotelling's \(T^2\) is the multivariate t-test.</td></tr>
     <tr><td><strong>2. Multiple &amp; Partial Correlation</strong></td><td>How do I measure relationships between variables once more than two are involved?</td><td>Partial correlation strips out a third variable's influence from a pairwise relationship (can be negative). Multiple correlation measures how well a whole group of variables jointly predicts one variable (never negative).</td></tr>
     <tr><td><strong>3. Wishart &amp; MLE</strong></td><td>What's the sampling distribution of the covariance matrix itself, and where does \(\hat\mu=\bar X\) actually come from?</td><td>The Wishart distribution is the matrix generalisation of the Chi-square distribution — it governs the sum-of-cross-products matrix \(A\), and hence \((n-1)S\). Maximum likelihood, worked out directly from the MND density, proves \(\hat\mu=\bar X\) and \(\hat\Sigma_{MLE}=\frac{n-1}{n}S\).</td></tr>
     <tr><td><strong>4. LRT &amp; Confidence Regions</strong></td><td>Is there one general recipe for testing any hypothesis, and how do we give a range of plausible values for an entire mean <em>vector</em> at once?</td><td>The Likelihood Ratio Test compares the best-possible fit under a restriction (\(H_0\)) against the best-possible fit without it — a small ratio \(\Lambda\) is evidence against \(H_0\); applied to a mean vector, it reduces to Wilk's Lambda \(|\hat\Sigma|/|\hat\Sigma_0|\). Confidence regions generalise confidence intervals to \(p\) dimensions using Hotelling's \(T^2\), producing an ellipsoid of jointly plausible parameter values instead of \(p\) separate intervals.</td></tr>
+    <tr><td><strong>5. MANOVA</strong></td><td>How do I test whether several groups share the same mean <em>vector</em>?</td><td>The ANOVA decomposition \(SS_{total}=SS_{between}+SS_{within}\) becomes a matrix decomposition \(T=B+W\) of sums-of-squares-and-cross-products. Wilk's Lambda \(|W|/|T|\) tests \(H_0:\mu_1=\cdots=\mu_K\), and converts exactly into an F-statistic for small \(p\) or \(K\).</td></tr>
+    <tr><td><strong>6. Multivariate Linear Regression</strong></td><td>How do I regress several dependent variables on the same set of predictors at once?</td><td>Stack the dependent variables into an \(n\times q\) matrix \(Y\); the least-squares estimator \(\hat\beta=(X'X)^{-1}X'Y\) is identical in form to ordinary regression, with each column of \(\hat\beta\) giving one dependent variable's own regression equation.</td></tr>
+    <tr><td><strong>7. PCA, Factor Analysis, Discriminant Analysis &amp; Clustering</strong></td><td>How do I reduce dimensions, explain hidden structure, classify new cases, or group unlabelled ones?</td><td>PCA rotates axes to the directions of maximum variance (the eigenvectors of \(\Sigma\)). Factor Analysis explains \(\Sigma=LL'+\Psi\) via a few common factors. Fisher's LDF \(\ell^0=\Sigma^{-1}(\mu_1-\mu_2)\) finds the best linear separator between two populations. Hierarchical clustering merges the nearest cases step by step, visualised as a dendrogram, with single/complete/average linkage differing only in how "distance between clusters" is defined.</td></tr>
+    <tr><td><strong>8. Practice Questions</strong></td><td>Can I apply all seven preceding parts from scratch, unaided?</td><td>Fifteen worked problems spanning mean vectors and conditional distributions through MANOVA, PCA, Factor Analysis, Discriminant Analysis, and both linkage methods of clustering.</td></tr>
   </table>
 
   <h4>Mini glossary</h4>
@@ -1333,6 +2022,14 @@
     <tr><td><strong>Likelihood Ratio \(\Lambda\)</strong></td><td>Restricted (under \(H_0\)) maximum likelihood, divided by unrestricted (full-model) maximum likelihood. Always between 0 and 1; small values are evidence against \(H_0\).</td></tr>
     <tr><td><strong>Wilk's Lambda</strong></td><td>\(\Lambda^{2/n}=|\hat\Sigma|/|\hat\Sigma_0|\) — the LRT statistic for testing a mean vector, comparing the sample covariance built around \(\bar X\) against the covariance built around the hypothesised \(\mu_0\).</td></tr>
     <tr><td><strong>Confidence region</strong></td><td>The multivariate generalisation of a confidence interval — a region of jointly plausible parameter vectors, built from Hotelling's \(T^2\) and traced out as an ellipse (or ellipsoid) rather than a rectangle of separate intervals.</td></tr>
+    <tr><td><strong>Wilk's Lambda \(\Lambda^*\) (MANOVA)</strong></td><td>\(|W|/|B+W|\) — small values are evidence that the \(K\) population mean vectors differ.</td></tr>
+    <tr><td><strong>SSP matrix</strong></td><td>"Sum of Squares and Cross-Products" matrix — the matrix generalisation of a univariate sum of squares; \(T=B+W\) in MANOVA.</td></tr>
+    <tr><td><strong>Design matrix \(X\)</strong></td><td>The \(n\times(p+1)\) matrix of predictor values (plus an intercept column of 1's) used in both MLR and MvLR.</td></tr>
+    <tr><td><strong>Principal component \(Z_i\)</strong></td><td>\(e_i'X\) — a linear combination of the original variables along the \(i\)-th eigenvector of \(\Sigma\), with variance \(\lambda_i\); uncorrelated with every other \(Z_k\).</td></tr>
+    <tr><td><strong>Communality \(h_i^2\)</strong></td><td>The portion of \(X_i\)'s variance explained by the common factors in a Factor Analysis model; \(\sigma_{ii}=h_i^2+\psi_i\).</td></tr>
+    <tr><td><strong>Fisher's LDF</strong></td><td>\(\ell'X=(\mu_1-\mu_2)'\Sigma^{-1}X\) — the linear combination that best separates two populations, derived by maximising a Mahalanobis-type distance via Cauchy–Schwarz.</td></tr>
+    <tr><td><strong>Dendrogram</strong></td><td>A tree diagram visualising hierarchical clustering — reading it at any height gives the clustering at that distance threshold.</td></tr>
+    <tr><td><strong>Single / Complete linkage</strong></td><td>Two rules for the distance between merged clusters in agglomerative HCA — nearest-neighbour (min) vs. farthest-neighbour (max).</td></tr>
   </table>
 
 <div class="def" id="formula-sheet-bottom">
@@ -1384,11 +2081,41 @@
 <tr><td>\(\boxed{n(\bar X-\mu)'S^{-1}(\bar X-\mu) \le \dfrac{p(n-1)}{n-p}F_{p,n-p}(\alpha)}\)</td><td>\(100(1-\alpha)\%\) confidence region for a single mean vector \(\mu\).</td></tr>
 <tr><td>\(\dfrac{n_An_B}{n_A+n_B}\big[(\bar X_A-\bar X_B)-\delta\big]'S_p^{-1}\big[(\bar X_A-\bar X_B)-\delta\big] \le \dfrac{(n_A+n_B-2)p}{n_A+n_B-p-1}F_{p,\,n_A+n_B-p-1}(\alpha)\)</td><td>Confidence region for a difference of mean vectors \(\delta=\mu_A-\mu_B\).</td></tr>
 </table>
+
+<h4 style="margin-top:18px;">Part 5 — MANOVA</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(T=\sum_i\sum_j(X_{ij}-\bar X)(X_{ij}-\bar X)'\)</td><td>Total (corrected) SSP matrix.</td></tr>
+<tr><td>\(B=\sum_i n_i(\bar X_i-\bar X)(\bar X_i-\bar X)'\)</td><td>Between (Treatment) SSP matrix.</td></tr>
+<tr><td>\(W=\sum_i(n_i-1)S_i\)</td><td>Within (Residual) SSP matrix. \(\boxed{T=B+W}\)</td></tr>
+<tr><td>\(\Lambda^*=\dfrac{|W|}{|B+W|}=\dfrac{|W|}{|T|}\)</td><td>Wilk's Lambda — small \(\Lambda^*\) is evidence against \(H_0:\mu_1=\cdots=\mu_K\).</td></tr>
+<tr><td>\(\dfrac{N-K-1}{K-1}\left(\dfrac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}}\right)\sim F_{2(K-1),\,2(N-K-1)}\)</td><td>Exact sampling distribution of Wilk's Lambda for \(p=2\), any \(K\ge2\).</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 6 — Multivariate Linear Regression</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(Y_{n\times q}=X_{n\times(p+1)}\beta_{(p+1)\times q}+\epsilon_{n\times q}\)</td><td>MvLR model equation — same shape as MLR, with \(q\) dependent variables instead of 1.</td></tr>
+<tr><td>\(\boxed{\hat\beta=(X'X)^{-1}X'Y}\)</td><td>Least-squares estimator — identical formula to MLR, column \(j\) of \(\hat\beta\) belongs to \(Y_j\).</td></tr>
+</table>
+
+<h4 style="margin-top:18px;">Part 7 — PCA, Factor Analysis, Discriminant Analysis &amp; Clustering</h4>
+<table class="grid">
+<tr><th>Formula</th><th>What it is</th></tr>
+<tr><td>\(Z_i=e_i'X\), with \(V(Z_i)=\lambda_i\), \(\text{Cov}(Z_i,Z_k)=0\)</td><td>\(i\)-th principal component — built from the \(i\)-th eigenpair of \(\Sigma\).</td></tr>
+<tr><td>\(\lambda_k\big/\textstyle\sum_i\lambda_i\)</td><td>Proportion of total variance explained by the \(k\)-th principal component.</td></tr>
+<tr><td>\(\rho_{Z_i,X_k}=e_{ik}\sqrt{\lambda_i}\big/\sqrt{\sigma_{kk}}\)</td><td>Correlation between component \(Z_i\) and original variable \(X_k\).</td></tr>
+<tr><td>\(\boxed{\Sigma=LL'+\Psi}\), &nbsp; \(\sigma_{ii}=h_i^2+\psi_i\)</td><td>Orthogonal factor model's covariance structure; communality + specific variance.</td></tr>
+<tr><td>\(\hat L=\big[\sqrt{\hat\lambda_1}\hat e_1\ \vdots\cdots\vdots\ \sqrt{\hat\lambda_m}\hat e_m\big]\), \ \(\hat\psi_i=s_{ii}-\sum_j\hat\ell_{ij}^2\)</td><td>Principal Component method's estimates of loadings &amp; specific variances.</td></tr>
+<tr><td>\(\boxed{\ell^0=\Sigma^{-1}(\mu_1-\mu_2)}\)</td><td>Fisher's Linear Discriminant Function direction (population case).</td></tr>
+<tr><td>Assign \(x_0\) to \(\pi_1\) if \((\bar X_1-\bar X_2)'S_p^{-1}x_0 > \tfrac12(\bar X_1-\bar X_2)'S_p^{-1}(\bar X_1+\bar X_2)\)</td><td>Sample classification rule (else assign to \(\pi_2\)).</td></tr>
+<tr><td>\(d_{(uv),w}=\min(d_{uw},d_{vw})\) / \(\max(d_{uw},d_{vw})\) / \(\dfrac{\sum\sum d_{ik}}{N_{uv}N_w}\)</td><td>Single / Complete / Average linkage distance update in agglomerative HCA.</td></tr>
+</table>
 </div>
 </section>
 
 <footer>
-  Built as a study companion for <em>Multivariate Analysis</em> — MND and Hotelling's T-square · Multiple and Partial Correlation · Wishart Distribution and MLE · Likelihood Ratio Tests and Confidence Regions (MIT Manipal handwritten notes). Every worked numerical example was independently recomputed and cross-checked against the original notes; one correction was found and flagged in Part 1, Section 9; Part 4's closing exercise, left as "solve it" in the original notes, was completed and verified in full.
+  Built as a study companion for <em>Multivariate Analysis</em> — MND and Hotelling's T-square · Multiple and Partial Correlation · Wishart Distribution and MLE · Likelihood Ratio Tests and Confidence Regions · MANOVA · Multivariate Linear Regression · PCA / Factor Analysis / Discriminant Analysis / Clustering · Practice Questions (MIT Manipal handwritten notes). Every worked numerical example was independently recomputed and cross-checked against the original notes; corrections were found and flagged in Part 1, Section 9, and Part 7, Section 3; several exercises left incomplete or as "try this" in the original notes — Part 4's closing exercise, one Discriminant Analysis example in Part 7, and the MLE Factor Analysis residual-matrix question in Part 7 — were completed and verified in full.
 </footer>
 </main>
 </div>

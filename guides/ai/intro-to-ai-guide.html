@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Introduction to AI — A Beginner's Guide (Agents, Search & Local Search)</title>
+<title>Introduction to AI — A Beginner's Guide (Agents, Search, Logic & Learning)</title>
 <script>
   window.MathJax = {
-    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]'], ['$$','$$']] },
     svg: { fontCache: 'global' }
   };
 </script>
@@ -31,14 +31,14 @@
   *{box-sizing:border-box;}
   body{
     margin:0; background:var(--cream); color:var(--ink);
-    font-family:'EB Garamond', Georgia, 'Times New Roman', serif;
-    font-size:19px; line-height:1.65;
+    font-family:'Palatino Linotype', Palatino, 'Book Antiqua', 'Palatino', Georgia, serif;
+    font-size:16px; line-height:1.3;
   }
   @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
   code, .mono, pre, .pseudocode, .kbd{ font-family:'JetBrains Mono', monospace; }
 
   a{color:var(--accent);}
-  h1,h2,h3,h4{ font-family:'EB Garamond', serif; font-weight:700; color:#221e19; line-height:1.25; }
+  h1,h2,h3,h4{ font-family:'Palatino Linotype', Palatino, 'Book Antiqua', serif; font-weight:700; color:#221e19; line-height:1.3; }
 
   /* Layout */
   .shell{ display:flex; max-width:1400px; margin:0 auto; }
@@ -51,7 +51,7 @@
   .sidebar h3:first-child{ margin-top:0; }
   .sidebar a{ display:block; text-decoration:none; color:var(--ink-soft); font-size:14.5px; padding:4px 0 4px 10px; border-left:2px solid transparent; }
   .sidebar a:hover{ color:var(--accent); border-left-color:var(--accent); }
-  .sidebar .toc-title{ font-family:'EB Garamond',serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:4px;}
+  .sidebar .toc-title{ font-family:'Palatino Linotype', Palatino, 'Book Antiqua', serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:4px;}
   .sidebar .toc-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:14px; }
   .main{ flex:1; min-width:0; padding:40px 56px 100px; }
 
@@ -210,17 +210,45 @@
   <a href="#p6-backward-chaining">11. Backward Chaining</a>
   <a href="#p6-fc-vs-bc">12. Forward vs Backward Chaining</a>
 
+  <h3>Part 7 &middot; Uncertainty &amp; Bayesian Networks</h3>
+  <a href="#p7-intro">1. Why AI needs uncertainty</a>
+  <a href="#p7-bn-def">2. What is a Bayesian Network?</a>
+  <a href="#p7-example">3. A worked example network</a>
+  <a href="#p7-cpt">4. Priors and CPTs</a>
+  <a href="#p7-joint">5. From the network to the joint distribution</a>
+  <a href="#p7-enum">6. Inference by Enumeration</a>
+  <a href="#p7-ve">7. Inference by Variable Elimination</a>
+
+  <h3>Part 8 &middot; Decision Tree Learning</h3>
+  <a href="#p8-intro">1. What is a Decision Tree?</a>
+  <a href="#p8-algorithm">2. The Decision Tree Learning Algorithm</a>
+  <a href="#p8-entropy">3. Entropy and Information Content</a>
+  <a href="#p8-ig">4. Information Gain</a>
+  <a href="#p8-worked-binary">5. Worked example: Age Group vs Device</a>
+  <a href="#p8-worked-multiclass">6. Multiclass example: restaurant feedback</a>
+  <a href="#p8-regression">7. Decision Trees for Regression</a>
+
+  <h3>Part 9 &middot; Naive Bayes Classifier</h3>
+  <a href="#p9-recall">1. Recall: Bayes' Rule &amp; why the joint doesn't scale</a>
+  <a href="#p9-independence">2. The naive independence assumption</a>
+  <a href="#p9-textclass">3. Running example: text classification</a>
+  <a href="#p9-bernoulli">4. Bernoulli Naive Bayes</a>
+  <a href="#p9-multinomial">5. Multinomial Naive Bayes</a>
+  <a href="#p9-laplace">6. Laplace Smoothing</a>
+  <a href="#p9-worked">7. Full worked example (smoothed)</a>
+  <a href="#p9-logspace">8. Numerical stability: log space</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full recap &amp; glossary</a>
 </nav>
 <main class="main">
 <div class="hero">
   <div class="eyebrow">Study Guide · Introduction to Artificial Intelligence</div>
-  <h1>Agents, Search &amp; Local Search — Explained Slowly</h1>
-  <p class="lead">This guide walks through all six of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, <em>Constraint Satisfaction Problems</em>, and <em>Logical Agents &amp; Propositional Logic</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
+  <h1>Agents, Search, Logic &amp; Learning — Explained Slowly</h1>
+  <p class="lead">This guide walks through all nine of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, <em>Constraint Satisfaction Problems</em>, <em>Logical Agents &amp; Propositional Logic</em>, <em>Uncertainty &amp; Bayesian Networks</em>, <em>Decision Tree Learning</em>, and the <em>Naive Bayes Classifier</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
   <div class="badges">
     <span class="badge">Dr Aishwarya S. — MIT Manipal</span>
-    <span class="badge">6 decks · 257 slides covered</span>
+    <span class="badge">9 decks · 355 slides covered</span>
     <span class="badge">Beginner pace</span>
   </div>
 </div>
@@ -237,7 +265,7 @@
   </p>
 </div>
 <div class="part-header">
-  <div class="ptag">Part 1 of 6</div>
+  <div class="ptag">Part 1 of 9</div>
   <h2>Agents &amp; Rationality</h2>
   <p>Before we can write any "intelligent" program, we need a precise, unambiguous way to talk about what a machine that "acts intelligently" even is. This part builds that vocabulary from a simple robot vacuum cleaner.</p>
 </div>
@@ -463,7 +491,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 2 of 6</div>
+  <div class="ptag">Part 2 of 9</div>
   <h2>Search Problems, Uninformed and Informed Search</h2>
   <p>Part 1 told us that a Goal-Based Agent needs to find a path from where it is to where it wants to be. Part 2 makes that idea completely precise, and builds up the family of algorithms — BFS, DFS, Uniform-Cost Search, Greedy Search, and A* — that actually find that path.</p>
 </div>
@@ -864,15 +892,15 @@
   </div>
   <div style="text-align:center;margin:16px 0;">
   <svg viewBox="0 0 340 140" width="100%" style="max-width:340px;">
-    <circle cx="40" cy="40" r="5" fill="#2b2620"/><text x="30" y="28" font-family="EB Garamond" font-style="italic" font-size="18">n</text>
-    <circle cx="180" cy="110" r="5" fill="#2b2620"/><text x="185" y="130" font-family="EB Garamond" font-style="italic" font-size="18">n′</text>
-    <circle cx="300" cy="30" r="5" fill="#c0504d"/><text x="305" y="20" font-family="EB Garamond" font-style="italic" font-size="18">g (Goal)</text>
+    <circle cx="40" cy="40" r="5" fill="#2b2620"/><text x="30" y="28" font-family="Palatino" font-style="italic" font-size="18">n</text>
+    <circle cx="180" cy="110" r="5" fill="#2b2620"/><text x="185" y="130" font-family="Palatino" font-style="italic" font-size="18">n′</text>
+    <circle cx="300" cy="30" r="5" fill="#c0504d"/><text x="305" y="20" font-family="Palatino" font-style="italic" font-size="18">g (Goal)</text>
     <line x1="40" y1="40" x2="180" y2="110" stroke="#a8632f" stroke-width="1.6"/>
-    <text x="80" y="90" font-family="EB Garamond" font-style="italic" font-size="15">c(n, n′)</text>
+    <text x="80" y="90" font-family="Palatino" font-style="italic" font-size="15">c(n, n′)</text>
     <line x1="180" y1="110" x2="300" y2="30" stroke="#5b7fb5" stroke-width="1.6" stroke-dasharray="4 3"/>
-    <text x="230" y="90" font-family="EB Garamond" font-style="italic" font-size="15">h(n′)</text>
+    <text x="230" y="90" font-family="Palatino" font-style="italic" font-size="15">h(n′)</text>
     <line x1="40" y1="40" x2="300" y2="30" stroke="#5c9a63" stroke-width="1.6" stroke-dasharray="4 3"/>
-    <text x="150" y="20" font-family="EB Garamond" font-style="italic" font-size="15">h(n)</text>
+    <text x="150" y="20" font-family="Palatino" font-style="italic" font-size="15">h(n)</text>
   </svg>
   </div>
   <div class="key">
@@ -941,7 +969,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 3 of 6</div>
+  <div class="ptag">Part 3 of 9</div>
   <h2>Local Search Algorithms</h2>
   <p>Part 2 was all about finding the best <em>path</em> from start to goal. Part 3 asks: what if you don't care about the path at all — only about ending up in a good final configuration? That question leads to a completely different family of algorithms.</p>
 </div>
@@ -1213,7 +1241,7 @@
   <p>Plotting \(h\) (attacking pairs) against iteration number shows the whole story at a glance:</p>
   <div style="text-align:center;margin:18px 0;">
   <svg viewBox="0 0 640 260" width="100%" style="max-width:640px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
-    <text x="320" y="22" text-anchor="middle" font-family="EB Garamond" font-size="15" font-weight="700" fill="#2b2620">h (attacking pairs) vs. iteration, with cooling temperature T</text>
+    <text x="320" y="22" text-anchor="middle" font-family="Palatino" font-size="15" font-weight="700" fill="#2b2620">h (attacking pairs) vs. iteration, with cooling temperature T</text>
     <polyline points="30,150 60,90 90,70 120,110 150,60 180,120 210,80 240,50 270,140 300,150 330,160 360,175 390,185 420,205 450,215 480,220 510,222 540,224 570,226 600,230"
       fill="none" stroke="#5b7fb5" stroke-width="2"/>
     <polyline points="30,60 100,90 180,120 260,150 340,175 420,195 500,212 600,230"
@@ -1373,7 +1401,7 @@
 </section>
 
 <div class="part-header">
-  <div class="ptag">Part 4 of 6</div>
+  <div class="ptag">Part 4 of 9</div>
   <h2>Adversarial Search &amp; Games</h2>
   <p>Every search algorithm in Part 2 assumed a passive environment — the world just sat there while you planned. This part drops that assumption: now there's an opponent, actively trying to make things go badly for you. That single change is what turns "search" into "game-playing," and it's the subject of this final part.</p>
 </div>
@@ -1531,7 +1559,7 @@
 <p>Find the minimax value of state A, given the game tree below (MAX at the root, MIN at the next level, terminal utilities as the leaves):</p>
 <div style="text-align:center; margin:16px 0;">
 <svg viewBox="0 0 520 260" width="100%" style="max-width:520px;">
-<g font-family="EB Garamond" font-size="15">
+<g font-family="Palatino" font-size="15">
 <text x="10" y="15" fill="#a8632f" font-weight="700">MAX</text>
 <text x="130" y="15" fill="#a8632f" font-weight="700">MIN</text>
 </g>
@@ -1699,7 +1727,7 @@
 </div>
 <div style="text-align:center; margin:16px 0;">
 <svg viewBox="0 0 680 400" width="100%" style="max-width:680px;">
-<g font-family="EB Garamond" font-size="14" fill="#a8632f" font-weight="700">
+<g font-family="Palatino" font-size="14" fill="#a8632f" font-weight="700">
 <text x="20" y="15">MAX</text><text x="150" y="15">MIN</text><text x="300" y="15">MAX</text><text x="470" y="15">MIN</text>
 </g>
 <g font-family="JetBrains Mono" font-size="12">
@@ -1789,7 +1817,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 5 of 6</div>
+  <div class="ptag">Part 5 of 9</div>
   <h2>Constraint Satisfaction Problems</h2>
   <p>Every search problem in Part 2 asked "what sequence of actions reaches a goal?" This part asks a subtly different question: forget the path entirely — what <em>assignment of values</em> satisfies every rule at once? That reframing is what makes Constraint Satisfaction Problems (CSPs) different from ordinary search, and it turns out to be exactly the right lens for scheduling, puzzles, and map colouring alike.</p>
 </div>
@@ -1845,7 +1873,7 @@
 <line x1="130" y1="127" x2="405" y2="127" stroke="#2a4d6e" stroke-width="1.4"/>
 <line x1="270" y1="127" x2="270" y2="210" stroke="#2a4d6e" stroke-width="1.4"/>
 <line x1="270" y1="168" x2="390" y2="168" stroke="#2a4d6e" stroke-width="1.4"/>
-<g font-family="EB Garamond" font-size="17" font-weight="700">
+<g font-family="Palatino" font-size="17" font-weight="700">
 <text x="72" y="122">A</text>
 <text x="180" y="90">B</text>
 <text x="310" y="90">C</text>
@@ -1854,7 +1882,7 @@
 <text x="320" y="193">F</text>
 </g>
 <circle cx="360" cy="235" r="26" fill="none" stroke="#2b2620" stroke-width="1.6"/>
-<text x="352" y="241" font-family="EB Garamond" font-size="17" font-weight="700">G</text>
+<text x="352" y="241" font-family="Palatino" font-size="17" font-weight="700">G</text>
 </svg>
 </div>
 </div>
@@ -1916,7 +1944,7 @@
 <line x1="180" y1="195" x2="330" y2="225"/>
 <line x1="340" y1="150" x2="330" y2="225"/>
 </g>
-<g font-family="EB Garamond" font-size="16" font-weight="700">
+<g font-family="Palatino" font-size="16" font-weight="700">
 <circle cx="60" cy="140" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="53" y="146">A</text>
 <circle cx="150" cy="80" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="143" y="86">B</text>
 <circle cx="270" cy="80" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="263" y="86">C</text>
@@ -2035,7 +2063,7 @@
 <line x1="210" y1="60" x2="150" y2="160"/>
 <line x1="150" y1="160" x2="150" y2="230"/>
 </g>
-<g font-family="EB Garamond" font-size="16" font-weight="700">
+<g font-family="Palatino" font-size="16" font-weight="700">
 <circle cx="90" cy="60" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="83" y="66">B</text>
 <circle cx="210" cy="60" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="203" y="66">C</text>
 <circle cx="150" cy="160" r="22" fill="none" stroke="#2b2620" stroke-width="1.4"/><text x="143" y="166">A</text>
@@ -2193,7 +2221,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 6 of 6</div>
+  <div class="ptag">Part 6 of 9</div>
   <h2>Logical Agents &amp; Propositional Logic</h2>
   <p>Every previous part built agents that search, optimise, or satisfy constraints — but none of them <em>reasoned</em> in the human sense of drawing new conclusions from what they already know. This part builds that capability from the ground up: an agent that stores facts as logical sentences, and can derive brand-new true facts purely by the shape of those sentences, using five different algorithms for doing exactly that.</p>
 </div>
@@ -2314,12 +2342,12 @@
 <line x1="105" y1="10" x2="105" y2="390"/><line x1="200" y1="10" x2="200" y2="390"/><line x1="295" y1="10" x2="295" y2="390"/>
 <line x1="10" y1="105" x2="390" y2="105"/><line x1="10" y1="200" x2="390" y2="200"/><line x1="10" y1="295" x2="390" y2="295"/>
 </g>
-<g font-family="EB Garamond" font-size="15" font-weight="700" text-anchor="middle">
+<g font-family="Palatino" font-size="15" font-weight="700" text-anchor="middle">
 <text x="342" y="55">Pit</text>
 <text x="57" y="150">Wumpus</text><text x="152" y="150">Gold</text><text x="247" y="150">Pit</text>
 <text x="247" y="340">Pit</text>
 </g>
-<text x="57" y="370" font-family="EB Garamond" font-size="13" font-weight="700" fill="#a1522f">START</text>
+<text x="57" y="370" font-family="Palatino" font-size="13" font-weight="700" fill="#a1522f">START</text>
 <g font-family="'Fira Code',monospace" font-size="9" fill="#8a8578">
 <text x="18" y="25">1,4</text><text x="113" y="25">2,4</text><text x="208" y="25">3,4</text><text x="303" y="25">4,4</text>
 <text x="18" y="120">1,3</text><text x="113" y="120">2,3</text><text x="208" y="120">3,3</text><text x="303" y="120">4,3</text>
@@ -2671,7 +2699,7 @@
 </div>
 <div style="text-align:center;margin:16px 0;">
 <svg viewBox="0 0 620 400" width="100%" style="max-width:600px;">
-<g font-family="EB Garamond" font-size="13">
+<g font-family="Palatino" font-size="13">
 <rect x="10" y="10" width="130" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="30" y="30" font-weight="700">P&or;&not;Q</text><text x="30" y="48" font-size="11">C1</text>
 <rect x="160" y="10" width="110" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="185" y="30" font-weight="700">Q&or;R</text><text x="185" y="48" font-size="11">C2</text>
 <rect x="290" y="10" width="130" height="50" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="310" y="30" font-weight="700">&not;P&or;R</text><text x="310" y="48" font-size="11">C3</text>
@@ -2699,9 +2727,9 @@
 <line x1="475" y1="60" x2="520" y2="200"/>
 </g>
 <line x1="375" y1="155" x2="250" y2="280" stroke="#8c63a8" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-<text x="330" y="230" font-family="EB Garamond" font-size="11">C3=&not;P&or;R</text>
+<text x="330" y="230" font-family="Palatino" font-size="11">C3=&not;P&or;R</text>
 <line x1="525" y1="225" x2="315" y2="360" stroke="#8c63a8" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-<text x="420" y="330" font-family="EB Garamond" font-size="11">C4=&not;R</text>
+<text x="420" y="330" font-family="Palatino" font-size="11">C4=&not;R</text>
 <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#8c63a8"/></marker></defs>
 </svg>
 </div>
@@ -2862,7 +2890,7 @@
 </div>
 <div style="text-align:center;margin:16px 0;">
 <svg viewBox="0 0 420 380" width="100%" style="max-width:380px;">
-<g font-family="EB Garamond" font-size="15" font-weight="700">
+<g font-family="Palatino" font-size="15" font-weight="700">
 <text x="200" y="20">Q</text>
 <text x="200" y="90">P</text>
 <text x="270" y="180">M</text>
@@ -2878,7 +2906,7 @@
 <path d="M167,210 Q220,250 262,300"/>
 <path d="M270,190 Q220,240 175,205"/>
 </g>
-<g font-family="EB Garamond" font-size="10" fill="#565048">
+<g font-family="Palatino" font-size="10" fill="#565048">
 <text x="55" y="150">A&and;P&rArr;L</text>
 <text x="215" y="60">P&rArr;Q</text>
 <text x="230" y="240">L&and;M&rArr;P</text>
@@ -2933,7 +2961,7 @@
 </div>
 <div style="text-align:center;margin:14px 0;">
 <svg viewBox="0 0 420 340" width="100%" style="max-width:360px;">
-<g font-family="EB Garamond" font-size="14" font-weight="700" text-anchor="middle">
+<g font-family="Palatino" font-size="14" font-weight="700" text-anchor="middle">
 <rect x="150" y="10" width="110" height="36" rx="8" fill="#f1eaf6" stroke="#8c63a8"/><text x="205" y="33">C (goal)</text>
 <rect x="130" y="80" width="150" height="36" rx="8" fill="#eef7f0" stroke="#3f8a5c"/><text x="205" y="103">A&and;B&rArr;C (AND)</text>
 <rect x="60" y="150" width="100" height="36" rx="8" fill="#f1eaf6" stroke="#8c63a8"/><text x="110" y="173">A (goal)</text>
@@ -2960,11 +2988,11 @@
 </div>
 <div style="text-align:center;margin:14px 0;">
 <svg viewBox="0 0 620 340" width="100%" style="max-width:600px;">
-<g font-family="EB Garamond" font-size="13" font-weight="700" text-anchor="middle">
+<g font-family="Palatino" font-size="13" font-weight="700" text-anchor="middle">
 <rect x="250" y="10" width="100" height="34" rx="7" fill="#f1eaf6" stroke="#8c63a8"/><text x="300" y="32">Q (OR)</text>
 <rect x="80" y="70" width="140" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"/><text x="150" y="92">clause 1: P&rArr;Q</text>
 <rect x="380" y="70" width="180" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="470" y="92">clause 2: L&and;M&rArr;Q</text>
-<rect x="80" y="140" width="100" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"><title/></rect><text x="130" y="162" font-family="EB Garamond" font-weight="700">P</text>
+<rect x="80" y="140" width="100" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"><title/></rect><text x="130" y="162" font-family="Palatino" font-weight="700">P</text>
 <rect x="410" y="140" width="100" height="34" rx="7" fill="#f1eaf6" stroke="#8c63a8"/><text x="460" y="162">L (OR)</text>
 <rect x="530" y="140" width="80" height="34" rx="7" fill="#eef7f0" stroke="#3f8a5c"/><text x="570" y="162">M</text>
 <rect x="330" y="210" width="180" height="34" rx="7" fill="#f7e9e6" stroke="#b0563f" stroke-dasharray="4 3"/><text x="420" y="232">clause 3: A&and;P&rArr;L</text>
@@ -3008,9 +3036,839 @@
 </section>
 
 
+<div class="part-header">
+  <div class="ptag">Part 7 of 9</div>
+  <h2>Uncertainty &amp; Bayesian Networks</h2>
+  <p>Every part so far has assumed the world is known for certain: a search problem's map is exact, a CSP's constraints are hard rules, a logical KB's facts are either true or false. Real agents rarely get that luxury — sensors are noisy, knowledge is incomplete, environments are unpredictable. This part introduces <strong>probability</strong> as the tool for reasoning under that uncertainty, and <strong>Bayesian networks</strong> as the data structure that makes large probabilistic models tractable.</p>
+</div>
+
+<section class="slide" id="p7-intro">
+<span class="slide-tag">Slides 1–4</span>
+<h3>1. Why AI needs uncertainty</h3>
+<p>Propositional logic (Part 6) is powerful, but it has one hard requirement: every sentence must be definitely true or definitely false. A robot's camera, a speech recognizer, a medical test — none of these give you that kind of certainty. They give you evidence that makes some conclusion <em>likely</em>, not guaranteed.</p>
+
+<div class="def">
+<span class="box-label">Where uncertainty comes from</span>
+<ul>
+<li><strong>Sensor errors</strong> — a robot's vision system misreads a shape, speech recognition mishears a word.</li>
+<li><strong>Incomplete knowledge</strong> — a doctor diagnosing a patient never has access to every possible fact about that patient's body.</li>
+<li><strong>Unpredictable environments</strong> — a self-driving car cannot know in advance exactly what every other driver will do.</li>
+</ul>
+<p>In every one of these cases, <strong>deterministic logic alone is insufficient</strong> — there is a genuine need for probabilistic reasoning.</p>
+</div>
+
+<div class="an">
+<span class="box-label">The shift in mindset from Part 6</span>
+<p>In propositional logic, you either know \(\neg P_{21}\) (no pit at [2,1]) for certain, or you don't know it at all — there's no middle ground. Probability lets you say something in between: "I'm 92% confident there's no pit at [2,1]." That single number — a <em>degree of belief</em> — is what the rest of this part is built around.</p>
+</div>
+
+<h4>The vocabulary of probabilistic reasoning</h4>
+<table class="grid">
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td><strong>Prior probability</strong></td><td>Your belief <em>before</em> seeing any evidence (e.g. how common a disease is in the general population).</td></tr>
+<tr><td><strong>Conditional probability</strong>, \(P(A\mid B)\)</td><td>Your belief in \(A\), <em>given</em> that \(B\) is known to be true.</td></tr>
+<tr><td><strong>Bayes' theorem</strong></td><td>The rule for updating a prior belief into a new belief once evidence arrives.</td></tr>
+</table>
+
+<div class="ex">
+<span class="box-label">Running analogy — medical diagnosis</span>
+<p><strong>Prior:</strong> how common the disease is in the population, before you know anything about this particular patient. <strong>Evidence:</strong> the patient's test result. <strong>Posterior:</strong> the updated probability that the patient has the disease, now that the test result is known. This prior → evidence → posterior pipeline is exactly what Bayesian networks are built to compute, for arbitrarily many interacting variables at once.</p>
+</div>
+
+<p>This isn't a niche technique — probabilistic reasoning underlies most of modern AI: natural language processing (speech recognition, translation), robotics (localization, mapping), computer vision (recognizing objects despite noise), and decision-making under uncertainty (autonomous vehicles, finance).</p>
+</section>
+
+<section class="slide" id="p7-bn-def">
+<span class="slide-tag">Slides 5–6</span>
+<h3>2. What is a Bayesian Network?</h3>
+<p>The single biggest practical problem with probability is size: if you have \(n\) interacting variables, their full joint distribution needs a probability for <em>every combination</em> of their values — a table that grows exponentially in \(n\). A Bayesian network is a structure that lets you avoid ever building that table explicitly, by exploiting the fact that, in the real world, most variables only directly depend on a handful of others.</p>
+
+<div class="def">
+<span class="box-label">Definition</span>
+<p>A <strong>Bayesian network</strong> is a data structure that represents the dependencies among random variables. Formally, it is:</p>
+<ul>
+<li>A <strong>Directed Acyclic Graph (DAG)</strong> — directed edges, and no cycles.</li>
+<li>Each <strong>node</strong> corresponds to a random variable.</li>
+<li>A directed edge from node \(X\) to node \(Y\) means \(X\) is a <strong>parent</strong> of \(Y\) — intuitively, "\(X\) directly influences \(Y\)."</li>
+<li>Each node \(X\) carries its own local probability distribution, \(P(X \mid \text{Parents}(X))\) — a small table, not a giant joint one.</li>
+</ul>
+</div>
+
+<div class="key">
+<span class="box-label">Why this is the whole point</span>
+<p>A node with no parents just stores its unconditional (prior) distribution. A node with parents stores only how it depends on <em>those specific parents</em> — not on every other variable in the network. This is what makes the representation compact: instead of one astronomically large joint table, you store many small local ones, one per node.</p>
+</div>
+</section>
+
+<section class="slide" id="p7-example">
+<span class="slide-tag">Slide 7</span>
+<h3>3. A worked example network: rain, car washes, and wet shoes</h3>
+<p>Here is the network this entire part will use as its running example. It has six random variables, drawn as nodes, with arrows showing which variables directly influence which others.</p>
+
+<div style="text-align:center;margin:18px 0;">
+<svg viewBox="0 0 700 380" width="100%" style="max-width:620px;">
+<defs>
+  <marker id="bnarrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2b2620"/></marker>
+</defs>
+<g stroke="#2b2620" stroke-width="1.6" fill="none" marker-end="url(#bnarrow)">
+  <line x1="168" y1="88" x2="300" y2="155"/>
+  <line x1="168" y1="302" x2="300" y2="222"/>
+  <line x1="400" y1="165" x2="522" y2="92"/>
+  <line x1="400" y1="210" x2="522" y2="288"/>
+</g>
+<g>
+  <ellipse cx="120" cy="70" rx="95" ry="42" fill="#fdf3e3" stroke="#c98a2c" stroke-width="2"/>
+  <text x="120" y="63" text-anchor="middle" font-family="Palatino" font-weight="700" font-size="17">Rain &nbsp;R</text>
+  <text x="120" y="83" text-anchor="middle" font-family="JetBrains Mono" font-size="11">{None, Light, Heavy}</text>
+
+  <ellipse cx="120" cy="310" rx="95" ry="42" fill="#fdf3e3" stroke="#c98a2c" stroke-width="2"/>
+  <text x="120" y="303" text-anchor="middle" font-family="Palatino" font-weight="700" font-size="17">Car wash &nbsp;C</text>
+  <text x="120" y="323" text-anchor="middle" font-family="JetBrains Mono" font-size="11">{Yes, No}</text>
+
+  <ellipse cx="350" cy="190" rx="100" ry="42" fill="#eef3fb" stroke="#5b7fb5" stroke-width="2"/>
+  <text x="350" y="183" text-anchor="middle" font-family="Palatino" font-weight="700" font-size="17">Wet ground &nbsp;W</text>
+  <text x="350" y="203" text-anchor="middle" font-family="JetBrains Mono" font-size="11">{Yes, No}</text>
+
+  <ellipse cx="580" cy="70" rx="90" ry="42" fill="#eef6ee" stroke="#5c9a63" stroke-width="2"/>
+  <text x="580" y="63" text-anchor="middle" font-family="Palatino" font-weight="700" font-size="17">Slip &nbsp;S</text>
+  <text x="580" y="83" text-anchor="middle" font-family="JetBrains Mono" font-size="11">{Yes, No}</text>
+
+  <ellipse cx="580" cy="310" rx="100" ry="42" fill="#eef6ee" stroke="#5c9a63" stroke-width="2"/>
+  <text x="580" y="303" text-anchor="middle" font-family="Palatino" font-weight="700" font-size="17">Muddy shoes &nbsp;M</text>
+  <text x="580" y="323" text-anchor="middle" font-family="JetBrains Mono" font-size="11">{Yes, No}</text>
+
+  <ellipse cx="350" cy="340" rx="100" ry="38" fill="#f3edf9" stroke="#8a63c9" stroke-width="2"/>
+  <text x="350" y="334" text-anchor="middle" font-family="Palatino" font-weight="700" font-size="17">Win lottery &nbsp;L</text>
+  <text x="350" y="352" text-anchor="middle" font-family="JetBrains Mono" font-size="11">{Yes, No}</text>
+</g>
+</svg>
+</div>
+
+<div class="warn">
+<span class="box-label">Read the arrows as "directly causes / directly influences," not as the only things that matter</span>
+<p>Rain and whether you used a car wash both directly influence whether the ground is wet; the ground being wet in turn directly influences whether you slip, and whether your shoes get muddy. Notice <strong>Win lottery (L)</strong> has no edges at all — it's included deliberately, as a variable that is <em>completely independent</em> of everything else in the network. It will reappear later as a worked example of a variable whose presence turns out not to matter to certain calculations at all.</p>
+</div>
+</section>
+
+<section class="slide" id="p7-cpt">
+<span class="slide-tag">Slides 8–10</span>
+<h3>4. Prior probabilities and Conditional Probability Tables (CPTs)</h3>
+<p>Every node in the network stores one small table. A node with no parents (R, C, L) stores its <strong>prior probabilities</strong>. A node with parents (W, S, M) stores a <strong>Conditional Probability Table (CPT)</strong> — its distribution for every possible combination of its parents' values.</p>
+
+<div class="def">
+<span class="box-label">The three priors (parentless nodes)</span>
+<table class="grid">
+<tr><th>Rain R</th><th>P(R)</th></tr>
+<tr><td>None</td><td>0.60</td></tr>
+<tr><td>Light</td><td>0.30</td></tr>
+<tr><td>Heavy</td><td>0.10</td></tr>
+</table>
+<table class="grid">
+<tr><th>Car wash C</th><th>P(C)</th></tr>
+<tr><td>Yes</td><td>0.10</td></tr>
+<tr><td>No</td><td>0.90</td></tr>
+</table>
+<table class="grid">
+<tr><th>Win lottery L</th><th>P(L)</th></tr>
+<tr><td>Yes</td><td>0.000001</td></tr>
+<tr><td>No</td><td>0.999999</td></tr>
+</table>
+</div>
+
+<div class="ex">
+<span class="box-label">CPT for Wet ground (W), given Rain and Car wash</span>
+<table class="grid">
+<tr><th>Rain</th><th>Car wash</th><th>P(W=Yes)</th><th>P(W=No)</th></tr>
+<tr><td>None</td><td>No</td><td>0.02</td><td>0.98</td></tr>
+<tr><td>None</td><td>Yes</td><td>0.60</td><td>0.40</td></tr>
+<tr><td>Light</td><td>No</td><td>0.60</td><td>0.40</td></tr>
+<tr><td>Light</td><td>Yes</td><td>0.85</td><td>0.15</td></tr>
+<tr><td>Heavy</td><td>No</td><td>0.95</td><td>0.05</td></tr>
+<tr><td>Heavy</td><td>Yes</td><td>0.98</td><td>0.02</td></tr>
+</table>
+<p>With two parents, each taking 3 and 2 values respectively, this CPT needs \(3\times2=6\) rows. A node's CPT size always grows multiplicatively with the number of values its parents can take — one more reason networks keep parent sets small.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">CPTs for Slip (S) and Muddy shoes (M), each given only Wet ground</span>
+<table class="grid">
+<tr><th>Wet ground</th><th>P(S=Yes)</th><th>P(S=No)</th></tr>
+<tr><td>Yes</td><td>0.15</td><td>0.85</td></tr>
+<tr><td>No</td><td>0.01</td><td>0.99</td></tr>
+</table>
+<table class="grid">
+<tr><th>Wet ground</th><th>P(M=Yes)</th><th>P(M=No)</th></tr>
+<tr><td>Yes</td><td>0.70</td><td>0.30</td></tr>
+<tr><td>No</td><td>0.05</td><td>0.95</td></tr>
+</table>
+</div>
+
+<div class="an">
+<span class="box-label">Reading a CPT row in plain English</span>
+<p>The row "Rain=Heavy, Car wash=No → P(W=Yes)=0.95" says: <em>if</em> it's heavily raining and you didn't use a car wash, <em>then</em> there's a 95% chance the ground is wet. Every row is just an ordinary conditional probability, \(P(W{=}\text{Yes}\mid R{=}\text{Heavy}, C{=}\text{No})\), written out in table form.</p>
+</div>
+</section>
+
+<section class="slide" id="p7-joint">
+<span class="slide-tag">Slides 11–13</span>
+<h3>5. From the network to the full joint distribution</h3>
+<p>The whole point of storing these small local tables is that they're enough, together, to reconstruct <em>any</em> joint probability you could ask the network — without ever building the giant combined table directly. Here's why.</p>
+
+<div class="def">
+<span class="box-label">The chain rule, for any ordering of variables</span>
+<p>For <em>any</em> set of random variables \(X_1,\dots,X_n\), repeatedly applying the definition of conditional probability gives the exact identity:</p>
+<p>$$P(x_1,x_2,\dots,x_n) = \prod_{i=1}^{n}P(x_i \mid x_1,x_2,\dots,x_{i-1})$$</p>
+<p>This holds for <em>every</em> joint distribution, Bayesian network or not — it's pure algebra, with no independence assumptions yet.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The Bayesian network's one simplifying assumption</span>
+<p>A Bayesian network is built so that, with its nodes labelled in an order consistent with the arrows (every parent before its children), each variable \(X_i\) is <strong>conditionally independent of all its non-descendants, given its parents</strong>. In symbols: \(\text{Parents}(X_i)\subseteq\{X_1,\dots,X_{i-1}\}\), and</p>
+<p>$$P(x_i\mid x_1,x_2,\dots,x_{i-1}) = P(x_i \mid \text{Parents}(X_i))$$</p>
+<p>Substituting this into the chain rule above gives the network's master formula:</p>
+<p>$$\boxed{P(x_1,x_2,\dots,x_n) = \prod_{i=1}^{n}P(x_i\mid \text{Parents}(X_i))}$$</p>
+<p>This is exactly why each node only needs to store \(P(X\mid\text{Parents}(X))\) — that's genuinely all the information the whole joint distribution needs from it.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked example — the full factorization</span>
+<p>For the rain/car-wash network, labelling parents before children gives:</p>
+<p>$$P(R,C,W,S,M,L) = P(R)\,P(C)\,P(L)\,P(W\mid R,C)\,P(S\mid W)\,P(M\mid W)$$</p>
+<p>Six variables, but only six small factors — none of them bigger than the 6-row CPT for \(W\). Now plug in one specific assignment, \(R{=}\text{Light}, C{=}\text{No}, W{=}\text{Yes}, S{=}\text{Yes}, M{=}\text{Yes}, L{=}\text{No}\):</p>
+<p>$$P(R{=}\text{Light},C{=}\text{No},W{=}\text{Yes},S{=}\text{Yes},M{=}\text{Yes},L{=}\text{No})$$</p>
+<p>$$= P(R{=}\text{Light})\cdot P(C{=}\text{No})\cdot P(L{=}\text{No})\cdot P(W{=}\text{Yes}\mid\text{Light},\text{No})\cdot P(S{=}\text{Yes}\mid\text{Yes})\cdot P(M{=}\text{Yes}\mid\text{Yes})$$</p>
+<p>$$= 0.30\times0.90\times0.999999\times0.60\times0.15\times0.70 \approx \boxed{0.017}$$</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Six numbers looked up from six small tables, multiplied together — no giant joint table was ever built.</p>
+</div>
+</section>
+
+<section class="slide" id="p7-enum">
+<span class="slide-tag">Slides 14–19</span>
+<h3>6. Inference by Enumeration</h3>
+<p>Being able to compute the probability of one <em>fully specified</em> assignment is nice, but what you usually want to ask is a <em>query</em>: given some evidence, what's the distribution over some variable you don't directly observe? That's what inference means here, and the most direct (if not most efficient) way to do it is enumeration.</p>
+
+<div class="def">
+<span class="box-label">The general inference formula</span>
+<p>$$P(X\mid e) = \alpha\, P(X,e) = \alpha \sum_{y} P(X,e,y)$$</p>
+<ul>
+<li>\(X\) is the <strong>query variable</strong> — the one you want a distribution over.</li>
+<li>\(e\) is the <strong>evidence</strong> — the variables whose values you already observed.</li>
+<li>\(y\) ranges over every possible combination of values of the <strong>hidden variables</strong> — everything that's neither the query nor the evidence.</li>
+<li>\(\alpha\) is a <strong>normalizing constant</strong>, chosen at the very end so the resulting distribution over \(X\) sums to 1.</li>
+</ul>
+<p>In words: to find \(P(X\mid e)\), add up \(P(X,e,y)\) over every possible value of every hidden variable, then rescale so the answer is a genuine probability distribution.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Worked example — compute P(R | S=yes, M=no)</span>
+<p>Here the query variable is \(R\), the evidence is \(S{=}\text{yes}, M{=}\text{no}\), and the hidden variables are \(L, C, W\) (everything else). Expand step by step, using the Bayesian network's factorization from the previous slide:</p>
+<p>$$P(R{=}r\mid S{=}\text{yes},M{=}\text{no}) = \alpha\, P(R{=}r,S{=}\text{yes},M{=}\text{no})$$</p>
+<p>$$= \alpha\sum_{l}\sum_{c}\sum_{w}P(R{=}r,S{=}\text{yes},M{=}\text{no},L{=}l,C{=}c,W{=}w)$$</p>
+<p>$$= \alpha\sum_{l}\sum_{c}\sum_{w}P(R{=}r)\,P(L{=}l)\,P(C{=}c)\,P(W{=}w\mid r,c)\,P(S{=}\text{yes}\mid w)\,P(M{=}\text{no}\mid w)$$</p>
+<p>Nested sums like this are usually written with the summations pulled "outward," so each sum only has to be redone once its inner variable changes:</p>
+<p>$$= \alpha\,P(R{=}r)\sum_{l}\Big[P(L{=}l)\sum_{c}\Big[P(C{=}c)\sum_{w}\big(P(W{=}w\mid r,c)\,P(S{=}\text{yes}\mid w)\,P(M{=}\text{no}\mid w)\big)\Big]\Big]$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Plugging in numbers, for R = none</span>
+<p>$$P(R{=}\text{none}\mid S{=}\text{yes},M{=}\text{no})$$</p>
+<p>$$= \alpha\,(0.6)\Big[0.000001\big[0.1(0.6{\times}0.15{\times}0.3 + 0.4{\times}0.01{\times}0.95) + 0.9(0.02{\times}0.15{\times}0.3+0.98{\times}0.01{\times}0.95)\big]$$</p>
+<p>$$\hphantom{=\ } +\ 0.999999\big[0.1(0.6{\times}0.15{\times}0.3+0.4{\times}0.01{\times}0.95)+0.9(0.02{\times}0.15{\times}0.3+0.98{\times}0.01{\times}0.95)\big]\Big]$$</p>
+<p>$$\approx \alpha\,(0.0073614)$$</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">Every number here is a direct CPT lookup: \(P(L{=}\text{yes})=0.000001\), \(P(L{=}\text{no})=0.999999\), \(P(C{=}\text{no})=0.9\), \(P(C{=}\text{yes})=0.1\), and the \(0.6, 0.15, 0.3\) etc. are \(P(W\mid R{=}\text{none},C)\), \(P(S{=}\text{yes}\mid W)\), \(P(M{=}\text{no}\mid W)\) for \(W{=}\text{yes}\) and \(W{=}\text{no}\) respectively.</p>
+</div>
+
+<p>Similar computations for \(R{=}\text{light}\) and \(R{=}\text{heavy}\) give:</p>
+<p>$$P(R{=}\text{light}\mid S{=}\text{yes},M{=}\text{no}) \approx \alpha\,(0.00950637), \qquad P(R{=}\text{heavy}\mid S{=}\text{yes},M{=}\text{no}) \approx \alpha\,(0.00433315)$$</p>
+
+<div class="an">
+<span class="box-label">Normalizing — turning three raw numbers into a probability distribution</span>
+<p>$$P(R\mid S{=}\text{yes},M{=}\text{no}) \approx \alpha\,\langle 0.0073614,\ 0.00950637,\ 0.00433315\rangle$$</p>
+<p>Since the three unnormalized numbers must sum to \(1/\alpha\), compute \(\alpha = \dfrac{1}{0.0073614+0.00950637+0.00433315} \approx 47.1678\), then multiply every entry by it:</p>
+<p>$$P(R\mid S{=}\text{yes},M{=}\text{no}) \approx \langle\, \underbrace{0.3472}_{\text{none}},\ \underbrace{0.4484}_{\text{light}},\ \underbrace{0.2044}_{\text{heavy}} \,\rangle$$</p>
+<p>So after seeing a slip and clean shoes, light rain is now the single most likely explanation — more likely than no rain at all, even though "no rain" had the highest <em>prior</em> probability (0.6). This is Bayesian updating in action: the evidence (wet-ground symptoms) pulled the belief away from the prior.</p>
+</div>
+
+<div class="warn">
+<span class="box-label">The problem with enumeration: repeated work</span>
+<p>Look back at the nested-sum expression above. The innermost sum over \(w\) — computing \(P(W{=}w\mid r,c)P(S{=}\text{yes}\mid w)P(M{=}\text{no}\mid w)\) and adding the two \(w\) terms — gets <em>recomputed from scratch</em> for every combination of \(l\) and \(c\) it's nested under, even though its value doesn't actually depend on \(l\) at all, and only depends on \(c\) through \(r,c\) (which are fixed once you're computing one specific \(P(R{=}r\mid\dots)\)). Drawn as a computation tree, the same subexpression (the \(w\)-sum, conditioned on a given \(r,c\)) appears over and over, once per branch of \(l\) — pure duplicated effort. For a network with many hidden variables this blow-up becomes exponential. The fix — doing each distinct calculation exactly once and reusing the result — is the idea behind the next technique.</p>
+</div>
+</section>
+
+<section class="slide" id="p7-ve">
+<span class="slide-tag">Slides 20–29</span>
+<h3>7. Inference by Variable Elimination</h3>
+<p><strong>Key idea:</strong> do each distinct calculation once, save the result, and reuse it wherever it's needed — a form of <strong>dynamic programming</strong> applied to probabilistic inference. Concretely, every piece of the nested-sum expression is written as a named <strong>factor</strong> — a small table over a few variables — and factors are combined and summed one hidden variable at a time, instead of all at once in deeply nested loops.</p>
+
+<div class="ex">
+<span class="box-label">Setting up the factors for P(R | S=yes, M=no)</span>
+<p>Starting from the same expression enumeration used:</p>
+<p>$$P(R{=}r\mid S{=}\text{yes},M{=}\text{no}) = \alpha\underbrace{P(R{=}r)}_{f_1(R)}\sum_{l}\Big[\underbrace{P(L{=}l)}_{f_2(L)}\sum_{c}\Big[\underbrace{P(C{=}c)}_{f_3(C)}\sum_{w}\big(\underbrace{P(W{=}w\mid r,c)}_{f_4(W,R,C)}\underbrace{P(S{=}\text{yes}\mid w)}_{f_5(W)}\underbrace{P(M{=}\text{no}\mid w)}_{f_6(W)}\big)\Big]\Big]$$</p>
+<p>Each labelled piece becomes a small array of numbers, read straight off the CPTs from Section 4:</p>
+<table class="grid">
+<tr><th>Factor</th><th>Shape</th><th>Values</th></tr>
+<tr><td>\(f_1(R)=\big[P(R{=}\text{none}),P(R{=}\text{light}),P(R{=}\text{heavy})\big]\)</td><td>3×1</td><td>\([0.6,\ 0.3,\ 0.1]\)</td></tr>
+<tr><td>\(f_2(L)=\big[P(L{=}\text{yes}),P(L{=}\text{no})\big]\)</td><td>2×1</td><td>\([0.000001,\ 0.999999]\)</td></tr>
+<tr><td>\(f_3(C)=\big[P(C{=}\text{yes}),P(C{=}\text{no})\big]\)</td><td>2×1</td><td>\([0.1,\ 0.9]\)</td></tr>
+<tr><td>\(f_4(W,R,C)\)</td><td>2×2×3</td><td>the full \(W\mid R,C\) CPT, read as a 3D array</td></tr>
+<tr><td>\(f_5(W)=\big[P(S{=}\text{yes}\mid W{=}\text{yes}),P(S{=}\text{yes}\mid W{=}\text{no})\big]\)</td><td>2×1</td><td>\([0.15,\ 0.01]\)</td></tr>
+<tr><td>\(f_6(W)=\big[P(M{=}\text{no}\mid W{=}\text{yes}),P(M{=}\text{no}\mid W{=}\text{no})\big]\)</td><td>2×1</td><td>\([0.30,\ 0.95]\)</td></tr>
+</table>
+</div>
+
+<div class="def">
+<span class="box-label">Pointwise multiplication — the Hadamard product</span>
+<p>Combining factors over shared variables is done by <strong>pointwise (Hadamard) multiplication</strong>, written \(\times\) here — matching up entries that agree on their shared variables' values and multiplying them together, entry by entry, rather than an ordinary matrix product.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Step 1 — eliminate W: combine f₄, f₅, f₆, then sum out w</span>
+<p>First, the easy part — \(f_5(W)\times f_6(W)\), a plain entrywise product of two 2×1 vectors:</p>
+<p>$$f_5(W)\times f_6(W) = [0.15,\ 0.01]\times[0.30,\ 0.95] = [0.045,\ 0.0095]$$</p>
+<p>Now multiply this into \(f_4(W,R,C)\) — its 2×2×3 array — pointwise over the shared variable \(W\) (each of the two "layers," \(W{=}\text{yes}\) and \(W{=}\text{no}\), gets scaled by \(0.045\) and \(0.0095\) respectively):</p>
+<p>$$f_4(W,R,C)\times f_5(W)\times f_6(W) = \begin{bmatrix}0.027 & 0.03825 & 0.0441\\ 0.0009 & 0.027 & 0.04275\\ \hline 0.0038 & 0.001425 & 0.00019\\ 0.00931 & 0.0038 & 0.000475\end{bmatrix}$$</p>
+<p>(top two rows: \(W{=}\text{yes}\); bottom two rows: \(W{=}\text{no}\); columns: \(R{=}\text{none, light, heavy}\); within each half, rows are \(C{=}\text{yes}, C{=}\text{no}\)). Summing out \(w\) means adding the top half to the bottom half, collapsing \(W\) away entirely:</p>
+<p>$$f_7(R,C) = \begin{bmatrix}0.0308 & 0.039675 & 0.04429\\ 0.01021 & 0.0308 & 0.043225\end{bmatrix}\begin{matrix}\leftarrow C{=}\text{yes}\\ \leftarrow C{=}\text{no}\end{matrix}$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Step 2 — eliminate C: combine f₃ and f₇, then sum out c</span>
+<p>Multiply \(f_3(C)=[0.1,\ 0.9]\) pointwise into each row of \(f_7(R,C)\), then add the two rows together to sum out \(c\):</p>
+<p>$$f_3(C)\times f_7(R,C) = \begin{bmatrix}0.00308 & 0.0039675 & 0.004429\\ 0.009189 & 0.02772 & 0.0389025\end{bmatrix} \ \xrightarrow{\text{sum rows}}\ f_8(R) = [0.012269,\ 0.0316875,\ 0.0433315]$$</p>
+</div>
+
+<div class="warn">
+<span class="box-label">Where did f₂(L) go?</span>
+<p>It never needed to be computed at all. \(L\) has no parents and is not conditioned on anything else in this expression, so summing \(f_2(L)\) over all its values just gives \(P(L{=}\text{yes})+P(L{=}\text{no})=1\) — multiplying by 1 changes nothing. Whenever a variable's factor is a plain, un-combined probability distribution over itself, summing it out is free. This is a useful shortcut worth watching for: it's effectively the network correctly recognizing that <strong>L is irrelevant to this query</strong>, exactly as the diagram in Section 3 suggested it would be.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Final step — combine with f₁(R) and normalize</span>
+<p>$$P(R\mid S{=}\text{yes},M{=}\text{no}) = \alpha\cdot f_1(R)\times f_8(R) = \alpha\cdot[0.6,\ 0.3,\ 0.1]\times[0.012269,\ 0.0316875,\ 0.0433315]$$</p>
+<p>$$= \alpha\cdot[0.0073614,\ 0.00950637,\ 0.00433315]$$</p>
+<p>— <strong>exactly</strong> the unnormalized numbers enumeration produced, confirming the two methods agree. After the same normalization as before, \(P(R\mid S{=}\text{yes},M{=}\text{no})\approx\langle0.3472, 0.4484, 0.2044\rangle\).</p>
+<p>The payoff: each factor (\(f_4\times f_5\times f_6\), then summed; \(f_3\times f_7\), then summed) was computed <strong>exactly once</strong>, regardless of how many other variables sit "above" it in the expression — unlike enumeration, which recomputed the \(w\)-sum once per value of \(l\). That's the dynamic-programming saving variable elimination delivers.</p>
+</div>
+</section>
+
+
+<div class="part-header">
+  <div class="ptag">Part 8 of 9</div>
+  <h2>Decision Tree Learning</h2>
+  <p>Part 7 showed how to reason with a probabilistic model you're handed. This part asks a different question: given a table of past examples, how does a machine <em>learn</em> a model on its own? Decision trees are one of the simplest, most interpretable answers — and the central question they have to answer at every step is: <em>which feature should I ask about next?</em></p>
+</div>
+
+<section class="slide" id="p8-intro">
+<span class="slide-tag">Slides 1–7</span>
+<h3>1. What is a Decision Tree?</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>A <strong>Decision Tree</strong> is a representation of a function that maps a vector of feature values to a single output value — a "decision." Internal nodes test a single feature; branches correspond to that feature's possible values; leaves hold the predicted output.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">The running dataset — will a customer buy the product?</span>
+<p>A binary classification dataset from an online shopping site, predicting whether a customer buys a product from their <strong>Age group</strong> and the <strong>Device used</strong>:</p>
+<table class="grid">
+<tr><th>#</th><th>Age group (years)</th><th>Device used</th><th>Bought the product</th></tr>
+<tr><td>1</td><td>20–40</td><td>Mobile</td><td>Yes</td></tr>
+<tr><td>2</td><td>60–80</td><td>Tablet</td><td>Yes</td></tr>
+<tr><td>3</td><td>20–40</td><td>Mobile</td><td>Yes</td></tr>
+<tr><td>4</td><td>40–60</td><td>Mobile</td><td>No</td></tr>
+<tr><td>5</td><td>40–60</td><td>Desktop</td><td>No</td></tr>
+<tr><td>6</td><td>20–40</td><td>Desktop</td><td>Yes</td></tr>
+<tr><td>7</td><td>20–40</td><td>Desktop</td><td>Yes</td></tr>
+<tr><td>8</td><td>40–60</td><td>Desktop</td><td>No</td></tr>
+<tr><td>9</td><td>60–80</td><td>Tablet</td><td>No</td></tr>
+<tr><td>10</td><td>40–60</td><td>Tablet</td><td>Yes</td></tr>
+</table>
+<p>10 examples, 6 "Yes" and 4 "No." Two features: Age group \(\in\{20\text{–}40, 40\text{–}60, 60\text{–}80\}\), Device \(\in\{\text{Mobile, Tablet, Desktop}\}\).</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Tree A — splitting on Age group first</span>
+<div style="font-family:'JetBrains Mono',monospace;font-size:14.5px;line-height:1.9;margin:14px 0;">
+<div><strong>{1,2,3,4,5,6,7,8,9,10}</strong> — test: <em>Age group</em></div>
+<div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;">
+  <div>├─ 20–40 → <strong>{1,3,6,7}</strong> — all "Yes" → <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Leaf: Yes</span></div>
+  <div>├─ 40–60 → <strong>{4,5,8,10}</strong> — mixed → test: <em>Device</em>
+    <div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;margin-top:6px;">
+      <div>├─ Mobile → {4} → <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Leaf: No</span></div>
+      <div>├─ Tablet → {10} → <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Leaf: Yes</span></div>
+      <div>└─ Desktop → {5,8} → <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Leaf: No</span></div>
+    </div>
+  </div>
+  <div>└─ 60–80 → <strong>{2,9}</strong> — mixed → test: <em>Device</em>
+    <div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;margin-top:6px;">
+      <div>├─ Mobile → {} (empty) → <span class="chip">Leaf: Plurality(parent) — tie, broken randomly</span></div>
+      <div>├─ Tablet → {2,9} → still mixed, no attributes left → <span class="chip">Leaf: Plurality — tie, broken randomly</span></div>
+      <div>└─ Desktop → {} (empty) → <span class="chip">Leaf: Plurality(parent) — tie, broken randomly</span></div>
+    </div>
+  </div>
+</div>
+</div>
+<p><strong>Example prediction:</strong> Age group 40–60, Device Tablet → follow 40–60 → Tablet → <strong>Buys the product.</strong></p>
+</div>
+
+<div class="ex">
+<span class="box-label">Tree B — splitting on Device first (a different, equally valid tree for the same data)</span>
+<div style="font-family:'JetBrains Mono',monospace;font-size:14.5px;line-height:1.9;margin:14px 0;">
+<div><strong>{1,2,3,4,5,6,7,8,9,10}</strong> — test: <em>Device</em></div>
+<div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;">
+  <div>├─ Mobile → <strong>{1,3,4}</strong> — mixed → test: <em>Age group</em>
+    <div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;margin-top:6px;">
+      <div>├─ 20–40 → {1,3} → <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Leaf: Yes</span></div>
+      <div>├─ 40–60 → {4} → <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Leaf: No</span></div>
+      <div>└─ 60–80 → {} (empty) → <span class="chip">Leaf: Plurality(parent)</span></div>
+    </div>
+  </div>
+  <div>├─ Tablet → <strong>{2,9,10}</strong> — mixed → test: <em>Age group</em>
+    <div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;margin-top:6px;">
+      <div>├─ 20–40 → {} (empty) → <span class="chip">Leaf: Plurality(parent)</span></div>
+      <div>├─ 40–60 → {10} → <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Leaf: Yes</span></div>
+      <div>└─ 60–80 → {2,9} → still mixed → <span class="chip">Leaf: Plurality — tie, broken randomly</span></div>
+    </div>
+  </div>
+  <div>└─ Desktop → <strong>{5,6,7,8}</strong> — mixed → test: <em>Age group</em>
+    <div style="margin-left:22px;border-left:2px solid var(--rule);padding-left:16px;margin-top:6px;">
+      <div>├─ 20–40 → {6,7} → <span class="chip" style="background:var(--an-bg);border-color:var(--an-line);color:var(--an-line)">Leaf: Yes</span></div>
+      <div>├─ 40–60 → {5,8} → <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Leaf: No</span></div>
+      <div>└─ 60–80 → {} (empty) → <span class="chip">Leaf: Plurality(parent)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+<p><strong>Example prediction:</strong> Age group 40–60, Device Tablet → follow Tablet → 40–60 → <strong>Buys the product</strong> — the same prediction as Tree A, for this particular input.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The question this whole part answers</span>
+<p>Both trees fit the training data perfectly, and both happen to agree on this one test input. But they are structurally different trees, and in general they won't always agree. So which feature genuinely deserves to be tested <em>first</em>? Sections 3–4 build the precise mathematical answer: <strong>Information Gain</strong>.</p>
+</div>
+</section>
+
+<section class="slide" id="p8-algorithm">
+<span class="slide-tag">Slides 8–9</span>
+<h3>2. The Decision Tree Learning Algorithm</h3>
+<p>Both trees above were built by the same recursive recipe — only the choice of which feature to split on first differed.</p>
+
+<div class="def">
+<span class="box-label">LEARN-DECISION-TREE(examples, attributes, parent_examples)</span>
+<pre class="pseudocode"><span class="cm">// returns a tree</span>
+<span class="kw">if</span> examples is empty <span class="kw">then return</span> PLURALITY-VALUE(parent_examples)
+<span class="kw">else if</span> all examples have the same classification <span class="kw">then return</span> the classification
+<span class="kw">else if</span> attributes is empty <span class="kw">then return</span> PLURALITY-VALUE(examples)
+<span class="kw">else</span>
+    A ← argmax<sub>a ∈ attributes</sub> IMPORTANCE(a, examples)
+    tree ← a new decision tree with root test A
+    <span class="kw">for each</span> value v of A <span class="kw">do</span>
+        exs ← { e : e ∈ examples and e.A = v }
+        subtree ← LEARN-DECISION-TREE(exs, attributes − A, examples)
+        add a branch to tree with label (A = v) and subtree <em>subtree</em>
+    <span class="kw">return</span> tree</pre>
+</div>
+
+<div class="an">
+<span class="box-label">Reading the four cases in plain English</span>
+<ul>
+<li><strong>Examples empty:</strong> no data reached this branch at all (like the "60–80 & Mobile" branch above) — fall back to whatever the <em>parent</em> node's examples voted for.</li>
+<li><strong>All examples agree:</strong> done — that's the leaf's label (e.g. {1,3,6,7}, all "Yes").</li>
+<li><strong>No attributes left</strong> but examples still disagree: can't split any further (e.g. {2,9}, both Tablet, both 60–80) — use a majority vote over what's left.</li>
+<li><strong>Otherwise:</strong> pick the best attribute by <code>IMPORTANCE</code>, and recurse once per value of that attribute.</li>
+</ul>
+</div>
+
+<div class="box d">
+<span class="box-label">PLURALITY-VALUE</span>
+<p>Selects the most common output value among a set of examples, breaking ties randomly. This is exactly what produced the "tie, broken randomly" leaves above — {2,9} has one Yes and one No, so either label is an equally defensible plurality choice.</p>
+</div>
+
+<p>At every branching step, the feature used for splitting is chosen by the function <code>IMPORTANCE</code> — and that function is built entirely out of the idea of <strong>Information Gain</strong>, covered next.</p>
+</section>
+
+<section class="slide" id="p8-entropy">
+<span class="slide-tag">Slides 10–15</span>
+<h3>3. Measuring importance: Entropy and Information Content</h3>
+<p>Before Information Gain can be defined, it needs a way to measure how "mixed" or "pure" a set of examples is — that's <strong>entropy</strong>, a concept borrowed directly from Information Theory.</p>
+
+<div class="def">
+<span class="box-label">Information content of an event</span>
+<p>Given an event \(E\), its <strong>information content</strong> is a function that <em>decreases</em> as the probability \(p(E)\) increases — a near-certain event tells you almost nothing when it happens; a rare event tells you a lot.</p>
+<p>$$I(E) = \log_b\frac{1}{p(E)} = -\log_b p(E)$$</p>
+<p>Note that when \(p(E)=1\) (a certainty), \(I(E)=0\) — an outcome you already knew was coming carries zero information.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Entropy — the expected information content</span>
+<p><strong>Entropy</strong> is the expected information content of a random variable:</p>
+<p>$$H(X) = \mathbb{E}[I(X)] = \mathbb{E}[-\log_b p(X)] = -\sum_{x\in S}p(x)\log_b p(x)$$</p>
+<p>The base \(b\) varies by application; <strong>base 2</strong> is the usual choice, giving entropy in units of <strong>bits</strong> (also called "shannons").</p>
+</div>
+
+<div class="ex">
+<span class="box-label">The Boolean special case, B(q)</span>
+<p>For a Boolean random variable \(V\) that is true with probability \(q\):</p>
+<p>$$H(V) = -\big(q\log_2 q + (1-q)\log_2(1-q)\big) \;=:\; B(q)$$</p>
+<p>This depends on \(q\) alone, which is why it's given its own name, \(B(q)\). Note the symmetry \(B(q)=B(1-q)\) — entropy doesn't care which outcome you call "true."</p>
+</div>
+
+<div class="an">
+<span class="box-label">Why B(q) peaks at q = 0.5</span>
+<p>\(B(0)=B(1)=0\): if every example in a set has the same label, there's no uncertainty left to resolve, so entropy is zero — this matches the "all examples have the same classification" base case of the algorithm exactly. \(B(0.5)=1\) bit is the <em>maximum</em>: a perfect 50/50 split is the most uncertain, most "mixed" a binary set can be, and costs a full bit to resolve. Every split in between falls smoothly between these extremes.</p>
+</div>
+</section>
+
+<section class="slide" id="p8-ig">
+<span class="slide-tag">Slides 16–20, 33–34</span>
+<h3>4. Information Gain: picking the best split</h3>
+<p>Entropy measures the uncertainty <em>before</em> you know an attribute's value. Information Gain measures how much that uncertainty <em>drops</em> once you do.</p>
+
+<div class="def">
+<span class="box-label">Setup</span>
+<p>Let \(E\) be a set of examples, and \(A\) an attribute with \(d\) distinct values. Let \(E_1,\dots,E_d\) be the subsets of \(E\) formed by testing \(A\) (one subset per value). Let \(V\) be the random variable for the class of an example in \(E\), and \(V_i\) the same for an example in \(E_i\).</p>
+</div>
+
+<div class="def">
+<span class="box-label">The three formulas</span>
+<p><strong>Entropy in \(E\) before testing \(A\)</strong> (the "initial entropy"): \(H(V)\).</p>
+<p><strong>Expected entropy after testing \(A\)</strong> (the "Remainder"):</p>
+<p>$$\text{Remainder}(A) = \sum_{i=1}^{d}P(E_i)\cdot H(V_i)$$</p>
+<p><strong>Information Gain</strong> — the expected reduction in entropy from testing \(A\):</p>
+<p>$$\text{Gain}(A) = H(V) - \text{Remainder}(A) = \text{Initial entropy} - \text{Remainder}(A)$$</p>
+<p>Information Gain is the standard choice of <code>IMPORTANCE</code> function in the decision tree learning algorithm.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The binary-classification version, in terms of counts</span>
+<p>If a training set has \(p\) positive and \(n\) negative examples, its entropy is \(B\!\left(\dfrac{p}{p+n}\right)\). If splitting on \(A\) produces subsets \(E_1,\dots,E_d\) with \(p_i\) positive and \(n_i\) negative examples each, then \(P(E_i)=\dfrac{p_i+n_i}{p+n}\), and:</p>
+<p>$$\text{Remainder}(A) = \sum_{i=1}^{d}\left(\frac{p_i+n_i}{p+n}\right)B\!\left(\frac{p_i}{p_i+n_i}\right), \qquad \text{Gain}(A) = B\!\left(\frac{p}{p+n}\right) - \text{Remainder}(A)$$</p>
+</div>
+</section>
+
+<section class="slide" id="p8-worked-binary">
+<span class="slide-tag">Slides 21–24</span>
+<h3>5. Worked example: Age Group vs. Device</h3>
+<p>Returning to the shopping dataset (6 "Yes", 4 "No" out of 10), compute Information Gain for both candidate first splits.</p>
+
+<div class="ex">
+<span class="box-label">Initial entropy</span>
+<p>$$\text{Initial entropy} = B\!\left(\frac{6}{10}\right) = -\left[\frac{6}{10}\log_2\frac{6}{10} + \frac{4}{10}\log_2\frac{4}{10}\right] \approx 0.9710 \text{ bits}$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Remainder and Gain for "Age Group"</span>
+<p>Age group splits the 10 examples into 20–40 (4 examples, all Yes: \(p{=}4,n{=}0\)), 40–60 (4 examples, 1 Yes/3 No), 60–80 (2 examples, 1 Yes/1 No):</p>
+<p>$$\text{Remainder}(\text{Age Group}) = \frac{4}{10}B\!\left(\frac{4}{4}\right) + \frac{4}{10}B\!\left(\frac{1}{4}\right) + \frac{2}{10}B\!\left(\frac{1}{2}\right)$$</p>
+<p>$$= \frac{4}{10}(0) + \frac{4}{10}\left[-\left(\tfrac14\log_2\tfrac14+\tfrac34\log_2\tfrac34\right)\right] + \frac{2}{10}\left[-\left(\tfrac12\log_2\tfrac12+\tfrac12\log_2\tfrac12\right)\right] \approx 0.5245 \text{ bits}$$</p>
+<p>$$\text{Gain}(\text{Age Group}) \approx 0.9710 - 0.5245 = \boxed{0.4465 \text{ bits}}$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Remainder and Gain for "Device"</span>
+<p>Device splits the 10 examples into Mobile (3 examples, 2 Yes/1 No), Tablet (3 examples, 2 Yes/1 No), Desktop (4 examples, 2 Yes/2 No):</p>
+<p>$$\text{Remainder}(\text{Device}) = \frac{3}{10}B\!\left(\frac{2}{3}\right) + \frac{3}{10}B\!\left(\frac{2}{3}\right) + \frac{4}{10}B\!\left(\frac{2}{4}\right) \approx 0.9510 \text{ bits}$$</p>
+<p>$$\text{Gain}(\text{Device}) \approx 0.9710 - 0.9510 = \boxed{0.02 \text{ bits}}$$</p>
+</div>
+
+<div class="key">
+<span class="box-label">Conclusion</span>
+<p>Since \(\text{Gain}(\text{Age Group}) = 0.4465 > \text{Gain}(\text{Device}) = 0.02\), <strong>Age Group is the best feature for the first split</strong> — confirming Tree A from Section 1 is the one the algorithm would actually build, not Tree B. Device barely reduces uncertainty at all: every one of its three branches is close to the original 60/40 mix, so knowing the device tells you almost nothing new about whether the customer buys.</p>
+</div>
+</section>
+
+<section class="slide" id="p8-worked-multiclass">
+<span class="slide-tag">Slides 25–29</span>
+<h3>6. A multiclass worked example: restaurant feedback</h3>
+<p>Entropy and Information Gain work identically when there are more than two output classes — the Boolean \(B(q)\) shortcut no longer applies, but the general \(H(X)=-\sum p(x)\log_2 p(x)\) formula does, unchanged.</p>
+
+<div class="ex">
+<span class="box-label">The dataset — 20 examples, 3 classes</span>
+<p>A restaurant's customer-feedback data, predicting <strong>Positive / Neutral / Negative</strong> feedback from the <strong>Cuisine</strong> ordered (Italian / Mexican / Chinese) and the <strong>Dining Time</strong> (Morning / Afternoon / Evening). Counting labels across all 20 rows gives 7 Positive, 7 Negative, 6 Neutral.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Initial entropy (three classes, not two)</span>
+<p>$$\text{Initial entropy} = -\left[\frac{7}{20}\log_2\frac{7}{20} + \frac{7}{20}\log_2\frac{7}{20} + \frac{6}{20}\log_2\frac{6}{20}\right] \approx 1.58129 \text{ bits}$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Remainder and Gain for "Cuisine"</span>
+<p>Cuisine splits the 20 examples into Italian (7 examples: 4 Pos/2 Neu/1 Neg), Mexican (7 examples: 1 Pos/4 Neu/2 Neg), Chinese (6 examples: 2 Pos/1 Neu/3 Neg):</p>
+<p>$$\text{Remainder}(\text{Cuisine}) = \frac{7}{20}\left[-\left(\tfrac47\log_2\tfrac47+\tfrac27\log_2\tfrac27+\tfrac17\log_2\tfrac17\right)\right] + \frac{7}{20}\left[-\left(\tfrac17\log_2\tfrac17+\tfrac47\log_2\tfrac47+\tfrac27\log_2\tfrac27\right)\right]$$</p>
+<p>$$\hphantom{\text{Remainder}(\text{Cuisine})\ }+ \frac{6}{20}\left[-\left(\tfrac26\log_2\tfrac26+\tfrac16\log_2\tfrac16+\tfrac36\log_2\tfrac36\right)\right] \approx 1.40289 \text{ bits}$$</p>
+<p>$$\text{Gain}(\text{Cuisine}) \approx 1.58129 - 1.40289 = \boxed{0.178398 \text{ bits}}$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Remainder and Gain for "Dining Time"</span>
+<p>Dining Time splits the data into Morning (6 examples: 1 Pos/3 Neu/2 Neg), Afternoon (6 examples: 3 Pos/1 Neu/2 Neg), Evening (8 examples: 3 Pos/3 Neu/2 Neg):</p>
+<p>$$\text{Remainder}(\text{Dining Time}) = \frac{6}{20}B_3\!\left(\tfrac16,\tfrac36,\tfrac26\right) + \frac{6}{20}B_3\!\left(\tfrac36,\tfrac16,\tfrac26\right) + \frac{8}{20}B_3\!\left(\tfrac38,\tfrac38,\tfrac28\right) = 1.5 \text{ bits}$$</p>
+<p>$$\text{Gain}(\text{Dining Time}) \approx 1.58129 - 1.5 = \boxed{0.08129 \text{ bits}}$$</p>
+<p class="small" style="font-size:.87rem;color:var(--ink-soft)">(\(B_3(\cdot,\cdot,\cdot)\) here just abbreviates the three-term entropy sum \(-\sum p\log_2 p\), written out in full in the Cuisine calculation above.)</p>
+</div>
+
+<div class="key">
+<span class="box-label">Conclusion</span>
+<p>Since \(\text{Gain}(\text{Cuisine}) = 0.178398 > \text{Gain}(\text{Dining Time}) = 0.08129\), <strong>Cuisine is the best feature for the first split</strong> of this decision tree. The method scales to any number of classes without any change in principle — only the entropy sum grows one term longer per added class.</p>
+</div>
+</section>
+
+<section class="slide" id="p8-regression">
+<span class="slide-tag">Slides 30–34</span>
+<h3>7. Decision Trees for Regression (Regression Trees)</h3>
+<p>Everything so far predicted a <em>category</em>. A <strong>regression tree</strong> is the same idea adapted to predict a <em>numeric</em> value instead.</p>
+
+<div class="def">
+<span class="box-label">What is a regression tree?</span>
+<ul>
+<li>A decision tree used for predicting <strong>numeric values</strong> rather than class labels.</li>
+<li>Splits the data into regions where the target values are <strong>similar</strong> to one another.</li>
+<li>Each leaf predicts the <strong>mean</strong> of the target values of the samples that land in it.</li>
+</ul>
+</div>
+
+<div class="ex">
+<span class="box-label">How it works</span>
+<ul>
+<li>Start with all data at the root.</li>
+<li>For each possible split: choose an attribute and a threshold, and partition the data into two groups.</li>
+<li>Measure how good that split is using <strong>variance reduction</strong> (equivalently, mean squared error).</li>
+<li>Select the split with the <strong>largest improvement</strong>.</li>
+<li>Repeat recursively on each resulting branch.</li>
+</ul>
+</div>
+
+<div class="box d">
+<span class="box-label">Stopping conditions and prediction</span>
+<p>Stop splitting a branch once one of these holds: a maximum depth is reached; a leaf would have too few samples; or there's no significant variance reduction left to gain. Once stopped, a leaf's prediction is simply the <strong>mean target value</strong> of the samples that reached it.</p>
+</div>
+
+<div class="def">
+<span class="box-label">Variance reduction, precisely</span>
+<p>The variance at a node \(S\) (with \(|S|\) samples and targets \(y_i\), mean \(\bar y\)):</p>
+<p>$$\text{Var}(S) = \frac{1}{|S|}\sum_i (y_i - \bar y)^2$$</p>
+<p>If a split produces left and right child nodes \(S_L\) and \(S_R\):</p>
+<p>$$\text{Variance reduction} = \text{Var}(S) - \left(\frac{|S_L|}{|S|}\text{Var}(S_L) + \frac{|S_R|}{|S|}\text{Var}(S_R)\right)$$</p>
+<p>This is structurally identical to Information Gain — "impurity before" minus "weighted impurity after" — just with variance standing in for entropy.</p>
+</div>
+
+<div class="an">
+<span class="box-label">Why variance reduction = minimizing MSE</span>
+<p>The variance at a node is the same quantity as the mean squared error (MSE) of predicting at that node, because a regression tree's prediction for every sample in a node <em>is</em> the mean target value of that node — exactly the value that minimizes squared error for that group. So maximizing variance reduction at each split and minimizing MSE are two descriptions of the <em>same</em> optimization — not a coincidence, but a direct consequence of how the leaf prediction rule is defined.</p>
+</div>
+</section>
+
+
+<div class="part-header">
+  <div class="ptag">Part 9 of 9</div>
+  <h2>Naive Bayes Classifier</h2>
+  <p>Part 7 built Bayesian networks to avoid an exponential joint-probability table by exploiting a graph of real dependencies. This part takes the opposite, blunter approach: assume <em>every</em> feature is independent of every other feature, given the class. It's "naive" because that assumption is almost never literally true — and yet, as the worked example in this part shows, the classifier it produces is simple, fast, and works remarkably well in practice.</p>
+</div>
+
+<section class="slide" id="p9-recall">
+<span class="slide-tag">Slides 2–7</span>
+<h3>1. Recall: Bayes' Rule, and why the full joint doesn't scale</h3>
+<div class="def">
+<span class="box-label">Bayes' Rule</span>
+<p>$$P(A\mid B) = \frac{P(B\mid A)\,P(A)}{P(B)}$$</p>
+<p>\(P(A\mid B)\) is the <strong>posterior</strong> probability of \(A\) given \(B\); \(P(B\mid A)\) is the <strong>likelihood</strong> of \(B\) given \(A\); \(P(A)\) and \(P(B)\) are the <strong>prior</strong> probabilities.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">A toy classification example</span>
+<p>Ten training examples with two features \(X_1,X_2\in\{0,1,2\}\) and a binary label \(Y\in\{0,1\}\) (6 examples with \(Y{=}0\), 4 with \(Y{=}1\)). <strong>Question:</strong> what's the prediction for a new sample with \(X_1{=}0, X_2{=}2\)?</p>
+<p>Using Bayes' rule directly on the <em>full joint</em> distribution of \((X_1,X_2)\) given \(Y\):</p>
+<p>$$P(Y{=}0\mid X_1{=}0,X_2{=}2) = \alpha\,P(Y{=}0)\,P(X_1{=}0,X_2{=}2\mid Y{=}0) = \alpha\cdot\frac{6}{10}\cdot\frac{2}{6} = \alpha\,(0.2)$$</p>
+<p>$$P(Y{=}1\mid X_1{=}0,X_2{=}2) = \alpha\,P(Y{=}1)\,P(X_1{=}0,X_2{=}2\mid Y{=}1) = \alpha\cdot\frac{4}{10}\cdot\frac{1}{4} = \alpha\,(0.1)$$</p>
+<p>Since \(0.2 > 0.1\), the prediction is \(\boxed{Y=0}\).</p>
+</div>
+
+<div class="warn">
+<span class="box-label">The issue with this way of computing things</span>
+<p>This worked because there were only two features, each taking 3 values — just 9 joint combinations to ever worry about. In general, suppose there are \(n\) features \(X_1,\dots,X_n\) that can take \(r_1,r_2,\dots,r_n\) possible values respectively. Then the number of possible combinations of feature values is \(r_1\cdot r_2\cdots r_n\) — and if each \(X_i\) is just Boolean, that's already \(2^n\). Computing (or even just storing) \(P(X_1,\dots,X_n\mid Y)\) directly, as one giant table, is usually <strong>impossible</strong> for any realistically large feature space — exactly the same combinatorial wall Part 7 built Bayesian networks to avoid, but here there's no graph structure available to exploit. To get around it, Naive Bayes reaches for a cruder, blanket fix: assume conditional independence.</p>
+</div>
+</section>
+
+<section class="slide" id="p9-independence">
+<span class="slide-tag">Slides 8–9</span>
+<h3>2. The naive conditional independence assumption</h3>
+<p>Given a classification problem with input features \(X_1,\dots,X_n\) and target \(Y\), the product rule always gives (no assumptions yet):</p>
+<p>$$P(Y,X_1,\dots,X_n) = P(Y)\cdot P(X_1,\dots,X_n\mid Y)$$</p>
+
+<div class="key">
+<span class="box-label">The naive assumption</span>
+<p>Assume the features are <strong>conditionally independent given the class</strong>:</p>
+<p>$$P(X_1,\dots,X_n\mid Y) = P(X_1\mid Y)\cdot P(X_2\mid Y)\cdots P(X_n\mid Y) = \prod_{i=1}^{n}P(X_i\mid Y)$$</p>
+<p>Substituting back in:</p>
+<p>$$P(Y,X_1,\dots,X_n) = P(Y)\cdot\prod_{i=1}^{n}P(X_i\mid Y)$$</p>
+<p>And since \(P(Y\mid X_1,\dots,X_n) = \dfrac{P(Y,X_1,\dots,X_n)}{P(X_1,\dots,X_n)} = \alpha\,P(Y,X_1,\dots,X_n)\) (the denominator is the same constant for every candidate value of \(Y\), so it folds into \(\alpha\)):</p>
+<p>$$\boxed{P(Y\mid X_1,\dots,X_n) = \alpha\, P(Y)\prod_{i=1}^{n}P(X_i\mid Y)}$$</p>
+</div>
+
+<div class="an">
+<span class="box-label">What got traded away</span>
+<p>Instead of one table with \(r_1\cdots r_n\) entries per class, you now only need \(n\) small tables, one per feature — each just \(P(X_i\mid Y)\), at most \(r_i\) numbers per class. That's the entire payoff, and the entire risk: it's almost certainly false that every feature is really independent of every other given the class (in text, "signs" and "deal" are much more likely to co-occur in a business headline than independence would predict) — but the approximation is cheap enough, and often accurate enough, to be one of the most widely used classifiers in practice.</p>
+</div>
+</section>
+
+<section class="slide" id="p9-textclass">
+<span class="slide-tag">Slides 10–13</span>
+<h3>3. The running example: text classification</h3>
+<div class="ex">
+<span class="box-label">The dataset — news headlines by category</span>
+<table class="grid">
+<tr><th>#</th><th>News Headline</th><th>Category</th></tr>
+<tr><td>1</td><td>Team wins final</td><td>Sports</td></tr>
+<tr><td>2</td><td>Star player scores twice</td><td>Sports</td></tr>
+<tr><td>3</td><td>Company signs major deal</td><td>Business</td></tr>
+<tr><td>4</td><td>Market sees big investment</td><td>Business</td></tr>
+<tr><td>5</td><td>Storm expected tomorrow</td><td>Weather</td></tr>
+<tr><td>6</td><td>Weather department issues alert</td><td>Weather</td></tr>
+</table>
+<p><strong>Task:</strong> classify the news headline <strong>"Star signs major deal"</strong> using a Naive Bayes Classifier — note that this exact four-word combination never appeared verbatim in training; the classifier has to combine evidence from individual words it <em>has</em> seen.</p>
+</div>
+
+<div class="def">
+<span class="box-label">The vocabulary</span>
+<p>The set of all distinct words across the dataset, indexed in the order they first appear:</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.8;">V = {<sup>1</sup>team, <sup>2</sup>wins, <sup>3</sup>final, <sup>4</sup>star, <sup>5</sup>player, <sup>6</sup>scores, <sup>7</sup>twice, <sup>8</sup>company, <sup>9</sup>signs, <sup>10</sup>major, <sup>11</sup>deal, <sup>12</sup>market, <sup>13</sup>sees, <sup>14</sup>big, <sup>15</sup>investment, <sup>16</sup>storm, <sup>17</sup>expected, <sup>18</sup>tomorrow, <sup>19</sup>weather, <sup>20</sup>department, <sup>21</sup>issues, <sup>22</sup>alert}</p>
+<p>\(|V| = 22\). The query headline "Star signs major deal" uses words at indices \(\{4, 9, 10, 11\}\) — these are the only words present (\(x_i{=}1\)); every other word in \(V\) is absent (\(x_i{=}0\)).</p>
+</div>
+
+<div class="key">
+<span class="box-label">Two flavours of Naive Bayes, for two different notions of "feature"</span>
+<p>$$P(Y\mid \mathbf{x}) = \alpha\, P(Y)\,P(\mathbf{x}\mid Y)$$</p>
+<p>The rest of this part looks at two ways of modelling \(P(\mathbf{x}\mid Y)\) for a document \(\mathbf{x}\): <strong>Bernoulli Naive Bayes</strong> (does each word appear or not?) and <strong>Multinomial Naive Bayes</strong> (how many times does each word appear?).</p>
+</div>
+</section>
+
+<section class="slide" id="p9-bernoulli">
+<span class="slide-tag">Slide 14–17</span>
+<h3>4. Bernoulli Naive Bayes Classifier</h3>
+<div class="def">
+<span class="box-label">Feature representation: binary (0/1)</span>
+<p>It only looks at <strong>whether</strong> a feature (word) appears in the document, never how many times. Useful for short texts where mere occurrence matters more than frequency — news headlines, e-mail subject lines, and similar.</p>
+</div>
+
+<div class="def">
+<span class="box-label">The model</span>
+<p>Let \(X_i\) be the Boolean random variable for the presence or absence of the \(i^\text{th}\) word in document \(\mathbf{x}\) (\(x_i{=}1\) if present, \(x_i{=}0\) if absent) — a Bernoulli distribution. Then:</p>
+<p>$$P(\mathbf{x}\mid Y{=}c) = \prod_i P(x_i{=}1\mid Y{=}c)^{x_i}\,P(x_i{=}0\mid Y{=}c)^{1-x_i}$$</p>
+<p>Each factor in the product contributes either its "present" probability or its "absent" probability, depending on \(x_i\) — the exponent trick \(p^{x_i}q^{1-x_i}\) just switches between the two without needing an if-statement.</p>
+<p>Each \(P(X_i\mid Y{=}c)\) is estimated directly from counts:</p>
+<p>$$P(x_i{=}1\mid Y{=}c) = \frac{\text{# docs in category } c \text{ containing the } i^\text{th}\text{ word}}{\text{# docs in category } c}, \qquad P(x_i{=}0\mid Y{=}c) = \frac{\text{# docs in category }c\text{ not containing it}}{\text{# docs in category }c}$$</p>
+</div>
+
+<div class="warn">
+<span class="box-label">Trying it without smoothing — it breaks</span>
+<p>For "Star signs major deal" (words \(\{4,9,10,11\}\) present, all others absent), with Sports having 2 training docs ("Team wins final", "Star player scores twice"):</p>
+<p>$$P(Y{=}\text{Sports}\mid x_i{=}1,i\in\{4,9,10,11\};\ x_i{=}0,i\notin\{4,9,10,11\}) = \alpha\,P(Y{=}\text{Sports})\!\!\prod_{i\in\{4,9,10,11\}}\!\!P(x_i{=}1\mid\text{Sports})\!\!\prod_{i\notin\{4,9,10,11\}}\!\!P(x_i{=}0\mid\text{Sports})$$</p>
+<p>$$= \alpha\cdot\frac{2}{6}\cdot\left(\underbrace{\tfrac12}_{\text{star}}\cdot\underbrace{0}_{\text{signs}}\cdot\underbrace{0}_{\text{major}}\cdot\underbrace{0}_{\text{deal}}\right)\cdot\left(\tfrac12\right)^{6}\cdot\left(\tfrac22\right)^{12} = 0$$</p>
+<p>"Star" appeared in a Sports doc (\(P{=}\tfrac12\)), but "signs," "major," and "deal" never did (\(P{=}0\) each). <strong>Even a single probability value being zero "wipes out" the entire product</strong> — the same failure mode would hit Business and Weather too, for whichever words they've never seen. Section 6 fixes this.</p>
+</div>
+</section>
+
+<section class="slide" id="p9-multinomial">
+<span class="slide-tag">Slides 18–21</span>
+<h3>5. Multinomial Naive Bayes Classifier</h3>
+<div class="def">
+<span class="box-label">Feature representation: counts (0, 1, 2, …)</span>
+<p>It looks at <strong>how many times</strong> a feature (word) occurs in a document, not just whether it occurs. Suitable for longer documents, where repetition carries information — news articles, product reviews, e-mail bodies.</p>
+</div>
+
+<div class="def">
+<span class="box-label">The model</span>
+<p>Let \(\mathbf{x}\) be a document of length \(N\). For each \(i\) (\(1\le i\le |V|\)), let \(X_i\) be the categorical random variable counting occurrences of the \(i^\text{th}\) word (\(x_i = 0,1,2,\dots\)), and let \(P(w_i\mid Y{=}c)\) denote the probability of the \(i^\text{th}\) word occurring in Category \(c\) documents. With \(N=\sum_i x_i\) (modelled by the categorical/multinomial distribution):</p>
+<p>$$P(\mathbf{x}\mid Y{=}c) = \frac{N!}{\prod_i x_i!}\prod_i P(w_i\mid Y{=}c)^{x_i}$$</p>
+<p>In practice the multinomial coefficient \(\frac{N!}{\prod_i x_i!}\) is usually dropped for classification, since it's the <strong>same constant across every class</strong> for a fixed \(\mathbf{x}\) — it doesn't affect which class wins.</p>
+<p>$$P(w_i\mid Y{=}c) = \frac{\text{count of } i^\text{th}\text{ word in Category } c\text{ documents}}{\text{total word count in Category } c\text{ documents}}$$</p>
+</div>
+
+<div class="warn">
+<span class="box-label">The same zero-probability problem, in the multinomial setting</span>
+<p>The two Sports headlines contain 7 words total ("Team wins final" + "Star player scores twice"):</p>
+<p>$$P(Y{=}\text{Sports}\mid\mathbf{x}) = \alpha\,P(Y{=}\text{Sports})\!\!\prod_{i\in\{4,9,10,11\}}\!\!P(w_i\mid\text{Sports}) = \alpha\cdot\frac{2}{6}\cdot\underbrace{\tfrac17}_{\text{star}}\cdot\underbrace{0}_{\text{signs}}\cdot\underbrace{0}_{\text{major}}\cdot\underbrace{0}_{\text{deal}} = 0$$</p>
+<p>Exactly the same failure, for exactly the same reason: "signs," "major," and "deal" never appeared in any Sports headline, so their raw estimated probability is zero, and multiplying by zero destroys the whole product regardless of how much supporting evidence the other words provide.</p>
+</div>
+</section>
+
+<section class="slide" id="p9-laplace">
+<span class="slide-tag">Slides 22–24</span>
+<h3>6. Laplace Smoothing</h3>
+<div class="def">
+<span class="box-label">The idea</span>
+<p><strong>Laplace smoothing</strong> handles the zero-probability problem by pretending every word was seen a tiny bit more often than it actually was — ensuring every word gets a non-zero probability, even for a class that never saw it during training.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Bernoulli Naive Bayes, with Laplace smoothing</span>
+<p>$$P(x_i{=}1\mid Y{=}c) = \frac{(\text{# docs in }c\text{ containing word }i) + 1}{(\text{# docs in }c) + 2}, \qquad P(x_i{=}0\mid Y{=}c) = \frac{(\text{# docs in }c\text{ not containing word }i) + 1}{(\text{# docs in }c) + 2}$$</p>
+<p>The "+1" in the numerator adds one pretend extra document that always contains (or doesn't contain) the word; the "+2" in the denominator balances this across the two possible outcomes (present/absent) so the two probabilities still sum to 1.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Multinomial Naive Bayes, with Laplace smoothing</span>
+<p>$$P(w_i\mid Y{=}c) = \frac{(\text{count of word }i\text{ in }c) + 1}{(\text{total word count in }c) + |V|}$$</p>
+<p>Here the denominator is boosted by \(|V|\) — one pretend extra occurrence for <em>every</em> word in the vocabulary — keeping all 22 word-probabilities within category \(c\) properly normalized to sum to 1.</p>
+</div>
+</section>
+
+<section class="slide" id="p9-worked">
+<span class="slide-tag">Slides 25–29</span>
+<h3>7. The full worked example, with Laplace smoothing</h3>
+<div class="ex">
+<span class="box-label">Bernoulli Naive Bayes</span>
+<p>$$P(Y{=}\text{Sports}\mid\mathbf{x}) = \alpha\cdot\frac{2}{6}\left(\frac{(1{+}1)}{(2{+}2)}\cdot\frac{(0{+}1)}{(2{+}2)}\cdot\frac{(0{+}1)}{(2{+}2)}\cdot\frac{(0{+}1)}{(2{+}2)}\right)\left(\left(\frac{1{+}1}{2{+}2}\right)^{6}\!\cdot\!\left(\frac{2{+}1}{2{+}2}\right)^{12}\right) \approx \alpha\,(1.2889\times10^{-6})$$</p>
+<p>Similar computations for Business and Weather give \(P(Y{=}\text{Business}\mid\mathbf{x})\approx\alpha\,(7.7335\times10^{-6})\) and \(P(Y{=}\text{Weather}\mid\mathbf{x})\approx\alpha\,(4.2964\times10^{-7})\). So:</p>
+<p>$$P(Y\mid\mathbf{x}) = \alpha\,\langle 1.2889\times10^{-6},\ 7.7335\times10^{-6},\ 4.2964\times10^{-7}\rangle$$</p>
+<p>After normalizing: \(P(Y\mid\mathbf{x}) \approx \langle 0.1364,\ 0.8182,\ 0.0454\rangle\). <strong>Predicted category: Business.</strong></p>
+</div>
+
+<div class="ex">
+<span class="box-label">Multinomial Naive Bayes</span>
+<p>$$P(Y{=}\text{Sports}\mid\mathbf{x}) = \alpha\cdot\frac{2}{6}\left(\frac{1{+}1}{7{+}22}\cdot\frac{0{+}1}{7{+}22}\cdot\frac{0{+}1}{7{+}22}\cdot\frac{0{+}1}{7{+}22}\right) \approx \alpha\,(9.4258\times10^{-7})$$</p>
+<p>Similarly, \(P(Y{=}\text{Business}\mid\mathbf{x})\approx\alpha\,(3.2922\times10^{-6})\) and \(P(Y{=}\text{Weather}\mid\mathbf{x})\approx\alpha\,(4.7129\times10^{-7})\). So:</p>
+<p>$$P(Y\mid\mathbf{x}) = \alpha\,\langle 9.4258\times10^{-7},\ 3.2922\times10^{-6},\ 4.7129\times10^{-7}\rangle$$</p>
+<p>After normalizing: \(P(Y\mid\mathbf{x}) \approx \langle 0.2003,\ 0.6996,\ 0.1001\rangle\). <strong>Predicted category: Business</strong> — the same answer as Bernoulli, though notably less confident (69.96% vs. 81.82%).</p>
+</div>
+
+<div class="key">
+<span class="box-label">Why the two classifiers agree here, but with different confidence</span>
+<p>Both give "Business" the highest posterior because every query word ("star," "signs," "major," "deal") is either exclusive to or strongly associated with the Business headline ("Company signs major deal"). Bernoulli is more confident because it only tracks presence/absence, so the many word-absences that happen to match the Business document (words neither Business headline uses, which "Star signs major deal" also doesn't use) count as further confirming evidence; Multinomial, tracking raw counts over a longer effective vocabulary-weighted denominator, spreads its probability mass a little more evenly. Neither answer is "more correct" in principle — they encode genuinely different modelling assumptions about what a feature is.</p>
+</div>
+</section>
+
+<section class="slide" id="p9-logspace">
+<span class="slide-tag">Slides 30–32</span>
+<h3>8. A numerical-stability trick: working in log space</h3>
+<div class="warn">
+<span class="box-label">Why raw multiplication is risky</span>
+<p>Doing the computations above directly means multiplying a large number of small probabilities together — the Multinomial Sports calculation alone multiplies five numbers, landing at \(9.4258\times10^{-7}\). With a realistic vocabulary of thousands of words and documents of hundreds of words, this product can underflow floating-point precision entirely, and even short of underflow, compounding rounding error across many multiplications can meaningfully distort the final comparison between classes.</p>
+</div>
+
+<div class="key">
+<span class="box-label">The fix: take logs, turning products into sums</span>
+<p>Since \(\log\) is monotonic, comparing \(\log P(Y{=}c\mid\mathbf{x})\) across classes \(c\) gives the same ranking as comparing \(P(Y{=}c\mid\mathbf{x})\) directly — and a sum of logs is far more numerically stable than a product of small numbers:</p>
+<p>$$\log_e P(Y{=}\text{Sports}\mid\mathbf{x}) = \log_e\alpha + \log_e P(Y{=}\text{Sports}) + \sum_i x_i\log_e P(w_i\mid Y{=}\text{Sports})$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Re-deriving the Multinomial Sports result in log space</span>
+<p>$$= \log_e\alpha + \log_e\frac{2}{6} + \left(\log_e\frac{2}{29}+\log_e\frac{1}{29}+\log_e\frac{1}{29}+\log_e\frac{1}{29}\right) = \log_e\alpha - 13.8746$$</p>
+<p>$$P(Y{=}\text{Sports}\mid\mathbf{x}) = e^{\log_e\alpha}\cdot e^{-13.8746} \approx \alpha\,(9.4262\times10^{-7})$$</p>
+<p>This matches the direct-multiplication result from Section 7 (\(9.4258\times10^{-7}\)) up to rounding — confirming the log-space route computes the exact same quantity, just more robustly. The same approach computes \(P(Y{=}\text{Business}\mid\mathbf{x})\) and \(P(Y{=}\text{Weather}\mid\mathbf{x})\); exponentiating and normalizing all three then recovers the same final distribution as before.</p>
+</div>
+
+<div class="key">
+<span class="box-label">Key takeaway for all of Part 9</span>
+<p>Naive Bayes trades away almost all of the structure a Bayesian network (Part 7) carefully preserves — it assumes every feature is independent given the class, full stop, with no graph to encode genuine dependencies. What it buys back is simplicity: parameter estimation is just counting, inference is just a product (or, more robustly, a sum of logs), and Laplace smoothing patches the one glaring failure mode (words never seen in training) with a single, principled +1 correction. That combination of cheapness and robustness is exactly why it remains a standard baseline for text classification to this day.</p>
+</div>
+</section>
+
+
 <section class="slide" id="recap">
   <span class="slide-tag">Full-course recap</span>
-  <h3>Recap: how all three parts connect</h3>
+  <h3>Recap: how all nine parts connect</h3>
   <table class="grid">
     <tr><th>Part</th><th>Core question</th><th>Big idea</th></tr>
     <tr><td><strong>1. Agents &amp; Rationality</strong></td><td>What does it mean for a machine to act well?</td><td>An agent perceives &amp; acts (P-E-A-S); a <em>rational</em> agent maximises a performance measure; task environments differ in difficulty along 6 dimensions; agents range from simple reflex to learning-based.</td></tr>
@@ -3019,6 +3877,9 @@
     <tr><td><strong>4. Adversarial Search</strong></td><td>How do I find the best move when an opponent is actively working against me?</td><td>The Minimax value backs up terminal utilities through alternating MAX/MIN levels; Alpha-Beta pruning gets the exact same answer while skipping provably-irrelevant branches; with perfect move ordering the effective branching factor drops from \(b\) to \(\sqrt b\); real engines add depth cutoffs, evaluation functions, and (in modern systems) learned evaluation via MCTS and self-play.</td></tr>
     <tr><td><strong>5. Constraint Satisfaction</strong></td><td>What if I only care about a valid final assignment, not a path to it?</td><td>Backtracking search explores partial assignments depth-first, undoing bad choices; AC-3 prunes provably-impossible values from domains <em>before</em> or <em>during</em> search, often collapsing the search tree dramatically — though arc consistency alone is blind to genuinely 3-way inconsistencies, which is exactly what the k-consistency hierarchy generalises to fix (at an exponential cost of its own).</td></tr>
     <tr><td><strong>6. Logical Agents</strong></td><td>Given what an agent knows, what else must be true?</td><td>Entailment means "no escaping model" — checkable by brute force (TT-ENTAILS?), by refutation (Resolution, DPLL), or, once the KB is restricted to Horn clauses, directly and efficiently from either end of the same AND-OR graph (Forward Chaining from facts, Backward Chaining from the query).</td></tr>
+    <tr><td><strong>7. Uncertainty &amp; Bayesian Networks</strong></td><td>How do I reason when I'm not certain of anything?</td><td>A Bayesian network factors a huge joint distribution into small local CPTs, one per node, via \(P(x_1,\dots,x_n)=\prod_i P(x_i\mid\text{Parents}(X_i))\). Inference by Enumeration answers any query correctly but redoes shared work; Variable Elimination computes each distinct factor once and reuses it — same answer, far less computation.</td></tr>
+    <tr><td><strong>8. Decision Tree Learning</strong></td><td>How does a machine learn a decision procedure from examples?</td><td>LEARN-DECISION-TREE recursively splits on the attribute with highest Information Gain — Initial entropy minus the Remainder (weighted average entropy of the resulting subsets). Regression trees do the same thing with variance reduction in place of entropy, predicting each leaf's mean target value.</td></tr>
+    <tr><td><strong>9. Naive Bayes Classifier</strong></td><td>How do I classify when the full joint distribution is infeasible to even store?</td><td>Assume every feature is conditionally independent given the class: \(P(Y\mid X_1,\dots,X_n)=\alpha\,P(Y)\prod_i P(X_i\mid Y)\). Bernoulli models word presence/absence, Multinomial models word counts; both need Laplace smoothing to survive words never seen for a class, and both are safer computed as a sum of logs than a product of tiny numbers.</td></tr>
   </table>
 
   <h4>Mini glossary</h4>
@@ -3049,11 +3910,25 @@
     <tr><td><strong>Resolution</strong></td><td>The single inference rule that resolves two clauses on a complementary literal pair; repeatedly applying it to KB&and;&not;&alpha; until the empty clause appears proves KB&#8872;&alpha;.</td></tr>
     <tr><td><strong>Horn clause</strong></td><td>A clause with at most one positive literal — always expressible as an implication, and the basis for both Forward and Backward Chaining.</td></tr>
     <tr><td><strong>Forward / Backward Chaining</strong></td><td>Two ways to decide entailment over a Horn-clause KB: forward chains from known facts toward the query (data-driven); backward chains from the query toward known facts (goal-driven), via an AND-OR graph search.</td></tr>
+    <tr><td><strong>Bayesian network</strong></td><td>A directed acyclic graph where each node is a random variable storing \(P(X\mid\text{Parents}(X))\); together these small local tables determine the full joint distribution.</td></tr>
+    <tr><td><strong>CPT</strong></td><td>Conditional Probability Table — a node's distribution over its own values, for every combination of its parents' values.</td></tr>
+    <tr><td><strong>Inference by Enumeration</strong></td><td>Answering \(P(X\mid e)=\alpha\sum_y P(X,e,y)\) by directly summing over every combination of the hidden variables \(y\) — correct, but can repeat the same sub-calculation many times.</td></tr>
+    <tr><td><strong>Variable Elimination</strong></td><td>A dynamic-programming version of enumeration: build named factors, sum out (eliminate) one hidden variable at a time, and never recompute the same factor twice.</td></tr>
+    <tr><td><strong>Factor / Hadamard product</strong></td><td>A factor is a small array over a few variables; combining two factors is done by pointwise (Hadamard, "&times;") multiplication over their shared variables, not ordinary matrix multiplication.</td></tr>
+    <tr><td><strong>Entropy, H(X)</strong></td><td>The expected information content of a random variable, \(-\sum_x p(x)\log_2 p(x)\); 0 bits for a certain outcome, maximal for a uniform distribution.</td></tr>
+    <tr><td><strong>B(q)</strong></td><td>Shorthand for the entropy of a Boolean variable true with probability \(q\): \(B(q)=-(q\log_2 q+(1-q)\log_2(1-q))\).</td></tr>
+    <tr><td><strong>Information Gain</strong></td><td>Initial entropy minus Remainder(A) — the expected drop in uncertainty from learning the value of attribute A; the standard IMPORTANCE function for choosing a decision tree's next split.</td></tr>
+    <tr><td><strong>Remainder(A)</strong></td><td>The weighted-average entropy remaining after splitting on attribute A: \(\sum_i P(E_i)H(V_i)\).</td></tr>
+    <tr><td><strong>Regression tree</strong></td><td>A decision tree predicting a numeric value per leaf (the mean target of its samples), built by maximizing variance reduction at each split — equivalent to minimizing MSE.</td></tr>
+    <tr><td><strong>Naive conditional independence</strong></td><td>The assumption \(P(X_1,\dots,X_n\mid Y)=\prod_i P(X_i\mid Y)\) — almost never exactly true, but cheap enough to make classification with many features tractable.</td></tr>
+    <tr><td><strong>Bernoulli Naive Bayes</strong></td><td>Models each feature as present/absent (0/1); best for short texts where mere occurrence matters more than frequency.</td></tr>
+    <tr><td><strong>Multinomial Naive Bayes</strong></td><td>Models each feature as a count of occurrences; best for longer documents where repetition carries information.</td></tr>
+    <tr><td><strong>Laplace smoothing</strong></td><td>Adding a small pretend count (usually +1, with a matching denominator correction) to every probability estimate, so no feature ever gets an estimated probability of exactly zero.</td></tr>
   </table>
 </section>
 
 <footer>
-  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems &middot; Logical Agents &amp; Propositional Logic (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, the backtracking and AC-3 trace tables in Part 5, and every TT-ENTAILS?, Resolution, DPLL, Forward Chaining, and Backward Chaining trace in Part 6.
+  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems &middot; Logical Agents &amp; Propositional Logic &middot; Uncertainty &amp; Bayesian Networks &middot; Decision Tree Learning &middot; Naive Bayes Classifier (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, the backtracking and AC-3 trace tables in Part 5, every TT-ENTAILS?, Resolution, DPLL, Forward Chaining, and Backward Chaining trace in Part 6, the Enumeration and Variable Elimination computations in Part 7, the Information Gain calculations in Part 8, and the smoothed Bernoulli/Multinomial Naive Bayes computations in Part 9.
 </footer>
 </main>
 </div>
