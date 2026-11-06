@@ -26,6 +26,7 @@
     --story-bg:#f6eef8; --story-line:#8a5cb8;
     --result-bg:#fdeeee; --result-line:#b8493f;
     --warn-bg:#fff4e5; --warn-line:#c9762c;
+    --worked-bg:#e9f6f7; --worked-line:#2a8a94;
     --code-bg:#1e2530; --code-ink:#e8edf3;
     --sidebar-w:300px;
   }
@@ -83,6 +84,7 @@
   .story{ background:var(--story-bg); border-color:var(--story-line);} .story .lbl{color:var(--story-line);}
   .result{ background:var(--result-bg); border-color:var(--result-line);} .result .lbl{color:var(--result-line);}
   .warn{ background:var(--warn-bg); border-color:var(--warn-line);} .warn .lbl{color:var(--warn-line);}
+  .worked{ background:var(--worked-bg); border-color:var(--worked-line);} .worked .lbl{color:var(--worked-line);}
 
   pre.pseudo{ background:var(--code-bg); color:var(--code-ink); padding:15px 18px; border-radius:8px; overflow-x:auto; font-size:14.5px; line-height:1.65;}
   pre.pseudo .ln{ color:#7d8ba0; display:inline-block; width:1.6em; user-select:none;}
@@ -219,6 +221,68 @@
   <a href="#L19-2">A complete worked example</a>
   <a href="#L19-3">Intro to Graphs: Spanning Trees &amp; MST</a>
 
+  <a class="lec" href="#L20">Lecture 20 &middot; Counting Spanning Trees</a>
+  <a href="#L20-1">How many spanning trees?</a>
+  <a href="#L20-2">Prüfer sequences</a>
+  <a href="#L20-3">Cayley's formula</a>
+  <a href="#L20-4">Prim's algorithm: the greedy idea</a>
+
+  <a class="lec" href="#L21">Lecture 21 &middot; Prim's &amp; Kruskal's Algorithms</a>
+  <a href="#L21-1">Prim's algorithm, in full</a>
+  <a href="#L21-2">Worked example: Prim's</a>
+  <a href="#L21-3">Kruskal's algorithm</a>
+  <a href="#L21-4">Worked example: Kruskal's</a>
+  <a href="#L21-5">Disjoint-Set Forests</a>
+  <a href="#L21-6">Union &amp; Find, with path compression</a>
+  <a href="#L21-7">Worked trace: Union-Find on Kruskal's</a>
+  <a href="#L21-8">Complexity of Kruskal's</a>
+
+  <a class="lec" href="#L22">Lecture 22 &middot; The Ackermann Function</a>
+  <a href="#L22-1">The classical Ackermann function</a>
+  <a href="#L22-2">The level-k hierarchy</a>
+  <a href="#L22-3">Lemma 4: growth properties</a>
+  <a href="#L22-4">Lemma 5 &amp; the numeric tower</a>
+  <a href="#L22-5">Inverse Ackermann &amp; Kruskal's runtime</a>
+
+  <a class="lec" href="#L23">Lecture 23 &middot; Binary Heaps</a>
+  <a href="#L23-1">The heap property &amp; array layout</a>
+  <a href="#L23-2">Max-Heapify</a>
+  <a href="#L23-3">Build-Max-Heap</a>
+  <a href="#L23-4">Heapsort</a>
+  <a href="#L23-5">Min-Heaps</a>
+
+  <a class="lec" href="#L25">Lecture 25 &middot; Dijkstra's Algorithm</a>
+  <a href="#L25-1">Single-source shortest paths</a>
+  <a href="#L25-2">Relax</a>
+  <a href="#L25-3">Dijkstra's algorithm, in full</a>
+  <a href="#L25-4">A complete worked example</a>
+
+  <a class="lec" href="#L27">Lecture 27 &middot; Permutation Puzzles</a>
+  <a href="#L27-1">The 15-puzzle</a>
+  <a href="#L27-2">A toy version: the 4-puzzle</a>
+  <a href="#L27-3">Ranking permutations</a>
+  <a href="#L27-4">The solvability invariant</a>
+
+  <a class="lec" href="#L28">Lecture 28 &middot; Proving the Invariant &amp; Searching by Rank</a>
+  <a href="#L28-1">Proof: the invariant never changes</a>
+  <a href="#L28-2">Lexicographically-ordered BFS</a>
+  <a href="#L28-3">A complete worked trace</a>
+
+  <a class="lec" href="#L29">Lecture 29 &middot; Informed Search: Setting Up A*</a>
+  <a href="#L29-1">God's number: how far can the puzzle get?</a>
+  <a href="#L29-2">The 8-puzzle, and checking solvability</a>
+  <a href="#L29-3">Three numbers: g, h, and f</a>
+
+  <a class="lec" href="#L30">Lecture 30 &middot; The A* Algorithm</a>
+  <a href="#L30-1">A* algorithm, precisely</a>
+  <a href="#L30-2">The heuristic: Manhattan distance</a>
+  <a href="#L30-3">A complete worked trace</a>
+
+  <a class="lec" href="#L31">Lecture 31 &middot; Why A* Is Guaranteed Optimal</a>
+  <a href="#L31-1">Admissibility &amp; consistency</a>
+  <a href="#L31-2">Why excluding the blank matters</a>
+  <a href="#L31-3">Consistency &#8658; f is non-decreasing</a>
+
   <a class="lec" href="#EX">Exercise Set &middot; Worked Solutions</a>
   <a href="#EX-1">1. Sorting one array, four ways</a>
   <a href="#EX-2">2. Brute-force max is optimal</a>
@@ -242,11 +306,11 @@
 <div class="hero">
   <div class="eyebrow">Complete Study Guide &middot; Algorithms and Computational Complexity</div>
   <h1>Every Lecture, Every Proof, Every Worked Example</h1>
-  <p class="lead">This guide transcribes and explains all 19 lectures of your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too.</p>
+  <p class="lead">This guide transcribes and explains your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too. It now spans Lectures 1&ndash;23, 25, 27, and 28 (Lectures 24 and 26 haven't been uploaded yet).</p>
   <div class="badges">
     <span class="badge">Prof. Kedukodi Babushri Srinivas &middot; MIT Manipal</span>
-    <span class="badge">19 lectures &middot; 334 pages</span>
-    <span class="badge">Introduction &rarr; Strassen's Algorithm</span>
+    <span class="badge">26 lectures &middot; 542 pages</span>
+    <span class="badge">Introduction &rarr; Permutation Puzzles &amp; Lex-BFS</span>
   </div>
 </div>
 
@@ -261,7 +325,7 @@
 <span class="chip" style="background:var(--story-bg);border-color:var(--story-line);color:var(--story-line)">Story / Motivation</span>
 <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Common Confusion</span>
 </p>
-<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" through Dynamic Programming (Fibonacci, Pascal's Triangle, LCS, Matrix Chain Multiplication, Assembly Line Scheduling) and the opening of Graph Algorithms (spanning trees, MST) — the syllabus's later topics (heaps, hashing, greedy algorithms beyond MST, shortest paths, complexity theory, and cryptography) aren't in these 19 lectures, so they aren't in this guide yet either.</p>
+<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" all the way through Dynamic Programming, Graph Algorithms (spanning trees, Prim's &amp; Kruskal's MST algorithms, Disjoint-Set Forests, the Ackermann function), Binary Heaps &amp; Heapsort, Dijkstra's shortest-path algorithm, and a self-contained unit on permutation-puzzle solvability (parity invariants and rank-indexed search). <strong>Lectures 24 and 26 were not included in this upload</strong>, so they're flagged rather than silently skipped — the syllabus's remaining topics (hashing, Huffman coding, complexity theory / P vs. NP, and cryptography) also aren't in these lectures yet, so they aren't in this guide either.</p>
 </div>
 
 <div class="lecture-header" id="L1">
@@ -1831,7 +1895,7 @@ $$m_1+m_4-m_5+m_7 = \begin{bmatrix}0&7\\0&0\end{bmatrix} \qquad m_1+m_3-m_2+m_6 
 </div>
 <div class="box def">
 <span class="lbl">The naive recursive algorithm</span>
-<pre class="pseudocode">Fib(n):
+<pre class="pseudo">Fib(n):
     if n = 0: return 0
     if n = 1: return 1
     else: return Fib(n-1) + Fib(n-2)</pre>
@@ -1843,7 +1907,7 @@ $$m_1+m_4-m_5+m_7 = \begin{bmatrix}0&7\\0&0\end{bmatrix} \qquad m_1+m_3-m_2+m_6 
 <div class="box story">
 <span class="lbl">The overlapping-subproblems picture</span>
 <p>Unrolling <code>Fib(100)</code> even two levels shows the problem: <code>Fib(98)</code> gets computed independently inside <em>both</em> the <code>Fib(99)</code> branch and the <code>Fib(98)</code> branch. Every level down, this doubling repeats — the same sub-calls get recomputed exponentially many times.</p>
-<pre class="pseudocode">                     Fib(100)
+<pre class="pseudo">                     Fib(100)
                     /        \
               Fib(99)          Fib(98)
               /    \            /    \
@@ -1880,7 +1944,7 @@ $$T(n) \ge 2^{(n-1)/2}\,T(1) = 2^{(n-1)/2} \in \Omega\big(2^{n/2}\big)$$
 </div>
 <div class="box def">
 <span class="lbl">The linear-time algorithm</span>
-<pre class="pseudocode">F(0) := 0;  F(1) := 1
+<pre class="pseudo">F(0) := 0;  F(1) := 1
 for i = 2 to n:
     F(i) = F(i-1) + F(i-2)
 return F(n)</pre>
@@ -1913,7 +1977,7 @@ $$T(N) = T(N-1)+T(N-2) \ge 2T(N-2) \ge \cdots \ge 2^{(N-1)/2} \;\in\; \Omega\big
 <div class="box def">
 <span class="lbl">The bottom-up fix — filling a 2D table</span>
 <p>$$P(i,j) = P(i-1,j) + P(i-1,j-1)$$</p>
-<pre class="pseudocode">for i = 0 to n-1:
+<pre class="pseudo">for i = 0 to n-1:
     B(i,0) = 1;  B(i,i) = 1          // left edge and diagonal
 for i = 2 to n-1:
     for j = 1 to i-1:
@@ -1975,7 +2039,7 @@ $$LCS(X,Y,i,j): \quad c[i,j] = \begin{cases}c[i{-}1,j{-}1]+1 & \text{if } X[i]=Y
 <div class="box story">
 <span class="lbl">Overlapping subproblems, again</span>
 <p>Computing \(C[100,100]\) naively branches into \(C[99,100]\) and \(C[100,99]\), whose own children overlap immediately (both reach \(C[99,99]\)) — exactly the same repetitive-call pattern as Fibonacci and Pascal's Triangle.</p>
-<pre class="pseudocode">                       C[100,100]
+<pre class="pseudo">                       C[100,100]
                       /          \
               C[99,100]            C[100,99]
               /       \            /        \
@@ -1997,7 +2061,7 @@ $$T(N) = 2^{N-1}T(1) \in O(2^{N-1})$$
 <h3>15.3 &middot; The Bottom-Up LCS-Length Algorithm</h3>
 <div class="box def">
 <span class="lbl">Pseudocode</span>
-<pre class="pseudocode">LCS-LENGTH(X, Y):
+<pre class="pseudo">LCS-LENGTH(X, Y):
 1.  m <- length[X];  n <- length[Y]
 2.  for i <- 0 to m:  C[i,0] <- 0
 3.  for j <- 0 to n:  C[0,j] <- 0
@@ -2093,7 +2157,7 @@ $$T(N) \ge T(N-j)+T(N-i) \ge 2T(N-j)$$
 <h3>16.3 &middot; Matrix-Chain-Order — The Bottom-Up Algorithm</h3>
 <div class="box def">
 <span class="lbl">Pseudocode</span>
-<pre class="pseudocode">MATRIX-CHAIN-ORDER(p):
+<pre class="pseudo">MATRIX-CHAIN-ORDER(p):
     // input sequence p = <p_0,p_1,...,p_n>, length[p] = n+1
     // A_i has dimension p_{i-1} x p_i
 1.  n <- length[p] - 1
@@ -2246,7 +2310,7 @@ $$\sum_{j=1}^n r_1(j) + \sum_{j=1}^n r_2(j) = (2^n-1)+(2^n-1) = 2^{n+1}-2 \;\in\
 <h3>19.1 &middot; FASTEST-WAY — The Bottom-Up Algorithm</h3>
 <div class="box def">
 <span class="lbl">Pseudocode</span>
-<pre class="pseudocode">FASTEST-WAY(a, t, e, x, n):
+<pre class="pseudo">FASTEST-WAY(a, t, e, x, n):
 1.  f1[1] <- e1 + a[1,1]
 2.  f2[1] <- e2 + a[2,1]
 3.  for j <- 2 to n:
@@ -2334,6 +2398,1020 @@ $$f^* = \min\{f_1[6]+x_1,\ f_2[6]+x_2\} = \min\{36+3,\ 39+2\} = \min\{39,41\} = 
 <p>Six lectures, one recurring idea: notice that naive recursion revisits the same subproblems exponentially often, prove it rigorously, then rebuild the same recurrence bottom-up so each subproblem is solved exactly once. Fibonacci, Pascal's Triangle, LCS, Matrix Chain Multiplication, and Assembly Line Scheduling are five completely different problems solved by the identical technique — and the course's final turn, into graphs and spanning trees, opens the next major toolkit this technique will eventually meet again.</p>
 </div>
 
+<div class="lecture-header" id="L20">
+  <div class="ltag">Lecture 20</div>
+  <h2>Counting Spanning Trees, and a First Greedy Algorithm</h2>
+  <p>Lecture 19 ended by defining spanning trees and the MST problem, and pointing out that brute force — list every spanning tree, weigh each one, keep the cheapest — is exponential. This lecture asks a question that makes that exponential blow-up precise: <em>exactly</em> how many spanning trees does a graph have? The answer is one of the most elegant counting arguments in the course. Then, having seen just how many trees there are to avoid enumerating, the lecture turns to the first real MST algorithm: Prim's.</p>
+</div>
+
+<section class="topic" id="L20-1">
+<h3>20.1 &middot; How Many Spanning Trees Does a Graph Have?</h3>
+<div class="box story">
+<span class="lbl">Why ask this at all</span>
+<p>Lecture 19's brute-force MST algorithm was "write out all spanning trees, weigh each, keep the minimum." Nobody said how many spanning trees there <em>are</em> — it was just assumed to be "a lot." Before building a smarter algorithm, it's worth knowing precisely how bad "a lot" is. The answer turns out to be a beautifully clean formula, discovered by Arthur Cayley in 1889, and it's reached through one of the cleverest bijective arguments in combinatorics: the <strong>Pr&uuml;fer sequence</strong>.</p>
+</div>
+<div class="box def">
+<span class="lbl">The question, precisely</span>
+<p>Given the <strong>complete</strong> graph \(K_n\) on \(n\) labelled vertices (every pair of vertices joined by an edge), how many distinct spanning trees does \(K_n\) have? (Working with \(K_n\) &mdash; the "densest possible" graph on \(n\) vertices &mdash; gives the count for the richest case; any other connected graph on \(n\) vertices has a subset of \(K_n\)'s edges, so it has no more spanning trees than this.)</p>
+</div>
+</section>
+
+<section class="topic" id="L20-2">
+<h3>20.2 &middot; The Pr&uuml;fer Sequence — Turning a Tree Into a List of Numbers</h3>
+<div class="box def">
+<span class="lbl">The encoding procedure</span>
+<p>Given a labelled tree \(T\) on vertices \(\{1,2,\dots,n\}\), build its <strong>Pr&uuml;fer sequence</strong> by repeating this \(n-2\) times:</p>
+<ol>
+<li>Find the <strong>leaf</strong> (degree-1 vertex) with the <strong>smallest label</strong>.</li>
+<li>Write down <em>its neighbour's</em> label as the next term of the sequence.</li>
+<li>Delete that leaf from the tree, and repeat.</li>
+</ol>
+<p>Stop once only 2 vertices remain (they're joined by the tree's last edge, and are never written down). The result is a sequence of \(n-2\) labels, each drawn from \(\{1,\dots,n\}\), with repetition allowed.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example — encoding a 6-vertex tree</span>
+<p>Take the tree on vertices \(\{1,2,3,4,5,6\}\) with edges \(1\!-\!3,\ 2\!-\!3,\ 3\!-\!4,\ 4\!-\!5,\ 4\!-\!6\) (so vertex 4 and vertex 3 are the two internal hubs, each a leaf's worth of other vertices hanging off it).</p>
+<table class="grid trace">
+<tr><th>Step</th><th>Smallest-labelled leaf</th><th>Its neighbour (write this down)</th><th>Tree after deletion</th></tr>
+<tr><td>1</td><td>1</td><td>3</td><td>edges \(2\!-\!3,3\!-\!4,4\!-\!5,4\!-\!6\)</td></tr>
+<tr><td>2</td><td>2</td><td>3</td><td>edges \(3\!-\!4,4\!-\!5,4\!-\!6\)</td></tr>
+<tr><td>3</td><td>3</td><td>4</td><td>edges \(4\!-\!5,4\!-\!6\)</td></tr>
+<tr><td>4</td><td>5</td><td>4</td><td>edge \(4\!-\!6\) &mdash; 2 vertices left, stop</td></tr>
+</table>
+<p>Pr&uuml;fer sequence: <strong>\((3,3,4,4)\)</strong>, length \(n-2=4\) as expected.</p>
+</div>
+<div class="box result">
+<span class="lbl">The key fact that makes this useful</span>
+<p>This encoding is a <strong>bijection</strong>: every labelled tree on \(n\) vertices produces exactly one Pr&uuml;fer sequence of length \(n-2\) over the alphabet \(\{1,\dots,n\}\), and &mdash; this is the non-obvious part &mdash; <em>every</em> such sequence comes from exactly one tree (the encoding can always be reversed, uniquely). One clean fact worth noticing along the way: a vertex's <strong>degree</strong> in the tree equals <strong>(number of times it appears in the Pr&uuml;fer sequence) \(+\,1\)</strong>. Check it above: vertex 3 appears twice and has degree 3 (neighbours 1, 2, 4) &mdash; wait, degree 3, appearances 2, and \(2+1=3\). &#10003; Vertex 4 appears twice and has degree 3 (neighbours 3, 5, 6): \(2+1=3\). &#10003; Vertices 1, 2, 5, 6 never appear and are all leaves (degree 1): \(0+1=1\). &#10003;</p>
+</div>
+</section>
+
+<section class="topic" id="L20-3">
+<h3>20.3 &middot; Cayley's Formula — Counting the Sequences Instead of the Trees</h3>
+<div class="box proof">
+<span class="lbl">The counting argument</span>
+<p>Counting labelled trees directly is hard &mdash; there's no obvious way to list them systematically. But thanks to the bijection above, <strong>counting trees is exactly the same as counting Pr&uuml;fer sequences</strong> &mdash; and sequences are easy to count.</p>
+<p>A Pr&uuml;fer sequence is a list of \(n-2\) slots, each independently filled with any of the \(n\) labels (repeats allowed, order matters). That's exactly \(n\) choices, made independently, \(n-2\) times:</p>
+$$\#\{\text{Prüfer sequences}\} = \underbrace{n\times n\times\cdots\times n}_{n-2\text{ times}} = n^{n-2}$$
+<p>Since the encoding is a bijection, the number of spanning trees equals the number of sequences:</p>
+<p class="qed">&there4; The complete graph \(K_n\) has exactly \(\boxed{n^{n-2}}\) distinct labelled spanning trees. &#8718;</p>
+</div>
+<div class="box ex">
+<span class="lbl">Sanity-checking small cases</span>
+<table class="grid trace">
+<tr><th>\(n\)</th><th>\(n^{n-2}\)</th><th>Check by hand</th></tr>
+<tr><td>2</td><td>\(2^0=1\)</td><td>One edge, one "tree." &#10003;</td></tr>
+<tr><td>3</td><td>\(3^1=3\)</td><td>Triangle on \(\{1,2,3\}\): drop any one of its 3 edges &rarr; 3 different paths. &#10003;</td></tr>
+<tr><td>4</td><td>\(4^2=16\)</td><td>\(K_4\) really does have 16 distinct spanning trees &mdash; small enough to check by brute force, large enough that nobody wants to.</td></tr>
+<tr><td>6</td><td>\(6^4=1296\)</td><td>Already over a thousand, for just 6 vertices.</td></tr>
+</table>
+</div>
+<div class="box warn">
+<span class="lbl">Why this kills brute force for good</span>
+<p>\(n^{n-2}\) is worse than exponential in \(n\) &mdash; it's closer to \(n\) raised to its own power, growing far faster than \(2^n\) ever does. A graph with just 20 vertices has \(20^{18}\approx 2.6\times10^{23}\) spanning trees &mdash; more than the number of grains of sand on Earth. Writing out "all spanning trees, then pick the cheapest" was never a serious algorithm; it was a definition of correctness to measure a real algorithm against. That real algorithm is next.</p>
+</div>
+</section>
+
+<section class="topic" id="L20-4">
+<h3>20.4 &middot; A First Greedy Idea — Prim's Algorithm</h3>
+<div class="box story">
+<span class="lbl">The idea in one sentence</span>
+<p>Instead of building spanning trees and comparing them, <strong>grow one tree, one vertex at a time, always reaching out along the cheapest available edge.</strong> Start from any single vertex (a trivial one-vertex tree). At every step, look at every edge with exactly one endpoint inside the tree so far, and add the cheapest such edge &mdash; pulling in exactly one new vertex. Repeat until every vertex is in the tree.</p>
+</div>
+<div class="box def">
+<span class="lbl">Why "greedy" is a fair description</span>
+<p>At each step Prim's algorithm makes the <em>locally</em> best choice (cheapest available edge right now) with no lookahead and no backtracking, and never revisits a decision. That it produces a <em>globally</em> optimal (minimum-weight) spanning tree is not obvious from the description alone &mdash; it's a theorem, proved by an exchange argument (if some cheaper spanning tree existed that disagreed with Prim's choice at some step, swapping edges would produce a spanning tree no more expensive than it, contradicting that Prim's edge was the unique cheapest crossing edge). The full machinery for running this efficiently &mdash; using a min-heap to always have the cheapest crossing edge on hand &mdash; is the subject of the next lecture.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L21">
+  <div class="ltag">Lecture 21</div>
+  <h2>Prim's and Kruskal's Algorithms, and the Machinery Behind Them</h2>
+  <p>Two complete, efficient MST algorithms, run start-to-finish on the exact same six-vertex weighted graph so their very different styles — Prim's grows one connected blob, Kruskal's grows a forest — can be compared directly. Kruskal's needs a new data structure to work efficiently (checking "would this edge create a cycle?" fast), so this lecture also builds the <strong>Disjoint-Set Forest</strong> (Union&ndash;Find) from scratch, including the single trick — path compression — that makes it astonishingly fast.</p>
+</div>
+
+<section class="topic" id="L21-1">
+<h3>21.1 &middot; Prim's Algorithm — The Pseudocode</h3>
+<div class="box def">
+<span class="lbl">MST-Prim(G, w, r) — grow a tree from root r</span>
+<pre class="pseudo">MST-PRIM(G, w, r):
+1.  for each u in V(G):
+2.      key[u] <- infinity
+3.      pi[u] <- Nil
+4.  key[r] <- 0
+5.  Q <- V(G)                       // a min-priority queue, keyed on key[]
+6.  while Q != empty:
+7.      u <- EXTRACT-MIN(Q)         // vertex closest to the tree so far
+8.      for each v in Adj[u]:
+9.          if v in Q and w(u,v) < key[v]:
+10.             pi[v] <- u
+11.             key[v] <- w(u,v)</pre>
+<p class="small" style="color:var(--ink-soft)">Compare this side by side with Dijkstra's algorithm later in the course (Lecture 25) — the skeleton is <em>identical</em>: same initialization, same while-loop, same Extract-Min, same "walk the neighbours and maybe improve something." The only difference is what gets compared on line 9: Prim's compares the raw edge weight \(w(u,v)\) against \(\textit{key}[v]\) (how is this vertex connected to the tree?); Dijkstra's compares an accumulated path length \(d[u]+w(u,v)\) (how far is this vertex from the source?). One algorithm, two readings.</p>
+</div>
+<div class="box def">
+<span class="lbl">Notation</span>
+<p>\(\pi[v]\) ("pi of \(v\)") is \(v\)'s <strong>parent in the tree being built</strong> — the vertex that will connect to \(v\) if \(v\) joins. \(\textit{key}[v]\) is the weight of the <strong>cheapest edge seen so far</strong> connecting \(v\) to the tree. Both start undefined (\(\textit{key}=\infty\), \(\pi=\text{Nil}\)) and get set — possibly repeatedly, each time a cheaper connecting edge is discovered — as the algorithm runs.</p>
+</div>
+</section>
+
+<section class="topic" id="L21-2">
+<h3>21.2 &middot; Prim's Algorithm — A Complete Worked Example</h3>
+<div class="box ex">
+<span class="lbl">The graph (used for both Prim's and Kruskal's in this lecture)</span>
+<p>Six vertices \(v_1,\dots,v_6\), twelve weighted edges:</p>
+<table class="grid trace" style="font-size:.9em">
+<tr><th>Edge</th><th>Wt</th><th>Edge</th><th>Wt</th><th>Edge</th><th>Wt</th></tr>
+<tr><td>\(v_3v_4\)</td><td>7</td><td>\(v_5v_6\)</td><td>9</td><td>\(v_3v_6\)</td><td>12</td></tr>
+<tr><td>\(v_4v_6\)</td><td>7</td><td>\(v_2v_3\)</td><td>9.5</td><td>\(v_1v_3\)</td><td>16</td></tr>
+<tr><td>\(v_4v_5\)</td><td>8</td><td>\(v_1v_5\)</td><td>10</td><td>\(v_1v_6\)</td><td>17</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>\(v_1v_2\)</td><td>10</td><td>\(v_2v_6\)</td><td>19.5</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>\(v_1v_4\)</td><td>11</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Notice two genuine ties: \(v_1v_2\) and \(v_1v_5\) both cost 10; \(v_3v_4\) and \(v_4v_6\) both cost 7. These ties are what make it interesting to run both algorithms on the same graph below — they can (and do) resolve the ties differently.</p>
+</div>
+<div class="box worked">
+<span class="lbl">The trace — root \(r=v_1\)</span>
+<p>Initialize: \(\textit{key}[v_1]=0\), everything else \(=\infty\). Each row below is one pass through the while-loop: extract the minimum-key vertex, add its tree edge, then relax every edge out of it.</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Extract</th><th>Tree edge added</th><th>Relaxations that change something</th></tr>
+<tr><td>\(v_1\) (key 0)</td><td>&mdash; (root)</td><td>\(\textit{key}[v_2]{=}10,\textit{key}[v_3]{=}16,\textit{key}[v_4]{=}11,\textit{key}[v_5]{=}10,\textit{key}[v_6]{=}17\), all \(\pi{=}v_1\)</td></tr>
+<tr><td>\(v_2\) (key 10)</td><td>\(v_1v_2=10\)</td><td>\(w(v_2,v_3){=}9.5{<}16\): \(\textit{key}[v_3]{\leftarrow}9.5,\pi[v_3]{\leftarrow}v_2\). (\(w(v_2,v_6){=}19.5\not<17\): no change.)</td></tr>
+<tr><td>\(v_3\) (key 9.5)</td><td>\(v_2v_3=9.5\)</td><td>\(w(v_3,v_4){=}7{<}11\): \(\textit{key}[v_4]{\leftarrow}7,\pi[v_4]{\leftarrow}v_3\). \(w(v_3,v_6){=}12{<}17\): \(\textit{key}[v_6]{\leftarrow}12,\pi[v_6]{\leftarrow}v_3\).</td></tr>
+<tr><td>\(v_4\) (key 7)</td><td>\(v_3v_4=7\)</td><td>\(w(v_4,v_5){=}8{<}10\): \(\textit{key}[v_5]{\leftarrow}8,\pi[v_5]{\leftarrow}v_4\). \(w(v_4,v_6){=}7{<}12\): \(\textit{key}[v_6]{\leftarrow}7,\pi[v_6]{\leftarrow}v_4\).</td></tr>
+<tr><td>\(v_6\) (key 7)</td><td>\(v_4v_6=7\)</td><td>\(w(v_6,v_5){=}9\not<8\): no change.</td></tr>
+<tr><td>\(v_5\) (key 8)</td><td>\(v_4v_5=8\)</td><td>&mdash; (last vertex)</td></tr>
+</table>
+<p class="small">Two genuine ties get resolved by whichever order the heap happens to store equal keys in: at step 2, \(v_2\) (key 10) is extracted before \(v_5\) (also key 10); at step 5, \(v_6\) (key 7) is extracted before \(v_5\) (key 8) &mdash; no tie there, 7&lt;8 outright.</p>
+</div>
+<div class="box result">
+<span class="lbl">Prim's answer</span>
+<p>MST edges: \(\{v_1v_2,\ v_2v_3,\ v_3v_4,\ v_4v_6,\ v_4v_5\}\), total weight \(10+9.5+7+7+8=\mathbf{41.5}\).</p>
+</div>
+</section>
+
+<section class="topic" id="L21-3">
+<h3>21.3 &middot; Prim's Running Time</h3>
+<div class="box result">
+<span class="lbl">Counting the work</span>
+<p>With a binary min-heap for \(Q\): each of the \(n\) <code>Extract-Min</code> calls costs \(O(\log n)\), and across the whole algorithm every edge triggers at most one "decrease-key" (also \(O(\log n)\) with a heap), since each edge is examined exactly twice (once from each endpoint). That's \(O(n\log n)\) for the extractions plus \(O(|E|\log n)\) for the relaxations, i.e. <strong>\(O(|E|\log V)\)</strong> overall (the dominant term, since \(|E|\ge n-1\) for a connected graph). The data structure doing the heavy lifting &mdash; a min-heap acting as a priority queue &mdash; is exactly the structure Lecture 23 builds from first principles, and exactly what Dijkstra's algorithm (Lecture 25) reuses unchanged.</p>
+</div>
+</section>
+
+<section class="topic" id="L21-4">
+<h3>21.4 &middot; Kruskal's Algorithm — The Idea and the Pseudocode</h3>
+<div class="box story">
+<span class="lbl">A completely different strategy, same goal</span>
+<p>Prim's grows <em>one</em> connected piece from a chosen root, always reaching outward. Kruskal's instead looks at <strong>every edge in the whole graph at once</strong>, sorted cheapest-first, and greedily accepts each edge <em>unless</em> it would close a cycle — meaning for most of the algorithm's life, what's been built so far isn't one tree but a <strong>forest</strong> of several separate tree fragments that only merge into a single tree at the very end.</p>
+</div>
+<div class="box def">
+<span class="lbl">The algorithm, informally</span>
+<ol>
+<li>Sort all the edges by weight, cheapest first.</li>
+<li>Build a spanning forest by scanning the sorted list and adding each edge, <em>unless</em> adding it would close a cycle with edges already chosen.</li>
+</ol>
+<p>Why no cycle-check is ever needed for the <em>first</em> edge, or indeed any edge joining two vertices that are currently in different fragments: a cycle can only form by connecting two vertices <em>already</em> in the same fragment. So the one question Kruskal's algorithm must answer, over and over, fast, is: <strong>"are these two vertices already in the same piece?"</strong> &mdash; which is exactly what the Disjoint-Set Forest (&sect;21.6) is built to answer in essentially constant time.</p>
+</div>
+</section>
+
+<section class="topic" id="L21-5">
+<h3>21.5 &middot; Kruskal's Algorithm — The Same Graph, a Different (Equally Minimum) Tree</h3>
+<div class="box worked">
+<span class="lbl">Step 1 — sort the edges</span>
+<p>\(v_3v_4(7),\ v_4v_6(7),\ v_4v_5(8),\ v_5v_6(9),\ v_2v_3(9.5),\ v_1v_5(10),\ v_1v_2(10),\ v_1v_4(11),\ v_3v_6(12),\ v_1v_3(16),\ v_1v_6(17),\ v_2v_6(19.5)\)</p>
+</div>
+<div class="box worked">
+<span class="lbl">Step 2 — scan and greedily accept</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Edge (wt)</th><th>Decision</th><th>Why</th></tr>
+<tr><td>\(v_3v_4\) (7)</td><td>&#10003; accept</td><td>different fragments &mdash; both still isolated vertices</td></tr>
+<tr><td>\(v_4v_6\) (7)</td><td>&#10003; accept</td><td>\(v_6\) isolated, \(v_4\) in \(\{v_3,v_4\}\) &mdash; different fragments</td></tr>
+<tr><td>\(v_4v_5\) (8)</td><td>&#10003; accept</td><td>\(v_5\) isolated, \(v_4\) in \(\{v_3,v_4,v_6\}\) &mdash; different fragments</td></tr>
+<tr><td>\(v_5v_6\) (9)</td><td>&#10007; reject</td><td><strong>would close a cycle</strong>: \(v_4,v_5,v_6\) are already all one fragment</td></tr>
+<tr><td>\(v_2v_3\) (9.5)</td><td>&#10003; accept</td><td>\(v_2\) isolated, \(v_3\) in \(\{v_3,v_4,v_5,v_6\}\) &mdash; different fragments</td></tr>
+<tr><td>\(v_1v_5\) (10)</td><td>&#10003; accept</td><td>\(v_1\) isolated, \(v_5\) in the one big fragment &mdash; <strong>this completes a spanning tree, 5 edges for 6 vertices</strong></td></tr>
+<tr><td>\(v_1v_2\) (10)</td><td>&mdash; never reached</td><td>the tree is already complete; Kruskal's can stop as soon as \(n-1\) edges are chosen</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Kruskal's answer — and an instructive surprise</span>
+<p>MST edges: \(\{v_3v_4,\ v_4v_6,\ v_4v_5,\ v_2v_3,\ v_1v_5\}\), total weight \(7+7+8+9.5+10=\mathbf{41.5}\) &mdash; the <em>same minimum total</em> as Prim's, but a <strong>different edge</strong> connects \(v_1\) to the rest: Kruskal's used \(v_1v_5\), Prim's used \(v_1v_2\), both weight 10. This is not a contradiction &mdash; it's a basic fact about MSTs worth remembering: <strong>when edge weights tie, the minimum weight is unique but the tree achieving it generally is not.</strong> Any algorithm correctly resolves a tie however it likes; both answers are equally valid minimum spanning trees.</p>
+</div>
+</section>
+
+<section class="topic" id="L21-6">
+<h3>21.6 &middot; Disjoint-Set Forests — Make-Set, Union, Find-Set</h3>
+<div class="box def">
+<span class="lbl">The data structure</span>
+<p>A Disjoint-Set Forest represents a collection of non-overlapping groups ("sets"), where each group is itself stored as a little tree: every element \(x\) has a parent pointer \(P[x]\), and the element sitting at the <strong>root</strong> of its tree (the one element with \(P[x]=x\)) is used as that group's unique representative — two elements are in the same set exactly when they share the same root. A second field, \(\textit{rank}[x]\), tracks (roughly) the height of \(x\)'s subtree, and exists purely to keep these trees shallow (see below).</p>
+</div>
+<div class="box def">
+<span class="lbl">The three operations</span>
+<pre class="pseudo">MAKE-SET(x):
+1.  P[x] <- x
+2.  rank[x] <- 0
+
+FIND-SET(x):                         // walk up to the root, compressing on the way
+1.  if x != P[x]:
+2.      P[x] <- FIND-SET(P[x])       // path compression (see 21.7)
+3.  return P[x]
+
+UNION(x, y):
+1.  LINK(FIND-SET(x), FIND-SET(y))   // union by rank, operating on the two ROOTS
+
+LINK(x, y):                          // x, y are assumed to already be roots
+1.  if rank[x] > rank[y]:
+2.      P[y] <- x
+3.  else:
+4.      P[x] <- y
+5.      if rank[x] == rank[y]:
+6.          rank[y] <- rank[y] + 1</pre>
+<p><strong>In plain language:</strong> \(\textit{Make-Set}(x)\) creates a brand-new, one-element group with \(x\) as its own root. \(\textit{Find-Set}(x)\) answers "which group is \(x\) in?" by walking parent pointers up to the root. \(\textit{Union}(x,y)\) merges \(x\)'s whole group with \(y\)'s whole group by attaching one tree's root underneath the other's &mdash; and <strong>union by rank</strong> always attaches the <em>shorter</em> tree under the <em>taller</em> one (breaking ties by incrementing the surviving root's rank), which is precisely what keeps every tree in the forest from ever becoming a long spindly chain.</p>
+</div>
+</section>
+
+<section class="topic" id="L21-7">
+<h3>21.7 &middot; Path Compression, Illustrated</h3>
+<div class="box ex">
+<span class="lbl">Worked example — Find-Set on a long chain</span>
+<p>Suppose, before any compression has happened, six elements form a chain: \(a\to b\to c\to d\to e\to f\), with \(f\) the root (\(P[f]=f\)). Calling \(\textit{Find-Set}(a)\) walks the whole chain recursively:</p>
+<pre class="pseudo">Find-Set(a): a != P[a]=b,  so  P[a] <- Find-Set(b)
+Find-Set(b): b != P[b]=c,  so  P[b] <- Find-Set(c)
+Find-Set(c): c != P[c]=d,  so  P[c] <- Find-Set(d)
+Find-Set(d): d != P[d]=e,  so  P[d] <- Find-Set(e)
+Find-Set(e): e != P[e]=f,  so  P[e] <- Find-Set(f)
+Find-Set(f): f == P[f]=f,  so  return f
+
+// now every call on the stack unwinds, and each one sets its own
+// parent pointer directly to the value just returned (f):
+P[e] <- f,  P[d] <- f,  P[c] <- f,  P[b] <- f,  P[a] <- f
+</pre>
+<p>The single recursive line <code>P[x] &larr; Find-Set(P[x])</code> is doing two things at once: it finds the root exactly as a plain walk-to-the-top would, <em>and</em>, as the recursion unwinds, it rewrites every node it passed through to point <strong>directly</strong> at that root. One <code>Find-Set(a)</code> call flattens the entire 6-node chain into a 1-level-deep star, all hanging directly off \(f\):</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace;color:var(--ink-soft)">before: a&rarr;b&rarr;c&rarr;d&rarr;e&rarr;f &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; after: a,b,c,d,e all point straight to f</p>
+</div>
+<div class="box result">
+<span class="lbl">Why this matters</span>
+<p>Without path compression, a sequence of unlucky unions can produce exactly this kind of long chain, making every future \(\textit{Find-Set}\) call take \(\Theta(n)\) time. With path compression, the <em>next</em> \(\textit{Find-Set}\) call on any of \(a,b,c,d,e\) is instant &mdash; one hop. Combined with union by rank, path compression is what pushes the amortized cost of each Disjoint-Set operation down to very nearly (but not quite exactly) \(O(1)\) &mdash; "very nearly" is made completely precise next lecture, with the Ackermann function.</p>
+</div>
+</section>
+
+<section class="topic" id="L21-8">
+<h3>21.8 &middot; MST-Kruskal in Full, and Tracing the Union&ndash;Find on This Graph</h3>
+<div class="box def">
+<span class="lbl">The complete algorithm</span>
+<pre class="pseudo">MST-KRUSKAL(G, w):
+1.  A <- empty set
+2.  for each vertex v in V(G):
+3.      MAKE-SET(v)
+4.  sort the edges of G into non-decreasing order by weight w
+5.  for each edge (u, v), taken in that order:
+6.      if FIND-SET(u) != FIND-SET(v):
+7.          A <- A union {(u, v)}
+8.          UNION(u, v)
+9.  return A</pre>
+</div>
+<div class="box worked">
+<span class="lbl">Tracing it on &sect;21.5's graph, edge by edge</span>
+<p>Start: \(\textit{Make-Set}(v_i)\) for all six vertices &mdash; each is its own root, rank 0. Then process the sorted edge list, applying <code>Link</code>'s rule exactly:</p>
+<table class="grid trace" style="font-size:.82em">
+<tr><th>Edge</th><th>Find-Set check</th><th>Union / Link action</th><th>Forest after</th></tr>
+<tr><td>\(v_4v_6\) (7)</td><td>\(v_4\ne v_6\) &mdash; ok</td><td>ranks tie (0,0): \(P[v_4]{\leftarrow}v_6\), \(\textit{rank}[v_6]{\leftarrow}1\)</td><td>root \(v_6\) (rank 1) over \(v_4\)</td></tr>
+<tr><td>\(v_3v_4\) (7)</td><td>Find-Set(\(v_3\))\(=v_3\); Find-Set(\(v_4\))\(=v_6\) (one hop up) &mdash; ok</td><td>\(\textit{rank}[v_3]{=}0<\textit{rank}[v_6]{=}1\): \(P[v_3]{\leftarrow}v_6\)</td><td>root \(v_6\) (rank 1) over \(\{v_3,v_4\}\)</td></tr>
+<tr><td>\(v_4v_5\) (8)</td><td>Find-Set(\(v_4\))\(=v_6\); Find-Set(\(v_5\))\(=v_5\) &mdash; ok</td><td>\(\textit{rank}[v_6]{=}1>\textit{rank}[v_5]{=}0\): \(P[v_5]{\leftarrow}v_6\)</td><td>root \(v_6\) (rank 1) over \(\{v_3,v_4,v_5\}\)</td></tr>
+<tr><td>\(v_5v_6\) (9)</td><td>Find-Set(\(v_5\))\(=v_6\); Find-Set(\(v_6\))\(=v_6\) &mdash; <strong>equal!</strong></td><td><strong>rejected</strong> &mdash; already one component</td><td>unchanged</td></tr>
+<tr><td>\(v_2v_3\) (9.5)</td><td>Find-Set(\(v_2\))\(=v_2\); Find-Set(\(v_3\))\(=v_6\) &mdash; ok</td><td>\(\textit{rank}[v_2]{=}0<\textit{rank}[v_6]{=}1\): \(P[v_2]{\leftarrow}v_6\)</td><td>root \(v_6\) over \(\{v_2,v_3,v_4,v_5\}\)</td></tr>
+<tr><td>\(v_1v_5\) (10)</td><td>Find-Set(\(v_1\))\(=v_1\); Find-Set(\(v_5\))\(=v_6\) &mdash; ok</td><td>\(\textit{rank}[v_1]{=}0<\textit{rank}[v_6]{=}1\): \(P[v_1]{\leftarrow}v_6\)</td><td><strong>one tree, all 6 vertices, root \(v_6\)</strong></td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">A pleasant side effect of this particular run: because every losing root attached <em>directly</em> to \(v_6\) (union by rank never had to chain two non-trivial subtrees together here), the final Disjoint-Set forest is already a flat, one-level star &mdash; path compression wouldn't even have anything left to flatten. That won't always happen; it's a feature of this graph's specific tie-breaking, not a general guarantee.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L22">
+  <div class="ltag">Lecture 22</div>
+  <h2>How Slow Is Slow? The Ackermann Function and Why Union&ndash;Find Is (Almost) Free</h2>
+  <p>Lecture 21 promised that path compression plus union by rank makes Disjoint-Set operations <em>almost</em> \(O(1)\) each &mdash; "almost" because the true bound involves a function, \(\alpha(n)\), that grows so slowly it is, for every input anyone will ever run a program on, indistinguishable from a constant. Making that precise means meeting its opposite number first: the <strong>Ackermann function</strong>, a function that outgrows every polynomial, every exponential, every tower of exponentials — outgrows, in a very exact sense, anything "ordinary" growth can produce.</p>
+</div>
+
+<section class="topic" id="L22-1">
+<h3>22.1 &middot; The Ackermann Function — A Function That Outgrows Everything</h3>
+<div class="box def">
+<span class="lbl">The classical definition</span>
+<p>$$A(m,n)=\begin{cases}n+1 & m=0\\A(m-1,\,1) & m>0,\ n=0\\A\big(m-1,\ A(m,n-1)\big) & m>0,\ n>0\end{cases}$$</p>
+<p>Three simple-looking rules — yet \(A\) grows faster than any function built from addition, multiplication, exponentiation, or even towers of exponentiation. The reason is the third rule: to compute \(A(m,n)\), you don't just recurse on smaller arguments once — you recurse on \(n\) first (<em>inside</em> the call), and then feed that entire result back in as the second argument to a call one level down in \(m\). Growth compounds on growth.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Unrolling the first few rows</span>
+<table class="grid trace">
+<tr><th>Row</th><th>Closed form</th><th>Growth</th></tr>
+<tr><td>\(A(0,n)\)</td><td>\(n+1\)</td><td>linear (barely grows at all)</td></tr>
+<tr><td>\(A(1,n)\)</td><td>\(n+2\)</td><td>still linear</td></tr>
+<tr><td>\(A(2,n)\)</td><td>\(2n+3\)</td><td>linear, steeper</td></tr>
+<tr><td>\(A(3,n)\)</td><td>\(2^{\,n+3}-3\)</td><td><strong>exponential</strong></td></tr>
+<tr><td>\(A(4,n)\)</td><td>a tower of \(n{+}3\) twos, minus 3</td><td><strong>tower-of-exponentials</strong></td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Each row isn't just "a bit faster" than the last — it's an entire <em>growth category</em> faster: row 3 is exponential, which no polynomial (row &le;2) ever catches up to; row 4 is a power tower, which no single exponential (row 3) ever catches up to. \(A(4,0)=A(3,1)=2^{4}-3=13\) is still small, but \(A(4,1)=A(3,A(4,0))=A(3,13)=2^{16}-3=65{,}533\) already is not, and \(A(4,2)=A(3,65533)=2^{65536}-3\) is a number with roughly 19,729 decimal digits &mdash; computed from an input of just 2.</p>
+</div>
+</section>
+
+<section class="topic" id="L22-2">
+<h3>22.2 &middot; The Inverse Ackermann Function, Formally</h3>
+<div class="box def">
+<span class="lbl">Why an "inverse" at all</span>
+<p>A function that explodes this fast has an inverse that <em>crawls</em>: to find \(m\) such that \(A(m, \cdot)\) first exceeds some target \(n\), you barely have to increase \(m\) before \(A\) rockets past any \(n\) you could name. This crawling inverse, written \(\alpha(n)\), is exactly the function that bounds the true cost of a Disjoint-Set operation. To pin it down precisely, the lecture uses a slightly different (but closely related) one-argument hierarchy, built the same way the Ackermann function is built, but by explicit iteration — a technique worth isolating on its own first.</p>
+</div>
+<div class="box def">
+<span class="lbl">Functional iteration notation</span>
+<p>For \(f:\mathbb{N}\to\mathbb{N}\), write \(f^{(i)}(n)\) for "\(f\) applied to \(n\), \(i\) times in a row":</p>
+$$f^{(i)}(n)=\begin{cases}n & i=0\\f\big(f^{(i-1)}(n)\big) & i>0\end{cases}$$
+<p><strong>Example.</strong> \(f(n)=2n\): \(f^{(2)}(n)=f(f(n))=f(2n)=4n\), and in general \(f^{(i)}(n)=2^i n\) (easy induction: true at \(i{=}0\); if \(f^{(i-1)}(n)=2^{i-1}n\), then \(f^{(i)}(n)=f(2^{i-1}n)=2\cdot2^{i-1}n=2^in\)).</p>
+</div>
+<div class="box def">
+<span class="lbl">The level-\(k\) hierarchy \(A_k(j)\)</span>
+<p>For integers \(k\ge0,\ j\ge0\), define a family of functions, each one built by <em>iterating the previous one</em>:</p>
+$$A_k(j)=\begin{cases}j+1 & k=0 &(\text{①})\\[2pt] A_{k-1}^{(j+1)}(j) & k\ge1 &(\text{②})\end{cases}$$
+<p>In words: level 0 just adds one. Level \(k\) (for \(k\ge1\)) is "take level \(k{-}1\), and iterate it \(j{+}1\) times, starting from \(j\)." Each level is dramatically faster-growing than the one below it — exactly the same compounding idea as the classical \(A(m,n)\) above, just packaged so it can be analyzed cleanly with ordinary induction.</p>
+</div>
+</section>
+
+<section class="topic" id="L22-3">
+<h3>22.3 &middot; Two Lemmas, Proved by Induction</h3>
+<div class="box proof">
+<span class="lbl">Lemma 4 &mdash; pinning down levels 0 and 1</span>
+<p><strong>(i)</strong> \(A_0^{(i)}(j)=j+i\). &nbsp; <strong>(ii)</strong> \(A_1(j)=2j+1\).</p>
+<p><strong>Proof of (i), by induction on \(i\):</strong> Base case \(i=0\): \(A_0^{(0)}(j)=j=j+0\). &#10003;<br>
+Inductive step: assume \(A_0^{(i-1)}(j)=j+(i-1)\). Then, using \(A_0(x)=x+1\) (definition ①):
+$$A_0^{(i)}(j)=A_0\big(A_0^{(i-1)}(j)\big)=A_0\big(j+i-1\big)=(j+i-1)+1=j+i.$$
+By induction, the result holds for all \(i\ge0\). \(\blacksquare\)</p>
+<p><strong>Proof of (ii):</strong> By definition ② with \(k=1\): \(A_1(j)=A_0^{(j+1)}(j)\). Apply part (i) with \(i=j+1\):
+$$A_1(j)=A_0^{(j+1)}(j)=j+(j+1)=2j+1. \qquad\blacksquare$$</p>
+</div>
+<div class="box proof">
+<span class="lbl">Lemma 5 &mdash; level 2, by iterating level 1</span>
+<p>\(A_1\) is the affine map \(x\mapsto 2x+1\). Iterating an affine map \(m\) times has a clean closed form: if \(x_t=2x_{t-1}+1\), then \(x_t+1=2(x_{t-1}+1)\), so \(x_t+1\) doubles at every step, giving \(x_m+1=2^m(x_0+1)\), i.e. \(x_m=2^m(x_0+1)-1\). Apply this with \(x_0=j\) and \(m=j+1\) (definition ② with \(k=2\)):</p>
+$$A_2(j)=A_1^{(j+1)}(j)=2^{\,j+1}(j+1)-1$$
+<p>Already, at level 2, the formula has an exponent depending on \(j\) &mdash; this is where the growth stops being any kind of polynomial. Level 3 iterates <em>this</em> doubly-exponential function \(j{+}1\) times, producing a power tower of height growing with \(j\); there is no simple closed form anymore, only explosive numeric growth, illustrated next.</p>
+</div>
+</section>
+
+<section class="topic" id="L22-4">
+<h3>22.4 &middot; Just How Slow Is \(\alpha\)? — Computing \(A_k(1)\) for \(k=0,1,2,3,4\)</h3>
+<div class="box ex">
+<span class="lbl">The numbers, computed with Lemmas 4 and 5</span>
+<table class="grid trace">
+<tr><th>\(k\)</th><th>\(A_k(1)\)</th><th>Computation</th></tr>
+<tr><td>0</td><td>2</td><td>\(1+1\) (definition ①)</td></tr>
+<tr><td>1</td><td>3</td><td>\(2(1)+1\) (Lemma 4ii)</td></tr>
+<tr><td>2</td><td>7</td><td>\(2^{1+1}(1+1)-1=2^2\cdot2-1=8-1\) (Lemma 5)</td></tr>
+<tr><td>3</td><td>2047</td><td>\(A_3(1)=A_2^{(2)}(1)\): first \(A_2(1)=7\), then \(A_2(7)=2^{8}\cdot8-1=2048-1\)</td></tr>
+<tr><td>4</td><td>astronomically large</td><td>\(A_4(1)=A_3^{(2)}(1)\): first \(A_3(1)=2047\), then \(A_3(2047)\) &mdash; and just the <em>first</em> inner step of that, \(A_2(2047)=2^{2048}\cdot2048-1\), is already a number with over 600 digits; \(A_3(2047)\) iterates \(A_2\) a further 2047 times beyond that</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">For comparison, the number of atoms in the observable universe is estimated at roughly \(10^{80}\). \(A_4(1)\) leaves that far behind before its computation is even a tenth of the way done.</p>
+</div>
+<div class="box def">
+<span class="lbl">The inverse, at last</span>
+$$\alpha(n)=\min\{k : A_k(1)\ge n\}$$
+<p>"The smallest level \(k\) whose tower has already caught up to \(n\)." Reading the table above backwards: \(\alpha(n)=0\) only for \(n\le2\); \(\alpha(n)\le2\) for any \(n\le7\); \(\alpha(n)\le3\) for any \(n\) up to \(2047\); and \(\alpha(n)\le4\) for any \(n\) you could plausibly ever use as the number of elements in a Disjoint-Set Forest &mdash; or, realistically, any \(n\) that could ever be written down, stored, or counted by any computer that will ever be built.</p>
+</div>
+<div class="box result">
+<span class="lbl">The practical upshot</span>
+<p><strong>For all practical purposes, \(\alpha(n)\le4\).</strong> This is the single fact that matters: \(\alpha(n)\) is not "small" in the way \(\log n\) or \(\log\log n\) are small &mdash; it is bounded by a fixed constant (4) for every input size that will ever actually occur, even though it is, technically, an unbounded function that does tend to infinity as \(n\to\infty\) (just unfathomably slowly). This is why every Disjoint-Set operation, with union by rank <em>and</em> path compression together, runs in amortized time \(O(\alpha(n))\) &mdash; which in every real program is simply \(O(1)\).</p>
+</div>
+</section>
+
+<section class="topic" id="L22-5">
+<h3>22.5 &middot; Kruskal's Algorithm — The Real Running Time</h3>
+<div class="box result">
+<span class="lbl">Putting the two halves together</span>
+<p>Kruskal's algorithm (Lecture 21) does two kinds of work: <strong>sorting</strong> the edges, and <strong>Disjoint-Set operations</strong> (one \(\textit{Make-Set}\) per vertex, two \(\textit{Find-Set}\) calls and up to one \(\textit{Union}\) per edge).</p>
+<ul>
+<li><strong>Sorting:</strong> \(O(|E|\log|E|)\). For a simple graph, \(|E|=O(|V|^2)\), so \(\log|E|=O(\log|V|^2)=O(2\log|V|)=O(\log|V|)\) &mdash; so sorting costs \(O(|E|\log|V|)\).</li>
+<li><strong>Disjoint-Set operations:</strong> \(O(|E|\cdot\alpha(|V|))\), which by &sect;22.4 is \(O(|E|)\) for all practical purposes.</li>
+</ul>
+<p>Adding these: \(O(|E|\log|V|)+O(|E|)=\boxed{O(|E|\log|V|)}\) &mdash; <strong>sorting dominates.</strong> The elegant, slow-growing \(\alpha(n)\) machinery of this whole lecture turns out, in the final accounting, to contribute nothing to Kruskal's asymptotic running time at all &mdash; it's there to guarantee the Union&ndash;Find half is never the bottleneck, and the proof that it isn't is precisely the content of &sect;22.1&ndash;22.4.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L23">
+  <div class="ltag">Lecture 23</div>
+  <h2>Binary Heaps</h2>
+  <p>The min-heap that made Prim's algorithm run in \(O(E\log V)\) two lectures ago gets built here from first principles. A heap is two ideas stacked on top of each other: a simple ordering rule (the <em>heap property</em>), and a clever way to store a tree with no pointers at all (the <em>array trick</em>). Together they give <code>Heapsort</code> — an in-place, \(\Theta(n\log n)\)-worst-case sorting algorithm, with none of Quicksort's bad-case risk and none of Merge Sort's extra memory.</p>
+</div>
+
+<section class="topic" id="L23-1">
+<h3>23.1 &middot; The Heap Property, and the Array Trick</h3>
+<div class="box def">
+<span class="lbl">The heap property</span>
+<p>A binary tree is a <strong>max-heap</strong> if every node is \(\ge\) both its children: \(A[\textit{Parent}(i)]\ge A[i]\) for every node \(i\). (A <strong>min-heap</strong> flips the inequality: every parent \(\le\) its children — see &sect;23.5.) Note this says nothing about left vs. right, or about how two siblings compare to each other — only parent-vs-child, everywhere in the tree. The largest element is therefore always sitting at the root, but beyond that the tree is only loosely ordered.</p>
+</div>
+<div class="box def">
+<span class="lbl">Storing a tree with no pointers: the array trick</span>
+<p>A heap is always kept as a <strong>complete</strong> binary tree (every level full except possibly the last, which fills left-to-right) — and a complete tree's shape is entirely predictable, so it can be stored in a plain array with no left/right/parent pointers at all, just arithmetic on the index:</p>
+<p>\(\textit{Parent}(i)=\lfloor i/2\rfloor\), &nbsp; \(\textit{Left}(i)=2i\), &nbsp; \(\textit{Right}(i)=2i+1\) &nbsp; (1-indexed).</p>
+<p>Worked correspondence, for the array \(A=[16,4,10,14,7,9,3,2,8,1]\) (indices \(1,\dots,10\)):</p>
+<pre class="pseudo">                     16 (i=1)
+                 /          \
+            4 (i=2)         10 (i=3)
+            /    \            \
+       14 (i=4)  7 (i=5)      9 (i=6)
+       /    \
+   2 (i=8) 8 (i=9)      (and 1 at i=10 would hang off i=5's left slot, 3 at i=7 off i=3's right)</pre>
+<p class="small" style="color:var(--ink-soft)">(This particular array is <em>not</em> a valid max-heap — e.g. node \(i{=}2\) holds 4 but its child \(i{=}4\) holds 14, violating \(A[\textit{Parent}(i)]\ge A[i]\). It's shown purely to fix the index arithmetic before the heap property itself does any work, in &sect;23.2&ndash;23.3.)</p>
+</div>
+</section>
+
+<section class="topic" id="L23-2">
+<h3>23.2 &middot; Max-Heapify — Pseudocode and a Worked Step</h3>
+<div class="box def">
+<span class="lbl">Max-Heapify(A, i) — assumes everything below \(i\) is already a valid heap</span>
+<pre class="pseudo">MAX-HEAPIFY(A, i):
+1.  l <- LEFT(i)
+2.  r <- RIGHT(i)
+3.  if l <= heap-size[A] and A[l] > A[i]:
+4.      largest <- l
+5.  else:
+6.      largest <- i
+7.  if r <= heap-size[A] and A[r] > A[largest]:
+8.      largest <- r
+9.  if largest != i:
+10.     A[i] <-> A[largest]
+11.     MAX-HEAPIFY(A, largest)</pre>
+<p>The idea: node \(i\) might be smaller than one of its children (everything <em>below</em> \(i\) is assumed already fine). Find the largest of \(\{A[i], A[\text{left child}], A[\text{right child}]\}\); if it isn't \(A[i]\) itself, swap it up into position \(i\) and recurse on wherever the old \(A[i]\) just landed — "bubbling down" one offending value until the heap property is restored all the way to a leaf.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked step — Max-Heapify applied at a single node</span>
+<p>Take \(i=4\) in an array where \(A[4]=2\), with children \(A[8]=14\) and \(A[9]=8\) (everything below index 4 already satisfies the heap property). Line 3: \(A[8]{=}14 > A[4]{=}2\), so \(\textit{largest}\leftarrow8\). Line 7: \(A[9]{=}8\) vs. \(A[\textit{largest}]{=}A[8]{=}14\): \(8\not>14\), \(\textit{largest}\) stays 8. Since \(\textit{largest}{=}8\ne i{=}4\): <strong>swap</strong> \(A[4]\leftrightarrow A[8]\), so \(A[4]\) becomes 14 and \(A[8]\) becomes 2 — then recurse \(\textit{Max-Heapify}(A,8)\) to check whether the demoted 2 needs to keep bubbling further down (here index 8 is a leaf, so the recursion stops immediately).</p>
+</div>
+</section>
+
+<section class="topic" id="L23-3">
+<h3>23.3 &middot; Build-Max-Heap — Turning Any Array Into a Heap</h3>
+<div class="box def">
+<span class="lbl">Pseudocode</span>
+<pre class="pseudo">BUILD-MAX-HEAP(A):
+1.  heap-size[A] <- length[A]
+2.  for i <- floor(length[A]/2) downto 1:
+3.      MAX-HEAPIFY(A, i)</pre>
+<p>Every index past the halfway point is automatically a leaf (no children to violate anything against), so the loop starts just above the leaves and works <strong>upward</strong> — by the time \(\textit{Max-Heapify}\) is called at index \(i\), both of \(i\)'s subtrees are already guaranteed to be valid heaps, which is exactly what \(\textit{Max-Heapify}\) needs to assume.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Complete worked trace on \(A=[4,1,3,2,16,9,10,14,8,7]\)</span>
+<p>\(\textit{length}[A]=10\), so the loop runs \(i=5,4,3,2,1\):</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>\(i\)</th><th>\(A[i]\) and children</th><th>Action</th><th>Array after this step</th></tr>
+<tr><td>5</td><td>\(A[5]{=}16\), child \(A[10]{=}7\)</td><td>\(16>7\) already &mdash; no swap</td><td>[4,1,3,2,16,9,10,14,8,7]</td></tr>
+<tr><td>4</td><td>\(A[4]{=}2\), children \(A[8]{=}14,A[9]{=}8\)</td><td>largest child 14 &rarr; swap \(A[4]{\leftrightarrow}A[8]\)</td><td>[4,1,3,<strong>14</strong>,16,9,10,<strong>2</strong>,8,7]</td></tr>
+<tr><td>3</td><td>\(A[3]{=}3\), children \(A[6]{=}9,A[7]{=}10\)</td><td>largest child 10 &rarr; swap \(A[3]{\leftrightarrow}A[7]\)</td><td>[4,1,<strong>10</strong>,14,16,9,<strong>3</strong>,2,8,7]</td></tr>
+<tr><td>2</td><td>\(A[2]{=}1\), children \(A[4]{=}14,A[5]{=}16\)</td><td>largest child 16 &rarr; swap \(A[2]{\leftrightarrow}A[5]\); recurse at 5: child \(A[10]{=}7>1\) &rarr; swap \(A[5]{\leftrightarrow}A[10]\)</td><td>[4,<strong>16</strong>,10,14,<strong>7</strong>,9,3,2,8,<strong>1</strong>]</td></tr>
+<tr><td>1</td><td>\(A[1]{=}4\), children \(A[2]{=}16,A[3]{=}10\)</td><td>largest child 16 &rarr; swap \(A[1]{\leftrightarrow}A[2]\); recurse at 2: children \(A[4]{=}14,A[5]{=}7\), largest 14 &rarr; swap \(A[2]{\leftrightarrow}A[4]\); recurse at 4: children \(A[8]{=}2,A[9]{=}8\), largest 8 &rarr; swap \(A[4]{\leftrightarrow}A[9]\)</td><td>[<strong>16,14</strong>,10,<strong>8</strong>,7,9,3,2,<strong>4</strong>,1]</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Index 1 needed a full three-level bubble-down (its displaced value, the original \(A[1]{=}4\), sinks from the root all the way to index 9) &mdash; a good illustration of why \(\textit{Max-Heapify}\) is written recursively rather than as a single comparison.</p>
+<span class="answer-final">Final max-heap: A = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]</span>
+</div>
+</section>
+
+<section class="topic" id="L23-4">
+<h3>23.4 &middot; Heap-Extract-Max, and Heapsort</h3>
+<div class="box def">
+<span class="lbl">Heap-Extract-Max(A) — pull out the maximum, keep the heap valid</span>
+<pre class="pseudo">HEAP-EXTRACT-MAX(A):
+1.  max <- A[1]
+2.  A[1] <- A[heap-size[A]]
+3.  heap-size[A] <- heap-size[A] - 1
+4.  MAX-HEAPIFY(A, 1)
+5.  return max</pre>
+<p>The maximum is always sitting at the root (that's the whole point of the heap property) — but simply deleting it would leave a hole. The trick: move the <em>last</em> element of the heap into the now-empty root, shrink the heap by one, and let \(\textit{Max-Heapify}\) bubble that (possibly very wrong) value back down to where it belongs. One \(O(\log n)\) operation, every time.</p>
+</div>
+<div class="box def">
+<span class="lbl">Heapsort(A) — repeat extraction, but in place</span>
+<pre class="pseudo">HEAPSORT(A):
+1.  BUILD-MAX-HEAP(A)
+2.  for i <- length[A] downto 2:
+3.      A[1] <-> A[i]
+4.      heap-size[A] <- heap-size[A] - 1
+5.      MAX-HEAPIFY(A, 1)</pre>
+<p>Instead of returning the max and discarding it, Heapsort swaps it to the <strong>end</strong> of the (shrinking) heap region — exactly where it belongs in the final sorted order — then re-heapifies what's left and repeats. After \(n-1\) rounds, the array is sorted ascending, entirely in place.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Running Heapsort on the heap just built, \(A=[16,14,10,8,7,9,3,2,4,1]\)</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Round (\(i\))</th><th>Swap \(A[1]{\leftrightarrow}A[i]\)</th><th>Heap region after re-heapifying</th><th>Sorted suffix growing</th></tr>
+<tr><td>10</td><td>\(16{\leftrightarrow}1\)</td><td>[14,8,10,4,7,9,3,2,1]</td><td>16</td></tr>
+<tr><td>9</td><td>\(14{\leftrightarrow}1\)</td><td>[10,8,9,4,7,1,3,2]</td><td>14, 16</td></tr>
+<tr><td>8</td><td>\(10{\leftrightarrow}2\)</td><td>[9,8,3,4,7,1,2]</td><td>10, 14, 16</td></tr>
+<tr><td>7</td><td>\(9{\leftrightarrow}2\)</td><td>[8,7,3,4,2,1]</td><td>9, 10, 14, 16</td></tr>
+<tr><td>6</td><td>\(8{\leftrightarrow}1\)</td><td>[7,4,3,1,2]</td><td>8, 9, 10, 14, 16</td></tr>
+<tr><td>5</td><td>\(7{\leftrightarrow}2\)</td><td>[4,2,3,1]</td><td>7, 8, 9, 10, 14, 16</td></tr>
+<tr><td>4</td><td>\(4{\leftrightarrow}1\)</td><td>[3,2,1]</td><td>4, 7, 8, 9, 10, 14, 16</td></tr>
+<tr><td>3</td><td>\(3{\leftrightarrow}1\)</td><td>[2,1]</td><td>3, 4, 7, 8, 9, 10, 14, 16</td></tr>
+<tr><td>2</td><td>\(2{\leftrightarrow}1\)</td><td>[1]</td><td>2, 3, 4, 7, 8, 9, 10, 14, 16</td></tr>
+</table>
+<span class="answer-final">Final sorted array: 1, 2, 3, 4, 7, 8, 9, 10, 14, 16</span>
+<p class="small" style="color:var(--ink-soft)">Independently verified by hand, round by round &mdash; every number from the original input appears exactly once, in ascending order.</p>
+</div>
+<div class="box result">
+<span class="lbl">Why Heapsort's running time is \(\Theta(n\log n)\), always</span>
+<p>\(\textit{Build-Max-Heap}\) costs \(O(n)\) (a tighter analysis than the naive \(O(n\log n)\) — most nodes are near the bottom, where \(\textit{Max-Heapify}\) has almost nothing to do). Then \(n-1\) rounds of "swap, shrink, \(\textit{Max-Heapify}\)" each cost \(O(\log n)\). Total: \(\Theta(n\log n)\) &mdash; and unlike Quicksort, this bound holds in the <strong>worst case</strong>, with no bad-input risk at all, and unlike Merge Sort, Heapsort needs no auxiliary array: it sorts entirely in place.</p>
+</div>
+</section>
+
+<section class="topic" id="L23-5">
+<h3>23.5 &middot; Min-Heaps</h3>
+<div class="box def">
+<span class="lbl">The mirror image</span>
+<p>A <strong>min-heap</strong> simply flips every comparison: \(A[\textit{Parent}(i)]\le A[i]\), so the <em>smallest</em> element sits at the root. \(\textit{Min-Heapify}\), \(\textit{Build-Min-Heap}\), and \(\textit{Heap-Extract-Min}\) are the identical algorithms with every \(>\) replaced by \(<\). This is the exact structure Prim's algorithm (Lecture 21) used for its priority queue \(Q\) &mdash; always needing the vertex with <em>smallest</em> key next, i.e. always needing \(\textit{Extract-Min}\) &mdash; and it's the same structure Dijkstra's algorithm reuses unchanged in Lecture 25.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L25">
+  <div class="ltag">Lecture 25</div>
+  <h2>Dijkstra's Algorithm</h2>
+  <p>Prim's algorithm asked "what's the cheapest way to <em>connect</em> everything?" Dijkstra's algorithm asks a related but different question: "what's the cheapest way to get <em>from one particular vertex</em> to everywhere else?" The two algorithms share almost identical skeletons — same priority queue, same extract-and-relax loop — which is exactly why this lecture reuses the min-heap machinery of Lecture 23 without changing a line of it.</p>
+</div>
+
+<section class="topic" id="L25-1">
+<h3>25.1 &middot; The Single-Source Shortest Path Problem</h3>
+<div class="box def">
+<span class="lbl">The question</span>
+<p>Given a weighted (here, directed) graph \(G\) and a single source vertex \(s\), find the shortest-path distance \(d[v]\) from \(s\) to <em>every other vertex</em> \(v\) &mdash; not just one destination, all of them at once. (Dijkstra's algorithm requires all edge weights to be non-negative; graphs with negative edges need a different algorithm, Bellman&ndash;Ford, which this course doesn't cover.)</p>
+</div>
+<div class="box def">
+<span class="lbl">Initialize-Single-Source(G, s)</span>
+<pre class="pseudo">INITIALIZE-SINGLE-SOURCE(G, s):
+1.  for each vertex v in V(G):
+2.      d[v] <- infinity
+3.      pi[v] <- Nil
+4.  d[s] <- 0</pre>
+<p>Exactly Prim's initialization, with \(\textit{key}\) renamed \(d\) (for "distance") — same idea, different meaning: \(d[v]\) will hold the length of the <em>best path from \(s\) found so far</em>, not just the weight of one edge.</p>
+</div>
+</section>
+
+<section class="topic" id="L25-2">
+<h3>25.2 &middot; Relax — the One Operation Everything Is Built From</h3>
+<div class="box def">
+<span class="lbl">Relax(u, v, w)</span>
+<pre class="pseudo">RELAX(u, v, w):
+1.  if d[u] + w(u,v) < d[v]:
+2.      d[v] <- d[u] + w(u,v)
+3.      pi[v] <- u</pre>
+<p>In words: "does going through \(u\) give a shorter route to \(v\) than whatever we already knew about \(v\)?" If so, update \(v\)'s distance and remember that the improved route arrives <em>via</em> \(u\). This is the one and only place any arithmetic happens in the whole algorithm — everything else is bookkeeping around calling \(\textit{Relax}\) in the right order.</p>
+<p class="small" style="color:var(--ink-soft)">Compare directly against Prim's line 9 (Lecture 21, &sect;21.1): Prim's checks <code>w(u,v) &lt; key[v]</code> &mdash; just the raw edge weight. Dijkstra's checks <code>d[u] + w(u,v) &lt; d[v]</code> &mdash; an <em>accumulated path length</em>. That one difference is the entire distinction between "cheapest way to connect" and "cheapest way to reach."</p>
+</div>
+</section>
+
+<section class="topic" id="L25-3">
+<h3>25.3 &middot; Dijkstra's Algorithm — Pseudocode</h3>
+<div class="box def">
+<span class="lbl">Dijkstra(G, w, s)</span>
+<pre class="pseudo">DIJKSTRA(G, w, s):
+1.  INITIALIZE-SINGLE-SOURCE(G, s)
+2.  S <- empty set                  // vertices whose final distance is settled
+3.  Q <- V(G)                       // min-priority queue, keyed on d[]
+4.  while Q != empty:
+5.      u <- EXTRACT-MIN(Q)
+6.      S <- S union {u}
+7.      for each vertex v in V(G):
+8.          do RELAX(u, v, w)</pre>
+<p>Side by side with \(\textit{MST-Prim}\) (Lecture 21, &sect;21.1) the two algorithms are the same four moves in the same order: initialize, loop while the queue isn't empty, extract the minimum, relax every outgoing edge. The greedy claim being made here is: once a vertex \(u\) is extracted as the current minimum, its distance \(d[u]\) is <em>final</em> and will never improve again &mdash; because every edge weight is non-negative, no path discovered later could possibly be shorter than one already found.</p>
+</div>
+</section>
+
+<section class="topic" id="L25-4">
+<h3>25.4 &middot; A Complete Worked Example</h3>
+<div class="box ex">
+<span class="lbl">The graph, source \(s=B\)</span>
+<p>Five vertices \(A,B,C,D,E\); directed edges \(B{\to}C=5\), \(B{\to}E=10\), \(C{\to}A=12\), \(C{\to}E=3\), \(A{\to}D=6\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">The trace</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Extract</th><th>Relaxations that change something</th></tr>
+<tr><td>\(B\) (\(d{=}0\))</td><td>\(d[B]{+}w(B,C){=}0{+}5{=}5{<}\infty\): \(d[C]{\leftarrow}5,\pi[C]{\leftarrow}B\). &nbsp; \(d[B]{+}w(B,E){=}0{+}10{=}10{<}\infty\): \(d[E]{\leftarrow}10,\pi[E]{\leftarrow}B\).</td></tr>
+<tr><td>\(C\) (\(d{=}5\))</td><td>\(d[C]{+}w(C,A){=}5{+}12{=}17{<}\infty\): \(d[A]{\leftarrow}17,\pi[A]{\leftarrow}C\). &nbsp; \(d[C]{+}w(C,E){=}5{+}3{=}8{<}10\): <strong>improves</strong> &mdash; \(d[E]{\leftarrow}8,\pi[E]{\leftarrow}C\) (the direct \(B{\to}E\) edge loses to the detour through \(C\)).</td></tr>
+<tr><td>\(E\) (\(d{=}8\))</td><td>\(E\) has no outgoing edges here &mdash; nothing to relax.</td></tr>
+<tr><td>\(A\) (\(d{=}17\))</td><td>\(d[A]{+}w(A,D){=}17{+}6{=}23{<}\infty\): \(d[D]{\leftarrow}23,\pi[D]{\leftarrow}A\).</td></tr>
+<tr><td>\(D\) (\(d{=}23\))</td><td>&mdash; (last vertex)</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Final shortest distances from \(B\)</span>
+<table class="grid trace">
+<tr><th>Vertex</th><th>\(B\)</th><th>\(C\)</th><th>\(E\)</th><th>\(A\)</th><th>\(D\)</th></tr>
+<tr><td>\(d[\cdot]\)</td><td>0</td><td>5</td><td>8</td><td>17</td><td>23</td></tr>
+<tr><td>via</td><td>&mdash;</td><td>\(B\)</td><td>\(C\)</td><td>\(C\)</td><td>\(A\)</td></tr>
+</table>
+<p>Reading off \(\pi[\cdot]\) reconstructs every shortest path, e.g. the shortest route to \(D\) is \(B\to C\to A\to D\), length \(5+12+6=23\) &mdash; and note \(d[E]\) ended up reached <em>through</em> \(C\) (length 8) rather than the direct edge (length 10): exactly the kind of improvement \(\textit{Relax}\) exists to catch.</p>
+</div>
+<div class="box warn">
+<span class="lbl">Common confusion — Dijkstra's vs. Prim's, at a glance</span>
+<p>Both algorithms look almost identical line-for-line, and it's easy to mix up what each one optimizes. Prim's \(\textit{key}[v]\) only ever asks "what's the single cheapest edge connecting \(v\) to the tree?" — it has no concept of a path or an accumulated distance from any particular vertex. Dijkstra's \(d[v]\) is specifically the length of the best <em>path</em> from the fixed source \(s\), accumulated edge by edge. Two different questions, one shared algorithmic shape.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L27">
+  <div class="ltag">Lecture 27</div>
+  <h2>Permutation Puzzles: Why Some Arrangements Are Simply Impossible</h2>
+  <p>A change of pace: a genuinely different kind of algorithmic question, where graphs, trees, and heaps give way to permutations, parity, and a search space built entirely out of <em>states</em>. The famous 15-puzzle hides a beautiful fact — exactly half of all possible tile arrangements can never be reached, no matter how you slide — and this lecture builds the machinery to prove it, starting with a toy version small enough to check by hand.</p>
+</div>
+
+<section class="topic" id="L27-1">
+<h3>27.1 &middot; The 15-Puzzle, and a Question Nobody Expects</h3>
+<div class="box story">
+<span class="lbl">The puzzle</span>
+<p>A \(4\times4\) grid holds 15 numbered tiles and one blank space. A <strong>legal move</strong> slides any tile adjacent to the blank into the blank's spot (equivalently: swap the blank with a tile directly above, below, left, or right of it). Starting from some given arrangement, can you reach the "solved" arrangement \(1,2,\dots,15,\text{blank}\) by a sequence of legal moves?</p>
+</div>
+<div class="box def">
+<span class="lbl">Brute force, and why it's the wrong question</span>
+<p>Treating all 16 grid positions (15 tiles + the blank) as 16 distinguishable symbols to permute gives \(16!\) total arrangements. But the real question is subtler than "how many arrangements exist" &mdash; it's "how many are <em>reachable</em>, by legal slides, from a fixed starting arrangement?" The surprising answer, which this lecture and the next one build toward proving: only <strong>half</strong> of all \(16!\) arrangements are reachable from any given one &mdash;</p>
+$$\frac{16!}{2}=10{,}461{,}394{,}944{,}000 \text{ reachable arrangements}$$
+<p>&mdash; meaning a classic prank is to hand someone a 15-puzzle with two tiles (say the "14" and "15") physically swapped from the solved state: it looks almost solved, one tiny fix away, and it is <strong>permanently, provably unsolvable.</strong> No sequence of legal slides, however long, can ever fix it.</p>
+</div>
+</section>
+
+<section class="topic" id="L27-2">
+<h3>27.2 &middot; A Toy Version: The 4-Puzzle</h3>
+<div class="box story">
+<span class="lbl">Shrinking the puzzle to a size you can check by hand</span>
+<p>\(16!\) is far too large to explore directly, so shrink the whole idea down to a \(2\times2\) grid: three numbered tiles \(1,2,3\) and one blank, drawn as a circled digit ④ so it can still be written inline as part of a 4-symbol string &mdash; e.g. the solved state, grid \([[1,2],[3,④]]\), is written <code>1234</code>, with the understanding that whichever digit is circled in the grid is the blank. There are \(4!=24\) possible arrangements in total &mdash; small enough to map out completely.</p>
+</div>
+<div class="box worked">
+<span class="lbl">The first few moves from the solved state</span>
+<p>In the \(2\times2\) grid every cell has exactly two orthogonal neighbours, so the blank always has exactly two legal moves available. From <code>1234</code> (blank at the bottom-right):</p>
+<pre class="pseudo">   [1 2]            [1 2]              [1 4]
+   [3 4]    --->     [4 3]     and      [3 2]
+   "1234"          "1243"             "1432"
+                 (swap blank    (swap blank
+                  with left     with the tile
+                  neighbour 3)  above it, 2)</pre>
+<p>Continuing this process &mdash; from each new state, slide the blank into either of its two neighbours, skipping whichever move just undoes the previous one &mdash; traces out the <strong>entire reachable set</strong>, level by level (level = number of moves from the start):</p>
+<table class="grid trace">
+<tr><th>Level (moves from 1234)</th><th>States reached</th></tr>
+<tr><td>0</td><td>1234</td></tr>
+<tr><td>1</td><td>1243, 1432</td></tr>
+<tr><td>2</td><td>4213, 4132</td></tr>
+<tr><td>3</td><td>2413, 3142</td></tr>
+<tr><td>4</td><td>2314, 3124</td></tr>
+<tr><td>5</td><td>2341, 3421</td></tr>
+<tr><td>6</td><td>4321</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">The pattern — a single 12-state cycle</span>
+<p>Because every state has exactly two neighbours, the whole reachable set of states forms one long <strong>cycle</strong> &mdash; never a branching tree. Walking it all the way around:</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:.92em">1234 &harr; 1432 &harr; 4132 &harr; 3142 &harr; 3124 &harr; 3421 &harr; 4321 &harr; 2341 &harr; 2314 &harr; 2413 &harr; 4213 &harr; 1243 &harr; <em>(back to 1234)</em></p>
+<p>Exactly <strong>12</strong> states &mdash; precisely half of the \(4!=24\) total. The other 12 permutations of \(\{1,2,3,4\}\) (e.g. <code>1324</code>, swapping just 2 and 3) are <em>never reached</em>, from this starting state or any state on this cycle, by any number of legal moves. The 4-puzzle's reachable fraction, \(\tfrac{12}{24}=\tfrac12\), is the exact same \(\tfrac12\) that appears in the real 15-puzzle's \(\tfrac{16!}{2}\) &mdash; not a coincidence, but two instances of the same underlying theorem, proved in general next.</p>
+</div>
+</section>
+
+<section class="topic" id="L27-3">
+<h3>27.3 &middot; Ranking Permutations: the Factorial Number System</h3>
+<div class="box story">
+<span class="lbl">Why a ranking is needed at all</span>
+<p>To search this state space efficiently (Lecture 28), every state needs to be turned into an array index &mdash; some number from \(0\) to \(n!-1\) that uniquely identifies it, so a plain array (not a hash table) can store "have I visited this state yet?" The standard tool is the <strong>factorial number system</strong> (equivalently, the <strong>Lehmer code</strong>): every permutation of \(n\) symbols corresponds to exactly one integer in \([0, n!-1]\), matching its position in the lexicographically sorted list of all \(n!\) permutations.</p>
+</div>
+<div class="box def">
+<span class="lbl">The rule</span>
+<p>For a permutation \(p=(p_1,p_2,\dots,p_n)\), define the <strong>inversion count</strong> at position \(i\) as</p>
+$$c_i = \#\{\,j>i : p_j < p_i\,\} \qquad(\text{how many later entries are smaller than } p_i)$$
+<p>then convert the digit string \((c_1,c_2,\dots,c_n)\) &mdash; a number in the <em>factorial</em> number system, where position \(i\) has place-value \((n-i)!\) &mdash; to an ordinary integer rank:</p>
+$$\text{rank}(p) = c_1\cdot(n{-}1)! + c_2\cdot(n{-}2)! + \cdots + c_{n-1}\cdot1! + c_n\cdot0!$$
+<p>And the sum \(c_1+c_2+\cdots+c_n\) is exactly the <strong>total number of inversions</strong> in \(p\) &mdash; the same quantity that decides the permutation's <strong>parity</strong> (&sect;27.4).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked examples — every rank used in Lecture 28's search, computed and verified</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Permutation</th><th>\(c_1,c_2,c_3,c_4\)</th><th>Rank computation</th><th>Rank</th></tr>
+<tr><td>1234</td><td>0,0,0,0</td><td>\(0{\cdot}6+0{\cdot}2+0{\cdot}1+0{\cdot}1\)</td><td>0</td></tr>
+<tr><td>1243</td><td>0,0,1,0</td><td>\(0{\cdot}6+0{\cdot}2+1{\cdot}1+0{\cdot}1\)</td><td>1</td></tr>
+<tr><td>1432</td><td>0,2,1,0</td><td>\(0{\cdot}6+2{\cdot}2+1{\cdot}1+0{\cdot}1\)</td><td>5</td></tr>
+<tr><td>4132</td><td>3,0,1,0</td><td>\(3{\cdot}6+0{\cdot}2+1{\cdot}1+0{\cdot}1\)</td><td>19</td></tr>
+<tr><td>4213</td><td>3,1,0,0</td><td>\(3{\cdot}6+1{\cdot}2+0{\cdot}1+0{\cdot}1\)</td><td>20</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Walking through <code>1432</code> by hand: \(c_1\) (for the leading 1): nothing to its right is smaller than 1, so \(c_1{=}0\). \(c_2\) (for 4): to its right sit 3 and 2, both smaller, so \(c_2{=}2\). \(c_3\) (for 3): to its right sits only 2, smaller, so \(c_3{=}1\). \(c_4\) (for the trailing 2): nothing to its right, so \(c_4{=}0\). Rank \(=0(6)+2(2)+1(1)+0(1)=5\) &mdash; matching the table.</p>
+</div>
+</section>
+
+<section class="topic" id="L27-4">
+<h3>27.4 &middot; The Invariant That Decides Solvability</h3>
+<div class="box def">
+<span class="lbl">Two ingredients</span>
+<p><strong>Sign of a permutation:</strong> \(\text{sgn}(s)=(-1)^{(\text{total inversions in }s)}\) &mdash; \(+1\) for an <em>even</em> permutation, \(-1\) for an <em>odd</em> one (reachable from the identity by an even or odd number of swaps, respectively).</p>
+<p><strong>Blank-position parity, \(X(s)\):</strong> number the four grid cells \(1,2,3,4\) (reading row by row, as always). Define</p>
+$$X(s)=\begin{cases}+1 & \text{blank is in position 1 or 4}\\-1 & \text{blank is in position 2 or 3}\end{cases}$$
+<p>(Positions 1 and 4 sit on the grid's main diagonal, where row-index \(+\) column-index is even; positions 2 and 3 sit on the anti-diagonal, where it's odd &mdash; \(X(s)\) is really just the parity of the blank's row-plus-column.)</p>
+</div>
+<div class="box def">
+<span class="lbl">The invariant</span>
+$$I(s) = \text{sgn}(s)\cdot X(s)$$
+<p>The claim, proved in full next lecture: <strong>\(I(s)\) never changes</strong>, no matter how many legal moves are made. Two states are reachable from one another <em>only if</em> they share the same value of \(I\) &mdash; and since \(I\) takes just two values (\(+1\) or \(-1\)), this instantly splits every one of the \(n!\) total arrangements into exactly two classes, and no legal move ever crosses between them. That's the \(\tfrac12\) in both \(\tfrac{16!}{2}\) and \(\tfrac{4!}{2}=12\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Checking it on the 4-puzzle's start and goal</span>
+<p>Take start \(x=\)<code>1234</code> and a candidate goal \(y=\)<code>4132</code>. From &sect;27.3, <code>4132</code> has total inversions \(3{+}0{+}1{+}0=4\), so \(\text{sgn}(y)=(-1)^4=+1\); its blank (the symbol 4) sits in position 1, so \(X(y)=+1\); hence \(I(y)=(+1)(+1)=+1\). For the start, <code>1234</code> has 0 inversions (\(\text{sgn}(x)=+1\)) and its blank sits in position 4 (\(X(x)=+1\)), so \(I(x)=+1\) too. Since \(I(x)=I(y)\), <code>4132</code> is a <em>candidate</em> for being reachable from <code>1234</code> &mdash; and indeed it is (it's the level-2 state found in &sect;27.2's table). Had the two values of \(I\) disagreed, no search would ever have been needed at all: the answer would already be <strong>no</strong>.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L28">
+  <div class="ltag">Lecture 28</div>
+  <h2>Proving the Invariant, and Searching the Puzzle by Rank</h2>
+  <p>Lecture 27 ended with a claim — the quantity \(I(s)=\text{sgn}(s)\cdot X(s)\) never changes under a legal move — stated but not yet proved. This lecture proves it properly, by tracking exactly what one legal move does to both halves of \(I\). Then, with solvability settled, it builds a complete search algorithm over the whole state space, using each state's factorial-number-system rank (Lecture 27, &sect;27.3) as a plain array index — no hash table required.</p>
+</div>
+
+<section class="topic" id="L28-1">
+<h3>28.1 &middot; Proof: the Invariant Never Changes</h3>
+<div class="box proof">
+<span class="lbl">Theorem</span>
+<p>If state \(y\) is reachable from state \(x\) by a single legal move, then \(I(y)=I(x)\). Consequently, \(I\) is the same for every state reachable from \(x\) by <em>any number</em> of legal moves.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof</span>
+<p><strong>Effect on \(\text{sgn}\):</strong> a legal move slides exactly one tile into the blank's cell — in permutation terms, this swaps the positions of exactly two symbols (the blank and one tile). Swapping any two entries of a permutation is a single transposition, and every transposition flips the total number of inversions by an odd amount, flipping the sign:</p>
+$$\text{sgn}(y) = -\,\text{sgn}(x)$$
+<p><strong>Effect on \(X\):</strong> a legal move slides the blank to an <em>orthogonally adjacent</em> cell — one step up, down, left, or right. Any such step changes exactly one of {row, column} by exactly \(1\), so the sum (row \(+\) column) changes by exactly \(1\) — flipping its parity:</p>
+$$X(y) = -\,X(x)$$
+<p><strong>Combining both:</strong></p>
+$$I(y)=\text{sgn}(y)\cdot X(y) = \big({-}\text{sgn}(x)\big)\cdot\big({-}X(x)\big) = \text{sgn}(x)\cdot X(x) = I(x)$$
+<p class="qed">Both signs flip, so their product is unchanged. Since this holds for one arbitrary legal move, and any sequence of legal moves is just a chain of single moves, \(I\) is unchanged after any number of moves. &#8756; \(I\) is an invariant of the puzzle, and \(I(x)\ne I(y)\) is an instant, search-free certificate that \(y\) is <strong>unsolvable</strong> from \(x\). &#8718;</p>
+</div>
+<div class="box warn">
+<span class="lbl">What this proof does <em>not</em> claim</span>
+<p>It proves \(I(x)=I(y)\) is <strong>necessary</strong> for \(y\) to be reachable from \(x\) — it does not, by itself, prove that it's <strong>sufficient</strong> (that every state with matching \(I\) actually <em>is</em> reachable). That stronger fact is what the search in &sect;28.2&ndash;28.3 demonstrates directly, by exhibiting every one of the 12 states with \(I=+1\) in the 4-puzzle and showing a path to each — the same role Lecture 27's complete 12-cycle played for the toy case.</p>
+</div>
+</section>
+
+<section class="topic" id="L28-2">
+<h3>28.2 &middot; Lexicographically-Ordered BFS</h3>
+<div class="box story">
+<span class="lbl">Why rank the states at all</span>
+<p>A standard BFS needs a way to mark states as "already seen." With \(n!\) total states and an exact rank function in hand (Lecture 27, &sect;27.3) turning every state into an integer in \([0,n!{-}1]\), the "visited" set becomes a plain boolean array of size \(n!\), and lookups are \(O(1)\) array accesses rather than hash computations — a direct payoff from having built the ranking machinery first.</p>
+</div>
+<div class="box def">
+<span class="lbl">Pseudocode</span>
+<pre class="pseudo">LEX-BFS(start):
+1.  for r <- 0 to n!-1:  visited[r] <- False
+2.  for all states v:    distance[v] <- infinity;  Parent[v] <- Nil;  Move[v] <- Nil
+3.  visited[h(start)] <- True
+4.  distance[start] <- 0
+5.  ENQUEUE(Q, start)
+6.  while Q != empty:
+7.      m <- (number of states currently in Q)
+8.      N <- {}                                 // newly-discovered states this round
+9.      repeat m times:
+10.         x <- DEQUEUE(Q)
+11.         for each legal neighbour y of x (slide blank L, R, U, or D):
+12.             r <- h(y)
+13.             if visited[r] is False:
+14.                 visited[r] <- True
+15.                 distance[y] <- distance[x] + 1
+16.                 Parent[y] <- x
+17.                 Move[y] <- (the move that produced y from x)
+18.                 add y to N
+19.     sort N by rank h(.)                      // "lexicographically ordered"
+20.     for each y in N (in sorted order):  ENQUEUE(Q, y)</pre>
+<p>This is ordinary BFS — process everything currently queued ("this level"), discover their unvisited neighbours, then queue those for the next round — with one small twist: newly discovered states are <strong>sorted by rank before being enqueued</strong> (line 19), so that within any one BFS level, states are explored in a fixed, reproducible, lexicographic order rather than whatever order the neighbour-generation happened to produce them in. Since \(h\) is an exact bijection to \([0,n!{-}1]\), every array access (<code>visited[r]</code>, implicitly <code>distance</code>/<code>Parent</code>/<code>Move</code> too) is \(O(1)\), making each state processed in \(O(1)\) amortized time — the whole search runs in \(O(n!)\), linear in the size of the state space.</p>
+</div>
+</section>
+
+<section class="topic" id="L28-3">
+<h3>28.3 &middot; A Complete Worked Trace</h3>
+<div class="box worked">
+<span class="lbl">Running Lex-BFS from \(1234\) on the 4-puzzle</span>
+<p>Initialize: \(\textit{visited}[0..23]\leftarrow\text{False}\); \(\textit{visited}[h(1234)]=\textit{visited}[0]\leftarrow\text{True}\); \(\textit{distance}[1234]\leftarrow0\); enqueue \(1234\).</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Round (processing level)</th><th>Dequeued</th><th>Newly discovered (rank, parent)</th><th>Enqueued next, sorted by rank</th></tr>
+<tr><td>0</td><td>1234</td><td>1243 (rank 1, parent 1234); 1432 (rank 5, parent 1234)</td><td>1243, 1432</td></tr>
+<tr><td>1</td><td>1243, then 1432</td><td>from 1243: 4213 (rank 20). from 1432: 4132 (rank 19).</td><td>4132, 4213 &nbsp;<span class="small" style="color:var(--ink-soft)">(sorted: 19 before 20)</span></td></tr>
+<tr><td>2</td><td>4132, then 4213</td><td>from 4132: 3142 (rank 13). from 4213: 2413 (rank 10).</td><td>2413, 3142</td></tr>
+<tr><td>3</td><td>2413, then 3142</td><td>from 2413: 2314 (rank 8). from 3142: 3124 (rank 12).</td><td>2314, 3124</td></tr>
+<tr><td>4</td><td>2314, then 3124</td><td>from 2314: 2341 (rank 9). from 3124: 3421 (rank 17).</td><td>2341, 3421</td></tr>
+<tr><td>5</td><td>2341, then 3421</td><td>from 2341: 4321 (rank 23). (3421's other neighbour, 3124, already visited.)</td><td>4321</td></tr>
+<tr><td>6</td><td>4321</td><td>both neighbours (2341, 3124) already visited</td><td>&mdash; queue empties, search ends</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">At every step, each dequeued state has exactly two neighbours (the blank always has exactly two legal moves in a \(2\times2\) grid); whichever one is the state it just arrived from is always already visited, so exactly one genuinely new state is discovered per dequeue, for the first five rounds — until the search closes up on itself at <code>4321</code>, the single state diametrically opposite the start on the 12-cycle.</p>
+</div>
+<div class="box result">
+<span class="lbl">The complete answer</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>State</th><th>Rank \(h\)</th><th>Distance</th><th>Parent</th></tr>
+<tr><td>1234</td><td>0</td><td>0</td><td>&mdash;</td></tr>
+<tr><td>1243</td><td>1</td><td>1</td><td>1234</td></tr>
+<tr><td>1432</td><td>5</td><td>1</td><td>1234</td></tr>
+<tr><td>4132</td><td>19</td><td>2</td><td>1432</td></tr>
+<tr><td>4213</td><td>20</td><td>2</td><td>1243</td></tr>
+<tr><td>2413</td><td>10</td><td>3</td><td>4213</td></tr>
+<tr><td>3142</td><td>13</td><td>3</td><td>4132</td></tr>
+<tr><td>2314</td><td>8</td><td>4</td><td>2413</td></tr>
+<tr><td>3124</td><td>12</td><td>4</td><td>3142</td></tr>
+<tr><td>2341</td><td>9</td><td>5</td><td>2314</td></tr>
+<tr><td>3421</td><td>17</td><td>5</td><td>3124</td></tr>
+<tr><td>4321</td><td>23</td><td>6</td><td>2341</td></tr>
+</table>
+<p>Exactly the <strong>12</strong> states found by hand in Lecture 27, &sect;27.2, now discovered systematically, each with its shortest-path distance from the start and a \(\textit{Parent}\) pointer that reconstructs the actual move sequence to reach it &mdash; e.g. the farthest state, \(4321\), is 6 moves away: \(1234\to2314\!\leftarrow\!\)... reading \(\textit{Parent}\) backwards from \(4321\): \(4321\leftarrow2341\leftarrow2314\leftarrow2413\leftarrow4213\leftarrow1243\leftarrow1234\), six moves, matching the level found independently by the hand-drawn cycle in the previous lecture. Every state carries the same invariant value \(I=+1\) as the start (by the theorem of &sect;28.1) &mdash; and conversely, these 12 states are <em>exactly</em> the 12 permutations of \(\{1,2,3,4\}\) with \(I=+1\), confirming that the invariant doesn't just rule out unreachable states, it exactly characterizes the reachable ones.</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L29">
+  <div class="ltag">Lecture 29</div>
+  <h2>Informed Search: Setting Up A*</h2>
+  <p>Lecture 28 ended with a complete, systematic search of the puzzle's state space &mdash; but a blind one: Lex-BFS discovers everything at distance 1 before anything at distance 2, with no sense of which direction is actually promising. This lecture sets up the fix. It starts by asking exactly how deep that blind search can possibly need to go (the puzzle's "God's number"), moves to the real 3&times;3 instance this unit will solve by hand, and closes by naming the three quantities &mdash; \(g\), \(h\), \(f\) &mdash; that the next lecture's algorithm is built entirely out of.</p>
+</div>
+
+<section class="topic" id="L29-1">
+<h3>29.1 &middot; God's Number: How Far Can the Puzzle Get From Solved?</h3>
+<div class="box story">
+<span class="lbl">A question Lecture 28's search answers for free</span>
+<p>Lex-BFS (&sect;28.2) already computes \(\textit{distance}[v]\) for every reachable state while it searches. Reading off the single largest value gives a number worth naming in its own right: the <strong>most</strong> moves any reachable arrangement could possibly need.</p>
+</div>
+<div class="box def">
+<span class="lbl">God's number</span>
+$$G(n) = \max_{s \text{ reachable}} d(s)$$
+<p>For the 4-puzzle traced in Lecture 28, &sect;28.3: the distances found were \(\{0,1,1,2,2,3,3,4,4,5,5,6\}\) (one value per reachable state), so \(G=\max\{\ldots\}=6\) &mdash; matching the farthest state found, \(4321\), exactly 6 moves from \(1234\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Generalizing to bigger boards</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Board</th><th>Reachable states</th><th>God's number</th><th>\(n^3\)</th></tr>
+<tr><td>\(2\times2\)</td><td>\(4!/2=12\)</td><td>6</td><td>\(2^3=8\)</td></tr>
+<tr><td>\(3\times3\)</td><td>\(9!/2=181{,}440\)</td><td>31</td><td>\(3^3=27\)</td></tr>
+<tr><td>\(4\times4\) (the real 15-puzzle)</td><td>\(16!/2=10{,}461{,}394{,}944{,}000\)</td><td>80</td><td>\(4^3=64\)</td></tr>
+<tr><td>\(5\times5\)</td><td>\(25!/2\approx9.76\times10^{24}\)</td><td>unknown exactly; \(140\le G\le210\)</td><td>\(5^3=125\)</td></tr>
+</table>
+<p>The pattern across all known cases: \(G(n) = n^3 + O(n^{2.75})\) &mdash; God's number grows roughly as the <em>cube</em> of the board's side length, far slower than the reachable-state count (\(\sim(n^2)!\)), which is exactly why a search bounded by depth (BFS, and soon \(A^\ast\)) stays tractable even as the state space explodes. (Aside, for scale: the analogous "God's number" for the \(3\times3\times3\) Rubik's cube &mdash; the most moves any scramble needs &mdash; is 20.)</p>
+</div>
+</section>
+
+<section class="topic" id="L29-2">
+<h3>29.2 &middot; The 8-Puzzle, and Checking Solvability</h3>
+<div class="box story">
+<span class="lbl">The instance this entire unit solves</span>
+<p>Scaling up from the \(2\times2\) toy puzzle to the classic \(3\times3\) ("8-puzzle"): start state \(S_0\) and goal \(G\), written row by row with \(B\) for the blank:</p>
+<table class="grid trace" style="font-size:.9em">
+<tr><th>\(S_0\) (start)</th><th>\(G\) (goal)</th></tr>
+<tr><td>1&nbsp;&nbsp;2&nbsp;&nbsp;3<br>B&nbsp;&nbsp;4&nbsp;&nbsp;6<br>7&nbsp;&nbsp;5&nbsp;&nbsp;8</td><td>1&nbsp;&nbsp;2&nbsp;&nbsp;3<br>4&nbsp;&nbsp;5&nbsp;&nbsp;6<br>7&nbsp;&nbsp;8&nbsp;&nbsp;B</td></tr>
+</table>
+<p>Flat (row-major, blank written as the digit \(9\)): \(S_0=123946758\), \(G=123456789\).</p>
+</div>
+<div class="box warn">
+<span class="lbl">Always check this first</span>
+<p>Exactly as Lecture 28 proved for the \(2{\times}2\) board, not every \(3\times3\) arrangement is reachable from every other. Before spending a single step of search, check \(I(S_0)\overset{?}{=}I(G)\) using the same invariant \(I(s)=\mathrm{Sgn}(s)\cdot\chi(s)\) from Lecture 27, &sect;27.4 &mdash; now with inversions counted over all 9 symbols (the blank included, as the largest) and \(\chi\) read off the blank's row\(+\)column parity on a \(3\times3\) grid.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Checking it</span>
+<p><strong>\(S_0=1,2,3,9,4,6,7,5,8\):</strong> inversions &mdash; \(9\) precedes \(4,6,7,5,8\) (five), \(6\) precedes \(5\) (one more), \(7\) precedes \(5\) (one more): total \(7\), so \(\mathrm{Sgn}(S_0)=(-1)^7=-1\). Blank at row 2, col 1: \(\chi(S_0)=(-1)^{2+1}=-1\). So \(I(S_0)=(-1)(-1)=+1\).</p>
+<p><strong>\(G=1,2,3,4,5,6,7,8,9\):</strong> sorted, \(0\) inversions, \(\mathrm{Sgn}(G)=+1\). Blank at row 3, col 3: \(\chi(G)=(-1)^{3+3}=+1\). So \(I(G)=+1\).</p>
+<p class="qed">\(I(S_0)=I(G)=+1\) &#8756; \(G\) is reachable from \(S_0\). Only now does searching for the actual path make sense. &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="L29-3">
+<h3>29.3 &middot; Three Numbers: \(g\), \(h\), and \(f\)</h3>
+<div class="box story">
+<span class="lbl">What Lex-BFS was missing</span>
+<p>Lex-BFS treats every unexplored state identically &mdash; it has no way to prefer one over another except "which level was it discovered on." Informed search adds exactly one new ingredient: a cheap, instant <em>guess</em> at how much work is left, so the search can prioritize promising states over hopeless ones &mdash; the same priority-queue upgrade Dijkstra's algorithm made to plain BFS back in Lecture 25, extended with a guess about the remaining distance.</p>
+</div>
+<div class="box def">
+<span class="lbl">The definitions</span>
+<p>For a state \(S\) reached during the search:</p>
+<ul>
+<li>\(g(S)\) &mdash; the <strong>actual</strong> cost of the path found so far from \(S_0\) to \(S\) (here, the number of moves made). Exactly Dijkstra's \(d[\cdot]\): a real, already-walked distance.</li>
+<li>\(h(S)\) &mdash; a <strong>heuristic estimate</strong> of the remaining cost from \(S\) to the goal: a guess, computed instantly from \(S\) alone, no search involved.</li>
+<li>\(f(S) = g(S)+h(S)\) &mdash; the estimated <strong>total</strong> cost of a solution routed through \(S\).</li>
+</ul>
+<p>This is exactly where Lecture 30's algorithm begins: always expand whichever state in the priority queue has the smallest \(f\).</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L30">
+  <div class="ltag">Lecture 30</div>
+  <h2>The A* Algorithm</h2>
+  <p>With \(g\), \(h\), and \(f\) defined and the 8-puzzle instance confirmed solvable, this lecture gives the complete algorithm: a priority-queue search, identical in shape to Dijkstra's, that always expands the state with smallest \(f\). It defines the concrete heuristic used throughout &mdash; Manhattan distance &mdash; and traces the entire search on \(S_0\) by hand, round by round, to the goal.</p>
+</div>
+
+<section class="topic" id="L30-1">
+<h3>30.1 &middot; A* Algorithm, Precisely</h3>
+<div class="box def">
+<span class="lbl">A*(S<sub>0</sub>, G)</span>
+<pre class="pseudo">A*(S0, G):
+1.  Use the invariant I to decide whether G is achievable from S0 (Lecture 29, 29.2).
+2.  Set g[S0] <- 0;  parent[S0] <- Nil;  move[S0] <- Nil.
+3.  Enqueue S0 into priority queue Q.
+4.  while Q != empty:
+5.      Dequeue-Min Q to obtain state S.
+6.      if S = G then return the path, read off via parent and move (stop).
+7.      Generate every legal successor V of S, with the blank-move m that produces it.
+8.      for every successor V:  newCost <- g(S) + 1.
+9.      if V not in g-table or newCost < g(V):
+            g[V] <- newCost;  parent[V] <- S;  move[V] <- m.
+10.     Compute h(V) and enqueue (or update) V in Q with priority f(V) = g(V) + h(V).</pre>
+<p class="small" style="color:var(--ink-soft)">Side by side with Dijkstra's algorithm (Lecture 25, &sect;25.3): lines 2&ndash;3 are the same initialization, renamed; line 5 is the one change so far &mdash; "extract-min" now compares \(f\)-values, not accumulated edge-distance; lines 7&ndash;9 are exactly <em>Relax</em>, accepting a successor only if it's new or strictly cheaper; line 10 is the step Dijkstra's never needed &mdash; folding a heuristic guess into the priority before the state can compete for a future dequeue.</p>
+</div>
+</section>
+
+<section class="topic" id="L30-2">
+<h3>30.2 &middot; The Heuristic: Manhattan Distance</h3>
+<div class="box def">
+<span class="lbl">Definition</span>
+<p>For cells \(A=(r_1,c_1)\) and \(B=(r_2,c_2)\): \(d(A,B)=|r_1-r_2|+|c_1-c_2|\). For the puzzle, \(h(S)\) sums this distance, tile by tile, between each numbered tile's current position in \(S\) and its goal position in \(G\).</p>
+</div>
+<div class="box warn">
+<span class="lbl">The rule that must not be skipped</span>
+<p>\(h(S)\) sums over tiles \(1\)&ndash;\(8\) <strong>only</strong> &mdash; the blank's own distance to its goal cell is never included. Lecture 31, &sect;31.2 proves exactly why skipping this breaks the algorithm's guarantees.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Computing \(h(S_0)\)</span>
+<p>Goal positions: \(1{:}(1,1)\), \(2{:}(1,2)\), \(3{:}(1,3)\), \(4{:}(2,1)\), \(5{:}(2,2)\), \(6{:}(2,3)\), \(7{:}(3,1)\), \(8{:}(3,2)\). In \(S_0\), tiles \(1,2,3,6,7\) already sit at their goal cells; tile \(4\) is one column off \((d{=}1)\), tile \(5\) is one row off \((d{=}1)\), tile \(8\) is one column off \((d{=}1)\).</p>
+$$h(S_0) = 0+0+0+1+1+0+0+1 = 3.$$
+</div>
+</section>
+
+<section class="topic" id="L30-3">
+<h3>30.3 &middot; A Complete Worked Trace</h3>
+<div class="box def">
+<span class="lbl">Priority-queue tie-breaking convention</span>
+<p>Every entry in \(Q\) is keyed on \((f(S),\,h(S),\,S)\): smaller \(f\) wins; ties broken by smaller \(h\); further ties broken by lexicographically smaller state-string. Purely for reproducibility &mdash; it changes nothing about correctness.</p>
+</div>
+<div class="box worked">
+<span class="lbl">The full search, round by round</span>
+<p>Initialize: \(g[S_0]{=}0\), \(h(S_0){=}3\) (&sect;30.2), \(f(S_0){=}3\); enqueue \(S_0\).</p>
+<table class="grid trace" style="font-size:.8em">
+<tr><th>Round</th><th>Dequeue (smallest \(f\))</th><th>Generated successors (\(g,h,f\))</th></tr>
+<tr><td>1</td><td>\(S_0\,[3,3]\)</td><td>\(R{:}S_1{=}123496758\,[1,2,3]\). &nbsp; \(D{:}S_2{=}123746958\,[1,4,5]\). &nbsp; \(U{:}S_3{=}923146758\,[1,4,5]\).</td></tr>
+<tr><td>2</td><td>\(S_1\,[1,2,3]\)</td><td>\(D{:}S_4{=}123456798\,[2,1,3]\). &nbsp; \(R{:}S_5{=}123469758\,[2,3,5]\). &nbsp; \(U{:}S_6{=}193426758\,[2,3,5]\). &nbsp; (\(L\) regenerates \(S_0\), \(2\not<0\), rejected.)</td></tr>
+<tr><td>3</td><td>\(S_4\,[2,1,3]\)</td><td>\(R{:}S_7{=}123456789{=}G\,[3,0,3]\). &nbsp; \(L{:}S_8{=}123456978\,[3,2,5]\). &nbsp; (\(U\) regenerates \(S_1\), \(f{=}5\not<3\), rejected; \(D\) illegal.)</td></tr>
+<tr><td>4</td><td>\(S_7\,[3,0,3]={}\)<strong>G</strong></td><td>Stop &mdash; goal dequeued.</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">The optimal path</span>
+<p>Following \(\textit{parent}\) backward from \(S_7\): \(S_7\leftarrow S_4\leftarrow S_1\leftarrow S_0\). Forward:</p>
+$$S_0 \xrightarrow{\,R\,} S_1 \xrightarrow{\,D\,} S_4 \xrightarrow{\,R\,} S_7 = G$$
+<p>a 3-move solution. Since \(h(S_0)=3\) turned out to <em>equal</em> the true remaining cost exactly, no shorter solution could exist. \(S_2,S_3,S_5,S_6,S_8\) were generated but <strong>never dequeued</strong> &mdash; their \(f{=}5\) was never the queue's smallest value, so \(A^\ast\) never wasted an expansion on them. (Compare the Lex-BFS trace of Lecture 28, &sect;28.3, which blindly visits every one of the 12 reachable states on the smaller puzzle &mdash; \(A^\ast\) here resolves a larger, \(181{,}440\)-state space in exactly 4 dequeues.)</p>
+</div>
+</section>
+
+<div class="lecture-header" id="L31">
+  <div class="ltag">Lecture 31</div>
+  <h2>Why A* Is Guaranteed Optimal</h2>
+  <p>Lecture 30's trace found the right answer &mdash; but a worked example is a demonstration, not a proof. This lecture states the two conditions a heuristic must satisfy, shows concretely what breaks if they're violated (by deliberately breaking the Manhattan-distance heuristic one way), and proves the one inequality that makes everything else work: under these conditions, the total-cost estimate \(f\) can never decrease along a path, which is the entire reason the first time \(A^\ast\) dequeues the goal, that answer can be trusted.</p>
+</div>
+
+<section class="topic" id="L31-1">
+<h3>31.1 &middot; Admissibility &amp; Consistency</h3>
+<div class="box def">
+<span class="lbl">Two conditions on the heuristic</span>
+<p>Let \(h^\ast(S)\) denote the <em>true</em> minimum remaining cost from \(S\) to the goal (unknown in general &mdash; if it were known exactly, no search would be needed).</p>
+<ol>
+<li><strong>Admissibility (no overestimation):</strong> \(0\le h(S)\le h^\ast(S)\) for every state \(S\).</li>
+<li><strong>Consistency (the triangle inequality):</strong> for every legal move \(S\to V\) with actual cost \(c(S,V)>0\),
+$$h(S) \;\le\; c(S,V) + h(V).$$</li>
+</ol>
+<p class="small" style="color:var(--ink-soft)">Read literally: the direct estimate from \(S\) to the goal can never exceed going via \(V\) first (one real step \(c(S,V)\), plus \(V\)'s own estimate) &mdash; the same triangle inequality a distance metric must satisfy.</p>
+</div>
+<div class="box story">
+<span class="lbl">Why Manhattan distance satisfies both &mdash; intuitively</span>
+<p>Every legal slide moves exactly one tile by one cell, changing that tile's Manhattan distance to its goal by at most \(1\). So one move (cost \(1\)) can never reduce \(h\) by more than \(1\) &mdash; exactly consistency. Admissibility follows because Manhattan distance only ever <em>undercounts</em> the work (it ignores that two tiles might need to take turns through the same cell), so it can never claim less distance remains than is truly necessary.</p>
+</div>
+</section>
+
+<section class="topic" id="L31-2">
+<h3>31.2 &middot; Why Excluding the Blank Matters: A Counterexample</h3>
+<div class="box proof">
+<span class="lbl">Let \(h_9\) be the (incorrect) heuristic that also counts the blank</span>
+<p>For \(S_0\) (blank at \((2,1)\), goal \((3,3)\)): the blank's own contribution is \(|2{-}3|+|1{-}3|=3\), so</p>
+$$h_9(S_0) = \underbrace{h(S_0)}_{3} + 3 = 6.$$
+<p><strong>Admissibility fails:</strong> the true cost \(h^\ast(S_0)=3\) (Lecture 30 found a genuine 3-move solution), but \(h_9(S_0)=6\not\le3\).</p>
+<p><strong>Consistency fails too.</strong> For \(S_1\) (blank now at \((2,2)\), goal \((3,3)\)): blank's contribution \(=|2{-}3|+|2{-}3|=2\), so \(h_9(S_1)=\underbrace{h(S_1)}_{2}+2=4\). Across \(S_0\xrightarrow{R}S_1\) (cost \(c{=}1\)), consistency would require</p>
+$$h_9(S_0) \;\le\; c(S_0,S_1)+h_9(S_1) \;=\; 1+4=5,$$
+<p>but \(h_9(S_0)=6\not\le5\) &mdash; <strong>violated</strong>.</p>
+</div>
+<div class="box warn">
+<span class="lbl">The payoff, plainly</span>
+<p>Including the blank lets a single move "buy back" 3 units of estimated distance (\(6\to\) at best \(3\)) &mdash; more progress than one move, costing exactly \(1\), can possibly fund. That is exactly what admissibility and consistency forbid, and exactly why Lecture 30's line 10 must compute \(h\) over tiles \(1\)&ndash;\(8\) only: with \(h_9\) in place of \(h\), the solution \(A^\ast\) returns is no longer guaranteed optimal.</p>
+</div>
+</section>
+
+<section class="topic" id="L31-3">
+<h3>31.3 &middot; Consistency &#8658; \(f\) Is Non-Decreasing</h3>
+<div class="box proof">
+<span class="lbl">Theorem &amp; proof</span>
+<p>Take any legal move \(S\to V\), with \(g(V)=g(S)+c(S,V)\) (line 8 of the algorithm). Then</p>
+$$f(V) = g(V)+h(V) = \big[g(S)+c(S,V)\big]+h(V) = g(S)+\big[c(S,V)+h(V)\big] \;\ge\; g(S)+h(S) = f(S),$$
+<p>where the inequality is exactly consistency, \(h(S)\le c(S,V)+h(V)\), added to both sides.</p>
+<p class="qed">So \(f(V)\ge f(S)\): \(f\) is non-decreasing along every path from \(S_0\). &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">Why that one inequality is the whole proof of optimality</span>
+<p>Because \(f\) never decreases along a path, the <em>first</em> state dequeued with \(S=G\) has the smallest \(f\) among every state generated so far &mdash; including every state on every other path to \(G\) that might still be found later, since those paths' \(f\)-values can only have grown or stayed level. A smaller \(f\) later, overtaking an already-returned goal, is exactly what consistency rules out. That's why line 6 can simply <code>return</code> the instant \(G\) is dequeued, with no need to keep searching "just in case" &mdash; the same guarantee EXTRACT-MIN gave Dijkstra's algorithm (Lecture 25), now extended to cover the heuristic term too.</p>
+</div>
+<div class="box warn">
+<span class="lbl">Common confusion &mdash; "isn't \(A^\ast\) just Dijkstra's with extra steps?"</span>
+<p>Set \(h(S)\equiv0\) for every state: \(f(S)=g(S)+0=g(S)\), exactly Dijkstra's rule. Dijkstra's algorithm <em>is</em> the special case \(h\equiv0\) &mdash; a valid (admissible) but completely uninformed heuristic. At the other extreme, dropping \(g\) and sorting purely by \(h\) gives <em>greedy best-first search</em>: fast, but with no optimality guarantee, since it can be lured down a path that merely <em>looks</em> close to the goal. \(A^\ast\) is the balance point, keeping Dijkstra's guarantee while using \(h\) to avoid Dijkstra's blind, uniform expansion.</p>
+</div>
+</section>
+
+<div class="box result" style="margin-top:20px;">
+<span class="lbl">Where Lectures 20&ndash;31 leave off</span>
+<p>Twelve lectures, three more major ideas on top of the MST/shortest-path/heap/permutation-puzzle material of Lectures 20&ndash;28: the "God's number" bound on how far any blind search can need to go, the $g/h/f$ framework that turns a plain priority-queue search into an <em>informed</em> one, the complete $A^\ast$ algorithm (Dijkstra's extract-min-and-relax loop plus one heuristic term), the Manhattan-distance heuristic worked by hand on a real 8-puzzle instance, and a full proof &mdash; admissibility, consistency, and the resulting non-decreasing-$f$ argument &mdash; of exactly why $A^\ast$ is guaranteed to return the optimal solution. <strong>Lectures 24 and 26 were not included in any upload</strong> and so still aren't reflected in this guide.</p>
+</div>
+
 
 <div class="lecture-header" id="EX">
   <div class="ltag">Exercise Set</div>
@@ -2377,7 +3455,7 @@ $$f^* = \min\{f_1[6]+x_1,\ f_2[6]+x_2\} = \min\{36+3,\ 39+2\} = \min\{39,41\} = 
 <div class="box ex">
 <span class="lbl">(c) Merge Sort — the full recursion tree</span>
 <p>Split repeatedly in half until singletons, then merge back up:</p>
-<pre class="pseudocode">split:  [4,3,1,7,2,9,3,4]
+<pre class="pseudo">split:  [4,3,1,7,2,9,3,4]
           /              \
      [4,3,1,7]          [2,9,3,4]
       /      \            /      \
@@ -2405,7 +3483,7 @@ merge:  [4]+[3]=[3,4]        [1]+[7]=[1,7]        [2]+[9]=[2,9]        [3]+[4]=[
 <tr><td>6</td><td>3</td><td>yes</td><td>i=4, swap A[4]&harr;A[6] &rarr; [4,3,1,2,3,9,7,4]</td></tr>
 </table>
 <p>Finally swap pivot into place: A[i+1]&harr;A[7] &rarr; <code>[4,3,1,2,3,4,7,9]</code>. Pivot 4 lands at <strong>index 5</strong>, with everything &le;4 to its left, everything &gt;4 to its right.</p>
-<pre class="pseudocode">                    [4,3,1,2,3 | 4 | 7,9]           pivot=4 lands at index 5
+<pre class="pseudo">                    [4,3,1,2,3 | 4 | 7,9]           pivot=4 lands at index 5
                     /                    \
         partition([4,3,1,2,3])      partition([7,9])
          pivot=3 (last)               pivot=9 (last)
@@ -2667,7 +3745,7 @@ $$= \mathbf{346{,}160{,}177{,}235{,}642}$$
 </div>
 <div class="box result">
 <span class="lbl">Example — naive recursive Fibonacci</span>
-<pre class="pseudocode">function Fib(n):
+<pre class="pseudo">function Fib(n):
     if n <= 1: return n
     return Fib(n-1) + Fib(n-2)</pre>
 <p><strong>Justification:</strong> let \(T(n)\) be the number of calls made. Each call (for \(n&gt;1\)) spawns two further calls, on \(n{-}1\) and \(n{-}2\):</p>
@@ -2736,7 +3814,7 @@ $$E[n_i^2] = \text{Var}(n_i) + (E[n_i])^2 = n\cdot\tfrac1n\Big(1-\tfrac1n\Big) +
 </div>
 <div class="box ex">
 <span class="lbl">The algorithm</span>
-<pre class="pseudocode">function InsertionSort(A):
+<pre class="pseudo">function InsertionSort(A):
     for i = 1 to n-1:
         key = A[i]
         j = i - 1
@@ -2793,7 +3871,7 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 
 <section class="topic" id="recap" style="margin-top:56px;border-top:3px solid var(--accent);padding-top:30px;">
 <h3 style="font-size:26px;">Full Course Recap</h3>
-<p>Nineteen lectures, one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
+<p>Twenty-six lectures (numbered 1 through 28, with 24 and 26 not yet uploaded), one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
 
 <table class="grid">
 <tr><th>Lectures</th><th>The question</th><th>The answer</th></tr>
@@ -2807,6 +3885,12 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 <tr><td>15</td><td>Does the same "bottom-up table" trick work on sequences, not just numbers?</td><td>Longest Common Subsequence — exponential naive recursion, \(\Theta(mn)\) bottom-up table, fully traced on a 7- and 6-character example.</td></tr>
 <tr><td>16&ndash;17</td><td>When there are many equally-valid ways to compute something, how do you find the cheapest?</td><td>Matrix Chain Multiplication: \(\Theta(n^3)\) bottom-up DP over chain length, fully solved and verified on 4 matrices.</td></tr>
 <tr><td>18&ndash;19</td><td>Can this same DP pattern model a genuinely physical process?</td><td>Assembly Line Scheduling — two parallel lines, switch costs, solved with the classic worked example — then a first step into an entirely new area: graphs, spanning trees, and the Minimum Spanning Tree problem.</td></tr>
+<tr><td>20</td><td>How many spanning trees does a graph even have, and how do you pick the cheapest without listing them all?</td><td>Cayley's Formula (\(n^{n-2}\) labeled trees on \(n\) vertices) via Prüfer sequences, then the greedy idea behind Prim's algorithm.</td></tr>
+<tr><td>21</td><td>Does the greedy idea actually work — and does it matter which greedy rule you use?</td><td>Prim's and Kruskal's algorithms, both proven correct, both traced on the same 6-vertex graph to the same MST weight (41.5) via <em>different</em> edge choices on a tie — plus the Disjoint-Set Forest (union by rank, path compression) that makes Kruskal's efficient.</td></tr>
+<tr><td>22</td><td>Just how efficient is "efficient" here — and how slow can a function possibly grow?</td><td>The Ackermann function, built up level by level to an astronomically fast-growing tower, used to prove its inverse \(\alpha(n)\) is practically constant (\(\le4\)) — giving Kruskal's its final \(O(E\log V)\) bound.</td></tr>
+<tr><td>23</td><td>What data structure keeps "find the minimum" and "insert a new element" both fast?</td><td>The binary heap — Max-Heapify, Build-Max-Heap, and Heapsort, all traced step by step on the canonical 10-element array.</td></tr>
+<tr><td>25</td><td>Prim's finds the cheapest way to connect everything — what finds the cheapest way to <em>reach</em> one specific vertex?</td><td>Dijkstra's algorithm — the same extract-and-relax skeleton as Prim's, repurposed from "connect" to "reach," fully traced on a 5-vertex graph.</td></tr>
+<tr><td>27&ndash;28</td><td>In a sliding-tile puzzle, why are exactly half of all possible arrangements permanently unsolvable?</td><td>A parity invariant (\(I=\text{sgn}\cdot X\)) proven unchanged by any legal move, the factorial-number-system rank that turns any arrangement into an array index, and a rank-indexed BFS that finds every one of the reachable states systematically.</td></tr>
 </table>
 
 <h4>Techniques that kept reappearing</h4>
@@ -2817,6 +3901,7 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 <li><strong>Bounding a discrete sum by a continuous integral</strong> — the trick that finished both the \(\log(n!)\) proof and Quicksort's average-case proof.</li>
 <li><strong>Indicator random variables</strong> — turning "did this random event happen?" into a 0/1 variable you can take the expectation of, used identically for Quicksort and Bucket Sort.</li>
 <li><strong>Proof by contradiction against an adversarially-constructed input</strong> — the technique behind both the max-finding lower bound (Lecture 3) and the sorting lower bound (Lecture 8).</li>
+<li><strong>The greedy "extract-and-relax" skeleton</strong> — initialize, loop while a priority queue isn't empty, extract the minimum, update neighbours — the exact same four moves underlie Prim's (Lecture 21) and Dijkstra's (Lecture 25), differing only in what's being minimized (edge weight vs. accumulated path length).</li>
 </ul>
 
 <h4>Mini glossary</h4>
@@ -2834,16 +3919,25 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 <tr><td><strong>Matrix Chain Multiplication</strong></td><td>Choosing how to parenthesize a chain of matrix products to minimise the total number of scalar multiplications — associativity makes many parenthesizations valid, but not equally cheap.</td></tr>
 <tr><td><strong>Spanning Tree</strong></td><td>A tree (connected, no cycles) that includes every vertex of a given graph — generally not unique.</td></tr>
 <tr><td><strong>MST</strong></td><td>Minimum Spanning Tree — the spanning tree of a weighted graph whose total edge weight is smallest.</td></tr>
+<tr><td><strong>Prüfer sequence</strong></td><td>A length-\((n{-}2)\) sequence that encodes a labeled tree on \(n\) vertices uniquely, used to prove Cayley's Formula (\(n^{n-2}\) such trees exist).</td></tr>
+<tr><td><strong>Disjoint-Set Forest</strong></td><td>A data structure maintaining a collection of disjoint sets via Make-Set, Union, and Find-Set, used in Kruskal's algorithm to detect cycles in \(O(1)\) amortized time.</td></tr>
+<tr><td><strong>Path compression</strong></td><td>While doing Find-Set, re-pointing every node visited directly to the root — makes future Find-Set calls on those nodes nearly instant.</td></tr>
+<tr><td><strong>Ackermann function \(A(m,n)\)</strong> / <strong>inverse Ackermann \(\alpha(n)\)</strong></td><td>A function that grows faster than any fixed tower of exponentials; its inverse grows so slowly that \(\alpha(n)\le4\) for any \(n\) that could ever be stored on a real computer.</td></tr>
+<tr><td><strong>Binary heap</strong></td><td>A nearly-complete binary tree stored in a plain array, satisfying the heap property (parent \(\ge\) children for a max-heap) — supports \(O(\log n)\) insert and extract-max.</td></tr>
+<tr><td><strong>Heapsort</strong></td><td>Build-Max-Heap once, then repeatedly swap the root with the last element and re-heapify — sorts in \(\Theta(n\log n)\) with \(O(1)\) extra space.</td></tr>
+<tr><td><strong>Relax(u, v, w)</strong></td><td>Check whether reaching \(v\) via \(u\) beats the best known distance to \(v\); if so, update it — the one arithmetic step Dijkstra's algorithm is built from.</td></tr>
+<tr><td><strong>Lehmer code / factorial number system</strong></td><td>A bijection between permutations of \(n\) symbols and integers in \([0,n!{-}1]\), built from each element's inversion count — used to turn puzzle states into array indices.</td></tr>
+<tr><td><strong>Permutation parity / solvability invariant</strong></td><td>A quantity (sign of the permutation, combined with the blank tile's position parity) that provably never changes under a legal sliding-puzzle move — proves exactly half of all arrangements are unreachable from any given one.</td></tr>
 </table>
 
 <div class="box warn" style="margin-top:20px;">
 <span class="lbl">What's not in this guide (yet)</span>
-<p>The course syllabus continues well beyond Lecture 19 — into heaps and priority queues, hashing and amortized analysis, further dynamic programming (edit distance, optimal BST), greedy algorithms (Huffman coding, and MST algorithms proper — Kruskal's and Prim's), further graph algorithms (BFS/DFS, shortest paths, PageRank), complexity theory (P, NP, NP-completeness, Turing machines), and cryptographic algorithms (RSA, Diffie-Hellman). None of that material is in the 19 lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
+<p><strong>Lectures 24 and 26 were not included in this upload</strong> — they're skipped over here rather than silently absorbed into the numbering, and can be added in whenever they're available. Beyond that gap, the course syllabus still continues past Lecture 28 into hashing and amortized analysis, further dynamic programming (edit distance, optimal BST), Huffman coding, general-purpose graph traversal (BFS/DFS as search tools, PageRank), complexity theory (P, NP, NP-completeness, Turing machines), and cryptographic algorithms (RSA, Diffie&ndash;Hellman). None of that material is in the lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
 </div>
 </section>
 
 <footer>
-  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) — Lectures 1&ndash;19, covering the introduction through Dynamic Programming (Fibonacci, Pascal's Triangle, LCS, Matrix Chain Multiplication, Assembly Line Scheduling) and the opening of Graph Algorithms, plus a fully worked exercise set. Every proof and worked example was checked line by line against the original handwritten lecture notes and independently verified computationally; a small number of ambiguous transcriptions and source slips (noted where they occur) were identified and corrected.
+  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) — Lectures 1&ndash;23, 25, 27, and 28 (Lectures 24 and 26 not yet uploaded), covering the introduction through Dynamic Programming, Graph Algorithms (spanning trees, Prim's &amp; Kruskal's, Disjoint-Set Forests, the Ackermann function), Binary Heaps &amp; Heapsort, Dijkstra's algorithm, and permutation-puzzle solvability, plus a fully worked exercise set. Every proof and worked example was checked line by line against the original handwritten lecture notes and independently verified computationally; a small number of ambiguous transcriptions and source slips (noted where they occur) were identified and corrected.
 </footer>
 </main>
 </div>

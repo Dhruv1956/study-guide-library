@@ -316,6 +316,37 @@
   <a href="#l13-sklearn">13.11 Practical Example: sklearn</a>
   <a href="#l13-lda">13.12 PCA vs. LDA</a>
 
+
+  <a class="lec" href="#L14">Lecture 14 &middot; Support Vector Machines</a>
+  <a href="#l14-hyperplanes">14.1 Hyperplanes &amp; the Geometry of Separation</a>
+  <a href="#l14-maxmargin">14.2 The Maximal-Margin Classifier &amp; Support Vectors</a>
+  <a href="#l14-parametric">14.3 Is SVM Parametric or Non-Parametric?</a>
+  <a href="#l14-sgd-worked">14.4 Worked Example: Training a Linear SVM by Sub-Gradient Descent <span class="numtag">Numerical</span></a>
+  <a href="#l14-fruit-sklearn">14.5 Worked Example: Classifying Fruit with scikit-learn <span class="numtag">Numerical</span></a>
+  <a href="#l14-smo-dataprep">14.6 Learning SVMs in Practice: SMO &amp; Data Preparation</a>
+  <a href="#l14-dual-worked">14.7 Worked Examples: the Hyperplane via the Dual Formulation <span class="numtag">Numerical</span></a>
+  <a href="#l14-margin-distance">14.8 The Margin, Formally: Point-to-Hyperplane Distance</a>
+  <a href="#l14-best-hyperplane">14.9 Which Hyperplane Is Best?</a>
+  <a href="#l14-support-vectors-history">14.10 Support Vectors, Revisited, &amp; a Brief History</a>
+  <a href="#l14-nonlinear-intro">14.11 Nonlinear SVM: When a Line Isn't Enough</a>
+  <a href="#l14-nonlinear-worked">14.12 Worked Example: Classifying via Feature Mapping <span class="numtag">Numerical</span></a>
+  <a href="#l14-phi2-alt">14.13 An Alternative, Higher-Dimensional Mapping <span class="numtag">Numerical</span></a>
+  <a href="#l14-kernel-trick">14.14 The Kernel Trick: Avoiding the Mapping Altogether</a>
+  <a href="#l14-kernel-worked">14.15 Common Kernels, and Two Worked Examples <span class="numtag">Numerical</span></a>
+  <a href="#l14-softmargin">14.16 Hard Margin vs Soft Margin, Revisited</a>
+
+  <a class="lec" href="#L15">Lecture 15 &middot; Combining Multiple Learners</a>
+  <a href="#l15-rationale">15.1 Why Combine Learners? Rationale &amp; Key Terms</a>
+  <a href="#l15-voting">15.2 Simple Ensemble Techniques: Voting, Averaging &amp; Weighted Averaging</a>
+  <a href="#l15-voting-code">15.3 Implementing a Voting Classifier</a>
+  <a href="#l15-bagging-intro">15.4 Bagging: Bootstrap Aggregating</a>
+  <a href="#l15-bootstrap">15.5 Bootstrap Sampling, and Why We Need It <span class="numtag">Numerical</span></a>
+  <a href="#l15-bagging-algo">15.6 The Bagging Algorithm &amp; scikit-learn Implementation</a>
+  <a href="#l15-boosting">15.7 Boosting: Learning From the Previous Model's Mistakes</a>
+  <a href="#l15-adaboost-algos">15.8 AdaBoost &amp; the Wider Bagging/Boosting Family</a>
+  <a href="#l15-hyperparams">15.9 Parameters vs Hyperparameters</a>
+  <a href="#l15-diverse-learners">15.10 Generating Diverse Learners &amp; the Diversity-vs-Accuracy Trade-off</a>
+  <a href="#l15-ecoc">15.11 Error-Correcting Output Codes (ECOC)</a>
   <h3>&nbsp;</h3>
   <a href="#sec5">Formula Sheet</a>
   <a href="#sec6">Exam Strategy</a>
@@ -324,15 +355,15 @@
 <header class="title">
   <div class="wrap" style="padding:0;max-width:none;">
     <h1>Fundamentals of Machine Learning</h1>
-    <p>Complete Study Guide — every slide from all 9 lecture decks (CSS 3131), explained in full</p>
-    <span class="tag">13 lectures &middot; 752 slides covered</span>
+    <p>Complete Study Guide — every slide from all 12 lecture decks (CSS 3131), explained in full</p>
+    <span class="tag">15 lectures &middot; 986 slides covered</span>
     <span class="tag">Numericals highlighted in green</span>
     <span class="tag">Key exam topics highlighted in gold</span>
   </div>
 </header>
 <div class="wrap">
 
-<p>This guide now covers <strong>every slide from all thirteen of your lecture decks</strong> — not just the numerical questions. Where the original version gave you worked numericals only, this version builds the full conceptual picture around them: definitions, motivations, diagrams, and the reasoning behind every formula, in the order your slides actually present them.</p>
+<p>This guide now covers <strong>every slide from all fifteen of your lectures</strong> — not just the numerical questions. Where the original version gave you worked numericals only, this version builds the full conceptual picture around them: definitions, motivations, diagrams, and the reasoning behind every formula, in the order your slides actually present them.</p>
 
 <div class="box key">
   <div class="box-title">How to read the colour-coding</div>
@@ -354,7 +385,7 @@
 
 <div class="box note">
 <div class="box-title">A note on scope</div>
-<p>The official syllabus for this course (CSS 3131) is much larger than these 7 lecture decks — it continues into Decision Trees, Support Vector Machines, Bayesian Belief Networks, Ensembling/Boosting, Neural Networks, and PCA. This guide covers exactly what's in your 7 uploaded lectures: Introduction &amp; Linear Regression through Naive Bayes. If further lectures are uploaded later, this guide can be extended the same way.</p>
+<p>The official syllabus for this course (CSS 3131) is larger still — it continues past Lecture 15 into Bayesian Belief Networks, Ridge/Lasso Regression, and Artificial Neural Networks. This guide now covers everything from Lecture 1 (Introduction &amp; Linear Regression) through Lecture 15 (Combining Multiple Learners). If further lectures are uploaded, this guide can be extended the same way.</p>
 </div>
 
 <h2 class="section-title" id="l1-what-is-ml"><span class="num">1.1</span> What is ML?</h2>
@@ -4423,6 +4454,754 @@ y_pred = classifier.predict(X_test0)</pre>
 <hr class="sep">
 
 
+<div class="lecture-header" id="L14">
+<span class="ltag">LECTURE 14</span>
+<h2>Support Vector Machines</h2>
+<p>Lecture 13 closed the course's unsupervised arc by re-expressing data along whichever axes capture the most variance. This lecture returns to supervised classification with a third philosophy entirely, after k-NN's "memorise and vote" and Naive Bayes's "count and multiply probabilities": SVM searches for a single dividing line — a <strong>hyperplane</strong> — and picks the one specific line that leaves the largest possible cushion, or <strong>margin</strong>, between itself and the nearest point of either class. When no straight line will do, the same machinery is reused in a cleverly transformed space via the <strong>kernel trick</strong>, without ever paying the cost of actually building that space.</p>
+</div>
+
+<h2 class="section-title" id="l14-hyperplanes"><span class="num">14.1</span> Hyperplanes &amp; the Geometry of Separation</h2>
+
+<div class="box concept">
+<div class="box-title">The road analogy</div>
+<p>Picture a street scene: cars, buildings, and pedestrians become dots. Red dots stand for objects on the left side of the street, green dots for those on the right. The street itself becomes a pair of dashed lines with a solid line down the middle — SVM (the "road machine") finds that middle decision boundary so as to <strong>maximize the margin</strong>, the perpendicular distance between the line and the nearest dots of either colour.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">What is a hyperplane?</div>
+<p>In a $p$-dimensional space, a hyperplane is a flat subspace of dimension $p-1$. In two dimensions that is just a <strong>line</strong>; in three dimensions, a <strong>plane</strong>; for $p>3$ it is hard to visualize, but the idea of a flat $(p-1)$-dimensional cut through the space still applies exactly. "Hyperplane" is simply the dimension-agnostic word that lets the same theory cover a line, a plane, or anything higher.</p>
+<p>In two dimensions, a hyperplane is defined by
+$$\beta_0+\beta_1X_1+\beta_2X_2=0,$$
+and any point $X=(X_1,X_2)$ satisfying this equation lies on the hyperplane. This extends directly to $p$ dimensions: $\beta_0+\beta_1X_1+\cdots+\beta_pX_p=0$ defines a $p$-dimensional hyperplane.</p>
+<p>If $X$ does <em>not</em> satisfy the equation, its sign tells you which side it falls on: $\beta_0+\beta_1X_1+\cdots+\beta_pX_p>0$ puts $X$ on one side, and $<0$ puts it on the other. So a hyperplane cuts $p$-dimensional space cleanly into two halves, and classifying a point is just a matter of checking the sign of one linear expression.</p>
+</div>
+
+<div style="text-align:center;margin:20px 0;">
+<svg viewBox="0 0 440 220" width="100%" style="max-width:420px;">
+<rect x="0" y="0" width="440" height="220" fill="#fffdf8" stroke="#e2d3ba"/>
+<line x1="60" y1="190" x2="340" y2="20" stroke="#b8863f" stroke-width="2"/>
+<text x="345" y="18" font-family="Palatino" font-size="12" fill="#b8863f">1 + 2X&#8321; + 3X&#8322; = 0</text>
+<text x="100" y="60" font-family="Palatino" font-size="12" fill="#6f96ac">region &ge; 0</text>
+<text x="260" y="170" font-family="Palatino" font-size="12" fill="#8c63a8">region &lt; 0</text>
+<circle cx="120" cy="60" r="5" fill="#6f96ac"/>
+<circle cx="200" cy="90" r="5" fill="#6f96ac"/>
+<circle cx="280" cy="150" r="5" fill="#8c63a8"/>
+<circle cx="320" cy="180" r="5" fill="#8c63a8"/>
+</svg>
+<p style="font-style:italic;color:var(--brown);font-size:.9rem;margin-top:6px">A 2-D hyperplane $1+2X_1+3X_2=0$: the blue region is where $1+2X_1+3X_2\ge0$, the purple region where it is $&lt;0$.</p>
+</div>
+
+<h2 class="section-title" id="l14-maxmargin"><span class="num">14.2</span> The Maximal-Margin Classifier &amp; Support Vectors</h2>
+
+<div class="box theory">
+<div class="box-title">Definition</div>
+<p>If a dataset is linearly separable, there are generally <strong>infinitely many</strong> hyperplanes that separate the two classes correctly. The <strong>margin</strong> is the perpendicular distance from the hyperplane to the nearest point(s) of either class. The <strong>Maximal-Margin Classifier</strong> picks the one hyperplane among all of them with the <em>largest</em> margin — equivalently, the widest "slab" parallel to the hyperplane that contains no training points in its interior.</p>
+<p>The points that actually touch the edges of that slab — the ones closest to the boundary — are called the <strong>support vectors</strong>. Only they define the hyperplane: removing any other point changes nothing, but removing (or moving) a support vector changes the hyperplane itself.</p>
+</div>
+
+<div style="text-align:center;margin:20px 0;">
+<svg viewBox="0 0 460 220" width="100%" style="max-width:440px;">
+<rect x="0" y="0" width="460" height="220" fill="#fffdf8" stroke="#e2d3ba"/>
+<line x1="40" y1="190" x2="420" y2="30" stroke="#3f2f20" stroke-width="2.2"/>
+<line x1="20" y1="165" x2="400" y2="5" stroke="#b8863f" stroke-width="1.3" stroke-dasharray="5,4"/>
+<line x1="60" y1="215" x2="440" y2="55" stroke="#b8863f" stroke-width="1.3" stroke-dasharray="5,4"/>
+<circle cx="90" cy="150" r="6" fill="#c98a2c" stroke="#7a5c3e"/>
+<circle cx="150" cy="130" r="6" fill="#c98a2c" stroke="#7a5c3e"/>
+<circle cx="110" cy="190" r="6" fill="#c98a2c" stroke="#7a5c3e"/>
+<rect x="268" y="52" width="12" height="12" fill="#8c63a8" stroke="#3f2f20" transform="rotate(45 274 58)"/>
+<rect x="330" y="30" width="12" height="12" fill="#8c63a8" stroke="#3f2f20" transform="rotate(45 336 36)"/>
+<rect x="300" y="95" width="12" height="12" fill="#8c63a8" stroke="#3f2f20" transform="rotate(45 306 101)"/>
+<text x="95" y="130" font-family="Palatino" font-size="11" fill="#7a5c3e">support vector</text>
+<text x="300" y="130" font-family="Palatino" font-size="11" fill="#3f2f20">support vector</text>
+<text x="200" y="110" font-family="Palatino" font-size="12" fill="#3f2f20" text-anchor="middle">maximal margin</text>
+</svg>
+<p style="font-style:italic;color:var(--brown);font-size:.9rem;margin-top:6px">The solid line is the maximal-margin hyperplane; the dashed lines mark the edges of the widest empty slab. Only the circled/boxed support vectors touch those edges.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Why this matters for the exam</div>
+<p>The Maximal-Margin Classifier is a clean theoretical idea but has <strong>no practical use on its own</strong>, because it requires the two classes to be perfectly linearly separable — almost never true of real data. It is the stepping stone to the <strong>Support Vector Machine</strong>, which generalizes it via the Soft Margin Classifier (&sect;14.16) to handle noisy, non-separable data.</p>
+</div>
+
+<h2 class="section-title" id="l14-parametric"><span class="num">14.3</span> Is SVM Parametric or Non-Parametric?</h2>
+
+<div class="box concept">
+<div class="box-title">Parametric vs. non-parametric, revisited (Lecture 3 recap)</div>
+<p><strong>Parametric</strong> algorithms have a fixed number of parameters regardless of how much training data you have. <strong>Non-parametric</strong> algorithms let the number of effective parameters grow with the data — not "no parameters," but parameters that can change in number and value as more data arrives. k-NN (Lecture 6) is the classic non-parametric example: its "model" is the entire stored training set.</p>
+<p><strong>Linear SVM is parametric</strong> — it learns a fixed-size weight vector $w$ and bias $b$, no matter how large the dataset. But SVM more broadly (with nonlinear kernels, &sect;14.11&ndash;14.15) is usually classed as a flexible <strong>non-parametric</strong> method, since the number of support vectors it needs to keep around is not fixed in advance and can grow with the data.</p>
+</div>
+
+<h2 class="section-title" id="l14-sgd-worked"><span class="num">14.4</span> Worked Example: Training a Linear SVM by Sub-Gradient Descent <span class="numtag">Numerical</span></h2>
+
+<div class="box theory">
+<div class="box-title">Why sub-gradient descent at all?</div>
+<p>The "proper" way to fit an SVM is to solve a <strong>quadratic programming</strong> problem, but this is inefficient and not what production libraries (like LIBSVM) actually do. A simpler, illustrative approach is <strong>sub-gradient descent</strong>: pick a random training point each iteration and nudge the coefficients based on it. For simplicity the bias term $B_0$ is dropped (set to 0), so the line is forced through the origin: $B_1X_1+B_2X_2=0$.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">The data</div>
+<p>$x_1=[2.327868056,\ 3.032830419,\ 4.485465382,\ 3.684815246,\ 2.283558563,\ 7.807521179,\ 6.132998136,\ 7.514829366,\ 5.502385039,\ 7.432932365]$</p>
+<p>$x_2=[2.458016525,\ 3.170770366,\ 3.696728111,\ 3.846846973,\ 1.853215997,\ 3.290132136,\ 2.140563087,\ 2.107056961,\ 1.404002608,\ 4.236232628]$</p>
+<p>$y=[-1,-1,-1,-1,-1,\ 1,1,1,1,1]$ &mdash; the first 5 points are Class $-1$, the last 5 are Class $+1$.</p>
+<p>The slides' own training program:</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;"><code>b1=0; b2=0; t=0; rate=0.5
+for epoch in range(0, 20):
+    for i in range(0, 10):
+        t += 1
+        output = y[i]*b1*x1[i] + b2*x2[i]
+        if output &lt; 1:
+            b1 = (1-1/t)*b1 + (1/(rate*t))*(y[i]*x1[i])
+            b2 = (1-1/t)*b2 + (1/(rate*t))*(y[i]*x2[i])
+        else:
+            b1 = (1-1/t)*b1
+            b2 = (1-1/t)*b2</code></pre>
+<div class="step"><span class="step-label">Iteration #1</span> $t=1$, $x_1=2.327868056$, $x_2=2.458016525$, $y=-1$, $b_1=b_2=0$. $\;output = (-1)(0)(2.327868056)+(0)(2.458016525)=0 &lt; 1$, so:
+$$b_1 = 2\cdot(-1\cdot2.327868056) = -4.655736112,\qquad b_2 = 2\cdot(-1\cdot2.458016525) = -4.91603305$$
+</div>
+<div class="step"><span class="step-label">Epoch 1, all 10 updates</span>
+<table style="font-size:.85em;">
+<tr><th>i</th><th>$x_1$</th><th>$x_2$</th><th>$y$</th><th>$b_1$</th><th>$b_2$</th><th>output</th><th>t</th></tr>
+<tr><td>1</td><td>2.327868</td><td>2.458017</td><td>-1</td><td>-4.655736</td><td>-4.916033</td><td>0.0</td><td>1</td></tr>
+<tr><td>2</td><td>3.032830</td><td>3.170770</td><td>-1</td><td>-5.360698</td><td>-5.628787</td><td>-1.467554</td><td>2</td></tr>
+<tr><td>3</td><td>4.485465</td><td>3.696728</td><td>-1</td><td>-3.573799</td><td>-3.752525</td><td>3.237133</td><td>3</td></tr>
+<tr><td>4</td><td>3.684815</td><td>3.846847</td><td>-1</td><td>-4.522757</td><td>-4.737817</td><td>-1.266599</td><td>4</td></tr>
+<tr><td>5</td><td>2.283559</td><td>1.853216</td><td>-1</td><td>-3.618205</td><td>-3.790254</td><td>1.547782</td><td>5</td></tr>
+<tr><td>6</td><td>7.807521</td><td>3.290132</td><td>+1</td><td>-0.412664</td><td>-2.061834</td><td>-40.719651</td><td>6</td></tr>
+<tr><td>7</td><td>6.132998</td><td>2.140563</td><td>+1</td><td>1.398573</td><td>-1.155697</td><td>-6.944354</td><td>7</td></tr>
+<tr><td>8</td><td>7.514829</td><td>2.107057</td><td>+1</td><td>1.223751</td><td>-1.011235</td><td>8.074919</td><td>8</td></tr>
+<tr><td>9</td><td>5.502385</td><td>1.404003</td><td>+1</td><td>1.087779</td><td>-0.898875</td><td>5.313775</td><td>9</td></tr>
+<tr><td>10</td><td>7.432932</td><td>4.236233</td><td>+1</td><td>0.979001</td><td>-0.808988</td><td>4.277543</td><td>10</td></tr>
+</table>
+<p>End of epoch 1: accuracy on the training set is <strong>50%</strong>.</p>
+</div>
+</div>
+
+<div class="box note">
+<div class="box-title">Two real bugs in the source slides — flagged, not silently fixed</div>
+<p><strong>(a) Stated $\lambda$ vs. actual rate.</strong> An earlier conceptual slide says "we will use a very large lambda value: lambda = 0.4," with update rule $b=(1-1/t)b+\frac{1}{\lambda t}(yx)$. But the program actually run (above) uses <code>rate = 0.5</code>, giving $\frac{1}{(\text{rate})t}=\frac{2}{t}$, not $\frac{1}{0.4\,t}=\frac{2.5}{t}$. Checking Iteration #1 by hand confirms it: with rate $=0.5$, $b_1=2\cdot(-1\cdot2.327868056)=-4.655736112$ &mdash; exactly the slide's printed value. With the <em>stated</em> $\lambda=0.4$ you would instead get $b_1=-5.81967014$, which does not match. The stated $\lambda=0.4$ is simply never the number actually used.</p>
+<p><strong>(b) The <code>output</code> formula itself is malformed.</strong> It computes $y_i\cdot b_1\cdot x_{1,i} + b_2\cdot x_{2,i}$ &mdash; multiplying only the <em>first</em> term by $y_i$, instead of the mathematically intended dot product $y_i\cdot(b_1x_{1,i}+b_2x_{2,i})$. Checking Iteration #2 confirms the slides really do run this buggy version: with $b_1=-4.655736112,\,b_2=-4.91603305,\,x_1=3.032830419,\,x_2=3.170770366,\,y=-1$, the buggy formula gives $output\approx-1.4676$, matching the printed $-1.4675538099$ exactly; the mathematically "intended" dot-product version would instead give $\approx+29.71$. So this bug is really baked into the training loop throughout &mdash; it is not a one-off transcription slip.</p>
+<p>Despite both bugs, training still reaches the slides' own claimed 100% accuracy, because the <em>final prediction rule</em> (next box) is a separate, correctly-written formula that never multiplies by $y$ at all &mdash; which makes sense, since $y$ isn't known at prediction time anyway.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">20 epochs later</div>
+<p>Accuracy at the end of each epoch (1&ndash;20): $50,\ 80,\ 80,\ 80,\ 80,\ 100,\ 100,\ 90,\ 100,\ 100,\ 100,\ 100,\ 100,\ 100,\ 100,\ 100,\ 100,\ 90,\ 100,\ 100$.</p>
+<p>Final coefficients: $b_1=0.7379828004500003,\quad b_2=-1.2083184512899998$.</p>
+<p>The learned hyperplane: $0.738\,X_1-1.208\,X_2=0$.</p>
+<div class="step"><span class="step-label">Correct prediction rule (no $y$ needed)</span>
+$$output = b_1x_1+b_2x_2,\qquad \hat y = \begin{cases}-1 & output &lt; 0\\ +1 & output &gt; 0\end{cases}$$
+Spot-check: point 1 ($x_1{=}2.327868,\,x_2{=}2.458017,\,y{=}-1$) gives $output\approx0.738(2.328)-1.208(2.458)\approx-1.25&lt;0\Rightarrow\hat y=-1$ &#10003;. Point 6 ($x_1{=}7.807521,\,x_2{=}3.290132,\,y{=}1$) gives $output\approx0.738(7.808)-1.208(3.290)\approx1.79&gt;0\Rightarrow\hat y=+1$ &#10003;.
+</div>
+<span class="answer-final">b&#8321; = 0.738, b&#8322; = &minus;1.208 &mdash; 100% training accuracy by epoch 6</span>
+</div>
+
+<h2 class="section-title" id="l14-fruit-sklearn"><span class="num">14.5</span> Worked Example: Classifying Fruit with scikit-learn <span class="numtag">Numerical</span></h2>
+
+<div class="box worked">
+<div class="box-title">Apples vs. bananas, by sweetness and colour</div>
+<p>$X=[[5,7],[7,5],[2,8],[3,6],[8,1],[7,3],[1,3],[2,2],[9,6],[6,7]]$, $y=[1,1,1,1,-1,-1,-1,-1,1,1]$ (1 = Apple, &minus;1 = Banana).</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;"><code>from sklearn import svm
+clf = svm.SVC(kernel='linear')
+X = [[5,7],[7,5],[2,8],[3,6],[8,1],[7,3],[1,3],[2,2],[9,6],[6,7]]
+y = [1,1,1,1,-1,-1,-1,-1,1,1]
+clf.fit(X, y)
+new_fruit = [[4, 5]]
+prediction = clf.predict(new_fruit)
+print("Prediction:", prediction[0])   # Output: 1 (Apple)</code></pre>
+<p>A follow-up <code>matplotlib</code> script fills a mesh grid with <code>clf.predict</code>, then uses <code>plt.contourf</code> to shade the decision regions and overlays the training points, so the curved-looking (but actually piecewise-linear) decision boundary and the new point $(4,5)$ are visible together.</p>
+<span class="answer-final">New point (4, 5) &rarr; predicted class 1 (Apple)</span>
+</div>
+
+<h2 class="section-title" id="l14-smo-dataprep"><span class="num">14.6</span> Learning SVMs in Practice: SMO &amp; Data Preparation</h2>
+
+<div class="box theory">
+<div class="box-title">How real SVM libraries learn the hyperplane</div>
+<p>Numerical optimization (sub-gradient descent, as in &sect;14.4) is illustrative but not how libraries like <strong>LIBSVM</strong> actually fit an SVM. Production implementations reformulate the problem as <strong>Quadratic Programming</strong> and solve it with <strong>Sequential Minimal Optimization (SMO)</strong> &mdash; the most popular method, because it breaks one hard optimization problem into many small sub-problems that can be solved <em>analytically</em> (by direct calculation) rather than numerically (by searching).</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Preparing data for SVM</div>
+<ul>
+<li><strong>Numerical inputs only.</strong> SVM assumes numeric features; categorical inputs must first be converted to one-hot/binary dummy variables.</li>
+<li><strong>Binary by default.</strong> Basic SVM targets two-class classification; multiclass and regression need extensions (one of which, ECOC, reappears in Lecture 15, &sect;15.11).</li>
+</ul>
+</div>
+
+<h2 class="section-title" id="l14-dual-worked"><span class="num">14.7</span> Worked Examples: Finding the Hyperplane via the Dual Formulation <span class="numtag">Numerical</span></h2>
+
+<div class="box theory">
+<div class="box-title">The method (Dan Ventura's construction)</div>
+<ol>
+<li>Plot the data and check whether it's linearly separable; if so, use a linear SVM.</li>
+<li>Identify the support vectors by inspection.</li>
+<li>Augment each support vector $s_i$ with a bias coordinate (write $\tilde s_i=(s_i,1)$), and solve a small system of linear equations for the $\alpha_i$.</li>
+<li>Compute the weight vector $\tilde w=\sum_i\alpha_i\tilde s_i$.</li>
+<li>Read off $w$ and $b$ (the last entry of $\tilde w$) and draw the hyperplane $w\cdot x+b=0$.</li>
+</ol>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem 1 &mdash; fully worked in the slides</div>
+<p>Positive points $(3,1),(3,-1),(6,1),(6,-1)$; negative points $(1,0),(0,1),(0,-1),(-1,0)$. By inspection, the 3 support vectors are $s_1=(1,0)$ [negative], $s_2=(3,1)$, $s_3=(3,-1)$ [both positive].</p>
+<div class="step"><span class="step-label">Set up the system</span>
+Computing all the augmented dot products gives:
+$$2\alpha_1+4\alpha_2+4\alpha_3=-1,\qquad 4\alpha_1+11\alpha_2+9\alpha_3=+1,\qquad 4\alpha_1+9\alpha_2+11\alpha_3=+1$$
+</div>
+<div class="step"><span class="step-label">Solve</span> By symmetry $\alpha_2=\alpha_3$; solving gives $\alpha_1=-3.5,\ \alpha_2=\alpha_3=0.75$.</div>
+<div class="step"><span class="step-label">Weight vector</span>
+$$\tilde w=-3.5(1,0,1)+0.75(3,1,1)+0.75(3,-1,1)=(1,0,-2)$$
+So $w=(1,0)$, $b=-2$ &mdash; the hyperplane is the vertical line $X_1=2$.
+</div>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.82em;"><code>from sklearn import svm
+X = np.array([[3,1],[3,-1],[6,1],[6,-1],[1,0],[0,1],[0,-1],[-1,0]])
+y = np.array([1,1,1,1,0,0,0,0])
+clf = svm.SVC(kernel='linear')
+clf.fit(X, y)
+w = clf.coef_[0]; b = clf.intercept_[0]
+# plt.contour(..., levels=[-1,0,1], ...) draws the margin and hyperplane together</code></pre>
+<span class="answer-final">&alpha; = (&minus;3.5, 0.75, 0.75) &rarr; w = (1, 0), b = &minus;2 &rarr; hyperplane X&#8321; = 2</span>
+</div>
+
+<div class="box practice">
+<div class="box-title">Problem 2 &mdash; stated in the slides, but never actually solved there</div>
+<p>Positive points $(4,1),(4,-1),(6,0)$; negative points $(1,0),(0,1),(0,-1)$. The slides state this problem and its method, then move straight on to generic margin theory (&sect;14.8) without ever returning to solve it. Following the guide's usual practice of completing exercises the source leaves open, it's solved below.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem 2 &mdash; solved here</div>
+<p>By inspection the 3 support vectors are $s_1=(1,0)$ [negative], $s_2=(4,1)$, $s_3=(4,-1)$ [both positive] &mdash; the same method as Problem 1 applies directly.</p>
+<div class="step"><span class="step-label">System &amp; solution</span>
+$$2\alpha_1+5\alpha_2+5\alpha_3=-1,\qquad 5\alpha_1+18\alpha_2+16\alpha_3=+1,\qquad 5\alpha_1+16\alpha_2+18\alpha_3=+1$$
+By symmetry $\alpha_2=\alpha_3$: solving gives $\alpha_1=-\frac{22}{9}\approx-2.444,\ \ \alpha_2=\alpha_3=\frac{7}{18}\approx0.389$.
+</div>
+<div class="step"><span class="step-label">Weight vector</span>
+$$\tilde w=-\tfrac{22}{9}(1,0,1)+\tfrac{7}{18}(4,1,1)+\tfrac{7}{18}(4,-1,1)=\left(\tfrac23,\,0,\,-\tfrac53\right)$$
+So $w=\left(\tfrac23,0\right)$, $b=-\tfrac53$ &mdash; hyperplane $X_1=2.5$.
+</div>
+<div class="step"><span class="step-label">Sanity check</span> The nearest negative point sits at $X_1=1$ and the nearest positive points at $X_1=4$; a margin-maximizing line must sit exactly halfway between them &mdash; and $\tfrac{1+4}{2}=2.5$ matches perfectly.</div>
+<span class="answer-final">&alpha; = (&minus;22/9, 7/18, 7/18) &rarr; w = (2/3, 0), b = &minus;5/3 &rarr; hyperplane X&#8321; = 2.5</span>
+</div>
+
+<h2 class="section-title" id="l14-margin-distance"><span class="num">14.8</span> The Margin, Formally: Point-to-Hyperplane Distance</h2>
+
+<div class="box theory">
+<div class="box-title">Why use $w^Tx+b=0$ instead of $y=ax+b$?</div>
+<p>Two reasons: it generalizes cleanly to more than two dimensions, and the vector $w$ is always <strong>normal</strong> (perpendicular) to the hyperplane &mdash; a property used directly to compute distances.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Distance from a point to a hyperplane</div>
+<p>For a line $Ax+By+c=0$, the distance from a point $(x_0,y_0)$ is $\dfrac{|Ax_0+By_0+c|}{\sqrt{A^2+B^2}}$. The same idea generalizes to a hyperplane $w^T\Phi(x)+b=0$: the distance from a point $\Phi(x_0)$ is $\dfrac{|w^T\Phi(x_0)+b|}{\lVert w\rVert}$, where $\lVert w\rVert$ is the Euclidean norm of $w$. In particular, $\dfrac{|b|}{\lVert w\rVert}$ is the perpendicular distance from the hyperplane to the origin.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The headline result: margin = 2/&#8741;w&#8741;</div>
+<p>Consider the two parallel hyperplanes $wx-b=-1$ and $wx-b=+1$ that bound the margin on either side. Let $x_0$ lie on $wx-b=-1$; moving along the unit normal $w/\lVert w\rVert$ by some distance $r$ must land on $wx-b=+1$. Substituting $x_0+r\frac{w}{\lVert w\rVert}$ into that second equation and simplifying gives $r=\dfrac{1}{\lVert w\rVert}$ &mdash; the distance from the hyperplane to <em>one</em> margin boundary. So the <strong>total</strong> distance between the two boundary hyperplanes is:
+$$\text{margin}=\frac{2}{\lVert w\rVert}$$</p>
+<p>The only thing that can change in this formula is $\lVert w\rVert$ itself: when $\lVert w\rVert=1$, margin $=2$; when $\lVert w\rVert=2$, margin $=1$; when $\lVert w\rVert=4$, margin $=\tfrac12$. The bigger the norm, the smaller the margin &mdash; so <strong>maximizing the margin is exactly the same optimization as minimizing $\lVert w\rVert$</strong>, subject to every point being correctly classified. This equivalence is the single most exam-relevant fact in the whole lecture: it's what turns "find the widest street" into a concrete, solvable optimization problem.</p>
+</div>
+
+<h2 class="section-title" id="l14-best-hyperplane"><span class="num">14.9</span> Which Hyperplane Is Best?</h2>
+
+<div class="box concept">
+<div class="box-title">Comparing candidate hyperplanes</div>
+<p>Given several hyperplanes that all separate the data correctly, how do you pick? The slides pose this as a direct visual exercise: between two lines "B" and "D," <strong>B</strong> is the better-margin line; between red and green, <strong>green</strong> wins. Between three candidates $H_1,H_2,H_3$: $H_3$ (red) has the maximum margin and classifies the data properly &mdash; the winner. $H_2$ (blue) has a small margin on one side and a large margin on the other &mdash; lopsided and suboptimal. $H_1$ (green) fails to separate the classes at all and is immediately disqualified.</p>
+<p><strong>Good margin</strong> means every support vector sits at the <em>same</em> distance from the maximal-margin hyperplane. <strong>Bad margin</strong> means the boundary sits suspiciously close to one class's support vectors only &mdash; a sign the line isn't actually margin-maximizing.</p>
+</div>
+
+<h2 class="section-title" id="l14-support-vectors-history"><span class="num">14.10</span> Support Vectors, Revisited, &amp; a Brief History</h2>
+
+<div class="box theory">
+<div class="box-title">Three facts about support vectors</div>
+<ol>
+<li>Only the support vectors contribute to the result of the algorithm &mdash; every other point is irrelevant to where the hyperplane ends up.</li>
+<li>If a point is <em>not</em> a support vector, removing it has no effect on the model at all.</li>
+<li>Removing a support vector, by contrast, <em>will</em> change the position of the hyperplane.</li>
+</ol>
+</div>
+
+<div class="box concept">
+<div class="box-title">A brief history</div>
+<table>
+<tr><th>Idea</th><th>Year</th></tr>
+<tr><td>Maximal-Margin Classifier</td><td>1963 / 1979</td></tr>
+<tr><td>Kernel Trick</td><td>1992</td></tr>
+<tr><td>Soft Margin Classifier</td><td>1995</td></tr>
+<tr><td>Support Vector Regression</td><td>1996</td></tr>
+</table>
+</div>
+
+<h2 class="section-title" id="l14-nonlinear-intro"><span class="num">14.11</span> Nonlinear SVM: When a Line Isn't Enough</h2>
+
+<div class="box concept">
+<div class="box-title">The motivating picture</div>
+<p>Some datasets have no separating hyperplane in their original ("input") space at all &mdash; no matter how you draw a straight line, points of both classes end up on the wrong side. The fix is to apply a <strong>mapping function $\Phi$</strong> that carries the data from input space into a ("feature") space where it <em>does</em> become linearly separable, then run ordinary linear SVM there. A simple 1-D illustration: points on a line that alternate class by position are inseparable by a single threshold, but applying $Y=X^2$ lifts them into 2 dimensions where a straight line easily separates them. Likewise $\phi(x)=x\bmod 2$ separates even and odd integers once lifted into 2 dimensions.</p>
+</div>
+
+<div style="text-align:center;margin:20px 0;">
+<svg viewBox="0 0 320 220" width="100%" style="max-width:300px;">
+<rect x="0" y="0" width="320" height="220" fill="#fffdf8" stroke="#e2d3ba"/>
+<g stroke="#8c63a8" stroke-width="2" fill="none">
+<rect x="60" y="60" width="200" height="100"/>
+</g>
+<g stroke="#6f96ac" stroke-width="2" fill="none">
+<polygon points="160,85 185,110 160,135 135,110"/>
+</g>
+<circle cx="60" cy="60" r="6" fill="#8c63a8"/>
+<circle cx="260" cy="60" r="6" fill="#8c63a8"/>
+<circle cx="60" cy="160" r="6" fill="#8c63a8"/>
+<circle cx="260" cy="160" r="6" fill="#8c63a8"/>
+<rect x="155" y="80" width="10" height="10" fill="#6f96ac" transform="rotate(45 160 85)"/>
+<rect x="180" y="105" width="10" height="10" fill="#6f96ac" transform="rotate(45 185 110)"/>
+<rect x="155" y="130" width="10" height="10" fill="#6f96ac" transform="rotate(45 160 135)"/>
+<rect x="130" y="105" width="10" height="10" fill="#6f96ac" transform="rotate(45 135 110)"/>
+<text x="160" y="195" text-anchor="middle" font-family="Palatino" font-size="12" fill="#3f2f20">no straight line separates outer from inner</text>
+</svg>
+<p style="font-style:italic;color:var(--brown);font-size:.9rem;margin-top:6px">Concentric-square dataset: purple corner points (outer) are Class +1, blue diamond points (inner) are Class &minus;1. No line in this 2-D input space separates them &mdash; &sect;14.12 maps this exact dataset into a space where a line works.</p>
+</div>
+
+<h2 class="section-title" id="l14-nonlinear-worked"><span class="num">14.12</span> Worked Example: Classifying via Feature Mapping <span class="numtag">Numerical</span></h2>
+
+<div class="box worked">
+<div class="box-title">The data (Dan Ventura's 2009 SVM tutorial)</div>
+<p>Positive: $(2,2),(2,-2),(-2,-2),(-2,2)$. Negative: $(1,1),(1,-1),(-1,-1),(-1,1)$ &mdash; exactly the concentric-squares picture above.</p>
+<div class="step"><span class="step-label">The mapping function $\Phi_1$</span>
+$$\Phi_1(x_1,x_2)=\begin{cases}\big(4-x_2+|x_1-x_2|,\ \ 4-x_1+|x_1-x_2|\big) & \text{if }\sqrt{x_1^2+x_2^2}>2\\[4pt] (x_1,x_2) & \text{otherwise}\end{cases}$$
+</div>
+<div class="step"><span class="step-label">Map the data</span> Every negative point has norm $\sqrt2<2$, so all four map to <em>themselves</em>: $(1,1),(1,-1),(-1,-1),(-1,1)$. Every positive point has norm $2\sqrt2>2$, so the first branch applies &mdash; e.g. $\Phi_1(2,-2)=\big(4-(-2)+|2-(-2)|,\ 4-2+|2-(-2)|\big)=(4+2+4,\ 2+4)=(10,6)$. Working through all four: the positive points land at $(2,2),(10,6),(6,6),(6,10)$.</div>
+<div class="step"><span class="step-label">Support vectors &amp; dual system</span> Choose $s_1=(1,1)$ [negative] and $s_2=(2,2)$ [positive] &mdash; both happen to map to themselves under $\Phi_1$. Augmented dot products give:
+$$3\alpha_1+5\alpha_2=-1,\qquad 5\alpha_1+9\alpha_2=+1\ \ \Longrightarrow\ \ \alpha_1=-7,\ \alpha_2=4$$
+</div>
+<div class="step"><span class="step-label">Weight vector</span>
+$$\tilde w=-7(1,1,1)+4(2,2,1)=(1,1,-3)\ \Longrightarrow\ w=(1,1),\ b=-3$$
+</div>
+<div class="step"><span class="step-label">Classify a new point $x=(4,5)$</span> First map it: $\sqrt{41}>2$ and $|4-5|=1$, so $\Phi_1(4,5)=(4-5+1,\ 4-4+1)=(0,1)$. Then $f(x)=w\cdot\Phi_1(x)+b=(1)(0)+(1)(1)-3=-2<0$.</div>
+<span class="answer-final">x = (4, 5) classified as negative</span>
+</div>
+
+<h2 class="section-title" id="l14-phi2-alt"><span class="num">14.13</span> An Alternative, Higher-Dimensional Mapping <span class="numtag">Numerical</span></h2>
+
+<div class="box worked">
+<div class="box-title">$\Phi_2$: mapping into one dimension higher than $\Phi_1$</div>
+<p>$\Phi_1$ preserved the dimension count (2-D in, 2-D out); effective separation often needs a feature space of <em>higher</em> dimension than the input. Consider:
+$$\Phi_2(x_1,x_2)=\left(x_1,\ x_2,\ \frac{(x_1^2+x_2^2)-5}{3}\right)$$
+</p>
+<div class="step"><span class="step-label">Apply it to the same 8 points</span> Every positive point has $x_1^2+x_2^2=8$, giving third coordinate $\frac{8-5}{3}=1$. Every negative point has $x_1^2+x_2^2=2$, giving third coordinate $\frac{2-5}{3}=-1$. So in feature space, <strong>all four positive points sit on the plane $x_3=1$ and all four negative points sit on the plane $x_3=-1$</strong> &mdash; classification depends on $x_3$ alone.</div>
+<div class="step"><span class="step-label">The hyperplane</span> This reduces to the trivial separator $x_3=0$ (i.e. $w=(0,0,1),\,b=0$, so $f(x)=\sigma(x_3)$). The slides state (without re-deriving the full 8&times;8 system here) that all 8 points become support vectors, with $\alpha_i=\tfrac{1}{46}$ for the positive points and $\alpha_i=-\tfrac{7}{46}$ for the negative ones.</div>
+</div>
+
+<div class="box key">
+<div class="box-title">The elegant geometric payoff</div>
+<p>Since $x_3=\dfrac{(x_1^2+x_2^2)-5}{3}$, the decision boundary $x_3=0$ translates, back in the <em>original</em> 2-D input space, to exactly the circle
+$$x_1^2+x_2^2=5$$
+of radius $\sqrt5$. $\Phi_2$ has quietly turned "is this point inside or outside a circle?" into "is this point above or below a plane?" &mdash; the whole point of a feature mapping, made completely explicit.</p>
+</div>
+
+<h2 class="section-title" id="l14-kernel-trick"><span class="num">14.14</span> The Kernel Trick: Avoiding the Mapping Altogether</h2>
+
+<div class="box theory">
+<div class="box-title">The problem with mapping functions</div>
+<p>Explicitly computing $\Phi(x)$ for every point and then taking dot products in the (possibly huge) feature space is correct but expensive &mdash; especially since real objective functions for fitting the hyperplane only ever need the <strong>dot product</strong> of transformed vectors, never the transformed vectors themselves. A <strong>kernel function</strong> $k(x,z)$ is defined so that $k(x,z)=\Phi(x)\cdot\Phi(z)$ &mdash; it returns exactly that dot product <em>without ever computing $\Phi$ explicitly</em>.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Why this is the whole point</div>
+<p>The <strong>kernel trick</strong> is the substitution of $k(x,z)$ for $\Phi(x)\cdot\Phi(z)$ wherever the SVM optimization needs that dot product. It lets you operate in a high-dimensional, even infinite-dimensional, implicit feature space without ever computing coordinates in that space &mdash; usually far cheaper than the explicit transformation. The only mathematical requirement on a valid kernel is that it be symmetric and satisfy Mercer's theorem.</p>
+</div>
+
+<h2 class="section-title" id="l14-kernel-worked"><span class="num">14.15</span> Common Kernels, and Two Worked Examples <span class="numtag">Numerical</span></h2>
+
+<div class="box theory">
+<div class="box-title">Four common kernels</div>
+<table>
+<tr><th>Kernel</th><th>Formula</th></tr>
+<tr><td>Linear</td><td>$k(x,z)=x^Tz$</td></tr>
+<tr><td>Polynomial</td><td>$k(x,z)=(x^Tz+c)^d$ (degree $d$, here $c=0$)</td></tr>
+<tr><td>Gaussian / RBF</td><td>$k(x,z)=\exp\!\left(-\dfrac{\lVert x-z\rVert^2}{2\sigma^2}\right)$</td></tr>
+<tr><td>Sigmoid</td><td>a fourth standard choice, not detailed numerically in the slides</td></tr>
+</table>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem 7 &mdash; fully worked in the slides: kernel &equiv; mapping</div>
+<p>Points $(1,2)$ and $(3,4)$. Polynomial kernel $k(x,y)=(x^T y)^2$; mapping $\varphi(x,y)=(x^2,y^2,\sqrt2\,xy)$. Show the two agree:</p>
+<div class="step"><span class="step-label">Kernel side</span> $x^Ty=1\cdot3+2\cdot4=11\ \Rightarrow\ k=11^2=121$.</div>
+<div class="step"><span class="step-label">Mapping side</span> $\varphi(1,2)=(1,4,2\sqrt2)$, $\varphi(3,4)=(9,16,12\sqrt2)$. Their dot product: $9+64+(2\sqrt2)(12\sqrt2)=9+64+48=121$.</div>
+<span class="answer-final">Both sides equal 121 &mdash; kernel and explicit mapping agree exactly</span>
+</div>
+
+<div class="box practice">
+<div class="box-title">Problem 8 &mdash; stated in the slides, but never actually solved there</div>
+<p>Points $(1,2)$ and $(2,3)$: apply the linear and polynomial kernels; convert $(2,3)$ into 3-D via the quadratic mapping; apply the RBF kernel with $\sigma=1$. As with Problem 2, the slides pose this and then move on to generic kernel-trick theory without solving it &mdash; solved below.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Problem 8 &mdash; solved here</div>
+<div class="step"><span class="step-label">Linear kernel</span> $k(x,y)=x\cdot y=1\cdot2+2\cdot3=8$.</div>
+<div class="step"><span class="step-label">Polynomial kernel (quadratic, same convention as Problem 7)</span> $k=(x\cdot y)^2=8^2=64$. Mapping: $\varphi(2,3)=(2^2,3^2,\sqrt2\cdot2\cdot3)=(4,9,6\sqrt2)$.</div>
+<div class="step"><span class="step-label">RBF kernel, $\sigma=1$</span> $\lVert x-y\rVert^2=(1-2)^2+(2-3)^2=2$, so $k=\exp\!\left(-\dfrac{2}{2\cdot1^2}\right)=e^{-1}\approx0.3679$.</div>
+<span class="answer-final">Linear k = 8, Polynomial k = 64 (&phi;(2,3) = (4, 9, 6&radic;2)), RBF k &asymp; 0.3679</span>
+</div>
+
+<h2 class="section-title" id="l14-softmargin"><span class="num">14.16</span> Hard Margin vs Soft Margin, Revisited</h2>
+
+<div class="box theory">
+<div class="box-title">Two flavours of margin</div>
+<p><strong>Hard Margin</strong>: if the data is linearly separable, choose two parallel hyperplanes bounding the widest possible gap with zero points inside it or on the wrong side. This is exactly the Maximal-Margin Classifier of &sect;14.2, now called "Linear SVM &mdash; Hard Margin Classifier."</p>
+<p><strong>Soft Margin</strong>: since most real data is <em>not</em> fully linearly separable, allow some <strong>margin violation</strong> &mdash; points that fall on the wrong side of the margin, or even the wrong side of the hyperplane entirely &mdash; in exchange for a wider, more robust margin overall. This is conceptually similar to adding regularization to a regression model: a little controlled error now, in exchange for a model that generalizes better.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The trade-off</div>
+<p>It is better to accept a larger margin even if some constraints are violated than to chase a razor-thin hard margin that perfectly fits noisy training data. Soft Margin is what makes SVM usable on real, imperfectly-separable datasets &mdash; which is to say, on almost every dataset you will actually encounter.</p>
+</div>
+
+<div class="lecture-header" id="L15">
+<span class="ltag">LECTURE 15</span>
+<h2>Combining Multiple Learners</h2>
+<p>Lecture 14 built one learner at a time — a single hyperplane, chosen to maximize one margin. This lecture asks a different question: since no single algorithm is always the most accurate, what happens if you stop looking for the one best model and instead combine several imperfect ones? It turns out "several weak or merely-different models, combined well" routinely beats any one of them alone — this is the idea behind Bagging, Boosting, Random Forests, and most winning solutions on real-world leaderboards. As the last lecture in the currently-uploaded syllabus, it also closes the loop nicely: every algorithm from Lecture 1 onward (regression, k-NN, Naive Bayes, decision trees, SVM, …) is a candidate "base learner" this lecture shows you how to combine.</p>
+</div>
+
+<h2 class="section-title" id="l15-rationale"><span class="num">15.1</span> Why Combine Learners? Rationale &amp; Key Terms</h2>
+
+<div class="box concept">
+<div class="box-title">Rationale</div>
+<p>Machine learning models aren't like traditional software — they need constant retraining as new data arrives, and in complex, sensitive scenarios a single model's prediction often isn't reliable enough on its own. <strong>Ensemble modeling</strong> (ensemble: "a group taken together as a whole") combines several models that complement each other to push overall accuracy higher than any one of them could reach alone.</p>
+<p>Think of an ensemble as an orchestra: a pianist, a trumpeter, a drummer — each specializes in one instrument, and no one of them could produce a symphony alone, but combined they create something richer than any single instrument could.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">General terms</div>
+<ul>
+<li><strong>Model</strong> — the output of an algorithm trained on data; it's what actually makes predictions.</li>
+<li><strong>Algorithm</strong> — any ML procedure used to produce that model (logistic regression, a decision tree, etc.).</li>
+<li><strong>Base model</strong> — a model used as one input to an ensemble method; the ensemble method's own output is the <strong>ensemble model</strong>.</li>
+<li><strong>Ensemble method</strong> — an ML technique that combines several base models into one optimal predictive model.</li>
+<li><strong>Base learners</strong> — the first level of an ensemble architecture; each is trained to make its own individual prediction.</li>
+<li><strong>Meta learners</strong> — the second level, trained on the <em>outputs</em> of the base learners rather than on the raw data.</li>
+<li><strong>Weak learners</strong> — another name for base learners, so called because individually they have high bias or high variance and therefore cannot learn the full problem efficiently on their own.</li>
+</ul>
+<p>A model's overall quality for classification or regression is commonly summarized with <code>model.score()</code>: a value between 0 and 1 computed as (correct predictions) / (total data points), where larger is better.</p>
+</div>
+
+<h2 class="section-title" id="l15-voting"><span class="num">15.2</span> Simple Ensemble Techniques: Voting, Averaging &amp; Weighted Averaging</h2>
+
+<div class="box theory">
+<div class="box-title">The ensemble technique menu</div>
+<p>Ensemble techniques split into two families:</p>
+<ul>
+<li><strong>Simple ensemble techniques:</strong> Max Voting, Averaging, Weighted Averaging.</li>
+<li><strong>Advanced ensemble techniques:</strong> Bagging, Boosting, Stacking, Blending.</li>
+</ul>
+<p>This lecture covers Max Voting in depth now, then spends most of its time on the two advanced techniques that matter most in practice — Bagging and Boosting.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Max Voting</div>
+<p>Called "voting" by analogy with an election: the majority rules. Multiple models each make a prediction for the same data point; each prediction counts as one "vote"; whichever class gets the most votes is the final prediction. It's generally used for classification problems.</p>
+<p><strong>Example 1</strong> — rating a movie among 5 colleagues (out of 5): if three rate it 4 and two rate it 5, the majority (3 votes) wins, so the final rating is 4.</p>
+<p><strong>Example 2</strong> — three classifiers predict on the same input: classifier 1 says class A, classifiers 2 and 3 say class B. Class B has 2 of the 3 votes, so the final prediction is class B.</p>
+</div>
+
+<h2 class="section-title" id="l15-voting-code"><span class="num">15.3</span> Implementing a Voting Classifier</h2>
+
+<div class="box worked">
+<div class="box-title">Manual implementation</div>
+<p>Split a heart-disease dataset, train three different classifiers independently, and combine their predictions by taking the statistical mode (the most frequent vote) across the three, point by point:</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>import pandas as pd
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import statistics as st
+
+df = pd.read_csv('heart.csv')
+x = df.drop('target', axis=1)
+y = df['target']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+model1 = DecisionTreeClassifier()
+model2 = KNeighborsClassifier()
+model3 = LogisticRegression()
+model1.fit(x_train, y_train)
+model2.fit(x_train, y_train)
+model3.fit(x_train, y_train)
+
+pred1 = model1.predict(x_test)
+pred2 = model2.predict(x_test)
+pred3 = model3.predict(x_test)
+
+final_pred = np.array([])
+for i in range(0, len(x_test)):
+    final_pred = np.append(final_pred, st.mode([pred1[i], pred2[i], pred3[i]]))
+print(final_pred)</code></pre>
+</div>
+
+<div class="box worked">
+<div class="box-title">scikit-learn's built-in VotingClassifier</div>
+<p>The same idea, but scikit-learn does the voting for you — just pass it the (name, estimator) pairs and a voting strategy:</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>from sklearn.ensemble import VotingClassifier
+
+model1 = LogisticRegression(random_state=1)
+model2 = DecisionTreeClassifier(random_state=1)
+model = VotingClassifier(estimators=[('lr', model1), ('dt', model2)], voting='hard')
+model.fit(x_train, y_train)
+model.score(x_test, y_test)</code></pre>
+<p><code>voting='hard'</code> means majority-rules on the predicted class labels — exactly the Max Voting scheme above.</p>
+</div>
+
+<h2 class="section-title" id="l15-bagging-intro"><span class="num">15.4</span> Bagging: Bootstrap Aggregating</h2>
+
+<div class="box theory">
+<div class="box-title">Where the name comes from</div>
+<p><strong>BAGGing = BootstrAPping + aGGregation.</strong> The name literally spells out the two steps it combines into one ensemble model.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">The idea</div>
+<p>Combining several models (say, several decision trees) to get a more generalized result sounds good — but if every model is trained on the exact same data, there's a high chance they all learn nearly the same thing, so combining them gains you almost nothing. The fix is <strong>bootstrapping</strong>: create many subsets ("bags") of the original dataset, each sampled <em>with replacement</em>, so each model sees a slightly different slice of the data. The subsets are often smaller than the full original set. Because every bag can be built and every model trained completely independently of every other, <strong>bagging uses parallel operations</strong> — a contrast worth remembering against Boosting (&sect;15.7), which cannot be parallelized in the same way.</p>
+</div>
+
+<h2 class="section-title" id="l15-bootstrap"><span class="num">15.5</span> Bootstrap Sampling, and Why We Need It <span class="numtag">Numerical</span></h2>
+
+<div class="box theory">
+<div class="box-title">Definitions</div>
+<p><strong>Sampling</strong> is the process of selecting a subset of items from a large population, in order to estimate some characteristic of the whole population. <strong>Sampling with replacement</strong> means a data point drawn into one sample can reappear in later samples too — nothing is removed from the pool once it's picked.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">Motivating example: the mean height of 1,000 students</div>
+<p>Suppose you want the mean height of every student in a school of 1,000. Measuring all 1,000 individually and averaging is correct but tedious. A smarter approach: draw a random sample of 5 students, measure just those 5, and repeat this 20 times (so 100 measurements total, not 1,000). Average the 20 sample-means together, and that average is a good estimate of the true population mean — this repeated small-sample-and-average process is <strong>bootstrap sampling</strong>.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked demonstration: estimating a Gaussian population's mean</div>
+<p>Build a population of 10,000 points drawn from a Gaussian with population mean 500, then estimate that mean using only 40 small bootstrap samples of size 5 each:</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>import numpy as np
+import seaborn as sns
+import random
+import matplotlib.pyplot as plt
+
+# the population: 10,000 points ~ N(500, 1)
+x = np.random.normal(loc=500.0, scale=1.0, size=10000)
+print("mean=", np.mean(x))
+plt.hist(x, bins=100)
+plt.show()
+
+# bootstrap sampling: 40 samples of size 5, each sampled without replacement from x
+sample_mean = []
+for i in range(40):
+    y = random.sample(x.tolist(), 5)
+    avg = np.mean(y)
+    sample_mean.append(avg)
+
+print("sample mean", np.mean(sample_mean))</code></pre>
+<p>One run of this code on the slides printed:</p>
+<p style="text-align:center;"><code>mean= 499.99405099816175</code> &nbsp;&nbsp;(the true population mean, from all 10,000 points)<br><code>sample mean 499.9441358560316</code> &nbsp;&nbsp;(the bootstrap estimate, from just 40&times;5 = 200 points)</p>
+<p>Both numbers land almost exactly on the true population mean of 500 — which is the whole point: a bootstrap estimate built from a small fraction of the data (here, 200 of the 10,000 points, just 2%) can still land extremely close to the true population parameter, at a fraction of the measurement cost.</p>
+</div>
+
+<div class="box note">
+<div class="box-title">These exact digits won't reproduce</div>
+<p><code>np.random.normal(...)</code> is called here with no fixed random seed, and <code>random.sample</code> draws its 40&times;5 points randomly too. Re-running this exact code will <em>not</em> reproduce <code>499.99405099816175</code> or <code>499.9441358560316</code> digit-for-digit — every run draws a fresh population and fresh samples. What <em>is</em> reproducible, run after run, is the qualitative result: both the population mean and the bootstrap estimate will land very close to 500, because that's the population's true mean by construction (<code>loc=500.0</code>), and bootstrap sampling is, by design, an unbiased way to estimate it.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Library functions used here</div>
+<ul>
+<li><code>numpy.random.normal(loc, scale, size)</code> — draws random samples from a Gaussian ("bell curve," first derived by Gauss and Laplace) with mean <code>loc</code> and standard deviation <code>scale</code>.</li>
+<li><code>random.sample(seq, n)</code> — draws <code>n</code> unique elements from a sequence <em>without</em> replacement (note: this is sampling a fixed-size group from the population at random, which is how each individual bootstrap sample of 5 is drawn here — the "with replacement" part of bootstrapping happens across the 40 repeated draws from the same population <code>x</code>, not within a single 5-element draw).</li>
+<li><code>numpy.ndarray.tolist()</code> — converts a NumPy array into a plain Python list (also converting NumPy scalar types to native Python scalars), which is why <code>x.tolist()</code> is needed before handing the array to <code>random.sample</code>.</li>
+</ul>
+</div>
+
+<div class="box key">
+<div class="box-title">Why bootstrap at all?</div>
+<p>When estimating a parameter of a large population: the bootstrap estimate is comparable in accuracy to measuring the actual population parameter directly, but since only a handful of small samples are needed, the computational (or physical measurement) cost is far lower.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">In code: building many bootstrap sub-datasets</div>
+<p>In a bootstrap sample, some original examples can appear more than once and others may not appear at all — that's the signature of sampling with replacement. To build one sub-dataset of size <code>n</code>, pick a random element from the original dataset <code>n</code> separate times (allowing repeats); to build <code>m</code> such sub-datasets (as bagging will, in &sect;15.6):</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>def bootstrap_sample(original_dataset, n):
+    sub_dataset = []
+    for i in range(n):
+        sub_dataset.append(random_one_element(original_dataset))
+    return sub_dataset
+
+for i in range(m):
+    sub_dataset = bootstrap_sample(train_dataset, n)</code></pre>
+</div>
+
+<h2 class="section-title" id="l15-bagging-algo"><span class="num">15.6</span> The Bagging Algorithm &amp; scikit-learn Implementation</h2>
+
+<div class="box key">
+<div class="box-title">The bagging algorithm, step by step</div>
+<ol>
+<li>Start with an initial training dataset of <em>n</em> instances.</li>
+<li>Create <em>m</em> subsets of the data from the training set, each of size <em>N</em>, each drawn <strong>with replacement</strong> — so the same data point can be sampled into a subset more than once.</li>
+<li>Train one weak learner independently on each subset. These learners are <strong>homogeneous</strong> — all of the same type (e.g. all decision trees).</li>
+<li>Each of the <em>m</em> trained models makes its own prediction.</li>
+<li>Aggregate all <em>m</em> predictions into one final prediction, using either max voting (classification) or averaging (regression).</li>
+</ol>
+</div>
+
+<div class="box worked">
+<div class="box-title">scikit-learn: BaggingClassifier</div>
+<p>scikit-learn's bagging meta-estimator fits each base model on a random subset of the original data, then aggregates the base models' predictions by voting or averaging — reducing variance by introducing randomization into how each base model is built.</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>import pandas as pd
+from sklearn.ensemble import BaggingClassifier
+from sklearn.tree import DecisionTreeClassifier
+
+df = pd.read_csv('heart.csv')
+x = df.drop('target', axis=1)
+y = df['target']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+bagging = BaggingClassifier(base_estimator=DecisionTreeClassifier(),
+                             n_estimators=10, max_samples=0.5, max_features=0.5)
+bagging.fit(x_train, y_train)
+bagging.score(x_test, y_test)</code></pre>
+<p>Key arguments: <code>base_estimator</code> (here, a decision tree — the homogeneous weak learner from step 3 above), <code>n_estimators</code> (how many base models, i.e. <em>m</em>), <code>max_samples</code> (fraction of the training set drawn into each bootstrap subset), and <code>max_features</code> (fraction of features each base estimator is allowed to use).</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">scikit-learn: BaggingRegressor</div>
+<p>The identical idea, applied to regression — aggregation now means averaging the base learners' numeric predictions rather than voting on a class label:</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>import pandas as pd
+from sklearn.ensemble import BaggingRegressor
+from sklearn.tree import DecisionTreeRegressor
+
+df = pd.read_csv('heart.csv')
+x = df.drop('target', axis=1)
+y = df['target']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+bagging = BaggingRegressor(estimator=DecisionTreeRegressor(), n_estimators=10, random_state=0)
+bagging.fit(x_train, y_train)
+bagging.score(x_test, y_test)</code></pre>
+</div>
+
+<h2 class="section-title" id="l15-boosting"><span class="num">15.7</span> Boosting: Learning From the Previous Model's Mistakes</h2>
+
+<div class="box concept">
+<div class="box-title">The motivating question</div>
+<p>If a data point is incorrectly predicted by the first model — and probably by every later model trained the same way — will simply combining more copies of the same approach help? Boosting answers: not unless the later models are specifically built to fix the earlier ones' mistakes. Boosting is a <strong>sequential</strong> process where each new model deliberately attempts to correct the errors of the model before it, so each succeeding model depends on the one before it. The term "boosting" describes this whole family of algorithms that convert <em>weak</em> models (substantial error rate) into one <em>strong</em> combined model, by training each new model on the same dataset but with instance weights adjusted according to the previous model's errors.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">Bagging vs. Boosting — the one distinction to remember</div>
+<table>
+<tr><th></th><th>Bagging</th><th>Boosting</th></tr>
+<tr><td>Models trained</td><td>Independently, in parallel</td><td>Sequentially, each depending on the last</td></tr>
+<tr><td>Instance weighting</td><td>Equal throughout</td><td>Reweighted after every model, favoring previously-misclassified points</td></tr>
+<tr><td>Primary goal</td><td>Reduce variance</td><td>Reduce bias (turn weak learners strong)</td></tr>
+<tr><td>Can be parallelized?</td><td>Yes</td><td>No — each step needs the previous step's errors</td></tr>
+</table>
+</div>
+
+<h2 class="section-title" id="l15-adaboost-algos"><span class="num">15.8</span> AdaBoost &amp; the Wider Bagging/Boosting Family</h2>
+
+<div class="box theory">
+<div class="box-title">Boosting, step by step (pictorial illustration)</div>
+<ol>
+<li>Create a subset from the original dataset; initially, every data point gets an equal weight.</li>
+<li>Train a base model on this subset, then use it to predict on the <em>whole</em> dataset.</li>
+<li>Calculate errors by comparing actual vs. predicted values.</li>
+<li>Give the incorrectly-predicted observations <strong>higher weights</strong> (e.g. three misclassified points get boosted weight going into the next round).</li>
+<li>Train another model; because of the reweighting, it is pushed to pay more attention to the points the previous model got wrong.</li>
+<li>Repeat — each new model corrects the errors of the one before it.</li>
+<li>The final strong learner is the <strong>weighted mean</strong> of all the individual weak learners.</li>
+</ol>
+</div>
+
+<div class="box worked">
+<div class="box-title">AdaBoost (Adaptive Boosting)</div>
+<p>AdaBoost reuses the <em>same</em> training set over and over (so it needn't be large) and can combine an arbitrary number of base learners. Once training finishes, AdaBoost itself behaves as a voting method over its sequence of weak learners.</p>
+<pre style="background:#2b2118;color:#f6ecd9;padding:10px 14px;border-radius:8px;overflow-x:auto;font-size:.85em;line-height:1.5;"><code>from sklearn.ensemble import AdaBoostClassifier
+import pandas as pd
+
+df = pd.read_csv('heart.csv')
+x = df.drop('target', axis=1)
+y = df['target']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+model = AdaBoostClassifier(n_estimators=100)
+model.fit(x_train, y_train)
+model.score(x_test, y_test)</code></pre>
+</div>
+
+<div class="box theory">
+<div class="box-title">The wider family</div>
+<table>
+<tr><th>Bagging algorithms</th><th>Boosting algorithms</th></tr>
+<tr><td>Bagging meta-estimator</td><td>AdaBoost</td></tr>
+<tr><td>Random Forest</td><td>GBM (Gradient Boosting Machine)</td></tr>
+<tr><td></td><td>XGBM (XGBoost)</td></tr>
+<tr><td></td><td>LightGBM</td></tr>
+<tr><td></td><td>CatBoost</td></tr>
+</table>
+</div>
+
+<h2 class="section-title" id="l15-hyperparams"><span class="num">15.9</span> Parameters vs Hyperparameters</h2>
+
+<div class="box theory">
+<div class="box-title">Hyperparameters</div>
+<p><strong>Hyperparameters</strong> are external to the model: the model cannot change their values during training, and they stay fixed once training ends. The prefix "hyper-" signals that they sit one level above the model's own parameters — they control the learning process itself and, indirectly, what parameter values that process ends up learning. Anything you decide or configure <em>before</em> training begins, and which remains unchanged once training ends, is a hyperparameter.</p>
+<p>Examples from the slides: the train/test split ratio; the learning rate in gradient descent; the choice of optimizer (SGD, Adam, …); the choice of activation function in a neural-network layer (sigmoid, ReLU, tanh); the loss function used; the number of hidden layers and the number of units per layer; the dropout rate; the number of training epochs; the number of clusters <em>k</em> in a clustering task; kernel/filter size in a convolutional layer; pooling size; batch size.</p>
+<p>Hyperparameters are used <em>by</em> the learning algorithm while it learns, but they are not themselves part of the resulting trained model — looking only at a finished model, you cannot recover what hyperparameter values were used to train it.</p>
+</div>
+
+<div class="box theory">
+<div class="box-title">Parameters</div>
+<p><strong>Parameters</strong> are internal to the model: they are learned or estimated from the data during training, as the algorithm tries to map inputs to outputs, and they keep changing as training progresses (their trajectory is itself shaped by whatever hyperparameters were chosen). Training typically starts them at some initial values (random, or zero) and updates them with an optimization algorithm (e.g. gradient descent); the final values at the end of training constitute the trained model.</p>
+<p>Examples: the coefficients/weights of a linear or logistic regression model; the weights and biases of a neural network; the cluster centroids found by a clustering algorithm.</p>
+</div>
+
+<div class="box key">
+<div class="box-title">The one-sentence version</div>
+<p>You set hyperparameters <em>before</em> training begins and they never change; the learning algorithm then uses them to learn the parameters, which <em>do</em> change, continuously, until training ends. Choosing good hyperparameter values is called <strong>hyperparameter tuning</strong>, and it directly impacts how well the model performs.</p>
+</div>
+
+<h2 class="section-title" id="l15-diverse-learners"><span class="num">15.10</span> Generating Diverse Learners &amp; the Diversity-vs-Accuracy Trade-off</h2>
+
+<div class="box concept">
+<div class="box-title">Why diversity matters</div>
+<p>There's no point combining learners that always reach similar decisions — an ensemble only gains something when its members are <em>diverse</em>, differing in their individual mistakes so they can complement each other. At the same time, a learner contributing nothing but noise doesn't help either: a learner needs to be at least reasonably accurate <em>within its own domain of expertise</em>. So ensemble design is a double task: maximize individual accuracy <em>and</em> maximize diversity between learners. Four ways to achieve that diversity:</p>
+<ol>
+<li><strong>Different algorithms.</strong> Different learning algorithms make different assumptions about the data and so produce different classifiers — e.g. one base learner parametric, another non-parametric.</li>
+<li><strong>Different hyperparameters.</strong> Use the same algorithm but vary its hyperparameters — e.g. the number of hidden units in a multilayer perceptron, <em>k</em> in k-nearest-neighbor, the error threshold in a decision tree, the kernel function in an SVM. Averaging over this factor reduces variance, and therefore error.</li>
+<li><strong>Different input representations.</strong> Separate base learners can use different representations of the same underlying object or event — useful when multiple sensors, measurements, or modalities are available, since different representations make different characteristics explicit and so improve identification.</li>
+<li><strong>Different training sets.</strong> Train different base learners on different subsets of the training data — randomly (this is exactly bagging), or serially, giving more emphasis to instances the preceding learners got wrong (this is exactly boosting, actively trying to generate complementary learners).</li>
+</ol>
+</div>
+
+<div class="box key">
+<div class="box-title">Diversity vs. Accuracy</div>
+<p>When generating multiple base learners, they need to be <em>reasonably</em> accurate but need not each be individually optimized for best accuracy — base learners are chosen for their simplicity, not their accuracy. What matters is that they're diverse: accurate on <em>different</em> instances, each specializing in a different sub-domain of the problem. The final <em>combined</em> accuracy is what counts, not any one base learner's own accuracy.</p>
+<p><strong>Worked illustration:</strong> suppose a first classifier is 80% accurate. When choosing a second classifier, don't judge it on overall accuracy — judge it only on how well it handles the 20% of cases the first classifier gets wrong. A second classifier that's mediocre overall but excellent on exactly that 20% is far more valuable to the ensemble than a second classifier that's individually more accurate but makes the same mistakes as the first.</p>
+</div>
+
+<h2 class="section-title" id="l15-ecoc"><span class="num">15.11</span> Error-Correcting Output Codes (ECOC)</h2>
+
+<div class="box theory">
+<div class="box-title">The problem ECOC solves</div>
+<p>Many ML algorithms — logistic regression, SVM — are natively designed only for two-class (binary) classification. <strong>Error-Correcting Output Codes</strong> (ECOC; Dietterich &amp; Bakiri, 1995) is a technique that reframes one multi-class problem as several simpler binary classification problems, so native binary classifiers can be used directly, without modification. The main task is broken into subtasks, each implemented by its own base learner specializing in one aspect of the task; combining these simpler classifiers produces the final multi-class classifier.</p>
+</div>
+
+<div class="box concept">
+<div class="box-title">How it works</div>
+<p>Prepare a binary encoding (a bitstring) representing each class. Each <em>bit position</em> in that string is predicted by its own separate binary classifier: every model sees the full input pattern but is only responsible for predicting one bit. During training, each bit-model learns to output the correct 0 or 1 for its own binary sub-task. To classify a new example, run it through every bit-model to assemble a predicted bitstring, then compare that bitstring against every class's known code — the class whose code is <em>closest</em> (by distance) to the predicted bitstring is the output.</p>
+</div>
+
+<div class="box worked">
+<div class="box-title">Worked example: sizing the code</div>
+<p>The key hyperparameter of an ECOC model is the encoding of the class labels — specifically: the choice of representation (bits vs. real numbers, etc.), how each class label is encoded (random, etc.), the length of the representation (number of bits), and the rule for mapping a prediction back to a class (distance, etc.).</p>
+<p>Example: to build 6-bit code strings for 3 classes, specify a <strong>code size</strong> of 2 bits per class, since</p>
+$$\text{encoding\_length} = \text{code\_size} \times \text{num\_classes} = 2 \times 3 = 6$$
+</div>
+
 <h2 class="section-title" id="sec5"><span class="num">A</span> Appendix: Quick-Reference Formula Sheet</h2>
 
 <div class="box theory formula-sheet">
@@ -4456,7 +5235,7 @@ y_pred = classifier.predict(X_test0)</pre>
 <h2 class="section-title" id="recap"><span class="num">&#10003;</span> Full Course Recap</h2>
 <div class="box key">
 <div class="box-title">The story of these 13 lectures, in one paragraph</div>
-<p>Lecture 1 asks what ML even is, then opens with the simplest possible algorithm: fit a straight line (Linear Regression). Lecture 2 shows a second way to fit that same line — Gradient Descent — trading an exact formula for an iterative search that scales to problems the exact formula can't touch. Lecture 3 pulls back to ask what makes any model good, giving you the vocabulary (bias, variance, overfitting, parametric vs. non-parametric) to judge everything that follows. Lecture 4 adapts the same "fit a line" idea to classification via the sigmoid function. Lecture 5 gives you the vocabulary to judge a classifier's performance. Lectures 6 and 7 then present two completely different philosophies of classification: k-NN, which memorises the data and looks at neighbours; and Naive Bayes, which builds an explicit probability model — the two ends of the parametric/non-parametric spectrum Lecture 3 set up at the very start. Lecture 8, from a second instructor, returns to Lecture 5's territory and goes much deeper — six fully worked confusion-matrix problems, the exact scikit-learn conventions, and the ROC/AUC curve, a genuinely new tool for judging a classifier across every threshold at once, not just one. Lecture 9 turns to a third philosophy entirely — decision trees, which classify by learning a sequence of yes/no questions rather than fitting an equation or counting neighbours/probabilities — and shows how ID3's simple entropy-driven splitting gets refined into C4.5's gain-ratio approach to fix a real bias problem. Lecture 10 marks the big pivot of the course — from supervised learning (every algorithm so far) to unsupervised learning, where there's no target variable at all, only the data-preparation groundwork (cleansing, derived attributes, discretization) that any mining algorithm needs. Lecture 11 opens the first unsupervised algorithm proper: K-Means, which partitions data into K clusters by repeatedly reassigning points to the nearest centroid. Lecture 12 broadens the picture with hierarchical clustering — a whole family of linkage rules (single, complete, average, centroid, Ward) that build a nested tree of clusters instead of one flat partition — and closes with Expectation-Maximization, a "soft-assignment" alternative to K-means' hard cluster boundaries. Lecture 13 closes the course with Principal Component Analysis, a dimensionality-reduction technique that re-expresses the data along new, uncorrelated axes ranked by how much variance each one explains — the natural capstone, since by this point every earlier lecture's algorithms can be thought of as running on top of whatever features PCA decides are worth keeping.</p>
+<p>Lecture 1 asks what ML even is, then opens with the simplest possible algorithm: fit a straight line (Linear Regression). Lecture 2 shows a second way to fit that same line — Gradient Descent — trading an exact formula for an iterative search that scales to problems the exact formula can't touch. Lecture 3 pulls back to ask what makes any model good, giving you the vocabulary (bias, variance, overfitting, parametric vs. non-parametric) to judge everything that follows. Lecture 4 adapts the same "fit a line" idea to classification via the sigmoid function. Lecture 5 gives you the vocabulary to judge a classifier's performance. Lectures 6 and 7 then present two completely different philosophies of classification: k-NN, which memorises the data and looks at neighbours; and Naive Bayes, which builds an explicit probability model — the two ends of the parametric/non-parametric spectrum Lecture 3 set up at the very start. Lecture 8, from a second instructor, returns to Lecture 5's territory and goes much deeper — six fully worked confusion-matrix problems, the exact scikit-learn conventions, and the ROC/AUC curve, a genuinely new tool for judging a classifier across every threshold at once, not just one. Lecture 9 turns to a third philosophy entirely — decision trees, which classify by learning a sequence of yes/no questions rather than fitting an equation or counting neighbours/probabilities — and shows how ID3's simple entropy-driven splitting gets refined into C4.5's gain-ratio approach to fix a real bias problem. Lecture 10 marks the big pivot of the course — from supervised learning (every algorithm so far) to unsupervised learning, where there's no target variable at all, only the data-preparation groundwork (cleansing, derived attributes, discretization) that any mining algorithm needs. Lecture 11 opens the first unsupervised algorithm proper: K-Means, which partitions data into K clusters by repeatedly reassigning points to the nearest centroid. Lecture 12 broadens the picture with hierarchical clustering — a whole family of linkage rules (single, complete, average, centroid, Ward) that build a nested tree of clusters instead of one flat partition — and closes with Expectation-Maximization, a "soft-assignment" alternative to K-means' hard cluster boundaries. Lecture 13 closes the course with Principal Component Analysis, a dimensionality-reduction technique that re-expresses the data along new, uncorrelated axes ranked by how much variance each one explains — the natural capstone for the course's unsupervised arc, since by this point every earlier lecture's algorithms can be thought of as running on top of whatever features PCA decides are worth keeping. Lecture 14 then returns to supervised classification with a third philosophy entirely, after k-NN's “memorise and vote” and Naive Bayes's “count and multiply probabilities”: Support Vector Machines search directly for the single widest-margin dividing hyperplane, and &mdash; via the kernel trick &mdash; the same machinery handles data no straight line could ever separate. Lecture 15 closes the currently-uploaded syllabus one level up: instead of building one more individual learner, it combines many of them &mdash; Bagging's independent, parallel resampling and Boosting's sequential error-correction &mdash; into ensembles that are reliably more accurate than any single model from any earlier lecture.</p>
 </div>
 
 <table>
@@ -4474,6 +5253,8 @@ y_pred = classifier.predict(X_test0)</pre>
 <tr><td><strong>11. K-Means Clustering</strong></td><td>How do you partition data into K groups with no labels to guide you?</td><td>Assign points to the nearest centroid, recompute centroids as cluster means, repeat to convergence; the Elbow Method (WCSS) for choosing K.</td></tr>
 <tr><td><strong>12. Hierarchical Clustering &amp; EM</strong></td><td>What if you want a whole tree of nested clusters, or a "soft" probabilistic alternative to K-means?</td><td>Agglomerative clustering with five linkage rules (single, complete, average, centroid, Ward's ΔSSE); Expectation-Maximization's E-step/M-step soft cluster assignment.</td></tr>
 <tr><td><strong>13. Principal Component Analysis</strong></td><td>How do you reduce dimensionality while keeping as much information as possible?</td><td>Standardize &rarr; covariance matrix &rarr; eigenvectors/eigenvalues &rarr; feature vector &rarr; transform; PCA (unsupervised, maximizes variance) vs. LDA (supervised, maximizes class separation).</td></tr>
+<tr><td><strong>14. Support Vector Machines</strong></td><td>How do you find not just <em>a</em> separating line, but the single widest-margin one &mdash; and what do you do when no line will separate the classes at all?</td><td>Maximize the margin $2/\lVert w\rVert$ between two parallel hyperplanes, which reduces to a dual problem solved from just the support vectors; when the data isn't linearly separable, a mapping function $\Phi$ (or, far more cheaply, a kernel $k(x,z)=\Phi(x)\cdot\Phi(z)$ that avoids computing $\Phi$ at all) lifts the data into a space where it is.</td></tr>
+<tr><td><strong>15. Combining Multiple Learners</strong></td><td>No single algorithm is always most accurate — so how do you combine several imperfect models into one better one?</td><td>Simple ensembles (Max Voting, Averaging) combine predictions directly. Bagging trains homogeneous weak learners independently and in parallel, on bootstrap-resampled data, then aggregates by voting/averaging &mdash; reducing variance (Random Forest). Boosting trains them sequentially, reweighting misclassified instances after every round so each model fixes the last one's mistakes &mdash; reducing bias (AdaBoost and friends). Diverse, complementary base learners beat accurate-but-similar ones, and ECOC extends any binary classifier to multi-class problems via a bitstring encoding.</td></tr>
 </table>
 
 <h3>Mini glossary</h3>
@@ -4510,15 +5291,37 @@ y_pred = classifier.predict(X_test0)</pre>
 <tr><td><strong>Principal Component</strong></td><td>A new variable formed as a linear combination of the original (standardized) variables, constructed to be uncorrelated with every other principal component.</td></tr>
 <tr><td><strong>Covariance Matrix</strong></td><td>A matrix capturing how every pair of variables varies together relative to their means — the input to PCA's eigen-decomposition step.</td></tr>
 <tr><td><strong>LDA</strong></td><td>Linear Discriminant Analysis — a supervised alternative to PCA that finds axes maximizing class separation rather than overall variance.</td></tr>
+<tr><td><strong>Hyperplane</strong></td><td>A flat $(p-1)$-dimensional subspace of a $p$-dimensional space, defined by $w^Tx+b=0$, that splits the space into two halves.</td></tr>
+<tr><td><strong>Support Vector</strong></td><td>A training point lying exactly on the margin boundary; only these points determine the hyperplane's position.</td></tr>
+<tr><td><strong>Margin</strong></td><td>The perpendicular distance from the hyperplane to its nearest point(s); for the optimal hyperplane, margin $=2/\lVert w\rVert$.</td></tr>
+<tr><td><strong>Maximal-Margin Classifier</strong></td><td>The (purely theoretical) classifier that picks the separating hyperplane with the largest possible margin; requires perfectly linearly separable data.</td></tr>
+<tr><td><strong>Hard / Soft Margin</strong></td><td>Hard margin allows zero margin violations (needs separable data); soft margin tolerates some violations for a more robust, generalizable boundary.</td></tr>
+<tr><td><strong>Dual formulation (&alpha;)</strong></td><td>Solving for Lagrange-style coefficients $\alpha_i$ over just the support vectors, rather than for $w$ and $b$ directly over the whole dataset.</td></tr>
+<tr><td><strong>Feature mapping ($\Phi$)</strong></td><td>A function transforming input-space points into a (often higher-dimensional) feature space where they become linearly separable.</td></tr>
+<tr><td><strong>Kernel function</strong></td><td>$k(x,z)=\Phi(x)\cdot\Phi(z)$ &mdash; computes the feature-space dot product directly from the input-space points, without ever forming $\Phi(x)$.</td></tr>
+<tr><td><strong>Kernel trick</strong></td><td>Substituting a kernel function for an explicit feature mapping everywhere the SVM optimization needs a dot product, avoiding the cost of the mapping entirely.</td></tr>
+<tr><td><strong>SMO</strong></td><td>Sequential Minimal Optimization &mdash; the standard, efficient algorithm real SVM libraries use to solve the quadratic-programming fitting problem by breaking it into small analytically-solvable sub-problems.</td></tr><tr><td><strong>Ensemble method</strong></td><td>A technique that combines several base models (weak learners) into one optimal predictive (ensemble) model.</td></tr>
+<tr><td><strong>Base / Weak learner</strong></td><td>One individual model used as an input to an ensemble method; "weak" because each, alone, has high bias or high variance.</td></tr>
+<tr><td><strong>Meta learner</strong></td><td>A second-level model trained on the outputs of the base learners, rather than on the raw data.</td></tr>
+<tr><td><strong>Max Voting</strong></td><td>An ensemble technique for classification: every base model casts one "vote" for its predicted class, and the majority class wins.</td></tr>
+<tr><td><strong>Bagging (Bootstrap Aggregating)</strong></td><td>Train homogeneous weak learners independently and in parallel on bootstrap-resampled subsets of the data, then aggregate their predictions by voting or averaging; reduces variance.</td></tr>
+<tr><td><strong>Bootstrap sampling</strong></td><td>Repeatedly drawing small random samples <em>with replacement</em> from a population and averaging a statistic (e.g. the mean) across those samples, to estimate that statistic for the whole population cheaply.</td></tr>
+<tr><td><strong>Boosting</strong></td><td>Train weak learners sequentially, reweighting instances after each round to emphasize the previous round's mistakes, so each new learner corrects the last; the final model is a weighted combination of all of them; reduces bias.</td></tr>
+<tr><td><strong>AdaBoost</strong></td><td>"Adaptive Boosting" &mdash; the classic boosting algorithm; reuses the same training set across rounds and, once trained, acts as a voting method over its sequence of weak learners.</td></tr>
+<tr><td><strong>Random Forest</strong></td><td>A bagging algorithm whose homogeneous weak learners are all decision trees.</td></tr>
+<tr><td><strong>Hyperparameter</strong></td><td>A value set <em>before</em> training begins that the learning algorithm itself cannot change (e.g. learning rate, number of hidden layers, <em>k</em> in k-NN); controls how the model's parameters get learned, but is not recoverable from the trained model alone.</td></tr>
+<tr><td><strong>Parameter</strong></td><td>A value learned or estimated <em>from the data during</em> training (e.g. regression coefficients, NN weights, cluster centroids); keeps changing throughout training until it settles into the final trained model.</td></tr>
+<tr><td><strong>Diversity (of an ensemble)</strong></td><td>How differently the base learners err; an ensemble gains accuracy only when its members are diverse (complementary mistakes), not merely individually accurate.</td></tr>
+<tr><td><strong>Error-Correcting Output Codes (ECOC)</strong></td><td>Reframes one multi-class classification problem as several binary classification problems by encoding each class as a bitstring, predicting each bit with a separate binary classifier, and classifying new examples by nearest code match.</td></tr>
 </table>
 
 <div class="box note">
-<div class="box-title">What's beyond these 13 lectures</div>
-<p>This course's official syllabus (CSS 3131) continues past PCA — into Support Vector Machines, Bayesian Belief Networks, Ridge/Lasso Regression, Bagging and Random Forests, Boosting (AdaBoost, XGBoost), and Artificial Neural Networks. None of that is in these 13 uploaded decks, so none of it is in this guide yet. If further lecture decks are uploaded, this guide can be extended the same way the first 13 were.</p>
+<div class="box-title">What's beyond these 15 lectures</div>
+<p>This course's official syllabus (CSS 3131) continues past Lecture 15 — into Bayesian Belief Networks, Ridge/Lasso Regression, and Artificial Neural Networks. None of that is in these 15 uploaded lectures, so none of it is in this guide yet. If further lecture decks are uploaded, this guide can be extended the same way the first 15 were.</p>
 </div>
 
 <footer>
-  Built as a complete study companion for <em>Fundamentals of Machine Learning</em> (CSS 3131, MIT Manipal) — all 13 lecture decks, covering Introduction &amp; Linear Regression through Principal Component Analysis. Every worked numerical example was independently recomputed and cross-checked in Python; several small inconsistencies in the original slides were identified, verified, and clearly flagged rather than silently corrected or repeated as-is — including, across Lectures 1&ndash;9: a decimal-point slip, a mislabelled Tall/Short table, an SGD update-rule discrepancy, an unlabelled RMSE plot, two "solve it yourself" exercises, and a dropped decimal point in Lecture 9's Interactiveness-gain calculation; and across Lecture 12: arithmetic errors in a shared pairwise-distance table used for the complete/average/centroid linkage demo, a worked "Ward's method" example that was actually computing centroid linkage, and a complete-linkage step that substituted the wrong matrix entry and mislabelled its min/max operator — plus three originally-unsolved practice problems (two hierarchical-clustering coordinate problems and one 6-point distance-matrix problem) that have been fully worked out here.
+  Built as a complete study companion for <em>Fundamentals of Machine Learning</em> (CSS 3131, MIT Manipal) — all 15 lectures, covering Introduction &amp; Linear Regression through Combining Multiple Learners. Every worked numerical example was independently recomputed and cross-checked in Python; several small inconsistencies in the original slides were identified, verified, and clearly flagged rather than silently corrected or repeated as-is — including, across Lectures 1&ndash;9: a decimal-point slip, a mislabelled Tall/Short table, an SGD update-rule discrepancy, an unlabelled RMSE plot, two "solve it yourself" exercises, and a dropped decimal point in Lecture 9's Interactiveness-gain calculation; and across Lecture 12: arithmetic errors in a shared pairwise-distance table used for the complete/average/centroid linkage demo, a worked "Ward's method" example that was actually computing centroid linkage, and a complete-linkage step that substituted the wrong matrix entry and mislabelled its min/max operator — plus three originally-unsolved practice problems (two hierarchical-clustering coordinate problems and one 6-point distance-matrix problem) that have been fully worked out here; and across Lecture 14: a stated sub-gradient-descent learning-rate parameter (&lambda;=0.4) that the slides' own training code never actually uses (it runs on rate=0.5 instead), a malformed intermediate loss-check formula in that same code that multiplies only one term by the label y instead of the full dot product (verified by hand against the slides' own printed trace), and two further originally-unsolved practice problems (a second dual-formulation hyperplane problem and a second kernel-equivalence problem) that have been fully worked out here as well.
 </footer>
 </main>
 </div>

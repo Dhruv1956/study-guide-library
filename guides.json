@@ -4,7 +4,7 @@
     "course": "ACC",
     "courseName": "Algorithms and Computational Complexity",
     "path": "guides/acc/acc-complete-guide.html",
-    "dateAdded": "2026-09-29"
+    "dateAdded": "2026-11-06"
   },
   {
     "title": "EEFM \u2014 Explanation Guide",
@@ -25,7 +25,7 @@
     "course": "AI",
     "courseName": "Artificial Intelligence",
     "path": "guides/ai/intro-to-ai-guide.html",
-    "dateAdded": "2026-10-26"
+    "dateAdded": "2026-11-06"
   },
   {
     "title": "Multivariate Analysis \u2014 Beginner Guide (MND, Hotelling, Correlation, Wishart)",
@@ -39,6 +39,6 @@
     "course": "FML",
     "courseName": "Foundations of Machine Learning",
     "path": "guides/fml/ml-numerical-ia-prep.html",
-    "dateAdded": "2026-10-26"
+    "dateAdded": "2026-11-06"
   }
 ]
