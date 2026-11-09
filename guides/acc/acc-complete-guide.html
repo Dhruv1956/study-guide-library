@@ -283,6 +283,32 @@
   <a href="#L31-2">Why excluding the blank matters</a>
   <a href="#L31-3">Consistency &#8658; f is non-decreasing</a>
 
+  <a class="lec" href="#L32">Lecture 32 &middot; Bridges &amp; Articulation Points</a>
+  <a href="#L32-1">Bridges and cut points, defined</a>
+  <a href="#L32-2">Back edges, discovery time, low-link</a>
+  <a href="#L32-3">Tarjan's unified algorithm</a>
+  <a href="#L32-4">A complete worked trace</a>
+  <a href="#L32-5">Reading off the bridges and cut points</a>
+
+  <a class="lec" href="#L33">Lecture 33 &middot; Strongly Connected Components</a>
+  <a href="#L33-1">SCCs, defined</a>
+  <a href="#L33-2">Tarjan's SCC algorithm</a>
+  <a href="#L33-3">A complete worked trace</a>
+
+  <a class="lec" href="#L34">Lecture 34 &middot; Convex Hull, Reductions &amp; the Limits of Computation</a>
+  <a href="#L34-1">Convex hull and the turn test</a>
+  <a href="#L34-2">Graham's Scan algorithm</a>
+  <a href="#L34-3">Two worked traces</a>
+  <a href="#L34-4">Reductions, and Sorting &le;&#7472; Convex Hull</a>
+  <a href="#L34-5">P, NP, and NP-Complete</a>
+  <a href="#L34-6">Six worked P-vs-NPC pairs</a>
+  <a href="#L34-7">The Halting Problem</a>
+  <a href="#L34-8">Proving the Halting Problem undecidable</a>
+  <a href="#L34-9">The Collatz Conjecture</a>
+  <a href="#L34-10">The Post Correspondence Problem</a>
+  <a href="#L34-11">Solving PCP by BFS with pruning</a>
+  <a href="#L34-12">PCP is undecidable too</a>
+
   <a class="lec" href="#EX">Exercise Set &middot; Worked Solutions</a>
   <a href="#EX-1">1. Sorting one array, four ways</a>
   <a href="#EX-2">2. Brute-force max is optimal</a>
@@ -306,11 +332,11 @@
 <div class="hero">
   <div class="eyebrow">Complete Study Guide &middot; Algorithms and Computational Complexity</div>
   <h1>Every Lecture, Every Proof, Every Worked Example</h1>
-  <p class="lead">This guide transcribes and explains your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too. It now spans Lectures 1&ndash;23, 25, 27, and 28 (Lectures 24 and 26 haven't been uploaded yet).</p>
+  <p class="lead">This guide transcribes and explains your ACC notes in full — every definition, every proof, every worked example, in the order your instructor presented them. Nothing is summarized away: where the lecture works through a proof line by line, this guide does too. It now spans Lectures 1&ndash;23, 25, and 27&ndash;34 (Lectures 24 and 26 haven't been uploaded yet).</p>
   <div class="badges">
     <span class="badge">Prof. Kedukodi Babushri Srinivas &middot; MIT Manipal</span>
-    <span class="badge">26 lectures &middot; 542 pages</span>
-    <span class="badge">Introduction &rarr; Permutation Puzzles &amp; Lex-BFS</span>
+    <span class="badge">32 lectures &middot; 656 pages</span>
+    <span class="badge">Introduction &rarr; the Limits of Computation</span>
   </div>
 </div>
 
@@ -325,7 +351,7 @@
 <span class="chip" style="background:var(--story-bg);border-color:var(--story-line);color:var(--story-line)">Story / Motivation</span>
 <span class="chip" style="background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-line)">Common Confusion</span>
 </p>
-<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" all the way through Dynamic Programming, Graph Algorithms (spanning trees, Prim's &amp; Kruskal's MST algorithms, Disjoint-Set Forests, the Ackermann function), Binary Heaps &amp; Heapsort, Dijkstra's shortest-path algorithm, and a self-contained unit on permutation-puzzle solvability (parity invariants and rank-indexed search). <strong>Lectures 24 and 26 were not included in this upload</strong>, so they're flagged rather than silently skipped — the syllabus's remaining topics (hashing, Huffman coding, complexity theory / P vs. NP, and cryptography) also aren't in these lectures yet, so they aren't in this guide either.</p>
+<p class="small" style="margin-top:8px">This upload covers your course from the very first definition of "algorithm" all the way through Dynamic Programming, Graph Algorithms (spanning trees, Prim's &amp; Kruskal's MST algorithms, Disjoint-Set Forests, the Ackermann function, bridges &amp; cut points, strongly connected components), Binary Heaps &amp; Heapsort, Dijkstra's shortest-path algorithm, a self-contained unit on permutation-puzzle solvability (parity invariants and rank-indexed search), informed search (A*, with a full optimality proof), the Convex Hull problem (with a reduction-based optimality proof), and the course's closing unit on the limits of computation &mdash; P, NP, and NP-Complete, the undecidability of the Halting Problem, the Collatz Conjecture, and the Post Correspondence Problem. <strong>Lectures 24 and 26 were not included in this upload</strong>, so they're flagged rather than silently skipped &mdash; the syllabus's remaining topics (hashing, Huffman coding, and cryptography) also aren't in these lectures yet, so they aren't in this guide either.</p>
 </div>
 
 <div class="lecture-header" id="L1">
@@ -3409,7 +3435,635 @@ $$f(V) = g(V)+h(V) = \big[g(S)+c(S,V)\big]+h(V) = g(S)+\big[c(S,V)+h(V)\big] \;\
 
 <div class="box result" style="margin-top:20px;">
 <span class="lbl">Where Lectures 20&ndash;31 leave off</span>
-<p>Twelve lectures, three more major ideas on top of the MST/shortest-path/heap/permutation-puzzle material of Lectures 20&ndash;28: the "God's number" bound on how far any blind search can need to go, the $g/h/f$ framework that turns a plain priority-queue search into an <em>informed</em> one, the complete $A^\ast$ algorithm (Dijkstra's extract-min-and-relax loop plus one heuristic term), the Manhattan-distance heuristic worked by hand on a real 8-puzzle instance, and a full proof &mdash; admissibility, consistency, and the resulting non-decreasing-$f$ argument &mdash; of exactly why $A^\ast$ is guaranteed to return the optimal solution. <strong>Lectures 24 and 26 were not included in any upload</strong> and so still aren't reflected in this guide.</p>
+<p>Twelve lectures, three more major ideas on top of the MST/shortest-path/heap/permutation-puzzle material of Lectures 20&ndash;28: the "God's number" bound on how far any blind search can need to go, the \(g/h/f\) framework that turns a plain priority-queue search into an <em>informed</em> one, the complete \(A^\ast\) algorithm (Dijkstra's extract-min-and-relax loop plus one heuristic term), the Manhattan-distance heuristic worked by hand on a real 8-puzzle instance, and a full proof &mdash; admissibility, consistency, and the resulting non-decreasing-\(f\) argument &mdash; of exactly why \(A^\ast\) is guaranteed to return the optimal solution. <strong>Lectures 24 and 26 were not included in any upload</strong> and so still aren't reflected in this guide.</p>
+</div>
+
+
+<div class="lecture-header" id="L32">
+  <div class="ltag">Lecture 32</div>
+  <h2>Bridges and Articulation Points</h2>
+  <p>Lecture 28 asked "is this arrangement reachable from that one?" and Lecture 33 (next) will ask "which vertices can reach each other?" &mdash; this lecture asks a different kind of question about a graph's shape: which single edges or vertices, if deleted, would break it apart? The tool that answers this is the same DFS machinery (discovery time, low-link, an explicit stack) that Tarjan later reuses wholesale for strongly connected components, so getting comfortable with <code>d[&middot;]</code> and <code>low[&middot;]</code> here pays off twice.</p>
+</div>
+
+<section class="topic" id="L32-1">
+<h3>32.1 &middot; Bridges and Cut Points, Defined</h3>
+<div class="box story">
+<span class="lbl">The question in plain language</span>
+<p>Picture a graph as a network &mdash; roads between towns, cables between servers, friendships between people. Some edges (or vertices) are load-bearing: remove them and the network falls into two or more disconnected pieces. Others are redundant: remove them and everything stays reachable from everything else, just via a longer route. This lecture gives the two precise names for "load-bearing," one for edges and one for vertices.</p>
+</div>
+<div class="box def">
+<span class="lbl">Bridge</span>
+<p>An edge \(e\) of a connected graph \(G\) is a <strong>bridge</strong> if deleting \(e\) (and keeping every vertex) increases the number of connected components of \(G\). Equivalently: \(e\) is a bridge exactly when it is the <em>only</em> path between its two endpoints &mdash; no cycle runs through it.</p>
+</div>
+<div class="box def">
+<span class="lbl">Articulation point (cut point / cut vertex)</span>
+<p>A vertex \(v\) is an <strong>articulation point</strong> (also called a <strong>cut point</strong>) if deleting \(v\), together with every edge incident to it, increases the number of connected components.</p>
+</div>
+<div class="box warn">
+<span class="lbl">Common confusion &mdash; these are not the same count</span>
+<p>Deleting a bridge removes exactly one edge; deleting a cut point can remove many edges at once (every edge touching it). So a graph can have a cut point with no incident bridge at all (if the vertex sits at the meeting point of several redundant cycles), and a bridge whose endpoints are both cut points, or a bridge with one non-cut endpoint (a leaf). The two ideas are related &mdash; computed by the exact same DFS pass, in fact &mdash; but they are genuinely different properties, and &sect;32.5 below shows a graph where the sets don't coincide.</p>
+</div>
+</section>
+
+<section class="topic" id="L32-2">
+<h3>32.2 &middot; Back Edges, Discovery Time, and Low-Link</h3>
+<div class="box story">
+<span class="lbl">Why DFS is the right tool</span>
+<p>Run a DFS from any vertex and every edge of the graph falls into exactly one of two kinds relative to the resulting DFS tree: a <strong>tree edge</strong> (the edge DFS used to discover a brand-new vertex) or a <strong>back edge</strong> (an edge to a vertex that's already been visited &mdash; necessarily one of the current vertex's <em>ancestors</em> in the tree, since DFS on an undirected graph never produces "cross" edges). A back edge is exactly a shortcut: it proves a cycle exists connecting the current vertex back up to one of its ancestors, which is precisely the kind of redundancy that can save a tree edge from being a bridge.</p>
+</div>
+<div class="box def">
+<span class="lbl">Back edge</span>
+<p>An edge connecting a vertex \(u\) to one of \(u\)'s own ancestors in the DFS tree (other than \(u\)'s direct parent) is called a <strong>back edge</strong>.</p>
+</div>
+<div class="box def">
+<span class="lbl">The three quantities the algorithm tracks</span>
+<ul>
+<li><code>parent[u]</code> &mdash; the parent of \(u\) in the DFS tree.</li>
+<li><code>d[u]</code> &mdash; the <strong>discovery time</strong> of \(u\): a simple global counter, incremented and stamped onto each vertex the first instant DFS visits it. (\(d\) by itself already numbers every vertex in DFS visit order.)</li>
+<li><code>low[u]</code> &mdash; the <strong>low-link</strong> value: the smallest discovery time reachable from \(u\)'s entire DFS subtree using at most one back edge out of that subtree. Formally, \(low[u] = \min\big(d[u],\ \min\{d[w] : u \rightsquigarrow w \text{ a back edge from } u\text{'s subtree}\}\big)\).</li>
+</ul>
+<p class="small" style="color:var(--ink-soft)">Read <code>low[u]</code> as "how far back up the tree can anyone in \(u\)'s subtree reach, using one shortcut?" If the honest answer is "no further back than \(u\) itself," then \(u\)'s subtree is sealed off from the rest of the tree above it &mdash; which is exactly the condition a bridge or cut point needs.</p>
+</div>
+</section>
+
+<section class="topic" id="L32-3">
+<h3>32.3 &middot; Tarjan's Unified Algorithm</h3>
+<div class="box def">
+<span class="lbl">DFS(u, parent)</span>
+<pre class="pseudo">DFS(u, parent):
+1.   visited[u] &lt;- true;  d[u] &lt;- low[u] &lt;- ++timer.
+2.   children &lt;- 0.
+3.   for each v in Adj[u]:
+4.       if v = parent:  continue.            // never treat the parent edge as a back edge
+5.       if visited[v] = false:                // (u,v) is a TREE edge
+6.           children &lt;- children + 1.
+7.           DFS(v, u).
+8.           low[u] &lt;- min(low[u], low[v]).    // pull v's reach back up to u
+9.           if low[v] &gt; d[u]:
+10.              mark (u,v) as a BRIDGE.
+11.          if u is not the root and low[v] &gt;= d[u]:
+12.              mark u as a CUT POINT.
+13.      else:                                  // (u,v) is a BACK edge
+14.          low[u] &lt;- min(low[u], d[v]).
+15.  if u is the root and children &gt;= 2:
+16.      mark u as a CUT POINT.</pre>
+<p class="small" style="color:var(--ink-soft)">Call <code>DFS(S0, Nil)</code> once per connected component. Lines 1&ndash;2 do the bookkeeping Lecture 28's Lex-BFS never needed (discovery time instead of just a visited flag). Lines 3&ndash;4 are new: the single edge back to one's own parent is explicitly ignored, since it is never evidence of a genuine cycle. Lines 5&ndash;12 are the heart of the algorithm &mdash; recurse down a tree edge, then use the child's <em>fully computed</em> low-link (line 8) to test two conditions (lines 9 and 11) before moving to the next neighbour. Lines 13&ndash;14 are the base case: a back edge immediately tightens <code>low[u]</code> using the ancestor's discovery time, with no recursion needed. Lines 15&ndash;16 patch the one case the general rule in line 11 explicitly excludes &mdash; the root has no parent edge to be "cut off" from, so it needs its own rule.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Why line 9's bridge test is correct</span>
+<p>\((u,v)\) is a tree edge, with \(v\) a child of \(u\). After line 8, \(low[v]\) is the smallest discovery time reachable from \(v\)'s <em>entire</em> subtree (including \(v\) itself) using at most one back-edge shortcut. If \(low[v] > d[u]\), then nothing anywhere in \(v\)'s subtree can reach \(u\) or anything discovered before \(u\) &mdash; so the <em>only</em> way to get from \(v\)'s subtree back to the rest of the graph is through the single edge \((u,v)\) itself. Delete that edge and \(v\)'s subtree is cut off entirely: \((u,v)\) is a bridge. Conversely if \(low[v]\le d[u]\), some back edge escapes \(v\)'s subtree at or above \(u\), giving an alternate route that survives \((u,v)\)'s deletion.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Why line 11's cut-point test uses \(\ge\), not \(>\)</span>
+<p>Same setup, but now ask about deleting the <em>vertex</em> \(u\) (not just the edge). If \(low[v]\ge d[u]\), \(v\)'s subtree cannot reach <em>strictly above</em> \(u\) without passing through \(u\) itself &mdash; so deleting \(u\) strands that subtree, even in the boundary case \(low[v]=d[u]\) (a back edge lands exactly on \(u\), which is no help once \(u\) itself is gone). This is the one-character difference from the bridge test, and exactly why a vertex can be a cut point without its connecting edge being a bridge: a back edge from \(v\)'s subtree landing precisely on \(u\) keeps the <em>edge</em> \((u,v)\) off the bridge list (line 9's strict \(>\) fails) while still making \(u\) a cut point (line 11's \(\ge\) succeeds).</p>
+</div>
+<div class="box warn">
+<span class="lbl">Why the root needs a separate rule (lines 15&ndash;16)</span>
+<p>Line 11 is only ever checked for a non-root \(u\), because it is testing whether \(v\)'s subtree can escape <em>past \(u\), to \(u\)'s own parent and beyond</em>. The root has no parent to escape to in the first place, so the test is meaningless for it. Instead, the root is a cut point exactly when it has <strong>two or more DFS children</strong>: each child's subtree was explored independently (DFS never found an edge connecting two sibling subtrees, or it would have been a tree edge instead), so the only thing connecting them at all <em>is</em> the root &mdash; delete it and the subtrees fall apart from each other.</p>
+</div>
+</section>
+
+<section class="topic" id="L32-4">
+<h3>32.4 &middot; A Complete Worked Trace</h3>
+<div class="box ex">
+<span class="lbl">The graph</span>
+<p>Seven vertices, DFS started at \(A\): tree edges \(A\!-\!B\), \(B\!-\!C\), \(B\!-\!D\), \(D\!-\!E\), \(E\!-\!F\), \(D\!-\!G\); two back edges, \(C\!\to\!A\) and \(F\!\to\!D\). Visiting order (DFS, taking each vertex's first unvisited neighbour): \(A,B,C,\) (backtrack to \(B\)), \(D,E,F,\) (backtrack to \(E\), then \(D\)), \(G\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Stack trace, step by step</span>
+<table class="grid trace" style="font-size:.82em">
+<tr><th>Step</th><th>Action</th><th>\(d\) assigned</th><th>low-link computation</th></tr>
+<tr><td>1</td><td>Discover \(A\) (root)</td><td>\(d[A]=1\)</td><td>\(low[A]=d[A]=1\)</td></tr>
+<tr><td>2</td><td>Tree edge \(A\to B\); discover \(B\)</td><td>\(d[B]=2\)</td><td>\(low[B]=d[B]=2\)</td></tr>
+<tr><td>3</td><td>Tree edge \(B\to C\); discover \(C\)</td><td>\(d[C]=3\)</td><td>\(low[C]=d[C]=3\)</td></tr>
+<tr><td>4</td><td>Back edge \(C\to A\) found (\(A\) visited)</td><td>&mdash;</td><td>\(low[C]=\min(3,\,d[A]{=}1)=1\)</td></tr>
+<tr><td>5</td><td>\(C\) has no more neighbours; return to \(B\)</td><td>&mdash;</td><td>\(low[B]=\min(low[B],\,low[C])=\min(2,1)=1\)</td></tr>
+<tr><td>6</td><td>Tree edge \(B\to D\); discover \(D\)</td><td>\(d[D]=4\)</td><td>\(low[D]=d[D]=4\)</td></tr>
+<tr><td>7</td><td>Tree edge \(D\to E\); discover \(E\)</td><td>\(d[E]=5\)</td><td>\(low[E]=d[E]=5\)</td></tr>
+<tr><td>8</td><td>Tree edge \(E\to F\); discover \(F\)</td><td>\(d[F]=6\)</td><td>\(low[F]=d[F]=6\)</td></tr>
+<tr><td>9</td><td>Back edge \(F\to D\) found (\(D\) visited)</td><td>&mdash;</td><td>\(low[F]=\min(6,\,d[D]{=}4)=4\)</td></tr>
+<tr><td>10</td><td>\(F\) done; return to \(E\)</td><td>&mdash;</td><td>\(low[E]=\min(5,\,low[F]{=}4)=4\)</td></tr>
+<tr><td>11</td><td>\(E\) done; return to \(D\)</td><td>&mdash;</td><td>\(low[D]=\min(4,\,low[E]{=}4)=4\)</td></tr>
+<tr><td>12</td><td>Tree edge \(D\to G\); discover \(G\)</td><td>\(d[G]=7\)</td><td>\(low[G]=d[G]=7\)</td></tr>
+<tr><td>13</td><td>\(G\) done (no back edges); return to \(D\)</td><td>&mdash;</td><td>\(low[D]=\min(4,\,low[G]{=}7)=4\)</td></tr>
+<tr><td>14</td><td>\(D\) done; return to \(B\)</td><td>&mdash;</td><td>\(low[B]=\min(low[B]{=}1,\,low[D]{=}4)=1\)</td></tr>
+<tr><td>15</td><td>\(B\) done; return to \(A\)</td><td>&mdash;</td><td>\(low[A]=\min(1,\,low[B]{=}1)=1\)</td></tr>
+<tr><td>16</td><td>\(A\) done &mdash; DFS complete</td><td>&mdash;</td><td>&mdash;</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Final values: \(d,low\) pairs are \(A{:}(1,1)\), \(B{:}(2,1)\), \(C{:}(3,1)\), \(D{:}(4,4)\), \(E{:}(5,4)\), \(F{:}(6,4)\), \(G{:}(7,4)\). \(B\) and \(C\) share \(low=1\) because the back edge \(C\to A\) pulls both of them back to the root; \(D,E,F\) share \(low=4\) because the back edge \(F\to D\) pulls them back only as far as \(D\); \(G\) has no back edge at all, so its low-link never leaves 4 once pulled up by \(D\).</p>
+</div>
+</section>
+
+<section class="topic" id="L32-5">
+<h3>32.5 &middot; Reading Off the Bridges and Cut Points</h3>
+<div class="box worked">
+<span class="lbl">Bridge test on every tree edge &mdash; is \(low[\text{child}] &gt; d[\text{parent}]\)?</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Tree edge</th><th>\(low[\text{child}]\)</th><th>\(d[\text{parent}]\)</th><th>Bridge?</th></tr>
+<tr><td>\(A\!-\!B\)</td><td>\(low[B]=1\)</td><td>\(d[A]=1\)</td><td>No (\(1\not>1\))</td></tr>
+<tr><td>\(B\!-\!C\)</td><td>\(low[C]=1\)</td><td>\(d[B]=2\)</td><td>No (\(1\not>2\))</td></tr>
+<tr><td>\(B\!-\!D\)</td><td>\(low[D]=4\)</td><td>\(d[B]=2\)</td><td><strong>Bridge</strong> (\(4>2\))</td></tr>
+<tr><td>\(D\!-\!E\)</td><td>\(low[E]=4\)</td><td>\(d[D]=4\)</td><td>No (\(4\not>4\))</td></tr>
+<tr><td>\(E\!-\!F\)</td><td>\(low[F]=4\)</td><td>\(d[E]=5\)</td><td>No (\(4\not>5\))</td></tr>
+<tr><td>\(D\!-\!G\)</td><td>\(low[G]=7\)</td><td>\(d[D]=4\)</td><td><strong>Bridge</strong> (\(7>4\))</td></tr>
+</table>
+<p>\(\text{Bridges} = \{(B,D),\ (D,G)\}\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Cut-point test on every tree edge &mdash; is \(low[\text{child}] &ge; d[\text{parent}]\)? (plus the root rule)</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Edge tested</th><th>\(low[\text{child}]\)</th><th>\(d[\text{parent}]\)</th><th>Cut point?</th></tr>
+<tr><td>\(B\!-\!C\) (tests \(B\))</td><td>\(low[C]=1\)</td><td>\(d[B]=2\)</td><td>No (\(1\not\ge2\))</td></tr>
+<tr><td>\(B\!-\!D\) (tests \(B\))</td><td>\(low[D]=4\)</td><td>\(d[B]=2\)</td><td>\(B\) <strong>is a cut point</strong> (\(4\ge2\))</td></tr>
+<tr><td>\(D\!-\!E\) (tests \(D\))</td><td>\(low[E]=4\)</td><td>\(d[D]=4\)</td><td>\(D\) <strong>is a cut point</strong> (\(4\ge4\))</td></tr>
+<tr><td>\(D\!-\!G\) (tests \(D\))</td><td>\(low[G]=7\)</td><td>\(d[D]=4\)</td><td>\(D\) is a cut point again (\(7\ge4\), confirms the row above)</td></tr>
+<tr><td>\(E\!-\!F\) (tests \(E\))</td><td>\(low[F]=4\)</td><td>\(d[E]=5\)</td><td>No (\(4\not\ge5\))</td></tr>
+<tr><td>Root rule on \(A\)</td><td colspan="2">\(A\) has exactly 1 DFS child (\(B\))</td><td>No (needs \(\ge2\) children)</td></tr>
+</table>
+<p>\(\text{Cut points} = \{B,\ D\}\).</p>
+</div>
+<div class="box result">
+<span class="lbl">Reading the picture back, intuitively</span>
+<p>The graph is really three pieces glued together: a triangle \(A,B,C\) (held together by the back edge \(C\to A\), so none of <em>its</em> edges are bridges and none of \(\{A,C\}\) are cut points), a second little triangle \(D,E,F\) (held together by \(F\to D\), so again no bridges or cut points inside it), and the lone leaf \(G\) hanging off \(D\). What glues the <em>pieces</em> together, though, is a single plain edge each time: \(B\!-\!D\) is the only link between the two triangles, and \(D\!-\!G\) is the only link to \(G\) &mdash; both bridges, exactly as found. \(B\) and \(D\) earn cut-point status precisely because they're the join points between pieces: deleting \(B\) strands the \(\{D,E,F,G\}\) piece from \(\{A,C\}\), and deleting \(D\) strands \(G\) from everything else.</p>
+</div>
+<div class="box warn">
+<span class="lbl">Confirms &sect;32.1's warning</span>
+<p>Every bridge here (\(B\!-\!D\), \(D\!-\!G\)) does have both endpoints as cut points or leaves &mdash; but that's a feature of this particular small graph, not a theorem. In general a bridge can have one endpoint that's a leaf (never a cut point, since deleting a leaf never disconnects anything else), and a cut point can exist with <em>no</em> incident bridge (for instance, a vertex shared between two different cycles, each individually redundant, but whose only meeting point is that one vertex).</p>
+</div>
+</section>
+
+<div class="box result" style="margin-top:20px;">
+<span class="lbl">Where this leaves off</span>
+<p>One DFS pass, two linear-time\((O(V+E))\) answers: every bridge and every cut point in the graph, both derived from the same pair of numbers (\(d[u]\), \(low[u]\)) computed once per vertex. Lecture 33 reuses this exact machinery &mdash; discovery time, low-link, an explicit stack &mdash; to answer a related but different question on <em>directed</em> graphs: which vertices can all reach each other?</p>
+</div>
+
+
+<div class="lecture-header" id="L33">
+  <div class="ltag">Lecture 33</div>
+  <h2>Strongly Connected Components</h2>
+  <p>Bridges and cut points (Lecture 32) described how an <em>undirected</em> graph could fall apart. This lecture asks the directed-graph analogue of "which parts of the graph are mutually reachable?" &mdash; and answers it with Tarjan's second famous DFS trick, reusing discovery time and low-link almost unchanged, but adding one new ingredient: an explicit stack that decides exactly when a group of vertices is "done."</p>
+</div>
+
+<section class="topic" id="L33-1">
+<h3>33.1 &middot; Strongly Connected Components, Defined</h3>
+<div class="box story">
+<span class="lbl">Why directed graphs need a different notion of "connected"</span>
+<p>In an undirected graph, "\(u\) and \(v\) are connected" is unambiguous &mdash; a path is a path, walked in either direction. In a directed graph, having a path \(u\to v\) says nothing about whether a path \(v\to u\) exists too. One-way streets can group a city into pockets where you can get anywhere <em>within</em> the pocket and back, but once you leave a pocket along a one-way link, there may be no way back in.</p>
+</div>
+<div class="box def">
+<span class="lbl">Strongly Connected Component (SCC)</span>
+<p>A <strong>strongly connected component</strong> is a maximal vertex set \(C\) such that every \(x\in C\) can reach every \(y\in C\) by a directed path (and symmetrically, \(y\) can reach \(x\)). "Maximal" means: no vertex outside \(C\) could be added to \(C\) without breaking mutual reachability for some pair.</p>
+</div>
+<div class="box result">
+<span class="lbl">A useful picture</span>
+<p>Every directed graph's SCCs partition its vertices into disjoint groups; shrinking each SCC down to a single "super-vertex" always produces a <strong>DAG</strong> (a Directed Acyclic Graph) &mdash; if shrinking the SCCs left a cycle among the super-vertices, those super-vertices would actually all be mutually reachable, so they'd have been one SCC all along. This is exactly why an algorithm that outputs SCCs one at a time, as this lecture's does, ends up listing them in an order that's automatically a valid reverse-topological order of that DAG.</p>
+</div>
+</section>
+
+<section class="topic" id="L33-2">
+<h3>33.2 &middot; Tarjan's SCC Algorithm</h3>
+<div class="box def">
+<span class="lbl">Three pieces of state, reused and extended from Lecture 32</span>
+<ul>
+<li><code>visited[u]</code> &mdash; true as soon as \(u\) has received a discovery time.</li>
+<li><code>S</code> &mdash; an explicit <strong>active-vertex stack</strong>, this time doing real work (not merely bookkeeping): it holds every vertex that has been discovered but not yet assigned to a finished SCC.</li>
+<li><code>OnStack[u]</code> &mdash; a boolean, true exactly while \(u\) currently sits in \(S\).</li>
+</ul>
+</div>
+<div class="box def">
+<span class="lbl">Tarjan-SCC(G)</span>
+<pre class="pseudo">Tarjan-SCC(G):
+1.   dt &lt;- 0.                                       // discovery-time counter
+2.   S &lt;- empty.
+3.   for every vertex u:  visited[u] &lt;- false;  OnStack[u] &lt;- false.
+4.   for every vertex u:
+5.       if visited[u] = false:  Strong-Connect(u).
+
+Strong-Connect(u):
+1.   visited[u] &lt;- true.
+2.   dt &lt;- dt + 1;  d[u] &lt;- dt;  low[u] &lt;- d[u].
+3.   push u onto S;  OnStack[u] &lt;- true.
+4.   for every outgoing arc u -&gt; v in Adj[u]:
+5.       if visited[v] = false:                       // (u,v) is a TREE arc
+6.           Strong-Connect(v).
+7.           low[u] &lt;- min(low[u], low[v]).
+8.       else if OnStack[v] = true:                    // (u,v) is a BACK (or cross) arc into the current stack
+9.           low[u] &lt;- min(low[u], d[v]).
+10.      else:                                          // v is visited but no longer on S
+11.          do nothing.                                // v already belongs to a finished, earlier SCC
+12.  if low[u] = d[u]:                                  // u is the ROOT of its SCC
+13.      start a new component C.
+14.      repeat:
+15.          w &lt;- Top(S);  pop S;  OnStack[w] &lt;- false;  add w to C.
+16.      until w = u.
+17.      output C.</pre>
+<p class="small" style="color:var(--ink-soft)">Lines 1&ndash;3 are Lecture 32's discovery-time step, plus the new push onto \(S\). Line 8's condition is the one genuinely new idea: the ordinary back-edge update from Lecture 32 (line 14 there) only fires here when \(v\) is <strong>still on the stack</strong> &mdash; a visited vertex that has already been popped belongs to an earlier, already-finished SCC, and pulling \(u\)'s low-link down to that vertex's discovery time would be <em>wrong</em>, incorrectly merging two separate components. Line 12's test is identical in form to Lecture 32's bridge test, but asks a different question here: "has nothing in my subtree found a shortcut to an ancestor?" If so, \(u\) is the first-discovered (and therefore "root") vertex of its own SCC, and every vertex pushed onto \(S\) after \(u\) that hasn't yet been claimed by a deeper finished SCC belongs with it &mdash; which is exactly what popping down to \(u\) (lines 14&ndash;16) collects.</p>
+</div>
+</section>
+
+<section class="topic" id="L33-3">
+<h3>33.3 &middot; A Complete Worked Trace</h3>
+<div class="box ex">
+<span class="lbl">The graph</span>
+<p>Eight vertices, three directed cycles linked in a chain: \(A\to B\to C\to A\), \(B\to D\) (the only link out of the first cycle), \(D\to E\to F\to D\), \(D\to G\) (the only link down to the third piece), and \(G\leftrightarrow H\) (arcs both ways). DFS starts at \(A\), visiting its first unexplored neighbour each time: \(A,B,C,\) (backtrack to \(B\)), \(D,E,F,\) (backtrack to \(E\), then \(D\)), \(G,H\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Stack trace, step by step</span>
+<table class="grid trace" style="font-size:.78em">
+<tr><th>Step</th><th>Action</th><th>Stack \(S\) (bottom&rarr;top)</th><th>low-link update</th></tr>
+<tr><td>1</td><td>Discover \(A\); push \(A\)</td><td>\([A]\)</td><td>\(low[A]=d[A]=1\)</td></tr>
+<tr><td>2</td><td>Tree arc \(A\to B\); discover \(B\); push \(B\)</td><td>\([A,B]\)</td><td>\(low[B]=d[B]=2\)</td></tr>
+<tr><td>3</td><td>Tree arc \(B\to C\); discover \(C\); push \(C\)</td><td>\([A,B,C]\)</td><td>\(low[C]=d[C]=3\)</td></tr>
+<tr><td>4</td><td>Arc \(C\to A\): \(A\) visited and <em>OnStack</em></td><td>\([A,B,C]\)</td><td>\(low[C]=\min(3,\,d[A]{=}1)=1\)</td></tr>
+<tr><td>5</td><td>\(C\) done; return to \(B\)</td><td>\([A,B,C]\)</td><td>\(low[B]=\min(2,\,low[C]{=}1)=1\)</td></tr>
+<tr><td>6</td><td>Tree arc \(B\to D\); discover \(D\); push \(D\)</td><td>\([A,B,C,D]\)</td><td>\(low[D]=d[D]=4\)</td></tr>
+<tr><td>7</td><td>Tree arc \(D\to E\); discover \(E\); push \(E\)</td><td>\([A,B,C,D,E]\)</td><td>\(low[E]=d[E]=5\)</td></tr>
+<tr><td>8</td><td>Tree arc \(E\to F\); discover \(F\); push \(F\)</td><td>\([A,B,C,D,E,F]\)</td><td>\(low[F]=d[F]=6\)</td></tr>
+<tr><td>9</td><td>Arc \(F\to D\): \(D\) visited and <em>OnStack</em></td><td>\([A,B,C,D,E,F]\)</td><td>\(low[F]=\min(6,\,d[D]{=}4)=4\)</td></tr>
+<tr><td>10</td><td>\(F\) done; \(low[F]{=}4\neq d[F]{=}6\): not a root; return to \(E\)</td><td>\([A,B,C,D,E,F]\)</td><td>\(low[E]=\min(5,\,low[F]{=}4)=4\)</td></tr>
+<tr><td>11</td><td>\(E\) done; \(low[E]{=}4\neq d[E]{=}5\): not a root; return to \(D\)</td><td>\([A,B,C,D,E,F]\)</td><td>\(low[D]=\min(4,\,low[E]{=}4)=4\)</td></tr>
+<tr><td>12</td><td>Tree arc \(D\to G\); discover \(G\); push \(G\)</td><td>\([A,B,C,D,E,F,G]\)</td><td>\(low[G]=d[G]=7\)</td></tr>
+<tr><td>13</td><td>Tree arc \(G\to H\); discover \(H\); push \(H\)</td><td>\([A,B,C,D,E,F,G,H]\)</td><td>\(low[H]=d[H]=8\)</td></tr>
+<tr><td>14</td><td>Arc \(H\to G\): \(G\) visited and <em>OnStack</em></td><td>\([A,B,C,D,E,F,G,H]\)</td><td>\(low[H]=\min(8,\,d[G]{=}7)=7\)</td></tr>
+<tr><td>15</td><td>\(H\) done; \(low[H]{=}7\neq d[H]{=}8\): not a root; return to \(G\)</td><td>\([A,B,C,D,E,F,G,H]\)</td><td>\(low[G]=\min(7,\,low[H]{=}7)=7\)</td></tr>
+<tr><td>16</td><td>\(G\) done; \(low[G]{=}7=d[G]{=}7\): <strong>root!</strong> Pop to \(G\)</td><td>pop \(H\), pop \(G\) &rarr; \([A,B,C,D,E,F]\)</td><td><strong>SCC found: \(\{G,H\}\)</strong></td></tr>
+<tr><td>17</td><td>Return to \(D\); no more neighbours</td><td>\([A,B,C,D,E,F]\)</td><td>\(low[D]=\min(low[D]{=}4,\,low[G]{=}7)=4\)</td></tr>
+<tr><td>18</td><td>\(D\) done; \(low[D]{=}4=d[D]{=}4\): <strong>root!</strong> Pop to \(D\)</td><td>pop \(F,E,D\) &rarr; \([A,B,C]\)</td><td><strong>SCC found: \(\{D,E,F\}\)</strong></td></tr>
+<tr><td>19</td><td>Return to \(B\); no more neighbours</td><td>\([A,B,C]\)</td><td>\(low[B]=\min(low[B]{=}1,\,low[D]{=}4)=1\)</td></tr>
+<tr><td>20</td><td>\(B\) done; \(low[B]{=}1\neq d[B]{=}2\): not a root; return to \(A\)</td><td>\([A,B,C]\)</td><td>\(low[A]=\min(1,\,low[B]{=}1)=1\)</td></tr>
+<tr><td>21</td><td>\(A\) done; \(low[A]{=}1=d[A]{=}1\): <strong>root!</strong> Pop to \(A\)</td><td>pop \(C,B,A\) &rarr; \([\,]\)</td><td><strong>SCC found: \(\{A,B,C\}\)</strong></td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Output order, and why it's backwards from intuition</span>
+<p>The algorithm outputs \(\{G,H\}\) first, then \(\{D,E,F\}\), then \(\{A,B,C\}\) last &mdash; even though \(A\) was the very first vertex discovered. This is not an accident: an SCC is only "closed off" (line 12's test fires) once DFS has fully explored every path leading out of it, which happens in <em>reverse</em> of discovery order whenever one SCC feeds into another through a one-way link (exactly what \(B\to D\) and \(D\to G\) do here). The output order \(\{G,H\},\{D,E,F\},\{A,B,C\}\) is, in fact, already a valid topological order of the shrunk-down DAG read <em>backwards</em> &mdash; or equivalently, the order itself is a valid reverse-topological order, confirming the &sect;33.1 remark that Tarjan's SCC algorithm hands back the SCC-DAG's structure for free.</p>
+</div>
+</section>
+
+<div class="box result" style="margin-top:20px;">
+<span class="lbl">Where this leaves off</span>
+<p>Same DFS skeleton as every traversal in this course since Lecture 19, the same \(d[\cdot]/low[\cdot]\) pair introduced one lecture ago for bridges &mdash; and yet a third genuinely different question answered, in the same \(O(V+E)\) time, with one new idea (the <em>OnStack</em> guard on line 8) doing all the extra work. Lecture 34 leaves graph algorithms behind for a new kind of question entirely: not "what can this algorithm compute quickly," but "what can <em>any</em> algorithm compute at all" &mdash; starting with a geometric warm-up (Convex Hull) before turning to the limits of computation itself.</p>
+</div>
+
+
+<div class="lecture-header" id="L34">
+  <div class="ltag">Lecture 34</div>
+  <h2>Convex Hull, Reductions, and the Limits of Computation</h2>
+  <p>A long, wide-ranging closing lecture in four movements. First, one more classic geometric algorithm, Graham's Scan for the Convex Hull problem &mdash; and a clever proof, via <em>reduction</em>, that it can't be beaten asymptotically. Second, the big-picture vocabulary this entire course has been building toward: P, NP, and NP-Complete, with six side-by-side pairs showing how a tiny change to a problem's statement can cross the line between "efficiently solvable" and "no known efficient algorithm." Third, a hard limit on computation itself &mdash; Turing's proof that the Halting Problem cannot be solved by <em>any</em> algorithm, ever &mdash; alongside the Collatz Conjecture as a reminder that "unsolved" and "proven unsolvable" are different things. Finally, the Post Correspondence Problem, a surprisingly simple-looking puzzle that turns out to be exactly as undecidable as halting itself.</p>
+</div>
+
+<section class="topic" id="L34-1">
+<h3>34.1 &middot; Convex Hull and the Turn Test</h3>
+<div class="box def">
+<span class="lbl">Convex Hull</span>
+<p>Given a finite set of points in the plane, their <strong>convex hull</strong> is the smallest convex polygon containing all of them &mdash; equivalently, the shape a rubber band would trace if stretched around every point and released. "Convex" means every line segment between two points of the shape stays entirely inside the shape.</p>
+</div>
+<div class="box story">
+<span class="lbl">The one test the whole algorithm is built from</span>
+<p>Given three points \(P_0,P_1,P_2\) in order, there's one question that comes up over and over while building a hull: does the path \(P_0\to P_1\to P_2\) turn <strong>left</strong> (counterclockwise) or <strong>right</strong> (clockwise)? If it turns left, \(P_2\) is "outside" the line through \(P_0P_1\) in the hull-building sense; if it turns right, the path just folded back on itself, and whichever point caused that fold cannot be on the hull as currently traced.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Turning the picture into arithmetic</span>
+<p>"\(P_2\) is to the left of (counterclockwise from) \(P_1\), as seen from \(P_0\)" means the slope from \(P_0\) to \(P_1\) is less than the slope from \(P_0\) to \(P_2\):</p>
+$$\frac{y_1-y_0}{x_1-x_0} \;<\; \frac{y_2-y_0}{x_2-x_0}.$$
+<p>Cross-multiplying (and being careful that this step only flips the inequality if a denominator is negative &mdash; which is exactly why the clean, sign-safe version below is always preferred in code) gives</p>
+$$(y_1-y_0)(x_2-x_0) \;<\; (y_2-y_0)(x_1-x_0),$$
+<p>i.e. \((y_2-y_0)(x_1-x_0)-(y_1-y_0)(x_2-x_0) > 0\), which is exactly the \(2\times2\) determinant</p>
+$$\begin{vmatrix} x_1-x_0 & x_2-x_0 \\ y_1-y_0 & y_2-y_0 \end{vmatrix} \;>\;0 \quad\Longleftrightarrow\quad P_0\to P_1\to P_2 \text{ turns left.}$$
+<p class="qed">A determinant \(<0\) means a right turn; \(=0\) means the three points are collinear. This single sign check &mdash; one subtraction, one multiplication, one comparison &mdash; is the entire geometric primitive Graham's Scan needs. &#8718;</p>
+</div>
+</section>
+
+<section class="topic" id="L34-2">
+<h3>34.2 &middot; Graham's Scan Algorithm</h3>
+<div class="box def">
+<span class="lbl">Graham-Scan(P)</span>
+<pre class="pseudo">Graham-Scan(P):
+1.   Let p0 be the point in P with minimum y-coordinate (leftmost, in case of a tie).
+2.   Let &lt;p1, p2, ..., pm&gt; be the remaining points, sorted by polar angle
+     in counterclockwise order w.r.t. p0 (ties broken by distance from p0).
+3.   push (p0, S).
+4.   push (p1, S).
+5.   push (p2, S).
+6.   for i &lt;- 3 to m:
+7.       while the angle formed by Next-To-Top(S), Top(S), and p_i makes a non-left turn:
+8.           pop(S).
+9.       push (p_i, S).
+10.  return Convex-Hull <- S.</pre>
+<p class="small" style="color:var(--ink-soft)">Line 1 picks a starting point guaranteed to be on the hull (nothing can be "below" the lowest point). Line 2 is the whole trick: sorting by polar angle around \(p_0\) means that as the scan walks through \(p_1,\dots,p_m\) in order, it is sweeping counterclockwise around the outside &mdash; so the only thing that can ever go wrong is the path folding <em>inward</em> at some point, which the while-loop (lines 7&ndash;8) detects with the &sect;34.1 turn test and fixes by discarding the point that caused the fold. Each point is pushed once and popped at most once, so the whole scan (after the \(O(n\log n)\) angular sort) runs in \(O(n)\).</p>
+</div>
+</section>
+
+<section class="topic" id="L34-3">
+<h3>34.3 &middot; Two Worked Traces</h3>
+<div class="box worked">
+<span class="lbl">Example 1 &mdash; thirteen points, a wide hull</span>
+<p>Points \(P_0,\dots,P_{12}\) sorted by polar angle around \(P_0\) (the lowest point); \(P_0,P_1,P_2\) are pushed to start, and the scan tests each remaining point against the current top two of the stack, popping on any non-left turn:</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Point tested</th><th>Turn at current top-two</th><th>Action</th></tr>
+<tr><td>\(P_3\)</td><td>non-left (fold)</td><td>pop \(P_2\); re-test and push \(P_3\)</td></tr>
+<tr><td>\(P_4\)</td><td>left</td><td>push \(P_4\)</td></tr>
+<tr><td>\(P_5\)</td><td>non-left (fold)</td><td>pop \(P_4\); re-test and push \(P_5\)</td></tr>
+<tr><td>\(P_6\)</td><td>left</td><td>push \(P_6\)</td></tr>
+<tr><td>\(P_7\)</td><td>left</td><td>push \(P_7\)</td></tr>
+<tr><td>\(P_8\)</td><td>non-left (fold)</td><td>pop \(P_7\); re-test and push \(P_8\)</td></tr>
+<tr><td>\(P_9\)</td><td>left</td><td>push \(P_9\)</td></tr>
+<tr><td>\(P_{10}\)</td><td>left</td><td>push \(P_{10}\)</td></tr>
+<tr><td>\(P_{11}\)</td><td>non-left (fold)</td><td>pop \(P_{10}\); re-test and push \(P_{11}\)</td></tr>
+<tr><td>\(P_{12}\)</td><td>left</td><td>push \(P_{12}\)</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Read off the final stack to see which points survive; the ones popped and never re-pushed are the interior points &mdash; summarized in the result box just below.</p>
+</div>
+<div class="box result">
+<span class="lbl">Final hull</span>
+<p>Working through every fold carefully, the points that get permanently discarded (popped and never re-pushed) are \(P_3\), \(P_5\), \(P_8\), and \(P_{11}\) &mdash; each one found to lie strictly inside the hull once its neighbours on either side were known. The convex hull is everything else, in order:</p>
+$$H = \{P_0,\,P_1,\,P_2,\,P_4,\,P_6,\,P_7,\,P_9,\,P_{10},\,P_{12}\}.$$
+<p>Nine of the original thirteen points survive; the other four were interior points, each one "cut off" the instant the scan found a shorter, more-outward path around it.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Example 2 &mdash; seven points, a nearly-flat hull</span>
+<p>A second, smaller instance makes the opposite point: \(P_0,\dots,P_6\) are sorted by polar angle, but this time every one of \(P_2,P_3,P_4,P_5\) turns out to lie (near enough) on the straight line from \(P_1\) to \(P_6\), so each gets popped in turn as the scan reaches it:</p>
+<p>Scan order: push \(P_0,P_1,P_2\); testing \(P_3\) folds, pop \(P_2\); testing \(P_4\) folds, pop \(P_3\); testing \(P_5\) folds, pop \(P_4\); testing \(P_6\) folds, pop \(P_5\); push \(P_6\).</p>
+$$H = \{P_0,\,P_1,\,P_6\}.$$
+<p class="small" style="color:var(--ink-soft)">The hull collapses to a bare triangle. This is the extreme case that every convex-hull algorithm must handle correctly: a cloud of points where almost everything is interior (or exactly on the boundary line), and only a handful of extreme points survive.</p>
+</div>
+<div class="box warn">
+<span class="lbl">On reading this trace</span>
+<p>The source lecture traces both examples using abstract labels \(P_0,\dots,P_{12}\) and \(P_0,\dots,P_6\) without attaching numeric coordinates &mdash; the point of the exercise is the <em>mechanics</em> of the scan (sort by angle, test, pop-while-folding, push), which the fold/no-fold table above reproduces faithfully. If you want to see the determinant test from &sect;34.1 applied to real numbers, &sect;34.4's parabola construction below gives a fully numeric worked instance.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-4">
+<h3>34.4 &middot; Reductions, and Sorting \(\le_p\) Convex Hull</h3>
+<div class="box def">
+<span class="lbl">Reduction</span>
+<p>Write \(A \le_p B\) ("\(A\) reduces to \(B\) in polynomial time") when there is a polynomial-time transformation turning any instance of problem \(A\) into an instance of problem \(B\), such that solving the \(B\)-instance immediately gives a solution to the original \(A\)-instance. Two consequences follow at once:</p>
+<ol>
+<li>\(B\) is <strong>at least as hard</strong> as \(A\) &mdash; solving \(B\) in general is enough to solve \(A\) in general.</li>
+<li>If \(B\) is solvable in polynomial time, then (composing the two polynomial-time steps) \(A\) is solvable in polynomial time too.</li>
+</ol>
+<p class="small" style="color:var(--ink-soft)">Equivalently: Sorting \(\le_p\) Convex Hull is read as "Sorting reduces to Convex Hull," meaning Convex Hull is at least as hard as Sorting. This is a lower-bound tool: it proves Convex Hull can be <em>no easier</em> than Sorting, without needing to analyze any specific hull algorithm directly.</p>
+</div>
+<div class="box proof">
+<span class="lbl">The construction: lift 1D numbers onto a 2D parabola</span>
+<p>Suppose Convex Hull can be solved for any set of points in the plane. Given a Sorting instance \(A=\{x_0,x_1,\dots,x_n\}\) (numbers to be sorted, the \(1\)D input), construct the \(2\)D point set</p>
+$$P_i = (x_i,\ x_i^2), \qquad i=0,1,\dots,n,$$
+<p>&mdash; that is, lift every number \(x_i\) straight up onto the parabola \(y=x^2\) at horizontal position \(x_i\). Feed \(\{P_0,\dots,P_n\}\) to the Convex Hull algorithm.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Why the hull's lower boundary is exactly the sorted order</span>
+<p>Every point \(P_i\) lies exactly on the upward-curving parabola \(y=x^2\), which is itself a convex curve. So <em>every single point lies on the convex hull</em> &mdash; none is interior to the others &mdash; and the hull consists of a "lower chain" (the points in increasing-\(x\) order, tracing the bottom of the parabola) and an "upper chain" running back the other way. Reading the <strong>lower chain</strong> of the returned hull off in order, left to right, and projecting each point back down onto the \(x\)-axis, recovers \(x_0,x_1,\dots,x_n\) in <strong>sorted</strong> numeric order &mdash; because the lower envelope of points on a convex curve can only ever proceed monotonically in \(x\) as it's traced from the leftmost extreme point, by convexity itself.</p>
+</div>
+<div class="box result">
+<span class="lbl">Conclusion</span>
+<p>Lifting takes \(O(n)\) time (one squaring per point); reading the sorted order back off the lower chain takes \(O(n)\) time. So if Convex Hull could be solved faster than \(\Omega(n\log n)\), Sorting could too &mdash; contradicting the decision-tree lower bound proven all the way back in Lecture 8. Hence <strong>Convex Hull requires \(\Omega(n\log n)\) time</strong> in the comparison model, and Graham's Scan (an \(O(n\log n)\) angular sort, plus an \(O(n)\) scan) is asymptotically optimal.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-5">
+<h3>34.5 &middot; P, NP, and NP-Complete</h3>
+<div class="box def">
+<span class="lbl">The three classes</span>
+<ul>
+<li><strong>P</strong> &mdash; problems solvable in polynomial time (by an ordinary, deterministic algorithm).</li>
+<li><strong>NP</strong> &mdash; <em>Non-deterministic Polynomial time</em>: problems where, <em>if</em> a candidate solution is handed to you, that solution can be <strong>checked</strong> (verified correct) in polynomial time &mdash; even though no polynomial-time method to <em>find</em> the solution in the first place is known.</li>
+<li><strong>NP-Complete (NPC)</strong> &mdash; the "hardest" problems inside NP (made precise just below).</li>
+</ul>
+<p class="small" style="color:var(--ink-soft)">Every problem in P is automatically in NP (if you can solve it outright in polynomial time, you can certainly verify a given answer in polynomial time &mdash; just solve it yourself and compare). So \(\text{P}\subseteq\text{NP}\); whether that containment is strict is precisely the P vs. NP question below.</p>
+</div>
+<div class="box def">
+<span class="lbl">NP-Complete, precisely</span>
+<p>A problem \(B\) is <strong>NP-Complete</strong> if:</p>
+<ol>
+<li>\(B\in\text{NP}\) (it is itself in NP), <strong>and</strong></li>
+<li>every problem in NP reduces to it: \(B\) is <strong>NP-hard</strong>.</li>
+</ol>
+<p>Equivalently: \(B\in\text{NP}\), and for every \(A\in\text{NP}\), \(A\le_p B\) (using &sect;34.4's reduction notion). An NP-Complete problem is, in a precise sense, a "universal" representative of the whole class NP &mdash; solve any single one of them efficiently, and (by chaining reductions) every problem in NP becomes efficiently solvable too.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Placing familiar problems on the map</span>
+<table class="grid" style="font-size:.9em">
+<tr><th>Region</th><th>Example problems</th></tr>
+<tr><td><strong>P</strong></td><td>Matrix Chain Multiplication (Lecture 16), any comparison Sort (Lectures 1&ndash;11), Primality Testing, Linear Programming.</td></tr>
+<tr><td><strong>NP</strong>, not known to be in P</td><td>Sudoku (generalized board size), Integer Programming, Integer Factorization.</td></tr>
+<tr><td><strong>NP-Complete</strong></td><td>Generalized Sudoku, Integer Programming &mdash; see &sect;34.6 for six more, derived by contrast with their P-time cousins.</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Factorization is a famous example in NP but <em>not known</em> to be NP-Complete (and not known to be in P either) &mdash; its exact status is one of the genuinely open questions in the field, and the presumed difficulty of factoring large numbers is the entire basis for RSA encryption.</p>
+</div>
+<div class="box result">
+<span class="lbl">The Millennium Prize question</span>
+<p>If even <em>one</em> NP-Complete problem were solved in polynomial time, every problem in NP could be solved in polynomial time too (compose the fast NPC algorithm with the reduction from &sect;34.5's definition, applied to any \(A\in\text{NP}\)) &mdash; this would prove \(\text{P}=\text{NP}\). Despite decades of effort and thousands of NP-Complete problems now known, no polynomial-time algorithm for any of them has ever been found, nor has anyone proven that none can exist. <strong>Is \(\text{P}=\text{NP}\)?</strong> is one of the seven Clay Millennium Prize Problems (US\(\$1{,}000{,}000\)) and remains, as of this writing, <strong>an open problem</strong>.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-6">
+<h3>34.6 &middot; Six Worked P-vs-NP-Complete Pairs</h3>
+<div class="box story">
+<span class="lbl">The point of this table</span>
+<p>Nothing sharpens the P/NP boundary like seeing it crossed by a small, deliberate change to a problem's statement. In each pair below, the left column is solvable in polynomial time by a technique this course has already covered; the right column looks almost identical on paper, yet is NP-Complete (no polynomial algorithm known, and proven at least as hard as every other NP problem).</p>
+</div>
+<table class="grid" style="font-size:.88em">
+<tr><th>#</th><th>P</th><th>NP-Complete</th></tr>
+<tr><td>1</td><td><strong>Shortest Path</strong> &mdash; Dijkstra's algorithm (Lecture 25), \(O((V+E)\log V)\).</td><td><strong>Longest Path</strong> &mdash; the greedy relax-and-extract idea gives no useful ordering once the goal is to <em>maximize</em> total weight along a simple path.</td></tr>
+<tr><td>2</td><td><strong>Euler Circuit</strong> &mdash; does a walk exist covering every <em>edge</em> exactly once? Decidable in \(O(V+E)\) purely from vertex degrees (every vertex must have even degree).</td><td><strong>Hamiltonian Circuit / Travelling Salesman</strong> &mdash; does a walk exist covering every <em>vertex</em> exactly once? One word changed (edges &rarr; vertices), and the easy degree-counting argument no longer applies at all.</td></tr>
+<tr><td>3</td><td><strong>Reachability</strong> in the \(n^2\)-puzzle &mdash; <em>does some solution exist at all?</em> Answered instantly by the parity invariant \(I(s)\) from Lecture 27, no search required.</td><td><strong>Bounded-length solvability</strong> &mdash; given a budget \(K\), does a solution of <em>at most \(K\) moves</em> exist, i.e. is \(d(S_0,G)\le K\)? Note \(d(S_0,G)\le G(n)\) always (Lecture 29's "God's number" bound), but checking a specific \(K\) below that bound is NP-Complete in general.</td></tr>
+<tr><td>4</td><td><strong>Ordinary Knight's Tour</strong> on an \(n\times n\) board with no forbidden squares.</td><td><strong>Generalized Knight's Tour</strong> &mdash; the same board, but with some squares marked forbidden (must be avoided).</td></tr>
+<tr><td>5</td><td><strong>Ordinary \(N\)-Queens</strong> &mdash; no forbidden squares on the \(n\times n\) board.</td><td><strong>Generalized \(N\)-Queens</strong> &mdash; with some squares forbidden.</td></tr>
+<tr><td>6</td><td><strong>Fixed-size (\(9\times9\)) Sudoku</strong> &mdash; a constant-size puzzle, solvable by brute force in constant time.</td><td><strong>Generalized \(n^2\times n^2\) Sudoku</strong> &mdash; can a partially-filled board of <em>arbitrary</em> size be completed validly? NP-Complete as a function of \(n\).</td></tr>
+</table>
+<div class="box warn">
+<span class="lbl">The pattern across all six</span>
+<p>Pairs 1&ndash;2 change <em>what counts as a solution</em> (shortest vs. longest; cover edges vs. cover vertices). Pairs 4&ndash;6 add <em>constraints</em> (forbidden squares; an arbitrary partial board) to a previously unconstrained, trivially-solvable instance. Pair 3 changes the <em>question asked</em> about the same underlying search space (existence vs. a specific bound). In every case, the NP-Complete side still has the defining NP property &mdash; a proposed solution (a path, a board-filling, a tour) can be <em>checked</em> quickly &mdash; even though no one knows how to <em>find</em> one quickly.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-7">
+<h3>34.7 &middot; The Halting Problem</h3>
+<div class="box story">
+<span class="lbl">From "hard to solve quickly" to "impossible to solve at all"</span>
+<p>Everything up to this point &mdash; even the NP-Complete problems &mdash; is <em>decidable</em>: given unlimited time, a brute-force algorithm eventually finds the right answer. This section proves something categorically different: a precisely-stated yes/no question for which <strong>no algorithm can ever exist</strong>, no matter how much time it's given.</p>
+</div>
+<div class="box def">
+<span class="lbl">Turing's Halting Problem</span>
+<p>There is no algorithm \(H(P,x)\) that, for <em>every</em> program \(P\) and input \(x\), correctly decides whether \(P\) eventually halts on \(x\). That is: no algorithm \(H\) exists with</p>
+$$H(P,x) = \begin{cases} 1 & \text{if } P \text{ halts on input } x \\ 0 & \text{if } P \text{ does not halt on input } x \end{cases}$$
+<p>that is guaranteed to always terminate and always answer correctly, for every possible \(P\) and \(x\). &nbsp;<em>(label this specification (I))</em></p>
+</div>
+</section>
+
+<section class="topic" id="L34-8">
+<h3>34.8 &middot; Proving the Halting Problem Undecidable</h3>
+<div class="box proof">
+<span class="lbl">Proof, by contradiction (Turing's diagonalization)</span>
+<p><strong>Suppose</strong>, for contradiction, that such an algorithm \(H\) exists, satisfying (I).</p>
+<p><strong>Construct a new program \(\bar H\)</strong> that takes a single program \(P\) as its own input (feeding \(P\) to itself as \(x{:=}P\)), defined by:</p>
+$$\bar H(P) = \begin{cases} \text{run forever} & \text{if } H(P,P)=1 \\ \text{halt} & \text{if } H(P,P)=0 \end{cases} \qquad \text{(II)}$$
+<p>(\(\bar H\) is perfectly well-defined and buildable: it just calls \(H(P,P)\), which by assumption always terminates with an answer, and then deliberately does the <em>opposite</em> of what that answer predicts.)</p>
+<p><strong>Now feed \(\bar H\) to itself</strong> &mdash; set \(P:=\bar H\) in (II):</p>
+$$\bar H(\bar H) = \begin{cases} \text{run forever} & \text{if } H(\bar H,\bar H)=1 \\ \text{halt} & \text{if } H(\bar H,\bar H)=0 \end{cases} \qquad \text{(III)}$$
+<p><strong>Case 1: \(H(\bar H,\bar H)=0\).</strong> By (I), \(H\) has <em>correctly, surely</em> predicted that \(\bar H\) does not halt on input \(\bar H\) &mdash; i.e. \(\bar H(\bar H)\) does not halt. But (III) says precisely that when \(H(\bar H,\bar H)=0\), \(\bar H(\bar H)\) <strong>halts</strong>. Contradiction.</p>
+<p><strong>Case 2: \(H(\bar H,\bar H)=1\).</strong> By (I), \(H\) has correctly, surely predicted that \(\bar H\) halts on input \(\bar H\) &mdash; i.e. \(\bar H(\bar H)\) halts. But (III) says precisely that when \(H(\bar H,\bar H)=1\), \(\bar H(\bar H)\) <strong>runs forever</strong>. Contradiction.</p>
+<p class="qed">Both cases are impossible, yet \(H(\bar H,\bar H)\) must equal either \(0\) or \(1\) if \(H\) always terminates with an answer (which (I) assumed). The assumption that \(H\) exists is therefore false. Hence the Halting Problem is undecidable. &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">Why self-reference is the engine of the proof</span>
+<p>The trick &mdash; feeding a program to itself &mdash; is exactly the same move Cantor used to prove the real numbers are uncountable (constructing a number that differs from every number on a supposed complete list, at the diagonal position) and the same move behind Russell's Paradox ("the set of all sets that do not contain themselves"). \(\bar H\) is built, by construction, to do the opposite of whatever \(H\) predicts about it &mdash; so no consistent prediction about \(\bar H(\bar H)\) can exist, which is exactly what "undecidable" means: not merely hard, but logically impossible to decide correctly and terminate, in every case, for every input.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-9">
+<h3>34.9 &middot; The Collatz Conjecture &mdash; a Famous Open Problem</h3>
+<div class="box story">
+<span class="lbl">Why this belongs right next to the Halting Problem</span>
+<p>It's tempting to think "undecidable" and "nobody has solved it yet" mean the same thing. They don't. The Halting Problem was <em>proven</em>, with a finite, complete logical argument (&sect;34.8), to have no algorithmic solution whatsoever. The Collatz Conjecture below is merely <strong>unsolved</strong> &mdash; nobody has found a proof either way, but nothing rules one out, and it could be settled tomorrow.</p>
+</div>
+<div class="box def">
+<span class="lbl">The \(3n+1\) function</span>
+$$C(n) = \begin{cases} n/2 & n \text{ even} \\ 3n+1 & n \text{ odd} \end{cases}$$
+<p><strong>Collatz Conjecture:</strong> starting from <em>any</em> positive integer \(n\) and repeatedly applying \(C\), the sequence always eventually reaches \(1\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">A few traces by hand</span>
+<table class="grid" style="font-size:.88em">
+<tr><th>Start</th><th>Sequence</th></tr>
+<tr><td>\(n=6\)</td><td>\(6\to3\to10\to5\to16\to8\to4\to2\to1\)</td></tr>
+<tr><td>\(n=3\)</td><td>\(3\to10\to5\to16\to8\to4\to2\to1\)</td></tr>
+<tr><td>\(n=4\)</td><td>\(4\to2\to1\)</td></tr>
+<tr><td>\(n=5\)</td><td>\(5\to16\to8\to4\to2\to1\)</td></tr>
+</table>
+<table class="grid" style="font-size:.88em;margin-top:10px">
+<tr><th>Starting \(n\)</th><th>Steps to reach 1</th><th>Largest value reached</th></tr>
+<tr><td>2</td><td>1 (2 terms)</td><td>2</td></tr>
+<tr><td>3</td><td>7 (8 terms)</td><td>16</td></tr>
+<tr><td>4</td><td>2 (3 terms)</td><td>4</td></tr>
+<tr><td>5</td><td>5 (6 terms)</td><td>16</td></tr>
+<tr><td>6</td><td>8 (9 terms)</td><td>16</td></tr>
+<tr><td>\(\approx4.6\times10^{19}\)</td><td>2481 (2481 terms)</td><td>\(\approx1.18\times10^{25}\)</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">That last row is a genuine data point from large-scale computer verification: every starting value up to roughly \(2^{68}\) has been checked by exhaustive computer search and does eventually reach \(1\) &mdash; sometimes, as shown, after thousands of steps and after climbing to values many orders of magnitude larger than the start. No counterexample has ever been found, and no proof that none exists has ever been given.</p>
+</div>
+<div class="box warn">
+<span class="lbl">Why "checked up to a huge bound" isn't a proof</span>
+<p>The Collatz Conjecture makes a claim about <em>every</em> positive integer &mdash; infinitely many of them. Checking even an astronomically large finite prefix (as has been done) establishes nothing about the infinitely many integers left unchecked; a single counterexample, however large, would disprove the conjecture outright, and none has been ruled out by any known argument. This is precisely the gap between "extensively tested" and "proven" that makes Collatz a genuinely open problem &mdash; unlike the Halting Problem, which &sect;34.8 settled completely and for good.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-10">
+<h3>34.10 &middot; The Post Correspondence Problem</h3>
+<div class="box story">
+<span class="lbl">A model of the Halting Problem, in disguise</span>
+<p>The Post Correspondence Problem (PCP) looks like a harmless puzzle about matching strings &mdash; no programs, no execution, nothing resembling computation on the surface. That appearance is deceiving: PCP can simulate the run of any program on any input closely enough that solving PCP in general would solve the Halting Problem too, which is exactly why &sect;34.12 below can prove PCP is undecidable by <em>reduction</em> from &sect;34.8, without repeating the diagonalization argument from scratch.</p>
+</div>
+<div class="box def">
+<span class="lbl">Formal definition</span>
+<p>Let \(\Sigma\) be an alphabet, and let \(D_1,D_2,\dots,D_n\) be \(n\) "dominoes," each a pair of strings over \(\Sigma\):</p>
+$$D_1=\begin{bmatrix}u_1\\v_1\end{bmatrix},\ D_2=\begin{bmatrix}u_2\\v_2\end{bmatrix},\ \dots,\ D_n=\begin{bmatrix}u_n\\v_n\end{bmatrix}.$$
+<p><strong>PCP asks:</strong> does there exist a sequence of indices \((i_1,i_2,\dots,i_k)\), \(k\ge1\) (repeats of the same index allowed), such that concatenating the top strings in that order equals concatenating the bottom strings in that order?</p>
+$$u_{i_1}u_{i_2}\cdots u_{i_k} \;=\; v_{i_1}v_{i_2}\cdots v_{i_k}.$$
+</div>
+<div class="box ex">
+<span class="lbl">Worked example 1</span>
+<p>\(D_1=\begin{bmatrix}a\\ab\end{bmatrix}\), \(D_2=\begin{bmatrix}ba\\a\end{bmatrix}\). Try the sequence \((1,2)\):</p>
+<p>Top: \(a\,{+}\,ba = aba\). &nbsp; Bottom: \(ab\,{+}\,a=aba\). &nbsp;\(\checkmark\) Equal &mdash; \((1,2)\) is a solution.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example 2</span>
+<p>\(D_1=\begin{bmatrix}a\\ab\end{bmatrix}\), \(D_2=\begin{bmatrix}b\\c\end{bmatrix}\), \(D_3=\begin{bmatrix}ca\\a\end{bmatrix}\). Try the sequence \((1,2,3)\):</p>
+<p>Top: \(a+b+ca=abca\). &nbsp; Bottom: \(ab+c+a=abca\). &nbsp;\(\checkmark\) Equal &mdash; \((1,2,3)\) is a solution.</p>
+</div>
+<div class="box ex">
+<span class="lbl">Worked example 3 &mdash; a longer, repeated-tile solution</span>
+<p>\(D_1=\begin{bmatrix}aa\\a\end{bmatrix}\), \(D_2=\begin{bmatrix}a\\aaab\end{bmatrix}\), \(D_3=\begin{bmatrix}bbb\\bbaa\end{bmatrix}\), over \(\Sigma=\{a,b,c\}\). This instance needs a tile used more than once: the sequence \((1,1,2,3,1,1)\):</p>
+<p>Top: \(aa+aa+a+bbb+aa+aa = aaaaabbbaaaa\).</p>
+<p>Bottom: \(a+a+aaab+bbaa+a+a = aaaaabbbaaaa\).</p>
+<p>\(\checkmark\) Both strings equal \(\texttt{aaaaabbbaaaa}\) (12 characters) &mdash; confirming \((1,1,2,3,1,1)\) is a valid solution. (A tile may be selected any number of times, which is exactly what makes PCP powerful enough to simulate unbounded computation, rather than just a finite matching puzzle.)</p>
+</div>
+</section>
+
+<section class="topic" id="L34-11">
+<h3>34.11 &middot; Solving PCP by BFS with Pruning</h3>
+<div class="box def">
+<span class="lbl">The pruning rule</span>
+<p>Build sequences one tile at a time, breadth-first (shortest sequences first, so the first match found is guaranteed shortest). After appending a tile, concatenate the Top and Bottom strings built so far; <strong>keep</strong> the partial sequence only if one of the two strings is a prefix of the other (if they've already diverged, no amount of appending more tiles can ever make them equal again, so <strong>prune</strong> immediately). A sequence where Top and Bottom are fully equal, not just a prefix of each other, is a complete solution.</p>
+</div>
+<div class="box ex">
+<span class="lbl">The instance</span>
+<p>\(D_1=\begin{bmatrix}b\\bba\end{bmatrix}\), \(D_2=\begin{bmatrix}aa\\a\end{bmatrix}\), \(D_3=\begin{bmatrix}bab\\baa\end{bmatrix}\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">BFS Level 1 (sequences of length 1)</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Sequence</th><th>Top</th><th>Bottom</th><th>Decision</th></tr>
+<tr><td>(1)</td><td>b</td><td>bba</td><td>keep (\(b\) is a prefix of \(bba\))</td></tr>
+<tr><td>(2)</td><td>aa</td><td>a</td><td>keep (\(a\) is a prefix of \(aa\))</td></tr>
+<tr><td>(3)</td><td>bab</td><td>baa</td><td>prune (diverge at character 3: \(b\neq a\))</td></tr>
+</table>
+<p>Retain: (1), (2).</p>
+</div>
+<div class="box worked">
+<span class="lbl">BFS Level 2 (length 2)</span>
+<table class="grid trace" style="font-size:.8em">
+<tr><th>Sequence</th><th>Top</th><th>Bottom</th><th>Decision</th></tr>
+<tr><td>(1,1)</td><td>bb</td><td>bbabba</td><td>keep</td></tr>
+<tr><td>(1,2)</td><td>baa</td><td>bbaa</td><td>prune (char 2: \(a\neq b\))</td></tr>
+<tr><td>(1,3)</td><td>bbab</td><td>bbabaa</td><td>keep</td></tr>
+<tr><td>(2,1)</td><td>aab</td><td>abba</td><td>prune (char 2: \(a\neq b\))</td></tr>
+<tr><td>(2,2)</td><td>aaaa</td><td>aa</td><td>keep</td></tr>
+<tr><td>(2,3)</td><td>aabab</td><td>abaa</td><td>prune (char 2: \(a\neq b\))</td></tr>
+</table>
+<p>Retain: (1,1), (1,3), (2,2).</p>
+</div>
+<div class="box worked">
+<span class="lbl">BFS Level 3 (length 3) &mdash; abbreviated to the surviving branch</span>
+<table class="grid trace" style="font-size:.8em">
+<tr><th>Sequence</th><th>Top</th><th>Bottom</th><th>Decision</th></tr>
+<tr><td>(1,1,1), (1,1,2), (1,1,3)</td><td>&mdash;</td><td>&mdash;</td><td>all prune</td></tr>
+<tr><td>(1,3,1), (1,3,3)</td><td>&mdash;</td><td>&mdash;</td><td>both prune</td></tr>
+<tr><td>(1,3,2)</td><td>bbabaa</td><td>bbabaaa</td><td>keep (\(bbabaa\) is a prefix of \(bbabaaa\))</td></tr>
+<tr><td>(2,2,1)</td><td>aaaab</td><td>aabba</td><td>prune</td></tr>
+<tr><td>(2,2,2)</td><td>aaaaaa</td><td>aaa</td><td>keep (\(aaa\) is a prefix of \(aaaaaa\))</td></tr>
+<tr><td>(2,2,3)</td><td>aaaabab</td><td>aabaa</td><td>prune</td></tr>
+</table>
+<p>Retain: (1,3,2), (2,2,2).</p>
+</div>
+<div class="box worked">
+<span class="lbl">BFS Level 4 (length 4) &mdash; the match</span>
+<table class="grid trace" style="font-size:.8em">
+<tr><th>Sequence</th><th>Top</th><th>Bottom</th><th>Decision</th></tr>
+<tr><td>(1,3,2,1)</td><td>bbabaab</td><td>bbabaaabba</td><td>prune (char 7: \(b\) vs \(a\))</td></tr>
+<tr><td>(1,3,2,2)</td><td>bbabaaaa</td><td>bbabaaaa</td><td><strong>MATCH</strong></td></tr>
+<tr><td>(1,3,2,3)</td><td>bbabaabab</td><td>bbabaaabaa</td><td>prune</td></tr>
+<tr><td>(2,2,2,1)</td><td>aaaaaab</td><td>aaabba</td><td>prune</td></tr>
+<tr><td>(2,2,2,2)</td><td>aaaaaaaa</td><td>aaaa</td><td>prune (no longer a prefix relation once checked to full length)</td></tr>
+<tr><td>(2,2,2,3)</td><td>aaaaaabab</td><td>aaabaa</td><td>prune</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Shortest solution</span>
+<p>$$(1,3,2,2): \qquad \text{Top} = b+bab+aa+aa = \texttt{bbabaaaa}, \qquad \text{Bottom} = bba+baa+a+a = \texttt{bbabaaaa}.$$</p>
+<p>Both strings equal <code>bbabaaaa</code> (8 characters) &mdash; the shortest possible PCP solution for this instance, found by BFS in exactly four levels. Breadth-first order guarantees this is the shortest: every length-1, length-2, and length-3 sequence was checked (and none matched) before any length-4 sequence was tried.</p>
+</div>
+</section>
+
+<section class="topic" id="L34-12">
+<h3>34.12 &middot; PCP Is Undecidable Too</h3>
+<div class="box result">
+<span class="lbl">Note: PCP is undecidable</span>
+<p><strong>Proof hint, by reduction:</strong> \(\text{Halting} \le_p \text{PCP}\) (a program's entire execution trace can be encoded, step by step, as a sequence of dominoes, built so that a PCP solution exists exactly when the program halts &mdash; the full construction is intricate and left as a reference result rather than reproduced here). Since \(\text{Halting}\le_p\text{PCP}\):</p>
+<ol>
+<li>By &sect;34.4's reduction logic, PCP is at least as hard as the Halting Problem.</li>
+<li>Since the Halting Problem is undecidable (proven in full in &sect;34.8), <strong>PCP is undecidable</strong> too &mdash; if PCP could always be decided, composing that decision procedure with the reduction would decide Halting as well, contradicting &sect;34.8.</li>
+</ol>
+</div>
+<div class="box warn">
+<span class="lbl">Reconciling this with &sect;34.11's successful BFS search</span>
+<p>"PCP is undecidable" does not mean no PCP instance can ever be solved &mdash; &sect;34.11 just solved one, cleanly, in four BFS levels. It means there is no <em>single algorithm</em> that correctly handles <em>every possible</em> PCP instance and always terminates: an instance with no solution at all gives the BFS no way to know, in general, whether to keep searching a little longer or to conclude "unsolvable" and halt &mdash; because "unsolvable" instances can require arbitrarily long searches before any useful structure emerges, exactly mirroring the Halting Problem's own asymmetry (a halting program eventually proves it halts; a non-halting one gives no finite signal that it never will).</p>
+</div>
+</section>
+
+<div class="box result" style="margin-top:20px;">
+<span class="lbl">Where Lectures 32&ndash;34 leave off</span>
+<p>Three lectures, four genuinely different kinds of question about algorithms: structural (bridges and cut points), relational (strongly connected components), geometric with a hardness proof attached (Convex Hull, via reduction from Sorting), and foundational (the entire P/NP/NPC hierarchy, capped by a hard limit on computation itself &mdash; the Halting Problem, undecidable by Turing's diagonalization, with the Collatz Conjecture alongside it as a reminder that "open" and "undecidable" are not the same word, and the Post Correspondence Problem showing that undecidability shows up in places that don't look anything like a program). This is also where the uploaded material currently ends.</p>
 </div>
 
 
@@ -3871,7 +4525,7 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 
 <section class="topic" id="recap" style="margin-top:56px;border-top:3px solid var(--accent);padding-top:30px;">
 <h3 style="font-size:26px;">Full Course Recap</h3>
-<p>Twenty-six lectures (numbered 1 through 28, with 24 and 26 not yet uploaded), one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
+<p>Thirty-two lectures (numbered 1 through 34, with 24 and 26 not yet uploaded), one continuous story: every algorithm in this collection is an answer to the same recurring question — <em>"the obvious way works, but can we prove something better is possible, and then actually build it?"</em> Here's how it all connects.</p>
 
 <table class="grid">
 <tr><th>Lectures</th><th>The question</th><th>The answer</th></tr>
@@ -3891,6 +4545,10 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 <tr><td>23</td><td>What data structure keeps "find the minimum" and "insert a new element" both fast?</td><td>The binary heap — Max-Heapify, Build-Max-Heap, and Heapsort, all traced step by step on the canonical 10-element array.</td></tr>
 <tr><td>25</td><td>Prim's finds the cheapest way to connect everything — what finds the cheapest way to <em>reach</em> one specific vertex?</td><td>Dijkstra's algorithm — the same extract-and-relax skeleton as Prim's, repurposed from "connect" to "reach," fully traced on a 5-vertex graph.</td></tr>
 <tr><td>27&ndash;28</td><td>In a sliding-tile puzzle, why are exactly half of all possible arrangements permanently unsolvable?</td><td>A parity invariant (\(I=\text{sgn}\cdot X\)) proven unchanged by any legal move, the factorial-number-system rank that turns any arrangement into an array index, and a rank-indexed BFS that finds every one of the reachable states systematically.</td></tr>
+<tr><td>29&ndash;31</td><td>Lex-BFS (Lecture 28) is systematic but blind &mdash; can a search be made to prefer promising states?</td><td>Informed search: "God's number" bounds how deep any blind search can need to go, the \(g/h/f\) framework scores states by actual-cost-so-far plus estimated-cost-remaining, the \(A^\ast\) algorithm (Dijkstra's extract-and-relax loop plus a heuristic term) finds the optimal solution, and a full proof &mdash; admissibility, consistency, non-decreasing \(f\) &mdash; of exactly why it's guaranteed to.</td></tr>
+<tr><td>32</td><td>Which single edges or vertices hold a graph together &mdash; and which are redundant?</td><td>Tarjan's unified DFS algorithm: one pass tracking discovery time \(d[u]\) and low-link \(low[u]\) finds every bridge and every articulation (cut) point in \(O(V+E)\).</td></tr>
+<tr><td>33</td><td>In a <em>directed</em> graph, which groups of vertices can all reach each other?</td><td>Tarjan's SCC algorithm: the same \(d[u]/low[u]\) idea plus an explicit stack partitions the graph into strongly connected components, output in reverse-topological order of the shrunk SCC-DAG.</td></tr>
+<tr><td>34</td><td>Can an algorithm be proven optimal rather than just fast in practice &mdash; and where does computation itself hit a hard wall?</td><td>Graham's Scan for Convex Hull, proven \(\Omega(n\log n)\)-optimal via a reduction from Sorting; the full P/NP/NP-Complete hierarchy with six side-by-side examples; Turing's proof that the Halting Problem is undecidable; the Collatz Conjecture as a contrast (merely open, not proven undecidable); and the Post Correspondence Problem, undecidable by reduction from Halting.</td></tr>
 </table>
 
 <h4>Techniques that kept reappearing</h4>
@@ -3928,16 +4586,33 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 <tr><td><strong>Relax(u, v, w)</strong></td><td>Check whether reaching \(v\) via \(u\) beats the best known distance to \(v\); if so, update it — the one arithmetic step Dijkstra's algorithm is built from.</td></tr>
 <tr><td><strong>Lehmer code / factorial number system</strong></td><td>A bijection between permutations of \(n\) symbols and integers in \([0,n!{-}1]\), built from each element's inversion count — used to turn puzzle states into array indices.</td></tr>
 <tr><td><strong>Permutation parity / solvability invariant</strong></td><td>A quantity (sign of the permutation, combined with the blank tile's position parity) that provably never changes under a legal sliding-puzzle move — proves exactly half of all arrangements are unreachable from any given one.</td></tr>
+<tr><td><strong>God's number</strong></td><td>The largest number of moves any reachable state of a puzzle could possibly need to reach the goal &mdash; the depth any blind search is guaranteed to finish within.</td></tr>
+<tr><td><strong>\(g(S)\), \(h(S)\), \(f(S)\)</strong></td><td>In informed search: the actual cost so far to reach \(S\); a heuristic estimate of the remaining cost from \(S\) to the goal; and their sum, the estimated total cost of a solution routed through \(S\).</td></tr>
+<tr><td><strong>\(A^\ast\) algorithm</strong></td><td>Dijkstra's extract-and-relax search, generalized to always expand the state with smallest \(f=g+h\) &mdash; reduces to Dijkstra's algorithm exactly when \(h\equiv0\).</td></tr>
+<tr><td><strong>Admissible heuristic</strong></td><td>A heuristic \(h\) that never overestimates: \(0\le h(S)\le h^\ast(S)\) for every state \(S\).</td></tr>
+<tr><td><strong>Consistent heuristic</strong></td><td>A heuristic satisfying the triangle inequality \(h(S)\le c(S,V)+h(V)\) for every legal move \(S\to V\) &mdash; the condition that makes \(f\) non-decreasing along any path, which is what makes \(A^\ast\) provably optimal.</td></tr>
+<tr><td><strong>Manhattan distance</strong></td><td>\(|r_1-r_2|+|c_1-c_2|\) between two grid cells &mdash; the admissible, consistent heuristic used for the 8-puzzle, summed over tiles only (never the blank).</td></tr>
+<tr><td><strong>Bridge</strong></td><td>An edge whose deletion increases the number of connected components of a graph &mdash; equivalently, the only path between its two endpoints.</td></tr>
+<tr><td><strong>Articulation point / cut point</strong></td><td>A vertex whose deletion (with its incident edges) increases the number of connected components.</td></tr>
+<tr><td><strong>Back edge</strong></td><td>In a DFS tree, an edge from a vertex to one of its own ancestors (other than its direct parent) &mdash; evidence of a cycle, and the only source of "shortcuts" a low-link value can use.</td></tr>
+<tr><td><strong>Discovery time \(d[u]\) / low-link \(low[u]\)</strong></td><td>\(d[u]\) is the order DFS first visits \(u\); \(low[u]\) is the smallest discovery time reachable from \(u\)'s DFS subtree using at most one back-edge shortcut &mdash; the pair that powers Tarjan's bridge, cut-point, and SCC algorithms alike.</td></tr>
+<tr><td><strong>Strongly Connected Component (SCC)</strong></td><td>A maximal set of vertices in a directed graph, every one of which can reach every other by a directed path.</td></tr>
+<tr><td><strong>Reduction (\(A\le_p B\))</strong></td><td>A polynomial-time transformation turning instances of problem \(A\) into instances of problem \(B\), used to prove \(B\) is at least as hard as \(A\) &mdash; the tool behind both the Sorting&ndash;Convex-Hull lower bound and the Halting&ndash;PCP undecidability result.</td></tr>
+<tr><td><strong>Convex hull</strong></td><td>The smallest convex polygon containing a given set of points in the plane &mdash; what a rubber band stretched around the points and released would trace.</td></tr>
+<tr><td><strong>P, NP, NP-Complete</strong></td><td>P: solvable in polynomial time. NP: a proposed solution can be <em>checked</em> in polynomial time, even if none is known to be <em>findable</em> that fast. NP-Complete: in NP, and at least as hard as every other problem in NP (every NP problem reduces to it).</td></tr>
+<tr><td><strong>Halting Problem</strong></td><td>Deciding, for an arbitrary program \(P\) and input \(x\), whether \(P\) eventually halts on \(x\) &mdash; proven by Turing (via self-referential diagonalization) to have no algorithmic solution at all.</td></tr>
+<tr><td><strong>Undecidable</strong></td><td>Provably unsolvable by any algorithm whatsoever, no matter how much time is allowed &mdash; stronger than merely "unsolved" (compare the Collatz Conjecture, which is unsolved but not known to be undecidable).</td></tr>
+<tr><td><strong>Post Correspondence Problem (PCP)</strong></td><td>Given pairs ("dominoes") of strings, decide whether some sequence of dominoes (repeats allowed) makes the concatenated top strings equal the concatenated bottom strings &mdash; undecidable by reduction from the Halting Problem.</td></tr>
 </table>
 
 <div class="box warn" style="margin-top:20px;">
 <span class="lbl">What's not in this guide (yet)</span>
-<p><strong>Lectures 24 and 26 were not included in this upload</strong> — they're skipped over here rather than silently absorbed into the numbering, and can be added in whenever they're available. Beyond that gap, the course syllabus still continues past Lecture 28 into hashing and amortized analysis, further dynamic programming (edit distance, optimal BST), Huffman coding, general-purpose graph traversal (BFS/DFS as search tools, PageRank), complexity theory (P, NP, NP-completeness, Turing machines), and cryptographic algorithms (RSA, Diffie&ndash;Hellman). None of that material is in the lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
+<p><strong>Lectures 24 and 26 were not included in this upload</strong> &mdash; they're skipped over here rather than silently absorbed into the numbering, and can be added in whenever they're available. Beyond that gap, the course syllabus still continues past Lecture 34 into hashing and amortized analysis, further dynamic programming (edit distance, optimal BST), Huffman coding, a formal treatment of Turing machines, and cryptographic algorithms (RSA, Diffie&ndash;Hellman). (P, NP, NP-Completeness, and the undecidability of the Halting Problem &mdash; once listed here as not yet covered &mdash; are now in Lecture 34.) None of the remaining material is in the lectures uploaded so far, so it isn't covered here. When those lectures are available, this guide can be extended the same way it was built.</p>
 </div>
 </section>
 
 <footer>
-  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) — Lectures 1&ndash;23, 25, 27, and 28 (Lectures 24 and 26 not yet uploaded), covering the introduction through Dynamic Programming, Graph Algorithms (spanning trees, Prim's &amp; Kruskal's, Disjoint-Set Forests, the Ackermann function), Binary Heaps &amp; Heapsort, Dijkstra's algorithm, and permutation-puzzle solvability, plus a fully worked exercise set. Every proof and worked example was checked line by line against the original handwritten lecture notes and independently verified computationally; a small number of ambiguous transcriptions and source slips (noted where they occur) were identified and corrected.
+  Built as a complete study companion for <em>Algorithms and Computational Complexity</em> (Prof. Kedukodi Babushri Srinivas, Mathematics, SBHM, MIT Manipal) &mdash; Lectures 1&ndash;23, 25, and 27&ndash;34 (Lectures 24 and 26 not yet uploaded), covering the introduction through Dynamic Programming, Graph Algorithms (spanning trees, Prim's &amp; Kruskal's, Disjoint-Set Forests, the Ackermann function, bridges &amp; cut points, strongly connected components), Binary Heaps &amp; Heapsort, Dijkstra's algorithm, permutation-puzzle solvability, informed search (A*), Convex Hull, and the course's closing unit on the limits of computation (P/NP/NP-Complete, the Halting Problem, the Collatz Conjecture, and the Post Correspondence Problem), plus a fully worked exercise set. Every proof and worked example was checked line by line against the original handwritten lecture notes and independently verified computationally; a small number of ambiguous transcriptions and source slips (noted where they occur) were identified and corrected.
 </footer>
 </main>
 </div>
