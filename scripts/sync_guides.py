@@ -59,6 +59,21 @@ GUIDES = [
         "accent_bg": "rgba(138,106,43,0.92)",
         "extra_css": "    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }\n",
     },
+    {
+        "source": "~/Desktop/EOM/HTML explanations/EOM.html",
+        "dest": "guides/eom/eom-guide.html",
+        "accent_bg": "rgba(31,92,92,0.92)",
+        "extra_css": (
+            "    .sidebar { padding-top: calc(56px + var(--sgl-safe-top)); }\n"
+            "    .menu-btn { top: calc(12px + var(--sgl-safe-top)); }\n"
+        ),
+        # clear the back-link: menu button sits beside it (iPad portrait),
+        # sidebar title sits below it (iPad landscape / open drawer)
+        "always_css": (
+            "  .sidebar { padding-top: 56px; }\n"
+            "  @media (max-width:900px) { .menu-btn { left: 96px; } }\n"
+        ),
+    },
 ]
 
 VIEWPORT_RE = re.compile(
@@ -69,10 +84,11 @@ CHARSET_RE = re.compile(r'<meta\s+charset=["\'][^"\']*["\']\s*/?>', re.IGNORECAS
 BODY_RE = re.compile(r'<body(\s[^>]*)?>', re.IGNORECASE)
 
 
-def build_snippet(accent_bg: str, extra_css: str) -> str:
+def build_snippet(accent_bg: str, extra_css: str, always_css: str = "") -> str:
     css_block = (
         "<style>\n"
         "  :root { --sgl-safe-top: 0px; }\n"
+        f"{always_css}"
         "  @media (display-mode: standalone) {\n"
         "    :root { --sgl-safe-top: env(safe-area-inset-top); }\n"
         "    body { padding-top: var(--sgl-safe-top); }\n"
@@ -91,7 +107,7 @@ def build_snippet(accent_bg: str, extra_css: str) -> str:
     return css_block + link
 
 
-def inject(html: str, accent_bg: str, extra_css: str) -> str:
+def inject(html: str, accent_bg: str, extra_css: str, always_css: str = "") -> str:
     m = VIEWPORT_RE.search(html)
     if m:
         content = m.group(1)
@@ -111,7 +127,7 @@ def inject(html: str, accent_bg: str, extra_css: str) -> str:
     bm = BODY_RE.search(html)
     if not bm:
         raise ValueError("No <body> tag found")
-    snippet = build_snippet(accent_bg, extra_css)
+    snippet = build_snippet(accent_bg, extra_css, always_css)
     html = html[: bm.end()] + "\n" + snippet + html[bm.end() :]
     return html
 
@@ -128,7 +144,7 @@ def main():
             continue
 
         html = src.read_text(encoding="utf-8")
-        html = inject(html, g["accent_bg"], g["extra_css"])
+        html = inject(html, g["accent_bg"], g["extra_css"], g.get("always_css", ""))
 
         before = dest.read_text(encoding="utf-8") if dest.exists() else None
         if before == html:

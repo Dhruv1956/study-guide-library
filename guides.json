@@ -40,5 +40,12 @@
     "courseName": "Foundations of Machine Learning",
     "path": "guides/fml/ml-numerical-ia-prep.html",
     "dateAdded": "2026-11-06"
+  },
+  {
+    "title": "HUM 3022 \u00b7 Essentials of Management \u2014 Endsem Ultimate Guide",
+    "course": "EOM",
+    "courseName": "Essentials of Management",
+    "path": "guides/eom/eom-guide.html",
+    "dateAdded": "2026-11-17"
   }
 ]
