@@ -4070,7 +4070,7 @@ $$u_{i_1}u_{i_2}\cdots u_{i_k} \;=\; v_{i_1}v_{i_2}\cdots v_{i_k}.$$
 <div class="lecture-header" id="EX">
   <div class="ltag">Exercise Set</div>
   <h2>Miscellaneous Exercise Problems — Fully Worked Solutions</h2>
-  <p>Fourteen problems spanning every algorithm and technique in this course — sorting, divide-and-conquer, dynamic programming groundwork, and asymptotic analysis. Every numeric worked example below was independently computed and cross-checked before being written up.</p>
+  <p>Thirty-four problems spanning every algorithm and technique in this course — sorting, divide-and-conquer, dynamic programming, graph algorithms, heaps, permutation puzzles, informed search, NP-completeness, and computability. Every numeric worked example below was independently computed and cross-checked before being written up.</p>
 </div>
 
 <section class="topic" id="EX-1">
@@ -4515,9 +4515,558 @@ $$\lim_{n\to\infty}\frac{n(n-1)/2}{n^2} = \lim_{n\to\infty}\frac{n^2-n}{2n^2} = 
 </div>
 </section>
 
+<section class="topic" id="EX-15">
+<h3>Exercise 15 &middot; Assembly-Line Scheduling, From Raw Numbers</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Solve the Assembly-Line-Scheduling problem given \(e_1=2,\ e_2=1,\ x_1=1,\ x_2=2\); \(a_{1,1..5}=1,3,5,7,9\); \(a_{2,1..5}=2,4,6,8,10\); \(t_{1,2..5}=1,2,1,2\) (line 1 &rarr; line 2 transfer costs); \(t_{2,2..5}=2,1,2,1\) (line 2 &rarr; line 1).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Applying FASTEST-WAY (&sect;19.1) directly</span>
+<p>Base case: \(f_1[1]=e_1+a_{1,1}=2+1=3\), \(f_2[1]=e_2+a_{2,1}=1+2=3\).</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>\(j\)</th><th>\(f_1[j]=\min(f_1[j-1]+a_{1,j},\ f_2[j-1]+t_{2,j}+a_{1,j})\)</th><th>\(f_2[j]=\min(f_2[j-1]+a_{2,j},\ f_1[j-1]+t_{1,j}+a_{2,j})\)</th></tr>
+<tr><td>2</td><td>\(\min(3{+}3,\ 3{+}2{+}3)=\min(6,8)=6\) (stay)</td><td>\(\min(3{+}4,\ 3{+}1{+}4)=\min(7,8)=7\) (stay)</td></tr>
+<tr><td>3</td><td>\(\min(6{+}5,\ 7{+}1{+}5)=\min(11,13)=11\) (stay)</td><td>\(\min(7{+}6,\ 6{+}2{+}6)=\min(13,14)=13\) (stay)</td></tr>
+<tr><td>4</td><td>\(\min(11{+}7,\ 13{+}2{+}7)=\min(18,22)=18\) (stay)</td><td>\(\min(13{+}8,\ 11{+}1{+}8)=\min(21,20)=20\) (<strong>switch</strong>, from \(f_1[3]\))</td></tr>
+<tr><td>5</td><td>\(\min(18{+}9,\ 20{+}1{+}9)=\min(27,30)=27\) (stay)</td><td>\(\min(20{+}10,\ 18{+}2{+}10)=\min(30,30)=30\) (stay, tie broken toward no switch)</td></tr>
+</table>
+<p>Exit: \(f^*=\min(f_1[5]+x_1,\ f_2[5]+x_2)=\min(27{+}1,\ 30{+}2)=\min(28,32)=\boxed{28}\), exiting via line 1.</p>
+</div>
+<div class="box result">
+<span class="lbl">Tracing the path back from \(l^*=1\)</span>
+<p>Every station on line 1 used "stay" (no switch) at \(j=2,3,4,5\), so the optimal route never leaves line 1 at all: \(S_{1,1}\to S_{1,2}\to S_{1,3}\to S_{1,4}\to S_{1,5}\to\) exit, total cost \(\boxed{28}\).</p>
+</div>
+<div class="box proof">
+<span class="lbl">Why dynamic programming beats the recursive version here</span>
+<p>The raw recursion for FASTEST-WAY (&sect;18.2) branches in two at every station &mdash; "which line did I come from?" &mdash; giving \(2^5=32\) leaf calls for just 5 stations, and the branching factor is exactly 2 <em>regardless</em> of the actual numbers, so cost grows as \(\Theta(2^n)\) purely from re-deriving the same \(f_1[j],f_2[j]\) values over and over (e.g. \(f_1[3]\) is recomputed independently inside both the "came from line 1" and "came from line 2" branches of station 4's call, and again inside both branches of station 5's call). Dynamic programming notices there are only \(2n=10\) distinct subproblems \(\{f_1[j],f_2[j]: j=1..5\}\) total, fills each exactly once bottom-up as the table above does, and reuses every value via \(O(1)\) array lookups &mdash; turning the same problem from \(\Theta(2^n)\) into \(\Theta(n)\), identically to how &sect;19.1 motivated the technique in the first place.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-16">
+<h3>Exercise 16 &middot; Minimum Spanning Tree, Prim's and Kruskal's Side by Side</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Find the MST of graph \(G\) on 9 vertices \(\{a,\dots,i\}\) with \(w(a,b){=}4,\ w(b,c){=}8,\ w(c,d){=}7,\ w(d,e){=}9,\ w(a,h){=}8,\ w(h,g){=}1,\ w(g,f){=}2,\ w(f,e){=}10,\ w(b,h){=}11,\ w(h,i){=}7,\ w(i,c){=}2,\ w(i,g){=}6,\ w(c,f){=}4,\ w(d,f){=}14\), using (i) Prim's and (ii) Kruskal's algorithm, each shown for at least 4 iterations.</p>
+</div>
+<div class="box worked">
+<span class="lbl">(i) Prim's Algorithm, from root \(a\) (&sect;21.1&ndash;21.2 pattern), min-priority queue on key</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Iteration</th><th>Extract-Min</th><th>Edge added</th><th>Tree so far</th></tr>
+<tr><td>1</td><td>\(a\) (key 0, root)</td><td>&mdash;</td><td>\(\{a\}\)</td></tr>
+<tr><td>2</td><td>\(b\) (key 4 via \(a\))</td><td>\((a,b)\), weight 4</td><td>\(\{a,b\}\)</td></tr>
+<tr><td>3</td><td>\(c\) (key 8 via \(b\))</td><td>\((b,c)\), weight 8</td><td>\(\{a,b,c\}\)</td></tr>
+<tr><td>4</td><td>\(i\) (key 2 via \(c\))</td><td>\((c,i)\), weight 2</td><td>\(\{a,b,c,i\}\)</td></tr>
+<tr><td>5</td><td>\(f\) (key 4 via \(c\))</td><td>\((c,f)\), weight 4</td><td>\(\{a,b,c,f,i\}\)</td></tr>
+<tr><td>6</td><td>\(g\) (key 2 via \(f\))</td><td>\((f,g)\), weight 2</td><td>\(\{a,b,c,f,g,i\}\)</td></tr>
+<tr><td>7</td><td>\(h\) (key 1 via \(g\))</td><td>\((g,h)\), weight 1</td><td>\(\{a,b,c,f,g,h,i\}\)</td></tr>
+<tr><td>8</td><td>\(d\) (key 7 via \(c\))</td><td>\((c,d)\), weight 7</td><td>\(\{a,b,c,d,f,g,h,i\}\)</td></tr>
+<tr><td>9</td><td>\(e\) (key 9 via \(d\))</td><td>\((d,e)\), weight 9</td><td>all 9 vertices</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Keys are re-lowered (Decrease-Key) whenever a cheaper edge to the fringe is found &mdash; e.g. \(i\) is first reached from \(h\) at weight 7, but once \(c\) joins the tree, \(w(c,i)=2 &lt; 7\) lowers \(i\)'s key before it is ever extracted.</p>
+</div>
+<div class="box worked">
+<span class="lbl">(ii) Kruskal's Algorithm, with Disjoint-Set union by rank (&sect;21.6&ndash;21.8 pattern)</span>
+<p>Sorted edges: \((h,g){=}1,\ (g,f){=}2,\ (i,c){=}2,\ (a,b){=}4,\ (c,f){=}4,\ (i,g){=}6,\ (c,d){=}7,\ (h,i){=}7,\ (b,c){=}8,\ (a,h){=}8,\ (d,e){=}9,\ (f,e){=}10,\ (b,h){=}11,\ (d,f){=}14\).</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Iteration</th><th>Edge tested</th><th>Find-Set check</th><th>Decision</th></tr>
+<tr><td>1</td><td>\((h,g)\), 1</td><td>\(\textit{Find}(h)\ne\textit{Find}(g)\)</td><td><strong>add</strong> &mdash; union\(\{h,g\}\)</td></tr>
+<tr><td>2</td><td>\((g,f)\), 2</td><td>\(\textit{Find}(g)\ne\textit{Find}(f)\)</td><td><strong>add</strong> &mdash; union\(\{f,g,h\}\)</td></tr>
+<tr><td>3</td><td>\((i,c)\), 2</td><td>\(\textit{Find}(i)\ne\textit{Find}(c)\)</td><td><strong>add</strong> &mdash; union\(\{c,i\}\)</td></tr>
+<tr><td>4</td><td>\((a,b)\), 4</td><td>\(\textit{Find}(a)\ne\textit{Find}(b)\)</td><td><strong>add</strong> &mdash; union\(\{a,b\}\)</td></tr>
+<tr><td>5</td><td>\((c,f)\), 4</td><td>\(\textit{Find}(c)\ne\textit{Find}(f)\)</td><td><strong>add</strong> &mdash; union\(\{c,i\}\cup\{f,g,h\}=\{c,f,g,h,i\}\)</td></tr>
+<tr><td>6</td><td>\((i,g)\), 6</td><td>\(\textit{Find}(i)=\textit{Find}(g)\) (both in \(\{c,f,g,h,i\}\))</td><td><strong>reject</strong> &mdash; would form a cycle</td></tr>
+<tr><td>7</td><td>\((c,d)\), 7</td><td>\(\textit{Find}(c)\ne\textit{Find}(d)\)</td><td><strong>add</strong> &mdash; union into \(\{c,d,f,g,h,i\}\)</td></tr>
+<tr><td>8</td><td>\((h,i)\), 7</td><td>\(\textit{Find}(h)=\textit{Find}(i)\)</td><td><strong>reject</strong> &mdash; cycle</td></tr>
+<tr><td>9</td><td>\((b,c)\), 8</td><td>\(\textit{Find}(b)\ne\textit{Find}(c)\)</td><td><strong>add</strong> &mdash; union \(\{a,b\}\cup\{c,d,f,g,h,i\}\)</td></tr>
+<tr><td>10</td><td>\((a,h)\), 8</td><td>\(\textit{Find}(a)=\textit{Find}(h)\)</td><td><strong>reject</strong> &mdash; cycle</td></tr>
+<tr><td>11</td><td>\((d,e)\), 9</td><td>\(\textit{Find}(d)\ne\textit{Find}(e)\)</td><td><strong>add</strong> &mdash; all 9 vertices now joined, <strong>stop</strong> (8 edges placed)</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Both algorithms agree</span>
+<p>Prim's tree: \(\{(a,b),(b,c),(c,i),(c,f),(f,g),(g,h),(c,d),(d,e)\}\). Kruskal's tree: \(\{(h,g),(g,f),(i,c),(a,b),(c,f),(c,d),(b,c),(d,e)\}\) &mdash; the exact same 8 edges, just discovered in a different order. Total weight both ways: \(4{+}8{+}2{+}4{+}2{+}1{+}7{+}9=\boxed{37}\), confirming &sect;21.5's guarantee that every MST of a graph with distinct edge weights is unique.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-17">
+<h3>Exercise 17 &middot; Dijkstra's Algorithm From an Adjacency Matrix</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Implement Dijkstra's algorithm given the directed graph \(G\) as an adjacency matrix on \(\{s,t,y,x,z\}\): \(s{\to}t{=}10,\ s{\to}y{=}5,\ t{\to}y{=}2,\ t{\to}x{=}1,\ y{\to}t{=}3,\ y{\to}x{=}9,\ y{\to}z{=}2,\ x{\to}z{=}4,\ z{\to}s{=}7,\ z{\to}x{=}6\). Mention the data structure used.</p>
+</div>
+<div class="box def">
+<span class="lbl">Data structure</span>
+<p>A <strong>min-priority queue</strong> keyed on \(d[\cdot]\), exactly as in &sect;25.3 &mdash; here traced with a binary min-heap (&sect;23.5), with <em>Decrease-Key</em> called every time <em>Relax</em> (&sect;25.2) tightens a distance.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Full trace, source \(s\)</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Extract-Min</th><th>\(d[s]\)</th><th>\(d[t]\)</th><th>\(d[y]\)</th><th>\(d[x]\)</th><th>\(d[z]\)</th><th>Relaxations performed</th></tr>
+<tr><td>&mdash; (init)</td><td>0</td><td>\(\infty\)</td><td>\(\infty\)</td><td>\(\infty\)</td><td>\(\infty\)</td><td>&mdash;</td></tr>
+<tr><td>\(s\)</td><td>0</td><td>10</td><td>5</td><td>\(\infty\)</td><td>\(\infty\)</td><td>\(s{\to}t{:}\,0{+}10{<}\infty\); \(s{\to}y{:}\,0{+}5{<}\infty\)</td></tr>
+<tr><td>\(y\) (key 5)</td><td>0</td><td>8</td><td>5</td><td>14</td><td>7</td><td>\(y{\to}t{:}\,5{+}3{=}8{<}10\); \(y{\to}x{:}\,5{+}9{=}14{<}\infty\); \(y{\to}z{:}\,5{+}2{=}7{<}\infty\)</td></tr>
+<tr><td>\(z\) (key 7)</td><td>0</td><td>8</td><td>5</td><td>13</td><td>7</td><td>\(z{\to}x{:}\,7{+}6{=}13{<}14\); \(z{\to}s\): \(7{+}7{=}14\not<0\), no change</td></tr>
+<tr><td>\(t\) (key 8)</td><td>0</td><td>8</td><td>5</td><td>9</td><td>7</td><td>\(t{\to}x{:}\,8{+}1{=}9{<}13\); \(t{\to}y\): \(8{+}2{=}10\not<5\), no change</td></tr>
+<tr><td>\(x\) (key 9)</td><td>0</td><td>8</td><td>5</td><td>9</td><td>7</td><td>\(x{\to}z\): \(9{+}4{=}13\not<7\), no change</td></tr>
+</table>
+<span class="answer-final">Final shortest distances from \(s\): \(d[s]{=}0,\ d[y]{=}5,\ d[z]{=}7,\ d[t]{=}8,\ d[x]{=}9\).</span>
+<p class="small" style="color:var(--ink-soft)">Extraction order \(s,y,z,t,x\) matches the final distances exactly in sorted order &mdash; a hallmark of Dijkstra's correctness: once a vertex is extracted its distance is final, so extraction order is automatically non-decreasing in \(d\).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-18">
+<h3>Exercise 18 &middot; Build-Max-Heap and Heapsort, Two Rounds</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Illustrate Build-Max-Heap on \(A=\langle5,3,17,10,84,19,6,22,9\rangle\), then carry out Heapsort for 2 iterations.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Build-Max-Heap (&sect;23.3), loop \(i=4,3,2,1\) (\(\lfloor9/2\rfloor=4\))</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>\(i\)</th><th>\(A[i]\) and children</th><th>Action</th><th>Array after this step</th></tr>
+<tr><td>4</td><td>\(A[4]{=}10\), children \(A[8]{=}22\)</td><td>\(22>10\) &rarr; swap \(A[4]{\leftrightarrow}A[8]\)</td><td>[5,3,17,<strong>22</strong>,84,19,6,<strong>10</strong>,9]</td></tr>
+<tr><td>3</td><td>\(A[3]{=}17\), children \(A[6]{=}19,A[7]{=}6\)</td><td>largest child 19 &rarr; swap \(A[3]{\leftrightarrow}A[6]\)</td><td>[5,3,<strong>19</strong>,22,84,<strong>17</strong>,6,10,9]</td></tr>
+<tr><td>2</td><td>\(A[2]{=}3\), children \(A[4]{=}22,A[5]{=}84\)</td><td>largest child 84 &rarr; swap \(A[2]{\leftrightarrow}A[5]\)</td><td>[5,<strong>84</strong>,19,22,<strong>3</strong>,17,6,10,9]</td></tr>
+<tr><td>1</td><td>\(A[1]{=}5\), children \(A[2]{=}84,A[3]{=}19\)</td><td>largest child 84 &rarr; swap \(A[1]{\leftrightarrow}A[2]\); recurse at 2: children \(A[4]{=}22,A[5]{=}3\), largest 22 &rarr; swap \(A[2]{\leftrightarrow}A[4]\); recurse at 4: child \(A[8]{=}10&gt;5\) &rarr; swap \(A[4]{\leftrightarrow}A[8]\)</td><td>[<strong>84,22</strong>,19,<strong>10</strong>,3,17,6,<strong>5</strong>,9]</td></tr>
+</table>
+<span class="answer-final">Max-heap after Build-Max-Heap: A = [84, 22, 19, 10, 3, 17, 6, 5, 9]</span>
+</div>
+<div class="box worked">
+<span class="lbl">Heapsort, 2 iterations (&sect;23.4 pattern)</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Round (\(i\))</th><th>Swap \(A[1]{\leftrightarrow}A[i]\)</th><th>Re-heapify heap region</th><th>Sorted suffix</th></tr>
+<tr><td>9</td><td>\(84{\leftrightarrow}9\) &rarr; [9,22,19,10,3,17,6,5,<u>84</u>]</td><td>\(9\) sinks: swap with 22 (bigger child), then with 10 &rarr; [22,10,19,9,3,17,6,5]</td><td>84</td></tr>
+<tr><td>8</td><td>\(22{\leftrightarrow}5\) &rarr; [5,10,19,9,3,17,6,<u>22</u>,84]</td><td>\(5\) sinks: swap with 19 (bigger child), then with 17 &rarr; [19,10,17,9,3,5,6]</td><td>22, 84</td></tr>
+</table>
+<span class="answer-final">After 2 rounds: heap region = [19, 10, 17, 9, 3, 5, 6], sorted suffix so far = 22, 84 (ascending at the array's tail).</span>
+</div>
+</section>
+
+<section class="topic" id="EX-19">
+<h3>Exercise 19 &middot; Decoding and Re-Encoding a Pr&uuml;fer Sequence</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>(i) Find the labelled tree \(T\) whose Pr&uuml;fer sequence is \(P=\langle1,7,2,9,9,2,7,1\rangle\). (ii) Given \(T\), find the Pr&uuml;fer sequence \(P\). (iii) Does the palindromic nature of \(P\) suggest some symmetry in \(T\)?</p>
+</div>
+<div class="box worked">
+<span class="lbl">(i) Decoding \(P\) &mdash; length 8, so \(n=10\) labelled vertices \(1,\dots,10\)</span>
+<p>Initial degree of each vertex \(=1+(\text{number of times it appears in }P)\): degrees are \(1{:}3,\ 2{:}3,\ 3{:}1,\ 4{:}1,\ 5{:}1,\ 6{:}1,\ 7{:}3,\ 8{:}1,\ 9{:}3,\ 10{:}1\). At each step, connect the <strong>smallest-labelled current leaf</strong> to the next symbol of \(P\), then decrement both degrees (&sect;20.2's method):</p>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>Step</th><th>\(P_i\)</th><th>Smallest leaf</th><th>Edge added</th></tr>
+<tr><td>1</td><td>1</td><td>3</td><td>(3, 1)</td></tr>
+<tr><td>2</td><td>7</td><td>4</td><td>(4, 7)</td></tr>
+<tr><td>3</td><td>2</td><td>5</td><td>(5, 2)</td></tr>
+<tr><td>4</td><td>9</td><td>6</td><td>(6, 9)</td></tr>
+<tr><td>5</td><td>9</td><td>8</td><td>(8, 9)</td></tr>
+<tr><td>6</td><td>2</td><td>9 <span class="small">(degree just dropped to 1)</span></td><td>(9, 2)</td></tr>
+<tr><td>7</td><td>7</td><td>2 <span class="small">(degree just dropped to 1)</span></td><td>(2, 7)</td></tr>
+<tr><td>8</td><td>1</td><td>7 <span class="small">(degree just dropped to 1)</span></td><td>(7, 1)</td></tr>
+</table>
+<p>After all 8 symbols are consumed, exactly two vertices remain at degree 1: \(\{1,10\}\). Connect them directly: edge \((1,10)\).</p>
+<span class="answer-final">T = { (3,1), (4,7), (5,2), (6,9), (8,9), (9,2), (2,7), (7,1), (1,10) } &mdash; 9 edges on 10 vertices, confirmed a tree (connected, no cycles, every degree matches the formula above).</span>
+</div>
+<div class="box worked">
+<span class="lbl">(ii) Re-encoding \(T\) back to a Pr&uuml;fer sequence (&sect;20.2, reverse direction)</span>
+<p>Repeatedly strip the smallest-labelled leaf and record its <em>neighbour</em>:</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:.92em">remove 3&rarr;record 1; remove 4&rarr;record 7; remove 5&rarr;record 2; remove 6&rarr;record 9; remove 8&rarr;record 9; remove 9&rarr;record 2; remove 2&rarr;record 7; remove 7&rarr;record 1; (two vertices \(\{1,10\}\) left &mdash; stop)</p>
+<span class="answer-final">Recovered sequence: &lang;1,7,2,9,9,2,7,1&rang; &mdash; exactly \(P\). &#10003;</span>
+</div>
+<div class="box result">
+<span class="lbl">(iii) Yes &mdash; the palindrome forces a mirror symmetry</span>
+<p>Reorganizing \(T\)'s edges by degree reveals a "spine" of four degree-3 vertices, \(1-7-2-9\), each also carrying its own pendant leaves: \(1\) carries leaves \(\{3,10\}\), \(7\) carries leaf \(\{4\}\), \(2\) carries leaf \(\{5\}\), \(9\) carries leaves \(\{6,8\}\). This is a perfect mirror: the map \(1\leftrightarrow9,\ 7\leftrightarrow2,\ \{3,10\}\leftrightarrow\{6,8\},\ 4\leftrightarrow5\) is a graph automorphism of \(T\) &mdash; folding the tree exactly onto itself end-to-end. This is not a coincidence: Pr&uuml;fer decoding builds the tree by consuming \(P\) left to right while encoding strips it by consuming leaves in the same order the sequence <em>records</em> them, so a sequence that reads the same forwards and backwards necessarily encodes a tree with matching structure read from either end &mdash; a palindromic Pr&uuml;fer sequence always encodes a tree with (at least) this kind of end-to-end mirror symmetry.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-20">
+<h3>Exercise 20 &middot; A Self-Referential Pair of Recurrences</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Solve \(r_1[j]=r_1[j{-}1]+r_2[j{-}1]\), \(r_2[j]=r_2[j{-}1]+r_1[j{-}1]\), with \(r_1[1]=1=r_2[1]\). Where does this recurrence occur?</p>
+</div>
+<div class="box proof">
+<span class="lbl">Solving it</span>
+<p>The two update rules are <strong>identical</strong> &mdash; both equal \(r_1[j{-}1]+r_2[j{-}1]\) &mdash; so \(r_1[j]=r_2[j]\) for every \(j\ge2\); combined with the matching base case \(r_1[1]=r_2[1]=1\), in fact \(r_1[j]=r_2[j]\) for <strong>all</strong> \(j\ge1\). Writing \(f(j)\) for their common value:</p>
+$$f(j)=f(j{-}1)+f(j{-}1)=2f(j{-}1), \qquad f(1)=1 \quad\Longrightarrow\quad \boxed{f(j)=r_1[j]=r_2[j]=2^{\,j-1}}$$
+<p class="qed">(Easy induction: true at \(j{=}1\) since \(2^0{=}1\); if \(f(j{-}1)=2^{j-2}\), then \(f(j)=2\cdot2^{j-2}=2^{j-1}\).) &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">Where this shape occurs</span>
+<p>This is the generic signature of <strong>unconditional doubling</strong>: two counters that each feed on the <em>sum</em> of both previous values, with nothing to slow growth down, inevitably double every step &mdash; exactly the mechanism behind every exponential blow-up already met in this course: Tower of Hanoi's \(T(n)=2T(n{-}1){+}1\) (Lecture 4, &sect;4.2) and the naive recursive Fibonacci call-count argument (&sect;14.3), both of which reduce, at heart, to "today's total is twice yesterday's." Concretely, \(r_1\) and \(r_2\) could be read as tracking the sizes of two subtrees in a binary recursion where <em>each</em> call spawns one full copy of <em>both</em> branches' prior work &mdash; the precise pattern &sect;14.3 uses to prove naive Fibonacci is \(\Theta(2^n)\) rather than linear.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-21">
+<h3>Exercise 21 &middot; The Solvability Invariant, Checked on the 16-Puzzle</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Prove that \(I(x)=\mathrm{sgn}(x)\cdot X(x)\) is an invariant for the \(n^2\)-puzzle. Give an example of a 16-puzzle which (i) can be solved, (ii) cannot be solved. Check (i), (ii) for the 16-puzzle: how many computations are needed if the brute-force technique is used on the computer?</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof that \(I\) is an invariant</span>
+<p>Identical to &sect;28.1's proof, which is stated and proved for general \(n\) (the \(2{\times}2\) case was only the illustration): a legal move swaps the blank with exactly one adjacent tile, a single transposition, so \(\mathrm{sgn}\) flips; and the blank moves to an orthogonally adjacent cell, changing \((\text{row}+\text{col})\) by exactly \(1\), so \(X\) flips too. Since both factors flip sign together, their product \(I=\mathrm{sgn}\cdot X\) is unchanged by any legal move &mdash; and hence by any sequence of them. &#8718;</p>
+</div>
+<div class="box ex">
+<span class="lbl">Two 16-puzzle configurations</span>
+<p>Take the solved state as reference, \(1,2,\dots,15,16\) (16 denoting the blank, bottom-right): 0 inversions, \(\mathrm{sgn}{=}{+}1\); blank at row 4, col 4, \(X{=}(-1)^{4+4}{=}{+}1\); so \(I=+1\).</p>
+<p><strong>(i) Solvable:</strong> slide the blank up once (swap it with tile 12, directly above it): <code>1,2,3,4,5,6,7,8,9,10,11,16,13,14,15,12</code>. This is reached by a single legal move from the solved state, so it is trivially solvable &mdash; and indeed \(I=(-1)\cdot(-1)=+1\), matching the goal.</p>
+<p><strong>(ii) Unsolvable:</strong> the classic "14&ndash;15 swap" &mdash; take the solved state and swap tiles 14 and 15, leaving the blank exactly where it was: <code>1,2,...,13,15,14,16</code>. One transposition not involving the blank flips \(\mathrm{sgn}\) to \(-1\) while the blank's position (so \(X\)) is untouched, giving \(I=(-1)(+1)=-1\ne+1\). By the theorem above, <strong>no legal move sequence</strong> can ever reach the goal from here &mdash; this is the historically famous configuration Sam Loyd offered a cash prize for solving in 1880, a prize that could never be collected.</p>
+</div>
+<div class="box result">
+<span class="lbl">Brute-force computation count</span>
+<p>Checking (i) or (ii) via the invariant needs only: count inversions by comparing every pair of the 16 symbols, \(\binom{16}{2}=\boxed{120}\) pairwise comparisons, plus one \(O(1)\) lookup of the blank's row+column parity &mdash; about 120 elementary computations total, regardless of which of the two configurations is checked. Contrast this with the brute-force <em>alternative</em> of forgoing the invariant entirely and launching a blind search of the state space to find out reachability by exhaustion: up to \(16!/2\approx1.046\times10^{13}\) states (&sect;29.1's table) might need to be explored before concluding "unreachable" &mdash; the entire reason &sect;27.4's invariant was worth proving is that it replaces a search that could cost \(10^{13}\) operations with a certificate costing \(120\).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-22">
+<h3>Exercise 22 &middot; Factorial-Rank (Perfect) Hashing, on Every Reachable 4-Puzzle State</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Using factorial-rank hashing, compute the hash value of each achievable 4-puzzle configuration. Show all intermediate calculations for at least two configurations. Determine whether any collisions occur.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Full workings for two configurations (method of &sect;27.3)</span>
+<p><strong><code>3421</code></strong>: inversion counts \(c_1,c_2,c_3,c_4\) &mdash; \(c_1\) (for leading 3): to its right, 2 and 1 are smaller \(\Rightarrow c_1{=}2\). \(c_2\) (for 4): to its right, 2 and 1 are smaller \(\Rightarrow c_2{=}2\). \(c_3\) (for 2): to its right, 1 is smaller \(\Rightarrow c_3{=}1\). \(c_4\) (for trailing 1): \(c_4{=}0\). Rank \(=2(3!){+}2(2!){+}1(1!){+}0(0!)=12{+}4{+}1{+}0=\boxed{17}\).</p>
+<p><strong><code>4213</code></strong>: \(c_1\) (for 4): 2,1,3 all smaller \(\Rightarrow c_1{=}3\). \(c_2\) (for 2): 1 is smaller \(\Rightarrow c_2{=}1\). \(c_3\) (for 1): nothing smaller to its right \(\Rightarrow c_3{=}0\). \(c_4{=}0\). Rank \(=3(6){+}1(2){+}0(1){+}0(1)=18{+}2=\boxed{20}\).</p>
+</div>
+<div class="box ex">
+<span class="lbl">All 12 reachable states (&sect;27.2's cycle), ranked</span>
+<table class="grid trace" style="font-size:.85em">
+<tr><th>State</th><th>\((c_1,c_2,c_3,c_4)\)</th><th>Rank</th></tr>
+<tr><td>1234</td><td>(0,0,0,0)</td><td>0</td></tr>
+<tr><td>1243</td><td>(0,0,1,0)</td><td>1</td></tr>
+<tr><td>2314</td><td>(1,1,0,0)</td><td>8</td></tr>
+<tr><td>2341</td><td>(1,1,1,0)</td><td>9</td></tr>
+<tr><td>2413</td><td>(1,2,0,0)</td><td>10</td></tr>
+<tr><td>3124</td><td>(2,0,0,0)</td><td>12</td></tr>
+<tr><td>3142</td><td>(2,0,1,0)</td><td>13</td></tr>
+<tr><td>3421</td><td>(2,2,1,0)</td><td>17</td></tr>
+<tr><td>4132</td><td>(3,0,1,0)</td><td>19</td></tr>
+<tr><td>4213</td><td>(3,1,0,0)</td><td>20</td></tr>
+<tr><td>4321</td><td>(3,2,1,0)</td><td>23</td></tr>
+<tr><td>1432</td><td>(0,2,1,0)</td><td>5</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">No collisions &mdash; and this is guaranteed, not just observed</span>
+<p>The 12 ranks are \(\{0,1,5,8,9,10,12,13,17,19,20,23\}\) &mdash; 12 distinct values out of the possible \(0,\dots,23\). This isn't luck: the factorial-number-system rank (&sect;27.3) is a <em>bijection</em> between permutations and \([0,n!{-}1]\) by construction &mdash; two different permutations always differ in their inversion-count digit string \((c_1,\dots,c_n)\) at some position, which forces different ranks, exactly the property that makes it a <strong>perfect hash function</strong> (no collisions are even possible, for any input, let alone this particular set of 12).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-23">
+<h3>Exercise 23 &middot; God's Number for the 4-Puzzle, Proved</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Explain the notion of God's number with reference to the 4-puzzle. With appropriate data structure, BFS, and perfect hash function, prove that God's number for the 4-puzzle is 6. In general, how easy is it to find God's number for the \(n^2\)-puzzle?</p>
+</div>
+<div class="box def">
+<span class="lbl">What God's number means</span>
+<p>\(G(n)=\max_{s\text{ reachable}} d(s)\) (&sect;29.1): the single largest number of moves any reachable configuration could ever need, i.e. the worst case over <em>every</em> solvable starting position &mdash; a guarantee, not an average.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proving \(G=6\) for the 4-puzzle</span>
+<p>Run Lex-BFS (&sect;28.2) from <code>1234</code>, using the factorial-rank hash (&sect;27.3, Exercise 22 above) as the \(O(1)\) array index into <code>visited[]</code>, <code>distance[]</code>. Because &sect;27.2 already showed the entire reachable set is a single 12-state cycle, BFS from any one state can reach every other reachable state only by walking around that cycle in one direction or the other, and the farthest point on a 12-cycle from any start is exactly half-way around: \(\lfloor12/2\rfloor=6\) steps. The exact distances BFS assigns (&sect;28.3's trace, completed) are \(\{0,1,1,2,2,3,3,4,4,5,5,6\}\) &mdash; one value per reachable state &mdash; with the unique farthest state, <code>4321</code>, at distance exactly 6 from <code>1234</code> both ways round the cycle (6 clockwise, 6 counter-clockwise &mdash; the cycle's "antipode"). Since BFS distance is provably shortest-path distance, and \(6\) is the maximum value ever assigned, \(G(4\text{-puzzle})=\boxed{6}\). &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">In general: not easy at all</span>
+<p>&sect;29.1's table shows why: finding \(G(n)\) exactly by the same method &mdash; exhaustive BFS over the whole reachable state space &mdash; needs memory and time proportional to \(\lfloor(n^2)!/2\rfloor\), which is only \(12\) for the \(2{\times}2\) board but already \(181{,}440\) for \(3{\times}3\) and \(10{,}461{,}394{,}944{,}000\) for the real \(4{\times}4\) 15-puzzle. \(G(4)=80\) was not found by brute-force BFS at all &mdash; it required specialized techniques (pattern-database heuristics, symmetry reduction, and a large distributed computation completed only in 2010); for \(5{\times}5\), God's number is <em>still not known exactly</em> (only bounded, \(140\le G\le210\)). So computing \(G(n)\) exactly gets dramatically harder as \(n\) grows &mdash; the state space grows as \((n^2)!\), far outpacing \(G(n)\) itself, which &sect;29.1 notes grows only around \(n^3\).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-24">
+<h3>Exercise 24 &middot; The Notation Behind A*, and Why \(f\) Never Decreases</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Explain the notations and comment on the equation \(f(v)=g(v)+h(v)\) used by the A* algorithm. Prove that \(f\) is non-decreasing along every path.</p>
+</div>
+<div class="box def">
+<span class="lbl">The notation (&sect;29.3)</span>
+<ul>
+<li>\(g(v)\) &mdash; the <strong>actual</strong>, already-walked cost from the start to \(v\) (exact, not a guess).</li>
+<li>\(h(v)\) &mdash; a <strong>heuristic estimate</strong> of the remaining cost from \(v\) to the goal, computed instantly and without search.</li>
+<li>\(f(v)=g(v)+h(v)\) &mdash; the estimated total cost of any solution that routes through \(v\).</li>
+</ul>
+<p>A* always expands the frontier node with smallest \(f\) &mdash; betting that the path through it is the cheapest <em>complete</em> route, combining what is already known (\(g\)) with an informed guess about what's left (\(h\)).</p>
+</div>
+<div class="box proof">
+<span class="lbl">Proof: \(f\) is non-decreasing along every path, given a consistent heuristic</span>
+<p><strong>Consistency</strong> (&sect;31.1) means: for every edge \((u,v)\) with cost \(w(u,v)\), \(h(u)\le w(u,v)+h(v)\) &mdash; the heuristic never claims a bigger drop is possible than the edge actually allows. Take any edge \((u,v)\) on a path explored by A*, where \(v\) is reached from \(u\):</p>
+$$f(v) = g(v)+h(v) = \big(g(u)+w(u,v)\big) + h(v)$$
+<p>By consistency, \(h(v)\ge h(u)-w(u,v)\), so:</p>
+$$f(v) \ge g(u)+w(u,v)+h(u)-w(u,v) = g(u)+h(u) = f(u)$$
+<p class="qed">\(\therefore f(v)\ge f(u)\) for every edge \(u\to v\) along any path &mdash; \(f\) never decreases as the path is extended. &#8718; (This is exactly &sect;31.3's theorem, restated with the \(g,h,f\) notation of &sect;29.3 made explicit at every step.)</p>
+</div>
+<div class="box result">
+<span class="lbl">Why this matters</span>
+<p>A non-decreasing \(f\) along every path is precisely what guarantees A* with a consistent heuristic never needs to re-open a node once it's been expanded (&sect;31.1's "Consistency &rArr; Optimality" payoff) &mdash; the first time any node is popped from the priority queue, its \(g\)-value is already final, exactly mirroring Dijkstra's own invariant (&sect;25 &mdash; A* reduces to Dijkstra exactly when \(h\equiv0\)).</p>
+</div>
+</section>
+
+<section class="topic" id="EX-25">
+<h3>Exercise 25 &middot; A* Solves an 8-Puzzle Instance, Start to Goal</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Apply A* with appropriate data structure to the 8-puzzle with initial state \(\begin{smallmatrix}1&3&9\\4&2&6\\7&5&8\end{smallmatrix}\) (9 = blank), goal \(123456789\). Show every intermediate data structure until the goal is reached. Use the Manhattan-distance heuristic. What happens if the blank (9) is included in the computation of Manhattan distance?</p>
+</div>
+<div class="box worked">
+<span class="lbl">Setup, and the priority queue (min-heap keyed on \(f\), &sect;23.5 + &sect;29.3)</span>
+<p>\(h(s)=\) sum, over the 8 numbered tiles only, of \(|row-row_{goal}|+|col-col_{goal}|\) (blank excluded). Start \(S_0{=}139426758\): tile 3 is 1 away, tile 2 is 2 away, tile 6 is 1 away &mdash; working it out tile by tile gives \(h(S_0)=4\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Full trace &mdash; OPEN (priority queue) and CLOSED (expanded) sets at every round</span>
+<table class="grid trace" style="font-size:.78em">
+<tr><th>#</th><th>Expand (min-\(f\))</th><th>\(g,h,f\)</th><th>Children generated (move, state, \(g,h,f\))</th><th>OPEN after this round</th></tr>
+<tr><td>1</td><td>139426758 (start)</td><td>0,4,4</td><td>Down&rarr;136429758 (1,5,6); Left&rarr;193426758 (1,3,4)</td><td>193426758(f4), 136429758(f6)</td></tr>
+<tr><td>2</td><td>193426758</td><td>1,3,4</td><td>Down&rarr;123496758 (2,2,4); Left&rarr;913426758 (2,4,6)</td><td>123496758(f4), 136429758(f6), 913426758(f6)</td></tr>
+<tr><td>3</td><td>123496758</td><td>2,2,4</td><td>Down&rarr;123456798 (3,1,4); Left&rarr;123946758 (3,3,6); Right&rarr;123469758 (3,3,6)</td><td>123456798(f4), then four states tied at \(f{=}6\)</td></tr>
+<tr><td>4</td><td>123456798</td><td>3,1,4</td><td>Left&rarr;123456978 (4,2,6); Right&rarr;<strong>123456789</strong> (4,0,4)</td><td>123456789(f4), five states at \(f{\ge}6\)</td></tr>
+<tr><td>5</td><td><strong>123456789 (GOAL)</strong></td><td>4,0,4</td><td>&mdash; search stops</td><td>&mdash;</td></tr>
+</table>
+<p>CLOSED set after each round (in expansion order): \(\{139426758\}\to\{\ldots,193426758\}\to\{\ldots,123496758\}\to\{\ldots,123456798\}\to\{\ldots,123456789\}\).</p>
+</div>
+<div class="box result">
+<span class="lbl">The path found, read off via Parent pointers</span>
+<p>$$\begin{smallmatrix}1&3&B\\4&2&6\\7&5&8\end{smallmatrix}\ \xrightarrow{\text{3 right}}\ \begin{smallmatrix}1&B&3\\4&2&6\\7&5&8\end{smallmatrix}\ \xrightarrow{\text{2 up}}\ \begin{smallmatrix}1&2&3\\4&B&6\\7&5&8\end{smallmatrix}\ \xrightarrow{\text{5 up}}\ \begin{smallmatrix}1&2&3\\4&5&6\\7&B&8\end{smallmatrix}\ \xrightarrow{\text{8 left}}\ \begin{smallmatrix}1&2&3\\4&5&6\\7&8&B\end{smallmatrix}$$</p>
+<span class="answer-final">Optimal solution: 4 moves (slide 3 right, 2 up, 5 up, 8 left). \(f=4\) at every single node on the solution path &mdash; exactly &sect;31.3's non-decreasing-\(f\) guarantee (Exercise 24) holding with equality throughout, which happens whenever the heuristic is not just consistent but <em>perfectly accurate</em> along the chosen path.</span>
+</div>
+<div class="box warn">
+<span class="lbl">What happens if the blank is included in Manhattan distance</span>
+<p>Consistency requires \(h\) to drop by <strong>at most 1</strong> per move (since an edge costs exactly 1). Excluding the blank, only one numbered tile moves per step, so \(h\) can only change by \(\pm1\) &mdash; consistent. <strong>Including</strong> the blank breaks this: a single move changes the position of <em>two</em> symbols at once (the blank <em>and</em> the tile it swapped with), and both can move <em>toward</em> their goals simultaneously. Concretely, in the move \(193426758\to123496758\) above (tile 2 slides up): tile 2's own distance to its goal drops from 1 to 0 (\(-1\)), <em>and</em> the blank's distance to its own goal cell (bottom-right) drops from 3 to 2 (\(-1\) more) &mdash; so a blank-inclusive heuristic would drop by \(2\) on an edge that costs only \(1\), violating \(h(u)\le w(u,v)+h(v)\). The heuristic is no longer guaranteed consistent (or even admissible in general), so A*'s optimality guarantee (Exercise 24) and its no-node-reopening guarantee are both forfeited. This is exactly why the standard Manhattan-distance heuristic for sliding-tile puzzles <strong>excludes</strong> the blank by convention.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-26">
+<h3>Exercise 26 &middot; Bridges and Articulation Points, a Fresh Graph</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Use Tarjan's algorithm and perform a complete DFS traversal of graph \(G\) (vertices \(A,B,C,D,E,F,H,I\); edges \(I{-}A,\ I{-}E,\ A{-}B,\ A{-}E,\ B{-}D,\ B{-}C,\ C{-}D,\ E{-}H,\ E{-}F,\ H{-}F\)) and identify all bridges and cut points. Follow lexicographic order, DFS from \(A\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">DFS trace &mdash; \(d[\cdot]\), \(low[\cdot]\), \(parent[\cdot]\) (algorithm of &sect;32.3)</span>
+<table class="grid trace" style="font-size:.8em">
+<tr><th>Step</th><th>Event</th><th>\(d\)</th><th>low-link update</th></tr>
+<tr><td>1</td><td>discover \(A\) (root)</td><td>\(d[A]{=}1\)</td><td>\(low[A]{=}1\)</td></tr>
+<tr><td>2</td><td>tree edge \(A{\to}B\); discover \(B\)</td><td>\(d[B]{=}2\)</td><td>\(low[B]{=}2\)</td></tr>
+<tr><td>3</td><td>tree edge \(B{\to}C\); discover \(C\)</td><td>\(d[C]{=}3\)</td><td>\(low[C]{=}3\)</td></tr>
+<tr><td>4</td><td>tree edge \(C{\to}D\); discover \(D\)</td><td>\(d[D]{=}4\)</td><td>\(low[D]{=}4\)</td></tr>
+<tr><td>5</td><td>back edge \(D{\to}B\) (\(B\) visited, not parent)</td><td>&mdash;</td><td>\(low[D]{=}\min(4,d[B]{=}2){=}2\)</td></tr>
+<tr><td>6</td><td>\(D\) done; return to \(C\)</td><td>&mdash;</td><td>\(low[C]{=}\min(3,low[D]{=}2){=}2\)</td></tr>
+<tr><td>7</td><td>\(C\) done; return to \(B\)</td><td>&mdash;</td><td>\(low[B]{=}\min(2,low[C]{=}2){=}2\); test: \(low[C]{=}2\ge d[B]{=}2\) &rarr; <strong>\(B\) cut point</strong>; bridge test \(low[C]{=}2\not>d[B]{=}2\) &rarr; not a bridge</td></tr>
+<tr><td>8</td><td>\(B\) done; return to \(A\)</td><td>&mdash;</td><td>\(low[A]{=}\min(1,low[B]{=}2){=}1\); bridge test \(low[B]{=}2>d[A]{=}1\) &rarr; <strong>bridge \((A,B)\)</strong></td></tr>
+<tr><td>9</td><td>tree edge \(A{\to}E\); discover \(E\)</td><td>\(d[E]{=}5\)</td><td>\(low[E]{=}5\)</td></tr>
+<tr><td>10</td><td>tree edge \(E{\to}F\); discover \(F\)</td><td>\(d[F]{=}6\)</td><td>\(low[F]{=}6\)</td></tr>
+<tr><td>11</td><td>tree edge \(F{\to}H\); discover \(H\)</td><td>\(d[H]{=}7\)</td><td>\(low[H]{=}7\)</td></tr>
+<tr><td>12</td><td>back edge \(H{\to}E\) (\(E\) visited, not parent)</td><td>&mdash;</td><td>\(low[H]{=}\min(7,d[E]{=}5){=}5\)</td></tr>
+<tr><td>13</td><td>\(H\) done; return to \(F\)</td><td>&mdash;</td><td>\(low[F]{=}\min(6,low[H]{=}5){=}5\)</td></tr>
+<tr><td>14</td><td>\(F\) done; return to \(E\)</td><td>&mdash;</td><td>\(low[E]{=}\min(5,low[F]{=}5){=}5\); test: \(low[F]{=}5\ge d[E]{=}5\) &rarr; <strong>\(E\) cut point</strong>; bridge test \(5\not>5\) &rarr; not a bridge</td></tr>
+<tr><td>15</td><td>back edge \(E{\to}I\)? &mdash; no, tree edge \(E{\to}I\); discover \(I\)</td><td>\(d[I]{=}8\)</td><td>\(low[I]{=}8\)</td></tr>
+<tr><td>16</td><td>back edge \(I{\to}A\) (\(A\) visited, not parent)</td><td>&mdash;</td><td>\(low[I]{=}\min(8,d[A]{=}1){=}1\)</td></tr>
+<tr><td>17</td><td>\(I\) done; return to \(E\)</td><td>&mdash;</td><td>\(low[E]{=}\min(5,low[I]{=}1){=}1\)</td></tr>
+<tr><td>18</td><td>\(E\) done; return to \(A\)</td><td>&mdash;</td><td>\(low[A]{=}\min(1,low[E]{=}1){=}1\)</td></tr>
+<tr><td>19</td><td>\(A\) done; root has 2 DFS children (\(B\), \(E\))</td><td>&mdash;</td><td><strong>\(A\) cut point</strong> (root rule, &ge;2 children)</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Final \((d,low)\) pairs: \(A{:}(1,1)\), \(B{:}(2,2)\), \(C{:}(3,2)\), \(D{:}(4,2)\), \(E{:}(5,1)\), \(F{:}(6,5)\), \(H{:}(7,5)\), \(I{:}(8,1)\).</p>
+</div>
+<div class="box result">
+<span class="lbl">Answer</span>
+<p><strong>Bridges:</strong> \(\{(A,B)\}\) &mdash; the single edge joining the \(\{I,A,E,H,F\}\) side to the \(\{B,C,D\}\) side. <strong>Cut points:</strong> \(\{A,B,E\}\). Intuitively, \(G\) is three cycles glued by two "stems": the triangle \(B,C,D\) (closed by back edge \(D{\to}B\)), the triangle \(E,H,F\) (closed by back edge \(H{\to}E\)), and the triangle \(I,A,E\) (closed by back edge \(I{\to}A\)) &mdash; with \(A{-}B\) the lone bridge stitching the \(B,C,D\) triangle onto the rest, and \(A\) (joining two triangles at the root) and \(E\) (joining two triangles mid-tree) each a join point between pieces, exactly as &sect;32.5's reading-back method predicts.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-27">
+<h3>Exercise 27 &middot; Strongly Connected Components, a Directed Graph</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Use Tarjan's algorithm and perform a complete DFS traversal of the directed graph (\(A{\to}B,\ B{\to}D,\ B{\to}C,\ C{\to}A,\ D{\to}E,\ E{\to}F,\ F{\to}D\)) and identify all SCCs. Show \(disc[],low[],parent[],\) stack, \(OnStack[]\).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Tarjan-SCC trace (algorithm of &sect;33.2), DFS from \(A\), lexicographic order</span>
+<table class="grid trace" style="font-size:.8em">
+<tr><th>Step</th><th>Event</th><th>\(d,low\)</th><th>Stack \(S\) (top right)</th></tr>
+<tr><td>1</td><td>push \(A\)</td><td>\(d[A]{=}1,low[A]{=}1\)</td><td>[A]</td></tr>
+<tr><td>2</td><td>tree arc \(A{\to}B\); push \(B\)</td><td>\(d[B]{=}2,low[B]{=}2\)</td><td>[A,B]</td></tr>
+<tr><td>3</td><td>tree arc \(B{\to}C\); push \(C\)</td><td>\(d[C]{=}3,low[C]{=}3\)</td><td>[A,B,C]</td></tr>
+<tr><td>4</td><td>arc \(C{\to}A\): \(A\) visited, \(OnStack[A]{=}\)true</td><td>\(low[C]{=}\min(3,d[A]{=}1){=}1\)</td><td>[A,B,C]</td></tr>
+<tr><td>5</td><td>\(C\) done; return to \(B\)</td><td>\(low[B]{=}\min(2,low[C]{=}1){=}1\)</td><td>[A,B,C]</td></tr>
+<tr><td>6</td><td>tree arc \(B{\to}D\); push \(D\)</td><td>\(d[D]{=}4,low[D]{=}4\)</td><td>[A,B,C,D]</td></tr>
+<tr><td>7</td><td>tree arc \(D{\to}E\); push \(E\)</td><td>\(d[E]{=}5,low[E]{=}5\)</td><td>[A,B,C,D,E]</td></tr>
+<tr><td>8</td><td>tree arc \(E{\to}F\); push \(F\)</td><td>\(d[F]{=}6,low[F]{=}6\)</td><td>[A,B,C,D,E,F]</td></tr>
+<tr><td>9</td><td>arc \(F{\to}D\): \(D\) visited, \(OnStack[D]{=}\)true</td><td>\(low[F]{=}\min(6,d[D]{=}4){=}4\)</td><td>[A,B,C,D,E,F]</td></tr>
+<tr><td>10</td><td>\(F\) done; return to \(E\)</td><td>\(low[E]{=}\min(5,low[F]{=}4){=}4\)</td><td>[A,B,C,D,E,F]</td></tr>
+<tr><td>11</td><td>\(E\) done; return to \(D\)</td><td>\(low[D]{=}\min(4,low[E]{=}4){=}4\)</td><td>[A,B,C,D,E,F]</td></tr>
+<tr><td>12</td><td>\(low[D]{=}d[D]{=}4\) &rarr; <strong>SCC root</strong>: pop until \(D\)</td><td>&mdash;</td><td>pop F,E,D &rarr; <strong>SCC = {F,E,D}</strong>; \(OnStack[F,E,D]{\leftarrow}\)false; stack now [A,B,C]</td></tr>
+<tr><td>13</td><td>\(D\) done; return to \(B\)</td><td>\(low[B]{=}\min(1,low[D]{=}4){=}1\)</td><td>[A,B,C]</td></tr>
+<tr><td>14</td><td>\(B\) done; return to \(A\)</td><td>\(low[A]{=}\min(1,low[B]{=}1){=}1\)</td><td>[A,B,C]</td></tr>
+<tr><td>15</td><td>\(low[A]{=}d[A]{=}1\) &rarr; <strong>SCC root</strong>: pop until \(A\)</td><td>&mdash;</td><td>pop C,B,A &rarr; <strong>SCC = {C,B,A}</strong>; stack now empty</td></tr>
+</table>
+</div>
+<div class="box result">
+<span class="lbl">Answer</span>
+<p>Two SCCs: \(\boxed{\{A,B,C\}}\) and \(\boxed{\{D,E,F\}}\), linked by the single one-way arc \(B\to D\) with nothing returning &mdash; exactly the two-cycles-in-a-chain shape &sect;33.3's own worked trace uses, confirming the pattern: a directed cycle is always one SCC, and a one-way bridge between two cycles (no return arc) always separates them into two distinct SCCs rather than merging them.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-28">
+<h3>Exercise 28 &middot; SCCs of the 4-Puzzle Under a Move Restriction</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Suppose in the 4-puzzle, tile 1 is not allowed to move downward, and all other legal moves are permitted. Determine all its Strongly Connected Components.</p>
+</div>
+<div class="box proof">
+<span class="lbl">Setting up: which of &sect;27.2's 12 edges become one-way</span>
+<p>&sect;27.2 showed the 12 reachable states form a single (undirected) 12-cycle. Walk it labelling each state's blank position and checking, at each step, which tile actually crosses the blank: <code>1234&harr;1432&harr;4132&harr;3142&harr;3124&harr;3421&harr;4321&harr;2341&harr;2314&harr;2413&harr;4213&harr;1243&harr;</code>(back to <code>1234</code>). Most of these 12 transitions swap the blank with tile 2 or tile 3 (irrelevant to the new rule) or move tile 1 <em>horizontally</em> (still permitted). Checking each one individually, exactly <strong>two</strong> transitions move tile 1 <em>vertically</em>: <code>3124&harr;3421</code> (tile 1 moves between row 1 and row 2) and <code>4213&harr;1243</code> (likewise). In both cases, one direction moves tile 1 <em>up</em> (permitted) and the other moves it <em>down</em> (forbidden) &mdash; so these two edges become <strong>one-way</strong>: only \(3421\to3124\) survives (confirmed: this is the "tile 1 moves up" direction), and only \(4213\to1243\) survives. Every other edge of the cycle stays fully bidirectional.</p>
+</div>
+<div class="box worked">
+<span class="lbl">Finding the SCCs</span>
+<p>Cutting the undirected 12-cycle at these two one-way edges splits it into two arcs, each internally still fully bidirectional (hence each one is a single SCC on its own): \(\text{Arc}_1=\{4213,2413,2314,2341,4321,3421\}\) and \(\text{Arc}_2=\{1243,1234,1432,4132,3142,3124\}\). Checking the two cross-edges: \(3421\to3124\) goes from \(\text{Arc}_1\) <em>into</em> \(\text{Arc}_2\), and \(4213\to1243\) <em>also</em> goes from \(\text{Arc}_1\) into \(\text{Arc}_2\) &mdash; both one-way connectors point the <strong>same</strong> direction, so there is no way back from \(\text{Arc}_2\) to \(\text{Arc}_1\) at all.</p>
+</div>
+<div class="box result">
+<span class="lbl">Answer</span>
+<p>$$\text{SCC}_1 = \{4213,\ 2413,\ 2314,\ 2341,\ 4321,\ 3421\} \qquad \text{SCC}_2 = \{1243,\ 1234,\ 1432,\ 4132,\ 3142,\ 3124\}$$</p>
+<p>with directed edges \(3421\to3124\) and \(4213\to1243\) connecting \(\text{SCC}_1\to\text{SCC}_2\) only, never the reverse. In the condensation graph, \(\text{SCC}_1\) is a source and \(\text{SCC}_2\) is a sink: once the puzzle (under this restriction) reaches any state in \(\text{SCC}_2\), it can never return to any state in \(\text{SCC}_1\) &mdash; forbidding a single downward move on one tile permanently splits what was a fully-connected 12-cycle into a one-way street between two 6-state halves.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-29">
+<h3>Exercise 29 &middot; A Two-Variable Ackermann Hierarchy</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>For integers \(k\ge0,\ j\ge1\), define \(A_k(j)=j{+}1\) if \(k{=}0\), and \(A_k(j)=A_{k-1}^{(j+1)}(j)\) if \(k\ge1\) (where \(A_{k-1}^{(0)}(j)=j\) and \(A_{k-1}^{(i)}(j)=A_{k-1}\big(A_{k-1}^{(i-1)}(j)\big)\)). Prove (i) \(A_1(j)=2j{+}1\); (ii) \(A_2(j)=2^{j+1}(j{+}1)-1\). Hence compute \(A_0(1),A_1(1),A_2(1),A_3(1),A_4(1)\).</p>
+</div>
+<div class="box proof">
+<span class="lbl">This is exactly &sect;22's \(A_k(j)\) hierarchy &mdash; Lemmas 4&ndash;5, restated</span>
+<p>These are the identical definitions ① and ② of &sect;22.2, and the two claims are precisely Lemmas 4(ii) and 5 of &sect;22.3, proved there by induction: part (i), \(A_1(j)=A_0^{(j+1)}(j)\), and since \(A_0^{(i)}(j)=j+i\) (Lemma 4i, by induction on \(i\)), setting \(i=j{+}1\) gives \(A_1(j)=j+(j{+}1)=2j{+}1\). Part (ii): \(A_1\) is the affine map \(x\mapsto2x{+}1\); iterating it \(m\) times from \(x_0\) satisfies \(x_m{+}1=2^m(x_0{+}1)\) (since \(x_t{+}1=2(x_{t-1}{+}1)\) at every step), so with \(x_0=j,\ m=j{+}1\): \(A_2(j)=A_1^{(j+1)}(j)=2^{j+1}(j{+}1)-1\). &#8718;</p>
+</div>
+<div class="box ex">
+<span class="lbl">Computing \(A_k(1)\) for \(k=0,\dots,4\) (&sect;22.4's table)</span>
+<table class="grid trace">
+<tr><th>\(k\)</th><th>\(A_k(1)\)</th><th>Computation</th></tr>
+<tr><td>0</td><td>2</td><td>\(1{+}1\)</td></tr>
+<tr><td>1</td><td>3</td><td>\(2(1){+}1\)</td></tr>
+<tr><td>2</td><td>7</td><td>\(2^{2}(2)-1=8-1\)</td></tr>
+<tr><td>3</td><td>2047</td><td>\(A_3(1)=A_2^{(2)}(1)\): \(A_2(1)=7\), then \(A_2(7)=2^{8}(8)-1=2048-1\)</td></tr>
+<tr><td>4</td><td>astronomically large</td><td>\(A_4(1)=A_3^{(2)}(1)=A_3(2047)\): even its first inner step, \(A_2(2047)=2^{2048}(2048)-1\), already has over 600 digits</td></tr>
+</table>
+<span class="answer-final">\(A_0(1)=2,\ A_1(1)=3,\ A_2(1)=7,\ A_3(1)=2047,\ A_4(1)\) dwarfs the number of atoms in the observable universe (\(\sim10^{80}\)) before it is even a tenth computed &mdash; see &sect;22.4 for the full discussion.</span>
+</div>
+</section>
+
+<section class="topic" id="EX-30">
+<h3>Exercise 30 &middot; Why \(\alpha(n)\le4\) Is a Safe Assumption</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Let \(\alpha(n)=\min\{k : A_k(1)\ge n\}\). Why is it reasonable to assume \(\alpha(n)\le4\) in the analysis of Kruskal's algorithm?</p>
+</div>
+<div class="box result">
+<span class="lbl">Directly from Exercise 29's table (&sect;22.4)</span>
+<p>Reading the table backwards: \(\alpha(n)=0\) only for \(n\le2\); \(\alpha(n)\le2\) for \(n\le7\); \(\alpha(n)\le3\) for \(n\le2047\); and \(\alpha(n)\le4\) for every \(n\) up to \(A_4(1)\) &mdash; a number so large (a power tower vastly exceeding \(2^{2048}\) at its very first rung) that it surpasses every quantity that will ever be counted by any real computation: more than the number of atoms in the observable universe, more than the number of vertices any Disjoint-Set Forest implementation will ever actually hold, in this course or any other. So while \(\alpha(n)\) is, strictly speaking, an unbounded function that does tend to \(\infty\) as \(n\to\infty\), it is bounded by the fixed constant \(4\) for literally every \(n\) that is physically realizable &mdash; which is exactly why &sect;22.5 can treat Kruskal's Disjoint-Set operations as costing \(O(\alpha(|V|))=O(1)\) each in practice, even though \(\alpha\) is not, in the formal asymptotic sense, a constant function.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-31">
+<h3>Exercise 31 &middot; NP, NP-Hard, NP-Complete, Defined</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Define the notions NP, NP-hard, NP-Complete, with appropriate examples.</p>
+</div>
+<div class="box def">
+<span class="lbl">The three definitions (&sect;34.5)</span>
+<ul>
+<li><strong>NP</strong> &mdash; problems where a proposed solution can be <em>verified</em> correct in polynomial time, even if no polynomial-time method to <em>find</em> one is known. Example: Integer Factorization (given a candidate factor, checking it divides evenly is fast, even though finding one is believed hard).</li>
+<li><strong>NP-hard</strong> &mdash; a problem \(B\) such that every problem in NP reduces to it (\(A\le_pB\) for all \(A\in\text{NP}\)): \(B\) is at least as hard as everything in NP, whether or not \(B\) itself is in NP. Example: the Halting Problem is NP-hard (indeed harder &mdash; undecidable, &sect;34.7) but is <em>not</em> in NP, since it has no certificate verifiable in any finite time at all.</li>
+<li><strong>NP-Complete</strong> &mdash; a problem that is <em>both</em> in NP <em>and</em> NP-hard: the "hardest problems inside NP" exactly. Example: Generalized Sudoku and the Hamiltonian Circuit problem (&sect;34.6).</li>
+</ul>
+</div>
+<div class="box result">
+<span class="lbl">How the three relate</span>
+<p>\(\text{P}\subseteq\text{NP}\) always; NP-Complete sits inside NP, at its hardest edge; NP-hard reaches outside NP entirely, to problems with no fast verifier at all (even undecidable ones). The practical content: if even one NP-Complete problem had a polynomial-time algorithm, every problem in NP would (&sect;34.5's "Millennium Prize question") &mdash; the single open question \(\text{P}\overset?=\text{NP}\) that this entire hierarchy of definitions is built to make precise.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-32">
+<h3>Exercise 32 &middot; Graham's Scan on Seven Numeric Points, and Sorting &le;<sub>p</sub> Convex Hull</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Illustrate Graham's Scan to find Convex Hull with an appropriate example. Prove that Sorting \(\le_p\) Convex-Hull. Explain the meaning of the above statement.</p>
+</div>
+<div class="box worked">
+<span class="lbl">A fully numeric example (&sect;34.1&ndash;34.2's algorithm, applied to real coordinates)</span>
+<p>Seven points: \((1,0),(5,0),(6,3),(4,5),(1,4),(0,2),(3,2)\). Lowest point (ties toward smallest \(x\)): \(p_0=(1,0)\). Sorting the rest by polar angle around \(p_0\):</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:.88em">(5,0) at 0&deg; &rarr; (6,3) at 31.0&deg; &rarr; (3,2) at 45.0&deg; &rarr; (4,5) at 59.0&deg; &rarr; (1,4) at 90.0&deg; &rarr; (0,2) at 116.6&deg;</p>
+<p>Push \(p_0,(5,0),(6,3)\) to start (lines 3&ndash;5 of &sect;34.2's pseudocode). Then test each remaining point with the &sect;34.1 determinant \(\det=\begin{vmatrix}x_1{-}x_0&x_2{-}x_0\\y_1{-}y_0&y_2{-}y_0\end{vmatrix}\) on (next-to-top, top, candidate):</p>
+<table class="grid trace" style="font-size:.82em">
+<tr><th>Next-to-top, top, candidate</th><th>\(\det\)</th><th>Decision</th></tr>
+<tr><td>\((5,0),(6,3),(3,2)\)</td><td>\(8\)</td><td>left turn &mdash; push \((3,2)\)</td></tr>
+<tr><td>\((6,3),(3,2),(4,5)\)</td><td>\(-8\)</td><td>non-left &mdash; <strong>pop \((3,2)\)</strong></td></tr>
+<tr><td>\((5,0),(6,3),(4,5)\)</td><td>\(8\)</td><td>left turn &mdash; push \((4,5)\)</td></tr>
+<tr><td>\((6,3),(4,5),(1,4)\)</td><td>\(8\)</td><td>left turn &mdash; push \((1,4)\)</td></tr>
+<tr><td>\((4,5),(1,4),(0,2)\)</td><td>\(5\)</td><td>left turn &mdash; push \((0,2)\)</td></tr>
+</table>
+<span class="answer-final">Final hull: \((1,0)\to(5,0)\to(6,3)\to(4,5)\to(1,4)\to(0,2)\to\) back to \((1,0)\) &mdash; six of the seven points survive; \((3,2)\) is the lone interior point, correctly discovered and discarded the moment the scan reached its successor \((4,5)\) and found the path had folded inward.</span>
+</div>
+<div class="box proof">
+<span class="lbl">Proof: Sorting \(\le_p\) Convex Hull (&sect;34.4's construction, in full)</span>
+<p>Given a Sorting instance \(\{x_0,\dots,x_n\}\), lift every number onto the parabola \(y=x^2\): \(P_i=(x_i,x_i^2)\). Feed \(\{P_0,\dots,P_n\}\) to any Convex Hull solver. Since \(y=x^2\) is itself convex, <em>every</em> lifted point lies on the hull &mdash; none is interior &mdash; and the hull's lower chain, read left to right and projected back onto the \(x\)-axis, is exactly \(x_0,\dots,x_n\) in sorted order (the lower envelope of points on a convex curve is forced to proceed monotonically in \(x\)). Lifting is \(O(n)\); reading off the answer is \(O(n)\); so this polynomial-time transformation turns any Sorting instance into a Convex Hull instance whose solution immediately gives the sorted order. \(\therefore\) Sorting \(\le_p\) Convex Hull. &#8718;</p>
+</div>
+<div class="box result">
+<span class="lbl">What the statement means</span>
+<p>"Sorting \(\le_p\) Convex Hull" says Convex Hull is <strong>at least as hard</strong> as Sorting &mdash; solving Convex Hull in general is powerful enough to solve Sorting too (via the reduction just given), so Convex Hull can be <em>no easier</em> than Sorting's own proven \(\Omega(n\log n)\) lower bound (&sect;8.2). It is a lower-bound tool, not an algorithm: it says nothing about <em>how</em> to compute a hull, only that no hull algorithm can ever beat \(n\log n\) &mdash; which is exactly why Graham's Scan's \(O(n\log n)\) angular sort (&sect;34.2) is asymptotically optimal, not merely a reasonable choice.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-33">
+<h3>Exercise 33 &middot; The Collatz Conjecture, and Steps to Reach 1</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Explain the Collatz Conjecture in the context of Turing's Halting Problem. Tabulate the steps required to reach 1, and the largest value reached, for \(C(n)\); \(n=2,3,4,5,6\).</p>
+</div>
+<div class="box def">
+<span class="lbl">Collatz, and why it sits beside the Halting Problem (&sect;34.9)</span>
+<p>\(C(n)=n/2\) if \(n\) even, \(3n{+}1\) if \(n\) odd. The conjecture: iterating \(C\) from any positive integer always eventually reaches 1. The connection to &sect;34.8's Halting Problem is conceptual, not a reduction: define a program \(P_{\text{Collatz}}\) that, on input \(n\), repeatedly applies \(C\) and halts the moment it sees 1. "Does \(P_{\text{Collatz}}\) halt on every input \(n\)?" is <em>exactly</em> the Collatz Conjecture, phrased as a halting question &mdash; but unlike the general Halting Problem, which &sect;34.8 proved has <strong>no</strong> algorithmic answer for arbitrary programs, this is one single, specific, fixed program, and nothing in the Halting Problem's undecidability proof says any particular program's halting behaviour is unknowable &mdash; only that no single algorithm can decide it for <em>every</em> program at once. Collatz is simply a case where, for this one specific program, nobody has yet found the proof (or disproof) either way &mdash; &sect;34.9's distinction between "undecidable" (Halting Problem, proven impossible) and "merely open" (Collatz, unsolved but not proven unsolvable).</p>
+</div>
+<div class="box ex">
+<span class="lbl">Steps and peak values, \(n=2\) through \(6\)</span>
+<table class="grid trace" style="font-size:.88em">
+<tr><th>\(n\)</th><th>Full sequence</th><th>Steps to reach 1</th><th>Largest value reached</th></tr>
+<tr><td>2</td><td>\(2\to1\)</td><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>\(3\to10\to5\to16\to8\to4\to2\to1\)</td><td>7</td><td>16</td></tr>
+<tr><td>4</td><td>\(4\to2\to1\)</td><td>2</td><td>4</td></tr>
+<tr><td>5</td><td>\(5\to16\to8\to4\to2\to1\)</td><td>5</td><td>16</td></tr>
+<tr><td>6</td><td>\(6\to3\to10\to5\to16\to8\to4\to2\to1\)</td><td>8</td><td>16</td></tr>
+</table>
+<p class="small" style="color:var(--ink-soft)">Even this tiny range already shows the conjecture's trademark unpredictability: \(n{=}6\) needs more steps than \(n{=}5\) despite starting smaller (because \(6\to3\) simply prepends one extra step onto \(3\)'s own trajectory), and three of the five starting values (\(3,5,6\)) all peak at exactly the same value, 16, despite reaching it by different routes.</p>
+</div>
+</section>
+
+<section class="topic" id="EX-34">
+<h3>Exercise 34 &middot; The Post Correspondence Problem, Solved Optimally</h3>
+<div class="box def">
+<span class="lbl">Problem</span>
+<p>Discuss what the Post Correspondence Problem (PCP) is. Solve the PCP problem optimally given the tiles \(D_1=\begin{bmatrix}a\\ab\end{bmatrix}\), \(D_2=\begin{bmatrix}ba\\a\end{bmatrix}\), \(D_3=\begin{bmatrix}b\\bb\end{bmatrix}\). Verify your answer. Why have you preferred to use BFS instead of DFS while finding the solution?</p>
+</div>
+<div class="box def">
+<span class="lbl">What PCP asks (&sect;34.10)</span>
+<p>Given dominoes \(D_i=\begin{bmatrix}u_i\\v_i\end{bmatrix}\), does some sequence of indices (repeats allowed) make the concatenated top strings equal the concatenated bottom strings? PCP looks like a harmless string-matching puzzle but can simulate any Turing machine's computation closely enough to inherit undecidability from the Halting Problem (&sect;34.12).</p>
+</div>
+<div class="box worked">
+<span class="lbl">Solving by BFS with pruning (&sect;34.11's method)</span>
+<p><strong>Level 1:</strong> \(D_1\): top \(a\), bottom \(ab\) &mdash; \(a\) is a prefix of \(ab\), <strong>keep</strong>. \(D_2\): top \(ba\), bottom \(a\) &mdash; diverge immediately (\(b\ne a\)), prune. \(D_3\): top \(b\), bottom \(bb\) &mdash; \(b\) is a prefix of \(bb\), <strong>keep</strong>. Retain: \((1)\), \((3)\).</p>
+<p><strong>Level 2, extending \((1)\):</strong> \((1,1)\): top \(aa\), bottom \(abab\) &mdash; prefix match, keep but not equal. \((1,2)\): top \(a{+}ba=aba\), bottom \(ab{+}a=aba\) &mdash; <strong>equal!</strong> \((1,3)\): top \(ab\), bottom \(abbb\) &mdash; prefix, keep but not equal.</p>
+</div>
+<div class="box result">
+<span class="lbl">Optimal (shortest) solution</span>
+<p>$$(1,2): \qquad \text{Top} = a + ba = \texttt{aba}, \qquad \text{Bottom} = ab + a = \texttt{aba}.$$</p>
+<p class="qed">Both strings equal <code>aba</code> &mdash; verified by direct concatenation. &#8718; No length-1 sequence equalizes (checked above: \(a\ne ab\), \(ba\ne a\), \(b\ne bb\)), so length 2 is the shortest possible &mdash; this sequence is optimal, found by BFS at exactly level 2 before any length-3 sequence was ever tried. (\(D_3\) turns out not to be needed at all for the shortest solution, though it does extend the search frontier at level 1.)</p>
+</div>
+<div class="box proof">
+<span class="lbl">Why BFS, not DFS</span>
+<p>BFS explores <em>every</em> sequence of length \(k\) before trying any sequence of length \(k{+}1\) (&sect;34.11), so the moment a match is found, it is <em>provably</em> the shortest one possible &mdash; exactly how \((1,3,2,2)\) was certified shortest in &sect;34.11's own worked example. DFS offers no such guarantee: it would commit to extending one single branch (say, always trying tile 1 first) arbitrarily deep before ever backtracking to try a different, possibly much shorter, alternative branch &mdash; and since PCP is undecidable in general (&sect;34.12), an unlucky DFS order risks descending forever down a branch that never equalizes, never reaching a <em>different</em> branch that would have matched after only 2 or 3 tiles. BFS's level-by-level order is precisely what turns "find <em>a</em> solution" into "find the <em>shortest</em> solution, or correctly exhaust all possibilities up to any given length."</p>
+</div>
+</section>
+
 <div class="box result" style="margin-top:20px;">
 <span class="lbl">Where this exercise set ends</span>
-<p>Fourteen problems, every major idea from this course exercised at least once: all four \(O(n\log n)\)-and-\(O(n^2)\) comparison sorts on one shared array, the three linear-time non-comparison sorts (Bucket, Radix, and implicitly Counting via Radix's digit passes), both fast-multiplication divide-and-conquer results (Karatsuba and Strassen), a first taste of dynamic programming via LCS and Matrix Chain Multiplication, and the recurrence-solving and asymptotic-notation toolkit that ties the whole course together.</p>
+<p>Thirty-four problems, every major idea from this course exercised at least once &mdash; the original fourteen (all four comparison sorts, the three linear-time non-comparison sorts, Karatsuba and Strassen, LCS and Matrix Chain Multiplication, recurrence-solving), plus twenty more spanning Assembly-Line Scheduling, MST (Prim\u2019s and Kruskal\u2019s), Dijkstra\u2019s Algorithm, Binary Heaps, Pr\u00fcfer sequences, the Ackermann hierarchy and inverse-Ackermann bound behind Union\u2013Find, the 4-puzzle and 8-puzzle (solvability, hashing, God\u2019s number, A*), Tarjan\u2019s bridges/cut-points and SCC algorithms, NP-Completeness, Convex Hull, the Collatz Conjecture, and the Post Correspondence Problem.</p>
 </div>
 
 
