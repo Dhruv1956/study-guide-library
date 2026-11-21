@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to AI — A Beginner's Guide (Agents, Search, Logic & Learning)</title>
 <script>
   window.MathJax = {
@@ -121,15 +121,6 @@
 </style>
 </head>
 <body id="top">
-<style>
-  :root { --sgl-safe-top: 0px; }
-  @media (display-mode: standalone) {
-    :root { --sgl-safe-top: env(safe-area-inset-top); }
-    body { padding-top: var(--sgl-safe-top); }
-    .sidebar { padding-top: calc(22px + var(--sgl-safe-top)); }
-  }
-</style>
-<a href="../../index.html" style="position:fixed;top:calc(10px + var(--sgl-safe-top));left:10px;z-index:9999;font-family:system-ui,sans-serif;font-size:13px;padding:5px 11px;border-radius:20px;background:rgba(21,26,32,0.85);color:#fff;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);">‹ Library</a>
 <div class="shell">
 <nav class="sidebar">
   <div class="toc-title">Intro to AI</div>
@@ -239,7 +230,21 @@
   <a href="#p9-logspace">8. Numerical stability: log space</a>
 
 
-  <h3>Part 10 &middot; Hidden Markov Models</h3>
+  <h3>Part 10 &middot; k-Nearest Neighbours</h3>
+  <a href="#p10-intro">1. What is k-NN?</a>
+  <a href="#p10-algorithm">2. The k-NN Algorithm</a>
+  <a href="#p10-worked">3. Worked example: classifying P(3,2)</a>
+  <a href="#p10-distances">4. Distance metrics</a>
+  <a href="#p10-choosingk">5. Choosing k: bias, variance &amp; cross-validation</a>
+  <a href="#p10-normalization">6. Why normalize the data?</a>
+  <a href="#p10-curse">7. The Curse of Dimensionality</a>
+  <a href="#p10-advdis">8. Advantages &amp; disadvantages</a>
+
+  <h3>Part 11 &middot; k-Means Clustering</h3>
+  <a href="#p11-intro">1. The clustering problem &amp; the k-Means algorithm</a>
+  <a href="#p11-worked">2. Worked example: two clusters, two iterations</a>
+
+  <h3>Part 12 &middot; Hidden Markov Models</h3>
   <a href="#p12-markov">1. Markov Chains: the idea behind "memorylessness"</a>
   <a href="#p12-hmmdef">2. Hidden Markov Models: formal definition</a>
   <a href="#p12-threeproblems">3. The Three Fundamental Problems of HMMs</a>
@@ -252,20 +257,6 @@
   <a href="#p12-backward">10. The Backward Algorithm</a>
   <a href="#p12-baumwelch">11. The Forward&ndash;Backward (Baum&ndash;Welch) Algorithm</a>
 
-  <h3>Part 11 &middot; k-Nearest Neighbours</h3>
-  <a href="#p10-intro">1. What is k-NN?</a>
-  <a href="#p10-algorithm">2. The k-NN Algorithm</a>
-  <a href="#p10-worked">3. Worked example: classifying P(3,2)</a>
-  <a href="#p10-distances">4. Distance metrics</a>
-  <a href="#p10-choosingk">5. Choosing k: bias, variance &amp; cross-validation</a>
-  <a href="#p10-normalization">6. Why normalize the data?</a>
-  <a href="#p10-curse">7. The Curse of Dimensionality</a>
-  <a href="#p10-advdis">8. Advantages &amp; disadvantages</a>
-
-  <h3>Part 12 &middot; k-Means Clustering</h3>
-  <a href="#p11-intro">1. The clustering problem &amp; the k-Means algorithm</a>
-  <a href="#p11-worked">2. Worked example: two clusters, two iterations</a>
-
   <h3>Part 13 &middot; Neural Networks</h3>
   <a href="#p13-motivation">1. Motivation: from linear models to neural networks</a>
   <a href="#p13-singlelayer">2. Single-layer networks &amp; the step-function neuron</a>
@@ -277,6 +268,41 @@
   <a href="#p13-uat">8. The Universal Approximation Theorem</a>
   <a href="#p13-mlparch">9. Multi-layer networks: architecture &amp; matrix notation</a>
   <a href="#p13-backprop">10. Training by Backpropagation of Errors</a>
+  <h3>Part 14 &middot; CNNs &amp; RNNs</h3>
+  <a href="#p14-motivation">1. Motivation: different data, different structure</a>
+  <a href="#p14-cnn-key">2. Convolutional Neural Networks (CNNs): the key idea</a>
+  <a href="#p14-example">3. Worked example: detecting a vertical stroke</a>
+  <a href="#p14-activation">4. Activation: ReLU</a>
+  <a href="#p14-pooling">5. Pooling</a>
+  <a href="#p14-dense">6. Flatten and Dense Layers</a>
+  <a href="#p14-rnn">7. Recurrent Neural Networks (RNNs): the key idea</a>
+  <a href="#p14-hidden">8. The hidden-state equation</a>
+  <a href="#p14-vanishing">9. Vanishing and exploding gradients</a>
+
+  <h3>Part 15 &middot; Natural Language Processing</h3>
+  <a href="#p15-intro">1. What is NLP?</a>
+  <a href="#p15-bow">2. Text Representation: Bag-of-Words (BoW)</a>
+  <a href="#p15-ngrams">3. N-grams: adding local word order</a>
+  <a href="#p15-disadvantages">4. Disadvantages of BoW and N-grams</a>
+  <a href="#p15-tfidf">5. TF-IDF: weighting words by importance</a>
+  <a href="#p15-ngramlm">6. N-gram Language Models</a>
+  <a href="#p15-smoothing">7. Laplace Smoothing and Computing in Log-Space</a>
+  <a href="#p15-perplexity">8. Perplexity of a Language Model</a>
+  <a href="#p15-embeddings">9. Dense Word Embeddings</a>
+  <a href="#p15-word2vec">10. Word2Vec: Skip-Gram and CBOW</a>
+  <a href="#p15-skipgram-math">11. The Skip-Gram Classifier, Precisely</a>
+  <a href="#p15-attention">12. From Static to Contextual Embeddings: Self-Attention</a>
+
+  <h3>Part 16 &middot; Reinforcement Learning</h3>
+  <a href="#p16-intro">1. What is Reinforcement Learning?</a>
+  <a href="#p16-returns">2. A first example, and the idea of Return</a>
+  <a href="#p16-policy">3. Policies, and the Markov Decision Process</a>
+  <a href="#p16-valuefunctions">4. Value Functions and the Bellman Equations</a>
+  <a href="#p16-valueiter">5. The Value Iteration Algorithm</a>
+  <a href="#p16-policyiter">6. The Policy Iteration Algorithm</a>
+  <a href="#p16-qlearning">7. Q-Learning</a>
+  <a href="#p16-stochastic">8. Stochastic MDPs</a>
+
   <h3>&nbsp;</h3>
   <a href="#recap">Full recap &amp; glossary</a>
 </nav>
@@ -284,7 +310,7 @@
 <div class="hero">
   <div class="eyebrow">Study Guide · Introduction to Artificial Intelligence</div>
   <h1>Agents, Search, Logic &amp; Learning — Explained Slowly</h1>
-  <p class="lead">This guide walks through all thirteen of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, <em>Constraint Satisfaction Problems</em>, <em>Logical Agents &amp; Propositional Logic</em>, <em>Uncertainty &amp; Bayesian Networks</em>, <em>Decision Tree Learning</em>, <em>Naive Bayes Classifier</em>, <em>Hidden Markov Models</em>, <em>k-Nearest Neighbours</em>, <em>k-Means Clustering</em>, and <em>Neural Networks</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
+  <p class="lead">This guide walks through all sixteen of your AI lecture decks — <em>Agents and Rationality</em>, <em>Search Problems, Uninformed and Informed Search</em>, <em>Local Search Algorithms</em>, <em>Adversarial Search and Games</em>, <em>Constraint Satisfaction Problems</em>, <em>Logical Agents &amp; Propositional Logic</em>, <em>Uncertainty &amp; Bayesian Networks</em>, <em>Decision Tree Learning</em>, <em>Naive Bayes Classifier</em>, <em>k-Nearest Neighbours</em>, <em>k-Means Clustering</em>, <em>Hidden Markov Models</em>, <em>Neural Networks</em>, <em>Convolutional &amp; Recurrent Neural Networks</em>, <em>Introduction to Natural Language Processing</em>, and <em>Introduction to Reinforcement Learning</em> — slide by slide, in plain English, assuming zero prior background. Every idea is built up from scratch before any formula or algorithm shows up.</p>
   <div class="badges">
     <span class="badge">Dr Aishwarya S. — MIT Manipal</span>
     <span class="badge">13 decks · 493 slides covered</span>
@@ -304,7 +330,7 @@
   </p>
 </div>
 <div class="part-header">
-  <div class="ptag">Part 1 of 13</div>
+  <div class="ptag">Part 1 of 16</div>
   <h2>Agents &amp; Rationality</h2>
   <p>Before we can write any "intelligent" program, we need a precise, unambiguous way to talk about what a machine that "acts intelligently" even is. This part builds that vocabulary from a simple robot vacuum cleaner.</p>
 </div>
@@ -530,7 +556,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 2 of 13</div>
+  <div class="ptag">Part 2 of 16</div>
   <h2>Search Problems, Uninformed and Informed Search</h2>
   <p>Part 1 told us that a Goal-Based Agent needs to find a path from where it is to where it wants to be. Part 2 makes that idea completely precise, and builds up the family of algorithms — BFS, DFS, Uniform-Cost Search, Greedy Search, and A* — that actually find that path.</p>
 </div>
@@ -1008,7 +1034,7 @@
   </div>
 </section>
 <div class="part-header">
-  <div class="ptag">Part 3 of 13</div>
+  <div class="ptag">Part 3 of 16</div>
   <h2>Local Search Algorithms</h2>
   <p>Part 2 was all about finding the best <em>path</em> from start to goal. Part 3 asks: what if you don't care about the path at all — only about ending up in a good final configuration? That question leads to a completely different family of algorithms.</p>
 </div>
@@ -1440,7 +1466,7 @@
 </section>
 
 <div class="part-header">
-  <div class="ptag">Part 4 of 13</div>
+  <div class="ptag">Part 4 of 16</div>
   <h2>Adversarial Search &amp; Games</h2>
   <p>Every search algorithm in Part 2 assumed a passive environment — the world just sat there while you planned. This part drops that assumption: now there's an opponent, actively trying to make things go badly for you. That single change is what turns "search" into "game-playing," and it's the subject of this final part.</p>
 </div>
@@ -1856,7 +1882,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 5 of 13</div>
+  <div class="ptag">Part 5 of 16</div>
   <h2>Constraint Satisfaction Problems</h2>
   <p>Every search problem in Part 2 asked "what sequence of actions reaches a goal?" This part asks a subtly different question: forget the path entirely — what <em>assignment of values</em> satisfies every rule at once? That reframing is what makes Constraint Satisfaction Problems (CSPs) different from ordinary search, and it turns out to be exactly the right lens for scheduling, puzzles, and map colouring alike.</p>
 </div>
@@ -2260,7 +2286,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 6 of 13</div>
+  <div class="ptag">Part 6 of 16</div>
   <h2>Logical Agents &amp; Propositional Logic</h2>
   <p>Every previous part built agents that search, optimise, or satisfy constraints — but none of them <em>reasoned</em> in the human sense of drawing new conclusions from what they already know. This part builds that capability from the ground up: an agent that stores facts as logical sentences, and can derive brand-new true facts purely by the shape of those sentences, using five different algorithms for doing exactly that.</p>
 </div>
@@ -3076,7 +3102,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 7 of 13</div>
+  <div class="ptag">Part 7 of 16</div>
   <h2>Uncertainty &amp; Bayesian Networks</h2>
   <p>Every part so far has assumed the world is known for certain: a search problem's map is exact, a CSP's constraints are hard rules, a logical KB's facts are either true or false. Real agents rarely get that luxury — sensors are noisy, knowledge is incomplete, environments are unpredictable. This part introduces <strong>probability</strong> as the tool for reasoning under that uncertainty, and <strong>Bayesian networks</strong> as the data structure that makes large probabilistic models tractable.</p>
 </div>
@@ -3392,7 +3418,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 8 of 13</div>
+  <div class="ptag">Part 8 of 16</div>
   <h2>Decision Tree Learning</h2>
   <p>Part 7 showed how to reason with a probabilistic model you're handed. This part asks a different question: given a table of past examples, how does a machine <em>learn</em> a model on its own? Decision trees are one of the simplest, most interpretable answers — and the central question they have to answer at every step is: <em>which feature should I ask about next?</em></p>
 </div>
@@ -3622,7 +3648,7 @@
 
 <div class="ex">
 <span class="box-label">The dataset — 20 examples, 3 classes</span>
-<p>A restaurant's customer-feedback data, predicting <strong>Positive / Neutral / Negative</strong> feedback from the <strong>Cuisine</strong> ordered (Italian / Mexican / Chinese) and the <strong>Dining Time</strong> (Morning / Afternoon / Evening). Counting labels across all 20 rows gives 7 Positive, 7 Negative, 6 Neutral.</p>
+<p>A restaurant's customer-feedback data, predicting <strong>Positive / Neutral / Negative</strong> feedback from the <strong>Cuisine</strong> ordered (Italian / Mexican / Chinese) and the <strong>Dining Time</strong> (Morning / Afternoon / Evening). Counting labels across all 20 rows gives 7 Positive, 7 Neutral, 6 Negative.</p>
 </div>
 
 <div class="ex">
@@ -3699,7 +3725,7 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 9 of 13</div>
+  <div class="ptag">Part 9 of 16</div>
   <h2>Naive Bayes Classifier</h2>
   <p>Part 7 built Bayesian networks to avoid an exponential joint-probability table by exploiting a graph of real dependencies. This part takes the opposite, blunter approach: assume <em>every</em> feature is independent of every other feature, given the class. It's "naive" because that assumption is almost never literally true — and yet, as the worked example in this part shows, the classifier it produces is simple, fast, and works remarkably well in practice.</p>
 </div>
@@ -3906,9 +3932,363 @@
 
 
 <div class="part-header">
-  <div class="ptag">Part 10 of 13</div>
+  <div class="ptag">Part 10 of 16</div>
+  <h2>k-Nearest Neighbours</h2>
+  <p>Naive Bayes closed out a run of classifiers that first build a model from the training data (priors, CPTs, smoothed word probabilities) and only then use that model to answer questions. k-Nearest Neighbours throws that whole idea away: it builds nothing in advance. It simply remembers every training point, and at prediction time it looks at whichever labelled points happen to sit closest to the new one.</p>
+</div>
+
+<section class="slide" id="p10-intro">
+<span class="slide-tag">Slides 1–4</span>
+<h3>1. What is k-NN?</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>The <strong>k-Nearest Neighbours (k-NN) algorithm</strong> is a <strong>supervised</strong> learning algorithm that is also:</p>
+<ul>
+<li><strong>Non-parametric</strong> — it cannot be characterized by a bounded, fixed set of parameters (unlike, say, logistic regression's weight vector).</li>
+<li><strong>Instance-based</strong>, also called <strong>lazy learning</strong> — it stores the entire training dataset verbatim and uses it directly to make predictions, rather than compressing it into a learned model first.</li>
+</ul>
+<p>It is commonly used for both <strong>classification</strong> and <strong>regression</strong>, and shows up in text categorization, image recognition, recommender systems, and medical diagnosis.</p>
+</div>
+<div class="key">
+<span class="box-label">Key idea</span>
+<p>A test point's label is determined by the <strong>majority label of its \(k\) nearest neighbours</strong> among the training points.</p>
+</div>
+</section>
+
+<section class="slide" id="p10-algorithm">
+<span class="slide-tag">Slide 5</span>
+<h3>2. The k-NN Algorithm</h3>
+<pre class="pseudocode"><span class="cm">k-Nearest Neighbours</span>
+1. Store the training data (x_i, y_i).
+2. For a new test point x_test:
+       - Compute the distance from x_test to every training point.
+       - Identify the k nearest neighbours (smallest k distances).
+3. <span class="kw">if</span> the task is classification <span class="kw">then</span>
+       Assign the majority class among the k nearest neighbours.
+   <span class="kw">else if</span> the task is regression <span class="kw">then</span>
+       Assign the (weighted) average of the k nearest neighbours' values.</pre>
+<p>There is no training phase at all in the usual sense — "fitting" a k-NN model just means storing the data. All of the work happens later, when a query actually arrives, which is exactly why it is called "lazy."</p>
+</section>
+
+<section class="slide" id="p10-worked">
+<span class="slide-tag">Slides 6–11</span>
+<h3>3. Worked example: classifying P(3, 2)</h3>
+<div class="ex">
+<span class="box-label">The training data</span>
+<p>Ten labelled points in two dimensions:</p>
+<table class="grid">
+<tr><th>Point</th><th>\(x_1\)</th><th>\(x_2\)</th><th>Class</th></tr>
+<tr><td>A</td><td>1</td><td>2</td><td>Red</td></tr>
+<tr><td>B</td><td>2</td><td>3.5</td><td>Red</td></tr>
+<tr><td>C</td><td>2</td><td>2.5</td><td>Red</td></tr>
+<tr><td>D</td><td>4</td><td>4</td><td>Red</td></tr>
+<tr><td>E</td><td>1</td><td>4</td><td>Red</td></tr>
+<tr><td>F</td><td>5</td><td>3.5</td><td>Blue</td></tr>
+<tr><td>G</td><td>5</td><td>1</td><td>Blue</td></tr>
+<tr><td>H</td><td>4</td><td>2</td><td>Blue</td></tr>
+<tr><td>I</td><td>6</td><td>2</td><td>Blue</td></tr>
+<tr><td>J</td><td>2</td><td>1</td><td>Blue</td></tr>
+</table>
+<p>Classify the new point \(P(3,2)\) using k-NN with (i) \(k=1\), (ii) \(k=3\), (iii) \(k=5\).</p>
+</div>
+
+<div style="text-align:center; margin:22px 0;">
+<svg viewBox="0 0 480 340" width="100%" style="max-width:480px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
+  <line x1="40" y1="20" x2="40" y2="320" stroke="#5b5347" stroke-width="1.5"/>
+  <line x1="40" y1="320" x2="450" y2="320" stroke="#5b5347" stroke-width="1.5"/>
+  <text x="245" y="336" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347">x&#8321;</text>
+  <text x="16" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347" transform="rotate(-90 16 170)">x&#8322;</text>
+
+  <!-- Red points -->
+  <circle cx="60" cy="220" r="7" fill="#c0504d"/><text x="60" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">A(1,2)</text>
+  <circle cx="132" cy="100" r="7" fill="#c0504d"/><text x="132" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">B(2,3.5)</text>
+  <circle cx="132" cy="180" r="7" fill="#c0504d"/><text x="132" y="196" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">C(2,2.5)</text>
+  <circle cx="276" cy="60" r="7" fill="#c0504d"/><text x="276" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">D(4,4)</text>
+  <circle cx="60" cy="60" r="7" fill="#c0504d"/><text x="60" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">E(1,4)</text>
+
+  <!-- Blue points -->
+  <circle cx="348" cy="100" r="7" fill="#5b7fb5"/><text x="348" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">F(5,3.5)</text>
+  <circle cx="348" cy="300" r="7" fill="#5b7fb5"/><text x="348" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">G(5,1)</text>
+  <circle cx="276" cy="220" r="7" fill="#5b7fb5"/><text x="276" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">H(4,2)</text>
+  <circle cx="420" cy="220" r="7" fill="#5b7fb5"/><text x="420" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">I(6,2)</text>
+  <circle cx="132" cy="300" r="7" fill="#5b7fb5"/><text x="132" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">J(2,1)</text>
+
+  <!-- query point P -->
+  <polygon points="204,208 196,224 212,224" fill="#5c7a5e" stroke="#2b2620" stroke-width="1"/>
+  <text x="204" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#5c7a5e">P(3,2)</text>
+
+  <!-- dashed lines to the 3 nearest neighbours (k=3 case) -->
+  <line x1="204" y1="220" x2="276" y2="220" stroke="#5c7a5e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="204" y1="220" x2="132" y2="180" stroke="#5c7a5e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="204" y1="220" x2="132" y2="300" stroke="#5c7a5e" stroke-width="1.5" stroke-dasharray="4,3"/>
+</svg>
+</div>
+<p style="text-align:center; font-size:14px; color:var(--ink-soft); margin-top:-8px;">Red = class Red, Blue = class Blue, green triangle = query point P(3,2). Dashed lines show P's 3 nearest neighbours (H, C, J) — the set used for the \(k=3\) case below.</p>
+
+<div class="ex">
+<span class="box-label">Step 1 — Euclidean distance from P(3,2) to every training point</span>
+<table class="grid">
+<tr><th>Point</th><th>Coordinates</th><th>Distance from P(3,2)</th></tr>
+<tr><td>A</td><td>(1, 2)</td><td>2.000</td></tr>
+<tr><td>B</td><td>(2, 3.5)</td><td>1.803</td></tr>
+<tr><td>C</td><td>(2, 2.5)</td><td>1.118</td></tr>
+<tr><td>D</td><td>(4, 4)</td><td>2.236</td></tr>
+<tr><td>E</td><td>(1, 4)</td><td>2.828</td></tr>
+<tr><td>F</td><td>(5, 3.5)</td><td>2.500</td></tr>
+<tr><td>G</td><td>(5, 1)</td><td>2.236</td></tr>
+<tr><td>H</td><td>(4, 2)</td><td>1.000</td></tr>
+<tr><td>I</td><td>(6, 2)</td><td>3.000</td></tr>
+<tr><td>J</td><td>(2, 1)</td><td>1.414</td></tr>
+</table>
+<p>E.g. for H: \(d = \sqrt{(4-3)^2+(2-2)^2} = \sqrt{1} = 1.000\). Every entry above was independently recomputed and matches.</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Step 2 — rank the distances and vote</span>
+<p><strong>\(k=1\):</strong> the single nearest neighbour is H(4,2), class <strong>Blue</strong>. Predicted class for P(3,2): <strong>Blue</strong>.</p>
+<p><strong>\(k=3\):</strong> the three nearest are H (1.000), C (1.118), J (1.414) — classes Blue, Red, Blue. Majority: <strong>Blue</strong>.</p>
+<p><strong>\(k=5\):</strong> the five nearest are H (1.000), C (1.118), J (1.414), B (1.803), A (2.000) — classes Blue, Red, Blue, Red, Red. Majority: <strong>Red</strong>.</p>
+</div>
+<div class="key">
+<span class="box-label">Why the answer flips</span>
+<p>Growing \(k\) from 3 to 5 pulls in two more Red points (B and A) before it pulls in any more Blue ones, since every Blue point except H is relatively far from P. That is enough to tip a 2-to-1 Blue majority into a 3-to-2 Red majority. This is exactly why the choice of \(k\) matters: it isn't just "more data is better," it changes which decision boundary the algorithm is implicitly drawing.</p>
+</div>
+</section>
+
+<section class="slide" id="p10-distances">
+<span class="slide-tag">Slides 12–15</span>
+<h3>4. Distance metrics</h3>
+<p>Euclidean distance is the default, but it is one choice among several. The general family is the <strong>Minkowski distance</strong> (the \(L_p\) norm):</p>
+<div class="def">
+<span class="box-label">Minkowski distance</span>
+<p>$$L_p(x_i,x_j) = \left(\sum_k |x_{i,k}-x_{j,k}|^p\right)^{1/p}$$</p>
+<p>Two special cases are used constantly:</p>
+<ul>
+<li>\(p=1\): <strong>Manhattan distance</strong> — often used when features are dissimilar in nature (e.g. age, weight).</li>
+<li>\(p=2\): <strong>Euclidean distance</strong> — often used when features are similar in nature (e.g. length, width).</li>
+</ul>
+</div>
+<div class="def">
+<span class="box-label">Other distance metrics</span>
+<p><strong>Cosine similarity/distance</strong> — used for text data or high-dimensional sparse data, where the <em>direction</em> of a vector matters more than its magnitude:</p>
+<p>$$\cos\theta = \frac{\vec v \cdot \vec w}{\lVert\vec v\rVert\,\lVert\vec w\rVert}, \qquad d_{\cos}(\vec v,\vec w) = 1-\cos\theta$$</p>
+<p><strong>Hamming distance</strong> — used when features are binary or categorical, counting the number of positions at which two vectors disagree:</p>
+<p>$$d_H(x,y) = \sum_{i=1}^{n}\mathbf{1}\{x_i \ne y_i\}$$</p>
+</div>
+</section>
+
+<section class="slide" id="p10-choosingk">
+<span class="slide-tag">Slides 16–17</span>
+<h3>5. Choosing k: bias, variance &amp; cross-validation</h3>
+<table class="grid">
+<tr><th>Choice of \(k\)</th><th>Effect</th></tr>
+<tr><td>Small \(k\)</td><td>Low bias, high variance &#8594; <strong>overfitting</strong> (the decision boundary chases every quirk of individual training points, including noise).</td></tr>
+<tr><td>Large \(k\)</td><td>High bias, low variance &#8594; <strong>underfitting</strong> (the boundary is smoothed so much it ignores real local structure).</td></tr>
+</table>
+<div class="key">
+<span class="box-label">Key takeaway</span>
+<p><strong>Cross-validation</strong> is used to choose the best value of \(k\) for a given dataset — there is no universal "correct" \(k\); it is a hyperparameter tuned empirically, exactly like the regularization strength in ridge regression or the depth limit in a decision tree.</p>
+</div>
+</section>
+
+<section class="slide" id="p10-normalization">
+<span class="slide-tag">Slides 18–19</span>
+<h3>6. Why normalize the data?</h3>
+<div class="warn">
+<span class="box-label">The problem</span>
+<p>k-NN relies entirely on distance metrics to find nearest neighbours. If features have very different scales, the feature with the largest numerical range will dominate the distance calculation — e.g. height in cm (range 150&ndash;200) versus annual income in &#36; (range 30,000&ndash;200,000). Used as-is, the distance is dominated almost entirely by income, and k-NN may return misleading neighbours.</p>
+</div>
+<div class="def">
+<span class="box-label">Common types of normalization</span>
+<p><strong>1. Min-Max Scaling</strong> — rescales the data to \([0,1]\):</p>
+<p>$$x' = \frac{x-x_{min}}{x_{max}-x_{min}}$$</p>
+<p><strong>2. Z-Score Normalization</strong> — converts the data to have zero mean, unit variance:</p>
+<p>$$x' = \frac{x-\mu}{\sigma}$$</p>
+</div>
+</section>
+
+<section class="slide" id="p10-curse">
+<span class="slide-tag">Slides 20–23</span>
+<h3>7. The Curse of Dimensionality</h3>
+<p>In low-dimensional spaces with a large amount of data, k-NN works well. But as the number of dimensions (features) increases, the nearest neighbours are usually <em>not</em> very near at all.</p>
+
+<div style="text-align:center; margin:22px 0;">
+<svg viewBox="0 0 520 280" width="100%" style="max-width:520px;">
+  <!-- 2D square panel -->
+  <rect x="30" y="20" width="180" height="180" fill="none" stroke="#2b2620" stroke-width="2"/>
+  <circle cx="55" cy="45" r="3.5" fill="#c0504d"/>
+  <circle cx="100" cy="60" r="3.5" fill="#c0504d"/>
+  <circle cx="150" cy="40" r="3.5" fill="#c0504d"/>
+  <circle cx="175" cy="75" r="3.5" fill="#c0504d"/>
+  <circle cx="60" cy="100" r="3.5" fill="#c0504d"/>
+  <circle cx="120" cy="105" r="3.5" fill="#c0504d"/>
+  <circle cx="90" cy="140" r="3.5" fill="#c0504d"/>
+  <circle cx="155" cy="130" r="3.5" fill="#c0504d"/>
+  <circle cx="50" cy="170" r="3.5" fill="#c0504d"/>
+  <circle cx="135" cy="175" r="3.5" fill="#c0504d"/>
+  <text x="120" y="218" text-anchor="middle" font-family="Palatino, serif" font-size="13" fill="#2b2620">2D hypercube (square), 10 points</text>
+
+  <!-- 3D cube panel -->
+  <g>
+    <polygon points="300,55 420,55 450,25 330,25" fill="none" stroke="#2b2620" stroke-width="2"/>
+    <polygon points="300,55 300,175 420,175 420,55" fill="none" stroke="#2b2620" stroke-width="2"/>
+    <polygon points="420,55 450,25 450,145 420,175" fill="none" stroke="#2b2620" stroke-width="2"/>
+    <line x1="330" y1="25" x2="330" y2="145" stroke="#2b2620" stroke-width="1"/>
+    <line x1="330" y1="145" x2="300" y2="175" stroke="#2b2620" stroke-width="1"/>
+    <line x1="330" y1="145" x2="450" y2="145" stroke="#2b2620" stroke-width="1"/>
+    <circle cx="340" cy="40" r="3.5" fill="#c0504d"/>
+    <circle cx="312" cy="80" r="3.5" fill="#c0504d"/>
+    <circle cx="360" cy="90" r="3.5" fill="#c0504d"/>
+    <circle cx="432" cy="48" r="3.5" fill="#c0504d"/>
+    <circle cx="405" cy="95" r="3.5" fill="#c0504d"/>
+    <circle cx="316" cy="125" r="3.5" fill="#c0504d"/>
+    <circle cx="358" cy="128" r="3.5" fill="#c0504d"/>
+    <circle cx="438" cy="118" r="3.5" fill="#c0504d"/>
+    <circle cx="322" cy="160" r="3.5" fill="#c0504d"/>
+    <circle cx="405" cy="150" r="3.5" fill="#c0504d"/>
+  </g>
+  <text x="375" y="218" text-anchor="middle" font-family="Palatino, serif" font-size="13" fill="#2b2620">3D hypercube (cube), 10 points</text>
+</svg>
+</div>
+
+<div class="an">
+<span class="box-label">Intuition</span>
+<p>The same 10 points that look reasonably close-packed inside a 2D square get noticeably more spread out once squeezed into a 3D cube of the same side length — there is simply more room (volume grows as (side)<sup>d</sup>) for the same number of points to spread into. Push this to tens or hundreds of dimensions and the points become almost uniformly far apart; "nearest" stops meaning anything useful.</p>
+</div>
+<div class="warn">
+<span class="box-label">Consequences</span>
+<ul>
+<li>The increase in dimensions increases the <strong>sparsity</strong> of the data. This makes the \(k\) "nearest" neighbours less meaningful in higher dimensions, leading to incorrect predictions for query points.</li>
+<li>The increased number of incorrect predictions leads to poor performance in higher dimensions.</li>
+<li>Computing distances in higher dimensions also involves more calculations, so k-NN becomes computationally intensive as dimensionality grows.</li>
+</ul>
+<p>This is called the <strong>"Curse of Dimensionality."</strong> It is typically overcome by using dimension-reduction techniques such as <strong>Principal Component Analysis (PCA)</strong>.</p>
+</div>
+</section>
+
+<section class="slide" id="p10-advdis">
+<span class="slide-tag">Slides 24–25</span>
+<h3>8. Advantages &amp; disadvantages</h3>
+<table class="grid">
+<tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Simple to train</td><td>Slow prediction</td></tr>
+<tr><td>No training time</td><td>Memory intensive</td></tr>
+<tr><td>Adapts to new data easily</td><td>Sensitive to irrelevant features and scaling</td></tr>
+<tr><td></td><td>Performs poorly in high-dimensional spaces</td></tr>
+</table>
+<div class="key">
+<span class="box-label">Key takeaway for all of Part 10</span>
+<p>k-NN trades away any up-front training cost for a prediction-time cost: every query must be compared against the entire stored dataset. Its entire behaviour is governed by two choices — the distance metric and the value of \(k\) — and both choices depend on the data: mismatched feature scales demand normalization first, and the "right" \(k\) is whatever cross-validation says balances overfitting against underfitting for this particular dataset.</p>
+</div>
+</section>
+
+<div class="part-header">
+  <div class="ptag">Part 11 of 16</div>
+  <h2>k-Means Clustering</h2>
+  <p>k-Nearest Neighbours assumed every training point already carried a label to vote with — it is a <em>supervised</em> algorithm. k-Means Clustering asks what you can still do when nobody hands you any labels at all: given only raw, unlabelled points, group them into \(k\) clusters using nothing but their distances from a handful of moving centroids. Both algorithms live and die by the same tool — distance — but one uses it to vote, and the other uses it to group.</p>
+</div>
+
+<section class="slide" id="p11-intro">
+<span class="slide-tag">Slides 1–3</span>
+<h3>1. The clustering problem &amp; the k-Means algorithm</h3>
+<div class="def">
+<span class="box-label">The Clustering Problem</span>
+<p>Given a training set \(\{x^{(1)}, x^{(2)}, \ldots, x^{(n)}\}\) with \(d\) features, where \(x^{(i)} \in \mathbb{R}^d\) for each \(i\), we want to group the data into \(k\) clusters, where \(k\) is a fixed natural number. This is an <strong>unsupervised</strong> learning problem — there are no class labels anywhere in sight. Here we look at only the basic k-means clustering algorithm.</p>
+</div>
+<p>One small piece of notation is used throughout: for a statement \(P\), the <strong>indicator function</strong> is</p>
+<p>$$\mathbf{1}\{P\} = \begin{cases}1, & \text{if } P \text{ is true} \\ 0, & \text{if } P \text{ is false}\end{cases}$$</p>
+<div class="def">
+<span class="box-label">The k-Means Clustering Algorithm</span>
+<pre class="pseudocode"><span class="cm">k-Means Clustering</span>
+1. Initialize cluster centroids mu_1, mu_2, ..., mu_k randomly.
+2. Repeat until convergence: {
+       <span class="cm">Assignment step — for every i (1 <= i <= n), set</span>
+           c(i) = argmin_j || x(i) - mu_j ||^2
+
+       <span class="cm">Update step — for every j (1 <= j <= k), set</span>
+           mu_j = ( sum_{i=1}^{n} 1{c(i)=j} x(i) ) / ( sum_{i=1}^{n} 1{c(i)=j} )
+   }</pre>
+<p>In words: first, assign every point to whichever centroid it is currently closest to (by squared Euclidean distance); then, move each centroid to the mean of all the points just assigned to it. Repeat both steps until no point changes its assignment — at that point the centroids stop moving too, and the algorithm has converged.</p>
+</div>
+</section>
+
+<section class="slide" id="p11-worked">
+<span class="slide-tag">Slides 4–6</span>
+<h3>2. Worked example: two clusters, two iterations</h3>
+<div class="ex">
+<span class="box-label">Setup</span>
+<p>Given the set of points \(\{(1,5),\ (2,4),\ (4,1),\ (5,2),\ (2,3),\ (6,1)\}\) in \(\mathbb{R}^2\), run k-means with \(k=2\) and initial centroids \(\mu_1=(1,0)\), \(\mu_2=(4,0)\).</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Iteration 1</span>
+<table class="grid">
+<tr><th>Point</th><th>Distance&sup2; to (1,0)</th><th>Distance&sup2; to (4,0)</th><th>Cluster assigned</th></tr>
+<tr><td>(1, 5)</td><td>25</td><td>34</td><td>1</td></tr>
+<tr><td>(2, 4)</td><td>17</td><td>20</td><td>1</td></tr>
+<tr><td>(4, 1)</td><td>10</td><td>1</td><td>2</td></tr>
+<tr><td>(5, 2)</td><td>20</td><td>5</td><td>2</td></tr>
+<tr><td>(2, 3)</td><td>10</td><td>13</td><td>1</td></tr>
+<tr><td>(6, 1)</td><td>26</td><td>5</td><td>2</td></tr>
+</table>
+<p>(The algorithm's assignment step only needs to <em>compare</em> distances, so working with squared distances throughout — skipping the square root — gives exactly the same assignments, faster.)</p>
+<p>Updating the centroids, by averaging each cluster's members:</p>
+<p>$$\mu_1 = \frac{(1,5)+(2,4)+(2,3)}{3} = \left(\tfrac{5}{3},\,4\right)$$</p>
+<p>$$\mu_2 = \frac{(4,1)+(5,2)+(6,1)}{3} = \left(5,\,\tfrac{4}{3}\right)$$</p>
+</div>
+
+<div class="ex">
+<span class="box-label">Iteration 2</span>
+<table class="grid">
+<tr><th>Point</th><th>Distance&sup2; to (5/3, 4)</th><th>Distance&sup2; to (5, 4/3)</th><th>Cluster assigned</th></tr>
+<tr><td>(1, 5)</td><td>1.4444</td><td>29.4444</td><td>1</td></tr>
+<tr><td>(2, 4)</td><td>0.1111</td><td>16.1111</td><td>1</td></tr>
+<tr><td>(4, 1)</td><td>14.4444</td><td>1.1111</td><td>2</td></tr>
+<tr><td>(5, 2)</td><td>15.1111</td><td>0.4444</td><td>2</td></tr>
+<tr><td>(2, 3)</td><td>1.1111</td><td>11.7778</td><td>1</td></tr>
+<tr><td>(6, 1)</td><td>27.7778</td><td>1.1111</td><td>2</td></tr>
+</table>
+<p>Every assignment is unchanged from Iteration 1, so the recomputed centroids are unchanged too:</p>
+<p>$$\mu_1 = \frac{(1,5)+(2,4)+(2,3)}{3} = \left(\tfrac{5}{3},\,4\right), \qquad \mu_2 = \frac{(4,1)+(5,2)+(6,1)}{3} = \left(5,\,\tfrac{4}{3}\right)$$</p>
+<p>As there is no change in the centroids, <strong>the algorithm terminates.</strong> All distances in both iterations were independently recomputed and match the originals exactly.</p>
+</div>
+
+<div style="text-align:center; margin:22px 0;">
+<svg viewBox="0 0 480 340" width="100%" style="max-width:480px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
+  <line x1="40" y1="20" x2="40" y2="320" stroke="#5b5347" stroke-width="1.5"/>
+  <line x1="40" y1="320" x2="450" y2="320" stroke="#5b5347" stroke-width="1.5"/>
+  <text x="245" y="336" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347">x&#8321;</text>
+  <text x="16" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347" transform="rotate(-90 16 170)">x&#8322;</text>
+
+  <!-- cluster 1 points (green) -->
+  <circle cx="60" cy="60" r="7" fill="#5c9a63"/><text x="60" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(1,5)</text>
+  <circle cx="132" cy="120" r="7" fill="#5c9a63"/><text x="132" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(2,4)</text>
+  <circle cx="132" cy="180" r="7" fill="#5c9a63"/><text x="132" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(2,3)</text>
+
+  <!-- cluster 2 points (orange) -->
+  <circle cx="276" cy="300" r="7" fill="#c98a2c"/><text x="276" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(4,1)</text>
+  <circle cx="348" cy="240" r="7" fill="#c98a2c"/><text x="348" y="228" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(5,2)</text>
+  <circle cx="420" cy="300" r="7" fill="#c98a2c"/><text x="420" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(6,1)</text>
+
+  <!-- centroids -->
+  <path d="M 108 112 L 108 128 M 100 120 L 116 120" stroke="#2f6b36" stroke-width="3"/>
+  <text x="108" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#2f6b36">&mu;&#8321;=(5/3,4)</text>
+  <path d="M 348 272 L 348 288 M 340 280 L 356 280" stroke="#9c6a1e" stroke-width="3"/>
+  <text x="348" y="305" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#9c6a1e">&mu;&#8322;=(5,4/3)</text>
+</svg>
+</div>
+<p style="text-align:center; font-size:14px; color:var(--ink-soft); margin-top:-8px;">The converged clustering: \(\{(1,5),(2,4),(2,3)\}\) around \(\mu_1\), and \(\{(4,1),(5,2),(6,1)\}\) around \(\mu_2\) — a clean split that matches the visual intuition of "top-left group" vs. "bottom-right group."</p>
+
+<div class="key">
+<span class="box-label">Key takeaway for all of Part 11</span>
+<p>k-means alternates between two very simple steps — assign points to the nearest centroid, then recompute each centroid as a mean — and is guaranteed to converge (the within-cluster sum of squared distances never increases), but it is <em>not</em> guaranteed to converge to the globally best clustering: different random initial centroids can converge to different final clusters. This is exactly the counterpart to k-NN's own instability: k-NN's result depends on the choice of \(k\) and the distance metric; k-means' result depends on \(k\) and the initial centroids.</p>
+</div>
+</section>
+
+<div class="part-header">
+  <div class="ptag">Part 12 of 16</div>
   <h2>Hidden Markov Models</h2>
-  <p>Naive Bayes still assumed the world simply <em>tells</em> you which class and feature values you're dealing with — nothing is ever hidden. Hidden Markov Models drop that assumption: the thing generating the data moves through a sequence of states you <em>never</em> get to see directly, and all you observe is a noisy signal those hidden states happen to produce. The entire part is one running example — the weather secretly drives your mood — and three questions you can ask of it: how likely is what I observed, which hidden path best explains it, and how do I learn the model itself?</p>
+  <p>Every algorithm so far has assumed the world simply <em>tells</em> you what state you're in — the features of a labelled point, the attributes of a training example. Hidden Markov Models drop that assumption: the thing generating the data moves through a sequence of states you <em>never</em> get to see directly, and all you observe is a noisy signal those hidden states happen to produce. The entire part is one running example — the weather secretly drives your mood — and three questions you can ask of it: how likely is what I observed, which hidden path best explains it, and how do I learn the model itself?</p>
 </div>
 
 <section class="slide" id="p12-markov">
@@ -4431,369 +4811,15 @@
 </div>
 
 <div class="key">
-<span class="box-label">Key takeaway for all of Part 10</span>
+<span class="box-label">Key takeaway for all of Part 12</span>
 <p>One pair of matrices, \(\alpha\) (forward) and \(\beta\) (backward), answers all three fundamental HMM questions: \(\sum_j\alpha_T(j)\) solves Evaluation; replacing every sum in the \(\alpha\) recursion with a max (plus backpointers) gives Viterbi, which solves Decoding; and combining \(\alpha\) with \(\beta\) to form \(\gamma_t(j)\) and \(\xi_t(i,j)\) gives the E-step of Baum&ndash;Welch, which solves Learning by iterating towards a local maximum of \(P(O\mid\lambda)\).</p>
 </div>
 </section>
 
 <div class="part-header">
-  <div class="ptag">Part 11 of 13</div>
-  <h2>k-Nearest Neighbours</h2>
-  <p>Hidden Markov Models still build an explicit probabilistic model — transition and emission matrices — before answering any question about a sequence. k-Nearest Neighbours throws that whole idea away: it builds nothing in advance. It simply remembers every training point, and at prediction time it looks at whichever labelled points happen to sit closest to the new one.</p>
-</div>
-
-<section class="slide" id="p10-intro">
-<span class="slide-tag">Slides 1–4</span>
-<h3>1. What is k-NN?</h3>
-<div class="def">
-<span class="box-label">Definition</span>
-<p>The <strong>k-Nearest Neighbours (k-NN) algorithm</strong> is a <strong>supervised</strong> learning algorithm that is also:</p>
-<ul>
-<li><strong>Non-parametric</strong> — it cannot be characterized by a bounded, fixed set of parameters (unlike, say, logistic regression's weight vector).</li>
-<li><strong>Instance-based</strong>, also called <strong>lazy learning</strong> — it stores the entire training dataset verbatim and uses it directly to make predictions, rather than compressing it into a learned model first.</li>
-</ul>
-<p>It is commonly used for both <strong>classification</strong> and <strong>regression</strong>, and shows up in text categorization, image recognition, recommender systems, and medical diagnosis.</p>
-</div>
-<div class="key">
-<span class="box-label">Key idea</span>
-<p>A test point's label is determined by the <strong>majority label of its \(k\) nearest neighbours</strong> among the training points.</p>
-</div>
-</section>
-
-<section class="slide" id="p10-algorithm">
-<span class="slide-tag">Slide 5</span>
-<h3>2. The k-NN Algorithm</h3>
-<pre class="pseudocode"><span class="cm">k-Nearest Neighbours</span>
-1. Store the training data (x_i, y_i).
-2. For a new test point x_test:
-       - Compute the distance from x_test to every training point.
-       - Identify the k nearest neighbours (smallest k distances).
-3. <span class="kw">if</span> the task is classification <span class="kw">then</span>
-       Assign the majority class among the k nearest neighbours.
-   <span class="kw">else if</span> the task is regression <span class="kw">then</span>
-       Assign the (weighted) average of the k nearest neighbours' values.</pre>
-<p>There is no training phase at all in the usual sense — "fitting" a k-NN model just means storing the data. All of the work happens later, when a query actually arrives, which is exactly why it is called "lazy."</p>
-</section>
-
-<section class="slide" id="p10-worked">
-<span class="slide-tag">Slides 6–11</span>
-<h3>3. Worked example: classifying P(3, 2)</h3>
-<div class="ex">
-<span class="box-label">The training data</span>
-<p>Ten labelled points in two dimensions:</p>
-<table class="grid">
-<tr><th>Point</th><th>\(x_1\)</th><th>\(x_2\)</th><th>Class</th></tr>
-<tr><td>A</td><td>1</td><td>2</td><td>Red</td></tr>
-<tr><td>B</td><td>2</td><td>3.5</td><td>Red</td></tr>
-<tr><td>C</td><td>2</td><td>2.5</td><td>Red</td></tr>
-<tr><td>D</td><td>4</td><td>4</td><td>Red</td></tr>
-<tr><td>E</td><td>1</td><td>4</td><td>Red</td></tr>
-<tr><td>F</td><td>5</td><td>3.5</td><td>Blue</td></tr>
-<tr><td>G</td><td>5</td><td>1</td><td>Blue</td></tr>
-<tr><td>H</td><td>4</td><td>2</td><td>Blue</td></tr>
-<tr><td>I</td><td>6</td><td>2</td><td>Blue</td></tr>
-<tr><td>J</td><td>2</td><td>1</td><td>Blue</td></tr>
-</table>
-<p>Classify the new point \(P(3,2)\) using k-NN with (i) \(k=1\), (ii) \(k=3\), (iii) \(k=5\).</p>
-</div>
-
-<div style="text-align:center; margin:22px 0;">
-<svg viewBox="0 0 480 340" width="100%" style="max-width:480px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
-  <line x1="40" y1="20" x2="40" y2="320" stroke="#5b5347" stroke-width="1.5"/>
-  <line x1="40" y1="320" x2="450" y2="320" stroke="#5b5347" stroke-width="1.5"/>
-  <text x="245" y="336" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347">x&#8321;</text>
-  <text x="16" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347" transform="rotate(-90 16 170)">x&#8322;</text>
-
-  <!-- Red points -->
-  <circle cx="60" cy="220" r="7" fill="#c0504d"/><text x="60" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">A(1,2)</text>
-  <circle cx="132" cy="100" r="7" fill="#c0504d"/><text x="132" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">B(2,3.5)</text>
-  <circle cx="132" cy="180" r="7" fill="#c0504d"/><text x="132" y="196" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">C(2,2.5)</text>
-  <circle cx="276" cy="60" r="7" fill="#c0504d"/><text x="276" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">D(4,4)</text>
-  <circle cx="60" cy="60" r="7" fill="#c0504d"/><text x="60" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">E(1,4)</text>
-
-  <!-- Blue points -->
-  <circle cx="348" cy="100" r="7" fill="#5b7fb5"/><text x="348" y="90" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">F(5,3.5)</text>
-  <circle cx="348" cy="300" r="7" fill="#5b7fb5"/><text x="348" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">G(5,1)</text>
-  <circle cx="276" cy="220" r="7" fill="#5b7fb5"/><text x="276" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">H(4,2)</text>
-  <circle cx="420" cy="220" r="7" fill="#5b7fb5"/><text x="420" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">I(6,2)</text>
-  <circle cx="132" cy="300" r="7" fill="#5b7fb5"/><text x="132" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">J(2,1)</text>
-
-  <!-- query point P -->
-  <polygon points="204,208 196,224 212,224" fill="#5c7a5e" stroke="#2b2620" stroke-width="1"/>
-  <text x="204" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#5c7a5e">P(3,2)</text>
-
-  <!-- dashed lines to the 3 nearest neighbours (k=3 case) -->
-  <line x1="204" y1="220" x2="276" y2="220" stroke="#5c7a5e" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <line x1="204" y1="220" x2="132" y2="180" stroke="#5c7a5e" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <line x1="204" y1="220" x2="132" y2="300" stroke="#5c7a5e" stroke-width="1.5" stroke-dasharray="4,3"/>
-</svg>
-</div>
-<p style="text-align:center; font-size:14px; color:var(--ink-soft); margin-top:-8px;">Red = class Red, Blue = class Blue, green triangle = query point P(3,2). Dashed lines show P's 3 nearest neighbours (H, C, J) — the set used for the \(k=3\) case below.</p>
-
-<div class="ex">
-<span class="box-label">Step 1 — Euclidean distance from P(3,2) to every training point</span>
-<table class="grid">
-<tr><th>Point</th><th>Coordinates</th><th>Distance from P(3,2)</th></tr>
-<tr><td>A</td><td>(1, 2)</td><td>2.000</td></tr>
-<tr><td>B</td><td>(2, 3.5)</td><td>1.803</td></tr>
-<tr><td>C</td><td>(2, 2.5)</td><td>1.118</td></tr>
-<tr><td>D</td><td>(4, 4)</td><td>2.236</td></tr>
-<tr><td>E</td><td>(1, 4)</td><td>2.828</td></tr>
-<tr><td>F</td><td>(5, 3.5)</td><td>2.500</td></tr>
-<tr><td>G</td><td>(5, 1)</td><td>2.236</td></tr>
-<tr><td>H</td><td>(4, 2)</td><td>1.000</td></tr>
-<tr><td>I</td><td>(6, 2)</td><td>3.000</td></tr>
-<tr><td>J</td><td>(2, 1)</td><td>1.414</td></tr>
-</table>
-<p>E.g. for H: \(d = \sqrt{(4-3)^2+(2-2)^2} = \sqrt{1} = 1.000\). Every entry above was independently recomputed and matches.</p>
-</div>
-
-<div class="ex">
-<span class="box-label">Step 2 — rank the distances and vote</span>
-<p><strong>\(k=1\):</strong> the single nearest neighbour is H(4,2), class <strong>Blue</strong>. Predicted class for P(3,2): <strong>Blue</strong>.</p>
-<p><strong>\(k=3\):</strong> the three nearest are H (1.000), C (1.118), J (1.414) — classes Blue, Red, Blue. Majority: <strong>Blue</strong>.</p>
-<p><strong>\(k=5\):</strong> the five nearest are H (1.000), C (1.118), J (1.414), B (1.803), A (2.000) — classes Blue, Red, Blue, Red, Red. Majority: <strong>Red</strong>.</p>
-</div>
-<div class="key">
-<span class="box-label">Why the answer flips</span>
-<p>Growing \(k\) from 3 to 5 pulls in two more Red points (B and A) before it pulls in any more Blue ones, since every Blue point except H is relatively far from P. That is enough to tip a 2-to-1 Blue majority into a 3-to-2 Red majority. This is exactly why the choice of \(k\) matters: it isn't just "more data is better," it changes which decision boundary the algorithm is implicitly drawing.</p>
-</div>
-</section>
-
-<section class="slide" id="p10-distances">
-<span class="slide-tag">Slides 12–15</span>
-<h3>4. Distance metrics</h3>
-<p>Euclidean distance is the default, but it is one choice among several. The general family is the <strong>Minkowski distance</strong> (the \(L_p\) norm):</p>
-<div class="def">
-<span class="box-label">Minkowski distance</span>
-<p>$$L_p(x_i,x_j) = \left(\sum_k |x_{i,k}-x_{j,k}|^p\right)^{1/p}$$</p>
-<p>Two special cases are used constantly:</p>
-<ul>
-<li>\(p=1\): <strong>Manhattan distance</strong> — often used when features are dissimilar in nature (e.g. age, weight).</li>
-<li>\(p=2\): <strong>Euclidean distance</strong> — often used when features are similar in nature (e.g. length, width).</li>
-</ul>
-</div>
-<div class="def">
-<span class="box-label">Other distance metrics</span>
-<p><strong>Cosine similarity/distance</strong> — used for text data or high-dimensional sparse data, where the <em>direction</em> of a vector matters more than its magnitude:</p>
-<p>$$\cos\theta = \frac{\vec v \cdot \vec w}{\lVert\vec v\rVert\,\lVert\vec w\rVert}, \qquad d_{\cos}(\vec v,\vec w) = 1-\cos\theta$$</p>
-<p><strong>Hamming distance</strong> — used when features are binary or categorical, counting the number of positions at which two vectors disagree:</p>
-<p>$$d_H(x,y) = \sum_{i=1}^{n}\mathbf{1}\{x_i \ne y_i\}$$</p>
-</div>
-</section>
-
-<section class="slide" id="p10-choosingk">
-<span class="slide-tag">Slides 16–17</span>
-<h3>5. Choosing k: bias, variance &amp; cross-validation</h3>
-<table class="grid">
-<tr><th>Choice of \(k\)</th><th>Effect</th></tr>
-<tr><td>Small \(k\)</td><td>Low bias, high variance &#8594; <strong>overfitting</strong> (the decision boundary chases every quirk of individual training points, including noise).</td></tr>
-<tr><td>Large \(k\)</td><td>High bias, low variance &#8594; <strong>underfitting</strong> (the boundary is smoothed so much it ignores real local structure).</td></tr>
-</table>
-<div class="key">
-<span class="box-label">Key takeaway</span>
-<p><strong>Cross-validation</strong> is used to choose the best value of \(k\) for a given dataset — there is no universal "correct" \(k\); it is a hyperparameter tuned empirically, exactly like the regularization strength in ridge regression or the depth limit in a decision tree.</p>
-</div>
-</section>
-
-<section class="slide" id="p10-normalization">
-<span class="slide-tag">Slides 18–19</span>
-<h3>6. Why normalize the data?</h3>
-<div class="warn">
-<span class="box-label">The problem</span>
-<p>k-NN relies entirely on distance metrics to find nearest neighbours. If features have very different scales, the feature with the largest numerical range will dominate the distance calculation — e.g. height in cm (range 150&ndash;200) versus annual income in &#36; (range 30,000&ndash;200,000). Used as-is, the distance is dominated almost entirely by income, and k-NN may return misleading neighbours.</p>
-</div>
-<div class="def">
-<span class="box-label">Common types of normalization</span>
-<p><strong>1. Min-Max Scaling</strong> — rescales the data to \([0,1]\):</p>
-<p>$$x' = \frac{x-x_{min}}{x_{max}-x_{min}}$$</p>
-<p><strong>2. Z-Score Normalization</strong> — converts the data to have zero mean, unit variance:</p>
-<p>$$x' = \frac{x-\mu}{\sigma}$$</p>
-</div>
-</section>
-
-<section class="slide" id="p10-curse">
-<span class="slide-tag">Slides 20–23</span>
-<h3>7. The Curse of Dimensionality</h3>
-<p>In low-dimensional spaces with a large amount of data, k-NN works well. But as the number of dimensions (features) increases, the nearest neighbours are usually <em>not</em> very near at all.</p>
-
-<div style="text-align:center; margin:22px 0;">
-<svg viewBox="0 0 520 280" width="100%" style="max-width:520px;">
-  <!-- 2D square panel -->
-  <rect x="30" y="20" width="180" height="180" fill="none" stroke="#2b2620" stroke-width="2"/>
-  <circle cx="55" cy="45" r="3.5" fill="#c0504d"/>
-  <circle cx="100" cy="60" r="3.5" fill="#c0504d"/>
-  <circle cx="150" cy="40" r="3.5" fill="#c0504d"/>
-  <circle cx="175" cy="75" r="3.5" fill="#c0504d"/>
-  <circle cx="60" cy="100" r="3.5" fill="#c0504d"/>
-  <circle cx="120" cy="105" r="3.5" fill="#c0504d"/>
-  <circle cx="90" cy="140" r="3.5" fill="#c0504d"/>
-  <circle cx="155" cy="130" r="3.5" fill="#c0504d"/>
-  <circle cx="50" cy="170" r="3.5" fill="#c0504d"/>
-  <circle cx="135" cy="175" r="3.5" fill="#c0504d"/>
-  <text x="120" y="218" text-anchor="middle" font-family="Palatino, serif" font-size="13" fill="#2b2620">2D hypercube (square), 10 points</text>
-
-  <!-- 3D cube panel -->
-  <g>
-    <polygon points="300,55 420,55 450,25 330,25" fill="none" stroke="#2b2620" stroke-width="2"/>
-    <polygon points="300,55 300,175 420,175 420,55" fill="none" stroke="#2b2620" stroke-width="2"/>
-    <polygon points="420,55 450,25 450,145 420,175" fill="none" stroke="#2b2620" stroke-width="2"/>
-    <line x1="330" y1="25" x2="330" y2="145" stroke="#2b2620" stroke-width="1"/>
-    <line x1="330" y1="145" x2="300" y2="175" stroke="#2b2620" stroke-width="1"/>
-    <line x1="330" y1="145" x2="450" y2="145" stroke="#2b2620" stroke-width="1"/>
-    <circle cx="340" cy="40" r="3.5" fill="#c0504d"/>
-    <circle cx="312" cy="80" r="3.5" fill="#c0504d"/>
-    <circle cx="360" cy="90" r="3.5" fill="#c0504d"/>
-    <circle cx="432" cy="48" r="3.5" fill="#c0504d"/>
-    <circle cx="405" cy="95" r="3.5" fill="#c0504d"/>
-    <circle cx="316" cy="125" r="3.5" fill="#c0504d"/>
-    <circle cx="358" cy="128" r="3.5" fill="#c0504d"/>
-    <circle cx="438" cy="118" r="3.5" fill="#c0504d"/>
-    <circle cx="322" cy="160" r="3.5" fill="#c0504d"/>
-    <circle cx="405" cy="150" r="3.5" fill="#c0504d"/>
-  </g>
-  <text x="375" y="218" text-anchor="middle" font-family="Palatino, serif" font-size="13" fill="#2b2620">3D hypercube (cube), 10 points</text>
-</svg>
-</div>
-
-<div class="an">
-<span class="box-label">Intuition</span>
-<p>The same 10 points that look reasonably close-packed inside a 2D square get noticeably more spread out once squeezed into a 3D cube of the same side length — there is simply more room (volume grows as (side)<sup>d</sup>) for the same number of points to spread into. Push this to tens or hundreds of dimensions and the points become almost uniformly far apart; "nearest" stops meaning anything useful.</p>
-</div>
-<div class="warn">
-<span class="box-label">Consequences</span>
-<ul>
-<li>The increase in dimensions increases the <strong>sparsity</strong> of the data. This makes the \(k\) "nearest" neighbours less meaningful in higher dimensions, leading to incorrect predictions for query points.</li>
-<li>The increased number of incorrect predictions leads to poor performance in higher dimensions.</li>
-<li>Computing distances in higher dimensions also involves more calculations, so k-NN becomes computationally intensive as dimensionality grows.</li>
-</ul>
-<p>This is called the <strong>"Curse of Dimensionality."</strong> It is typically overcome by using dimension-reduction techniques such as <strong>Principal Component Analysis (PCA)</strong>.</p>
-</div>
-</section>
-
-<section class="slide" id="p10-advdis">
-<span class="slide-tag">Slides 24–25</span>
-<h3>8. Advantages &amp; disadvantages</h3>
-<table class="grid">
-<tr><th>Advantages</th><th>Disadvantages</th></tr>
-<tr><td>Simple to train</td><td>Slow prediction</td></tr>
-<tr><td>No training time</td><td>Memory intensive</td></tr>
-<tr><td>Adapts to new data easily</td><td>Sensitive to irrelevant features and scaling</td></tr>
-<tr><td></td><td>Performs poorly in high-dimensional spaces</td></tr>
-</table>
-<div class="key">
-<span class="box-label">Key takeaway for all of Part 11</span>
-<p>k-NN trades away any up-front training cost for a prediction-time cost: every query must be compared against the entire stored dataset. Its entire behaviour is governed by two choices — the distance metric and the value of \(k\) — and both choices depend on the data: mismatched feature scales demand normalization first, and the "right" \(k\) is whatever cross-validation says balances overfitting against underfitting for this particular dataset.</p>
-</div>
-</section>
-
-<div class="part-header">
-  <div class="ptag">Part 12 of 13</div>
-  <h2>k-Means Clustering</h2>
-  <p>k-Nearest Neighbours assumed every training point already carried a label to vote with — it is a <em>supervised</em> algorithm. k-Means Clustering asks what you can still do when nobody hands you any labels at all: given only raw, unlabelled points, group them into \(k\) clusters using nothing but their distances from a handful of moving centroids. Both algorithms live and die by the same tool — distance — but one uses it to vote, and the other uses it to group.</p>
-</div>
-
-<section class="slide" id="p11-intro">
-<span class="slide-tag">Slides 1–3</span>
-<h3>1. The clustering problem &amp; the k-Means algorithm</h3>
-<div class="def">
-<span class="box-label">The Clustering Problem</span>
-<p>Given a training set \(\{x^{(1)}, x^{(2)}, \ldots, x^{(n)}\}\) with \(d\) features, where \(x^{(i)} \in \mathbb{R}^d\) for each \(i\), we want to group the data into \(k\) clusters, where \(k\) is a fixed natural number. This is an <strong>unsupervised</strong> learning problem — there are no class labels anywhere in sight. Here we look at only the basic k-means clustering algorithm.</p>
-</div>
-<p>One small piece of notation is used throughout: for a statement \(P\), the <strong>indicator function</strong> is</p>
-<p>$$\mathbf{1}\{P\} = \begin{cases}1, & \text{if } P \text{ is true} \\ 0, & \text{if } P \text{ is false}\end{cases}$$</p>
-<div class="def">
-<span class="box-label">The k-Means Clustering Algorithm</span>
-<pre class="pseudocode"><span class="cm">k-Means Clustering</span>
-1. Initialize cluster centroids mu_1, mu_2, ..., mu_k randomly.
-2. Repeat until convergence: {
-       <span class="cm">Assignment step — for every i (1 <= i <= n), set</span>
-           c(i) = argmin_j || x(i) - mu_j ||^2
-
-       <span class="cm">Update step — for every j (1 <= j <= k), set</span>
-           mu_j = ( sum_{i=1}^{n} 1{c(i)=j} x(i) ) / ( sum_{i=1}^{n} 1{c(i)=j} )
-   }</pre>
-<p>In words: first, assign every point to whichever centroid it is currently closest to (by squared Euclidean distance); then, move each centroid to the mean of all the points just assigned to it. Repeat both steps until no point changes its assignment — at that point the centroids stop moving too, and the algorithm has converged.</p>
-</div>
-</section>
-
-<section class="slide" id="p11-worked">
-<span class="slide-tag">Slides 4–6</span>
-<h3>2. Worked example: two clusters, two iterations</h3>
-<div class="ex">
-<span class="box-label">Setup</span>
-<p>Given the set of points \(\{(1,5),\ (2,4),\ (4,1),\ (5,2),\ (2,3),\ (6,1)\}\) in \(\mathbb{R}^2\), run k-means with \(k=2\) and initial centroids \(\mu_1=(1,0)\), \(\mu_2=(4,0)\).</p>
-</div>
-
-<div class="ex">
-<span class="box-label">Iteration 1</span>
-<table class="grid">
-<tr><th>Point</th><th>Distance&sup2; to (1,0)</th><th>Distance&sup2; to (4,0)</th><th>Cluster assigned</th></tr>
-<tr><td>(1, 5)</td><td>25</td><td>34</td><td>1</td></tr>
-<tr><td>(2, 4)</td><td>17</td><td>20</td><td>1</td></tr>
-<tr><td>(4, 1)</td><td>10</td><td>1</td><td>2</td></tr>
-<tr><td>(5, 2)</td><td>20</td><td>5</td><td>2</td></tr>
-<tr><td>(2, 3)</td><td>10</td><td>13</td><td>1</td></tr>
-<tr><td>(6, 1)</td><td>26</td><td>5</td><td>2</td></tr>
-</table>
-<p>(The algorithm's assignment step only needs to <em>compare</em> distances, so working with squared distances throughout — skipping the square root — gives exactly the same assignments, faster.)</p>
-<p>Updating the centroids, by averaging each cluster's members:</p>
-<p>$$\mu_1 = \frac{(1,5)+(2,4)+(2,3)}{3} = \left(\tfrac{5}{3},\,4\right)$$</p>
-<p>$$\mu_2 = \frac{(4,1)+(5,2)+(6,1)}{3} = \left(5,\,\tfrac{4}{3}\right)$$</p>
-</div>
-
-<div class="ex">
-<span class="box-label">Iteration 2</span>
-<table class="grid">
-<tr><th>Point</th><th>Distance&sup2; to (5/3, 4)</th><th>Distance&sup2; to (5, 4/3)</th><th>Cluster assigned</th></tr>
-<tr><td>(1, 5)</td><td>1.4444</td><td>29.4444</td><td>1</td></tr>
-<tr><td>(2, 4)</td><td>0.1111</td><td>16.1111</td><td>1</td></tr>
-<tr><td>(4, 1)</td><td>14.4444</td><td>1.1111</td><td>2</td></tr>
-<tr><td>(5, 2)</td><td>15.1111</td><td>0.4444</td><td>2</td></tr>
-<tr><td>(2, 3)</td><td>1.1111</td><td>11.7778</td><td>1</td></tr>
-<tr><td>(6, 1)</td><td>27.7778</td><td>1.1111</td><td>2</td></tr>
-</table>
-<p>Every assignment is unchanged from Iteration 1, so the recomputed centroids are unchanged too:</p>
-<p>$$\mu_1 = \frac{(1,5)+(2,4)+(2,3)}{3} = \left(\tfrac{5}{3},\,4\right), \qquad \mu_2 = \frac{(4,1)+(5,2)+(6,1)}{3} = \left(5,\,\tfrac{4}{3}\right)$$</p>
-<p>As there is no change in the centroids, <strong>the algorithm terminates.</strong> All distances in both iterations were independently recomputed and match the originals exactly.</p>
-</div>
-
-<div style="text-align:center; margin:22px 0;">
-<svg viewBox="0 0 480 340" width="100%" style="max-width:480px; background:#fffaf0; border:1px solid #e4d9bd; border-radius:10px;">
-  <line x1="40" y1="20" x2="40" y2="320" stroke="#5b5347" stroke-width="1.5"/>
-  <line x1="40" y1="320" x2="450" y2="320" stroke="#5b5347" stroke-width="1.5"/>
-  <text x="245" y="336" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347">x&#8321;</text>
-  <text x="16" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#5b5347" transform="rotate(-90 16 170)">x&#8322;</text>
-
-  <!-- cluster 1 points (green) -->
-  <circle cx="60" cy="60" r="7" fill="#5c9a63"/><text x="60" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(1,5)</text>
-  <circle cx="132" cy="120" r="7" fill="#5c9a63"/><text x="132" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(2,4)</text>
-  <circle cx="132" cy="180" r="7" fill="#5c9a63"/><text x="132" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(2,3)</text>
-
-  <!-- cluster 2 points (orange) -->
-  <circle cx="276" cy="300" r="7" fill="#c98a2c"/><text x="276" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(4,1)</text>
-  <circle cx="348" cy="240" r="7" fill="#c98a2c"/><text x="348" y="228" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(5,2)</text>
-  <circle cx="420" cy="300" r="7" fill="#c98a2c"/><text x="420" y="316" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2b2620">(6,1)</text>
-
-  <!-- centroids -->
-  <path d="M 108 112 L 108 128 M 100 120 L 116 120" stroke="#2f6b36" stroke-width="3"/>
-  <text x="108" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#2f6b36">&mu;&#8321;=(5/3,4)</text>
-  <path d="M 348 272 L 348 288 M 340 280 L 356 280" stroke="#9c6a1e" stroke-width="3"/>
-  <text x="348" y="305" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#9c6a1e">&mu;&#8322;=(5,4/3)</text>
-</svg>
-</div>
-<p style="text-align:center; font-size:14px; color:var(--ink-soft); margin-top:-8px;">The converged clustering: \(\{(1,5),(2,4),(2,3)\}\) around \(\mu_1\), and \(\{(4,1),(5,2),(6,1)\}\) around \(\mu_2\) — a clean split that matches the visual intuition of "top-left group" vs. "bottom-right group."</p>
-
-<div class="key">
-<span class="box-label">Key takeaway for all of Part 12</span>
-<p>k-means alternates between two very simple steps — assign points to the nearest centroid, then recompute each centroid as a mean — and is guaranteed to converge (the within-cluster sum of squared distances never increases), but it is <em>not</em> guaranteed to converge to the globally best clustering: different random initial centroids can converge to different final clusters. This is exactly the counterpart to k-NN's own instability: k-NN's result depends on the choice of \(k\) and the distance metric; k-means' result depends on \(k\) and the initial centroids.</p>
-</div>
-</section>
-
-<div class="part-header">
-  <div class="ptag">Part 13 of 13</div>
+  <div class="ptag">Part 13 of 16</div>
   <h2>Neural Networks</h2>
-  <p>k-Means Clustering groups points using nothing but a fixed, hand-chosen distance measure. Neural Networks take a completely different kind of structure — layers of simple weighted-sum-plus-nonlinearity units — and show that stacking enough of them lets a machine approximate essentially <em>any</em> function. This final part builds that machinery from a single neuron up to a trainable multi-layer network, ending with the chain-rule computation that makes training possible at all: backpropagation.</p>
+  <p>Hidden Markov Models let probability flow through a chain of hidden states to explain a sequence. Neural Networks take a completely different kind of structure — layers of simple weighted-sum-plus-nonlinearity units — and show that stacking enough of them lets a machine approximate essentially <em>any</em> function. This final part builds that machinery from a single neuron up to a trainable multi-layer network, ending with the chain-rule computation that makes training possible at all: backpropagation.</p>
 </div>
 
 <section class="slide" id="p13-motivation">
@@ -5199,6 +5225,763 @@
 </div>
 </section>
 
+<div class="part-header">
+  <div class="ptag">Part 14 of 16</div>
+  <h2>Convolutional &amp; Recurrent Neural Networks</h2>
+  <p>Part 13 built the generic feedforward neural network — stacked weighted sums and activations, trained by backpropagation — and showed it can approximate essentially any function. But a plain feedforward network treats its input as one flat, unstructured vector, throwing away any structure the data itself has. This part covers two specialized architectures that each exploit one particular kind of structure: <strong>Convolutional Neural Networks (CNNs)</strong>, built for the spatial structure of images, and <strong>Recurrent Neural Networks (RNNs)</strong>, built for the temporal, ordered structure of sequences like text and speech.</p>
+</div>
+
+<section class="slide" id="p14-motivation">
+<span class="slide-tag">Page 1</span>
+<h3>1. Motivation: different data, different structure</h3>
+<div class="def">
+<span class="box-label">The core idea</span>
+<p>Different kinds of data possess different kinds of structure: <strong>images</strong> possess <strong>spatial</strong> structure (a pixel's meaning depends on the pixels around it, in two dimensions); <strong>text, speech, and time-series data</strong> possess <strong>temporal</strong> structure (a word's or sample's meaning depends on what came before it, in one dimension, in order). CNNs are designed to exploit spatial structure; RNNs are designed to exploit temporal structure.</p>
+</div>
+<div class="an">
+<span class="box-label">Why this matters</span>
+<p>A plain feedforward network (Part 13) would flatten a \(28\times28\) image into a 784-entry vector, instantly discarding the fact that pixel \((5,5)\) is close to pixel \((5,6)\) but far from pixel \((20,20)\) — all spatial relationships are lost the moment the image is flattened. Likewise, a feedforward network fed a bag of words (Part 9) has no way to know whether "dog bites man" or "man bites dog" was the actual sentence, since both produce the same input if order isn't tracked. CNNs and RNNs are each architectural fixes for exactly one of these two blind spots.</p>
+</div>
+</section>
+
+<section class="slide" id="p14-cnn-key">
+<span class="slide-tag">Page 1</span>
+<h3>2. Convolutional Neural Networks (CNNs): the key idea</h3>
+<div class="def">
+<span class="box-label">Key idea</span>
+<p>A small <strong>filter</strong> (or <strong>kernel</strong>) examines a local region of the image, and <em>the same kernel is reused across the entire image</em>. This lets the network detect local spatial patterns (edges, strokes, textures) while preserving the spatial relationships between nearby pixels — and it does so with far fewer parameters than a fully-connected layer would need, since one small kernel's weights are shared at every position rather than learned separately for each one.</p>
+</div>
+<div class="def">
+<span class="box-label">Convolution and feature maps</span>
+<p>Given an image \(I\) and a kernel \(K\), the (true) convolution is defined as</p>
+<p>$$(I*K)(i,j) = \sum_m\sum_n I(i-m,\,j-n)\,K(m,n).$$</p>
+<p>In practice, CNN implementations instead use the closely related operation of <strong>cross-correlation</strong>: at each location, the kernel and the corresponding image patch are viewed as vectors, and their dot product is computed. As the kernel slides across the image, these dot products form a <strong>feature map</strong>.</p>
+</div>
+<div class="key">
+<span class="box-label">A typical CNN pipeline</span>
+<p style="text-align:center;font-weight:700;">Image &rarr; Convolution &rarr; Activation &rarr; Pooling &rarr; Flatten &rarr; Dense Layers (NN) &rarr; Output</p>
+<p>Each stage is covered in turn below, worked through on one small example image.</p>
+</div>
+</section>
+
+<section class="slide" id="p14-example">
+<span class="slide-tag">Page 1&ndash;2</span>
+<h3>3. Worked example: detecting a vertical stroke</h3>
+<div class="ex">
+<span class="box-label">The setup</span>
+<p>Consider two \(5\times5\) images, \(I_1\) (a vertical line) and \(I_0\) (two vertical lines), and a \(3\times3\) kernel \(K\) designed to detect vertical strokes:</p>
+<p>$$I_1=\begin{bmatrix}0&0&1&0&0\\0&1&1&0&0\\0&0&1&0&0\\0&0&1&0&0\\0&1&1&1&0\end{bmatrix},\qquad I_0=\begin{bmatrix}0&0&1&0&0\\0&1&0&1&0\\0&1&0&1&0\\0&1&0&1&0\\0&0&1&0&0\end{bmatrix},\qquad K=\begin{bmatrix}0&1&0\\0&1&0\\0&1&0\end{bmatrix}.$$</p>
+</div>
+<div class="ex">
+<span class="box-label">Sliding the kernel: the first window of \(I_1\)</span>
+<p>The first (top-left) \(3\times3\) window of \(I_1\) is \(\begin{bmatrix}0&0&1\\0&1&1\\0&0&1\end{bmatrix}\). Taking the entrywise dot product with \(K\):</p>
+<p>$$0{\cdot}0+0{\cdot}1+1{\cdot}0+0{\cdot}0+1{\cdot}1+1{\cdot}0+0{\cdot}0+0{\cdot}1+1{\cdot}0 = 1.$$</p>
+<p>Sliding the kernel one step right gives output \(3\); one more step gives output \(0\). So the first row of the feature map is \([1,\ 3,\ 0]\). Repeating this at every position (cross-correlating \(K\) across the whole \(5\times5\) image gives a \(3\times3\) output, since a \(3\times3\) kernel has 3 valid positions in each direction on a 5-wide image):</p>
+<p>$$I_1*K=\begin{bmatrix}1&3&0\\1&3&0\\1&3&1\end{bmatrix}, \qquad I_0*K=\begin{bmatrix}2&1&2\\3&0&3\\2&1&2\end{bmatrix}.$$</p>
+</div>
+<div class="def">
+<span class="box-label">Adding the bias</span>
+<p>A bias term is added to every entry of the feature map before the activation is applied. Taking the bias to be \(-2\):</p>
+<p>$$F_1 = (I_1*K)-2 = \begin{bmatrix}-1&1&-2\\-1&1&-2\\-1&1&-1\end{bmatrix}, \qquad F_0 = (I_0*K)-2 = \begin{bmatrix}0&-1&0\\1&-2&1\\0&-1&0\end{bmatrix}.$$</p>
+<p>Notice that the <em>middle column</em> of \(F_1\) is consistently positive (\(1,1,1\)) — exactly where \(I_1\)'s vertical stroke sits — while \(F_0\)'s middle column is not. This single kernel is already starting to distinguish "one strong vertical line" from "two vertical lines."</p>
+</div>
+</section>
+
+<section class="slide" id="p14-activation">
+<span class="slide-tag">Page 2</span>
+<h3>4. Activation: ReLU</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>A nonlinear activation is applied to the feature map, exactly as in Part 13 — without it, stacking convolutional layers would collapse into one linear map, by the same linearity-collapse argument from Part 13 §6. The most common choice for CNNs is <strong>ReLU</strong>:</p>
+<p>$$\text{ReLU}(x) = \max\{0,x\}.$$</p>
+</div>
+<div class="ex">
+<span class="box-label">Applying it to the running example</span>
+<p>$$\text{ReLU}(F_1)=\begin{bmatrix}0&1&0\\0&1&0\\0&1&0\end{bmatrix}, \qquad \text{ReLU}(F_0)=\begin{bmatrix}0&0&0\\1&0&1\\0&0&0\end{bmatrix}.$$</p>
+<p>Every negative entry is zeroed out; the positive "vertical stroke" signal in \(F_1\)'s middle column survives intact.</p>
+</div>
+</section>
+
+<section class="slide" id="p14-pooling">
+<span class="slide-tag">Page 2</span>
+<h3>5. Pooling</h3>
+<div class="def">
+<span class="box-label">Why pool</span>
+<p><strong>Pooling</strong> reduces the size of the feature map while retaining the important information, which reduces both memory usage and computational cost downstream.</p>
+</div>
+<div class="ex">
+<span class="box-label">Max pooling on the running example</span>
+<p>Applying \(2{\times}2\) max pooling (the largest value in each \(2{\times}2\) window, slid one step at a time) to \(\text{ReLU}(F_1)\) and \(\text{ReLU}(F_0)\) gives, in both cases, \(\begin{bmatrix}1&1\\1&1\end{bmatrix}\).</p>
+</div>
+<div class="warn">
+<span class="box-label">A toy example can lose too much information</span>
+<p>Flattening these pooled matrices gives \([1,1,1,1]\) for <em>both</em> \(I_1\) and \(I_0\) — they become indistinguishable! For this very small toy example, max pooling throws away too much: the one piece of information that told \(I_1\) and \(I_0\) apart (the exact column where the stroke sits) is exactly what a coarse \(2\times2\) max washes out. In practical CNNs, pooling is applied to much larger feature maps across many channels, where this kind of total information loss is far less likely.</p>
+</div>
+<div class="ex">
+<span class="box-label">Pooling is optional — and average pooling tells a different story here</span>
+<p>Since pooling is optional, one alternative is to flatten \(\text{ReLU}(F_1)\) and \(\text{ReLU}(F_0)\) directly, giving the (now distinguishable) vectors \([0,1,0,0,1,0,0,1,0]\) and \([0,0,0,1,0,1,0,0,0]\). Another alternative is <strong>average pooling</strong>: taking the mean rather than the max of each \(2{\times}2\) window gives \(\begin{bmatrix}0.5&0.5\\0.5&0.5\end{bmatrix}\) for \(\text{ReLU}(F_1)\) and \(\begin{bmatrix}0.25&0.25\\0.25&0.25\end{bmatrix}\) for \(\text{ReLU}(F_0)\) — flattening these gives \([0.5,0.5,0.5,0.5]\) and \([0.25,0.25,0.25,0.25]\), which <em>are</em> distinguishable (by overall magnitude), although the orientation information has still been lost by the averaging.</p>
+</div>
+</section>
+
+<section class="slide" id="p14-dense">
+<span class="slide-tag">Page 2</span>
+<h3>6. Flatten and Dense Layers</h3>
+<div class="def">
+<span class="box-label">The final stage</span>
+<p>The flattened feature vector (pooled or not) is fed into one or more fully-connected ("dense") layers — exactly the feedforward network of Part 13. The division of labour is clean:</p>
+<ul>
+<li><strong>Convolutional layers act as feature extractors</strong> — they learn <em>what patterns to look for</em> (edges, strokes, textures, and in deeper layers, increasingly complex shapes).</li>
+<li><strong>Dense layers act as classifiers</strong> — they take the extracted features and learn <em>how to combine them</em> into a final decision.</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="p14-rnn">
+<span class="slide-tag">Page 3</span>
+<h3>7. Recurrent Neural Networks (RNNs): the key idea</h3>
+<div class="def">
+<span class="box-label">The problem RNNs solve</span>
+<p>A standard feedforward network (or CNN) processes each input independently and keeps no memory of previously processed inputs. But for sequential data such as text, <em>order matters</em>: "Dog bites man" and "Man bites dog" contain exactly the same words, yet mean entirely different things (the same example, from the opposite direction, motivated Part 15's complaint that Bag-of-Words treats both sentences identically). <strong>Recurrent Neural Networks (RNNs)</strong> are designed to process sequential data by maintaining a <strong>hidden state</strong> that carries information from earlier time steps forward to later ones.</p>
+</div>
+</section>
+
+<section class="slide" id="p14-hidden">
+<span class="slide-tag">Page 3</span>
+<h3>8. The hidden-state equation</h3>
+<div class="def">
+<span class="box-label">The central RNN equation</span>
+<p>$$h_t = f\big(W_h h_{t-1} + W_x x_t + b\big),$$</p>
+<p>where \(x_t\) is the input at time step \(t\), \(h_{t-1}\) is the previous hidden state, \(W_x\) and \(W_h\) are weight matrices, \(b\) is a bias vector, \(f\) is a nonlinear activation (commonly \(\tanh\)), and \(h_t\) is the updated hidden state. The hidden state \(h_t\) acts as a <strong>memory</strong> summarizing everything the RNN has processed up to time \(t\).</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: a maximally simplified RNN that just adds up its inputs</span>
+<p>To see the "memory" idea with no distracting machinery, strip the equation down: let \(x_t,h_t\) be scalars, let \(W_h=W_x=1\), let \(b=0\), let \(f\) be the identity, and start from \(h_0=0\). The general equation then reduces to</p>
+<p>$$h_t = h_{t-1}+x_t, \qquad h_0=0.$$</p>
+<p>Taking \(x_1=2,\ x_2=3,\ x_3=4\):</p>
+<p>$$h_1=h_0+x_1=0+2=2,\qquad h_2=h_1+x_2=2+3=5,\qquad h_3=h_2+x_3=5+4=9.$$</p>
+</div>
+<div class="key">
+<span class="box-label">What this shows</span>
+<p>\(h_3=x_1+x_2+x_3=2+3+4=9\): in this simplified example the hidden state stores the running cumulative sum of every input seen so far — a transparent illustration of how an RNN carries information forward through a sequence. A real RNN's \(W_h,W_x,b,f\) are learned and far richer than "just add," but the mechanism — each new hidden state built from the previous one plus the new input — is exactly the same.</p>
+</div>
+</section>
+
+<section class="slide" id="p14-vanishing">
+<span class="slide-tag">Page 3&ndash;4</span>
+<h3>9. Vanishing and exploding gradients</h3>
+<div class="def">
+<span class="box-label">Setting up a simplified recurrence</span>
+<p>To see <em>why</em> training a plain RNN is difficult, simplify once more: scalar inputs and hidden states, identity activation, zero bias, so that \(h_t = f(w_hh_{t-1}+w_xx_t) = w_hh_{t-1}+w_xx_t\). Expanding this recurrence out:</p>
+<p>$$h_1=w_hh_0+w_xx_1,$$
+$$h_2=w_hh_1+w_xx_2=w_h^2h_0+w_hw_xx_1+w_xx_2,$$
+$$h_3=w_hh_2+w_xx_3=w_h^3h_0+w_h^2w_xx_1+w_hw_xx_2+w_xx_3,$$</p>
+<p>and in general,</p>
+<p>$$h_t = w_h^t h_0 + \sum_{k=1}^{t}w_h^{\,t-k}w_x x_k.$$</p>
+</div>
+<div class="an">
+<span class="box-label">Reading off the problem</span>
+<p>The contribution of an early input \(x_1\) to a much later hidden state \(h_t\) carries the factor \(w_h^{\,t-1}\) — the recurrent weight raised to a power that grows with how far back in time \(x_1\) sits. During training, an RNN is "unfolded through time," and gradients are propagated backward through exactly these repeated recurrent multiplications, so the derivatives inherit the same repeated-factor structure. Consequently:</p>
+<ul>
+<li>if \(|w_h|<1\), the repeated factors shrink toward zero as they're propagated back — the <strong>vanishing gradient</strong> problem;</li>
+<li>if \(|w_h|>1\), the repeated factors grow rapidly — the <strong>exploding gradient</strong> problem.</li>
+</ul>
+<p>Vanishing gradients make it hard for the RNN to learn long-range dependencies, because information from far-in-the-past time steps barely influences the parameter updates at all; exploding gradients cause excessively large, unstable parameter updates.</p>
+</div>
+<div class="key">
+<span class="box-label">Where this leads</span>
+<p>RNNs are used for language modelling, machine translation, speech recognition, and time-series forecasting. The vanishing/exploding gradient problem of plain ("vanilla") RNNs is exactly what motivated more advanced recurrent architectures — <strong>Long Short-Term Memory networks (LSTMs)</strong> and <strong>Gated Recurrent Units (GRUs)</strong> — which add gating mechanisms specifically designed to let gradients (and information) flow over long sequences without vanishing or exploding.</p>
+</div>
+</section>
+
+<div class="part-header">
+  <div class="ptag">Part 15 of 16</div>
+  <h2>Introduction to Natural Language Processing</h2>
+  <p>Every classifier built so far in this course (Decision Trees in Part 8, Naive Bayes in Part 9) assumed the data already arrived as clean numeric feature vectors. <strong>Natural Language Processing (NLP)</strong> is the field of AI concerned with the step before that: turning raw human language &mdash; words, sentences, documents &mdash; into numeric representations a machine can work with at all, and then into representations rich enough to capture what the language actually <em>means</em>. This part walks that progression end to end: from the crudest possible representation (word counts) up to the contextual, meaning-sensitive representations (self-attention) that power modern language models.</p>
+</div>
+
+<section class="slide" id="p15-intro">
+<span class="slide-tag">Page 1</span>
+<h3>1. What is NLP?</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p><strong>Natural Language Processing</strong> is the field of AI that focuses on enabling machines to understand, interpret, and generate human language. Example applications include search engines, chatbots, machine translation, and sentiment analysis.</p>
+</div>
+<div class="key">
+<span class="box-label">The question this whole part answers</span>
+<p>How do we turn a sentence like "The cat sat on the mat" into a vector of numbers &mdash; and how do we make that vector actually capture what the sentence <em>means</em>, rather than just which words it happens to contain? Each section below is a successively better answer to this question.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-bow">
+<span class="slide-tag">Pages 2&ndash;7</span>
+<h3>2. Text Representation: Bag-of-Words (BoW)</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>In the <strong>Bag-of-Words</strong> representation, each document is treated as a bag (multiset) of words, <em>ignoring the order, grammar, and context</em> of the words. Each document becomes a vector of word counts: if \(V\) is the size of the vocabulary, every document is a vector in \(\mathbb{R}^V\).</p>
+</div>
+<div class="ex">
+<span class="box-label">Example 1</span>
+<p>S1: "The cat sat on the mat." &nbsp; S2: "The cat sat on the mat and the cat slept." &nbsp; S3: "The dog sat on the mat."</p>
+<p>Vocabulary: {the, cat, dog, sat, on, mat, and, slept}. Counting each word in order gives the Bag-of-Words vectors:</p>
+<p style="font-family:'JetBrains Mono',monospace;">S1: [2, 1, 0, 1, 1, 1, 0, 0]<br>S2: [3, 2, 0, 1, 1, 1, 1, 1]<br>S3: [2, 0, 1, 1, 1, 1, 0, 0]</p>
+</div>
+<div class="ex">
+<span class="box-label">Cosine similarity, and what it reveals</span>
+<p>The <strong>cosine similarity</strong> between two vectors \(a,b\) is \(S_C(a,b)=\dfrac{a\cdot b}{\lVert a\rVert\lVert b\rVert}\) &mdash; the cosine of the angle between them, independent of their lengths. For the three vectors above:</p>
+<table class="grid"><tr><th></th><th>S1</th><th>S2</th><th>S3</th></tr>
+<tr><td><strong>S1</strong></td><td>1</td><td>0.9167</td><td>0.8750</td></tr>
+<tr><td><strong>S2</strong></td><td>0.9167</td><td>1</td><td>0.75</td></tr>
+<tr><td><strong>S3</strong></td><td>0.8750</td><td>0.75</td><td>1</td></tr>
+</table>
+<p>Note that \(S_C(S1,S2) > S_C(S1,S3) > S_C(S2,S3)\) &mdash; a reasonable ranking here, since S1 and S2 share the exact same core sentence.</p>
+</div>
+<div class="warn">
+<span class="box-label">Example 2: where BoW's blindness to meaning becomes obvious</span>
+<p>S1: "Government plans to reduce taxes for small businesses." &nbsp; S2: "Government plans to increase taxes for small businesses." &nbsp; S3: "Government announces new policies for economic growth."</p>
+<p>Vocabulary: {government, plans, to, reduce, increase, taxes, for, small, businesses, announces, new, policies, economic, growth}. BoW vectors: S1 = [1,1,1,1,0,1,1,1,1,0,0,0,0,0], S2 = [1,1,1,0,1,1,1,1,1,0,0,0,0,0], S3 = [1,0,0,0,0,0,1,0,0,1,1,1,1,1].</p>
+<table class="grid"><tr><th></th><th>S1</th><th>S2</th><th>S3</th></tr>
+<tr><td><strong>S1</strong></td><td>1</td><td>0.8750</td><td>0.2673</td></tr>
+<tr><td><strong>S2</strong></td><td>0.8750</td><td>1</td><td>0.2673</td></tr>
+<tr><td><strong>S3</strong></td><td>0.2673</td><td>0.2673</td><td>1</td></tr>
+</table>
+<p>\(S_C(S1,S2)=0.8750\) &mdash; a <em>high</em> similarity, even though "reduce taxes" and "increase taxes" mean opposite things: BoW treats S1 and S2 as almost identical, because most of their words are the same and BoW never looks at which specific word ("reduce" vs. "increase") fills the differing slot. And \(S_C(S1,S3)=S_C(S2,S3)\) exactly &mdash; which makes no sense from the point of view of these sentences' actual semantic content, since S3 is about an entirely different topic (economic policy in general) than the tax-specific S1 and S2.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-ngrams">
+<span class="slide-tag">Pages 8&ndash;13</span>
+<h3>3. N-grams: adding local word order</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>An <strong>N-gram</strong> is a sequence of \(N\) consecutive words from a sentence, which captures contextual information better than Bag-of-Words (which is just the special case \(N=1\), a <strong>unigram</strong>). \(N=2\) gives <strong>bigrams</strong>, \(N=3\) gives <strong>trigrams</strong>, and so on.</p>
+</div>
+<div class="ex">
+<span class="box-label">Bigram and trigram vectors, on the S1/S2/S3 cat-and-mat sentences</span>
+<p>Bigram vocabulary: {the cat, cat sat, sat on, on the, the mat, mat and, and the, cat slept, the dog, dog sat}. Bigram vectors: S1=[1,1,1,1,1,0,0,0,0,0], S2=[2,1,1,1,1,1,1,1,0,0], S3=[0,0,1,1,1,0,0,0,1,1]. Cosine similarities: \(S_C(S1,S2)=0.8090\), \(S_C(S1,S3)=0.6000\), \(S_C(S2,S3)=0.4045\).</p>
+<p>Trigram vocabulary: {the cat sat, cat sat on, sat on the, on the mat, the mat and, mat and the, and the cat, the cat slept, the dog sat, dog sat on}. Trigram vectors: S1=[1,1,1,1,0,0,0,0,0,0], S2=[1,1,1,1,1,1,1,1,0,0], S3=[0,0,1,1,0,0,0,0,1,1]. Cosine similarities: \(S_C(S1,S2)=0.7071\), \(S_C(S1,S3)=0.5\), \(S_C(S2,S3)=0.3536\).</p>
+</div>
+<div class="an">
+<span class="box-label">Why similarities drop as N grows</span>
+<p>Going from unigrams (0.9167) to bigrams (0.8090) to trigrams (0.7071), \(S_C(S1,S2)\) steadily falls. This makes sense: a longer N-gram is a stricter match requirement (two sentences must share several <em>consecutive</em> words, not just individual words), so S1 and S2 &mdash; which share a long common prefix but then diverge &mdash; share proportionally fewer of the longer N-grams than they do unigrams.</p>
+</div>
+<div class="warn">
+<span class="box-label">The cost of adding order: exponential, high-dimensional, sparse vectors</span>
+<ul>
+<li>The maximum possible vocabulary size for N-grams is \(V_1^N\), where \(V_1\) is the unigram vocabulary size &mdash; though the <em>actual</em> N-gram vocabulary is smaller in practice, since only N-grams that actually occur in the text are included.</li>
+<li>Even so, the dimensionality still grows exponentially as \(N\) increases, so N-gram vectors are high-dimensional.</li>
+<li>N-gram vectors are also <strong>sparse</strong>: each document contains only a tiny fraction of all the N-grams in the vocabulary. For example, with a vocabulary of 1,000,000 bigrams, a short sentence containing just 10 bigrams produces a vector with 10 non-zero entries and 999,990 zeros.</li>
+<li>These high-dimensional, sparse vectors are both memory-expensive and computationally expensive.</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="p15-disadvantages">
+<span class="slide-tag">Page 14</span>
+<h3>4. Disadvantages of BoW and N-grams</h3>
+<div class="warn">
+<span class="box-label">Three structural problems</span>
+<ul>
+<li><strong>BoW does not take the order of words into consideration</strong> (N-grams only partially fix this, for <em>local</em> order up to \(N\) words): "Dog bites man" and "Man bites dog" get the exact same unigram vector representation.</li>
+<li><strong>Common words dominate.</strong> Words like "the," "and," "is" appear in almost every document and get high counts in both BoW and N-grams. This can make the cosine similarity between two documents high even when the documents aren't actually similar &mdash; exactly the symptom seen in Example 2 above.</li>
+<li><strong>Importance of words is not taken into consideration.</strong> BoW and N-grams treat all words equally; a rare but highly meaningful word (like "violin") is weighted no differently than an extremely common, nearly meaningless one (like "the").</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="p15-tfidf">
+<span class="slide-tag">Pages 15&ndash;20</span>
+<h3>5. TF-IDF: weighting words by importance</h3>
+<div class="def">
+<span class="box-label">The idea</span>
+<p><strong>Term Frequency&ndash;Inverse Document Frequency (TF-IDF)</strong> directly addresses the third disadvantage above. <strong>Term Frequency (TF)</strong> captures how often a word appears in a document; <strong>Inverse Document Frequency (IDF)</strong> downweighs words that appear in many documents (and are therefore less distinctive).</p>
+</div>
+<div class="def">
+<span class="box-label">The formulas</span>
+<p>For a term \(t\) and document \(d\),</p>
+<p>$$\text{TF-IDF}(t,d) = \text{TF}(t,d)\times\text{IDF}(t), \qquad \text{TF}(t,d) = \frac{\text{Number of times }t\text{ appears in }d}{\text{Total number of terms in }d},$$</p>
+<p>$$\text{IDF}(t) = \log_e\frac{N}{\text{DF}(t)}, \qquad N=\text{total documents in the corpus},\quad \text{DF}(t)=\text{number of documents containing }t.$$</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example</span>
+<p>Reusing S1, S2, S3 (the cat/dog/mat sentences), vocabulary {and, cat, dog, mat, on, sat, slept, the}, \(N=3\):</p>
+<p>(i) \(\text{TF-IDF}(\text{'cat'}, S2) = \text{TF}(\text{'cat'},S2)\times\text{IDF}(\text{'cat'})\). S2 has 10 tokens total and 'cat' appears twice, so \(\text{TF}=\tfrac{2}{10}\); 'cat' appears in 2 of the 3 documents (S1, S2), so \(\text{IDF}=\ln\tfrac32\). Hence \(\text{TF-IDF}=\tfrac{2}{10}\times\ln\tfrac32=0.0811\).</p>
+<p>(ii) \(\text{TF-IDF}(\text{'the'}, S3) = \text{TF}(\text{'the'},S3)\times\text{IDF}(\text{'the'})\). S3 has 6 tokens and 'the' appears twice, so \(\text{TF}=\tfrac{2}{6}\); 'the' appears in <em>all 3</em> documents, so \(\text{IDF}=\ln\tfrac33=\ln 1 = 0\). Hence \(\text{TF-IDF}=0\).</p>
+</div>
+<div class="warn">
+<span class="box-label">A degenerate case, and the smoothing that fixes it</span>
+<p>\(\text{IDF}(t)\) becomes exactly zero whenever every document in the corpus contains \(t\) &mdash; which zeroes out the TF-IDF score of that word entirely, even if, like "the" in S3, it's actually a substantial fraction of the document. To avoid this, a <strong>smoothed</strong> formula is usually used instead:</p>
+<p>$$\text{IDF}(t) = \log_e\!\left(\frac{N+1}{\text{DF}(t)+1}\right) + 1.$$</p>
+<p>Recomputing with smoothing: (i) \(\text{IDF}(\text{'cat'})=\ln\tfrac{3+1}{2+1}+1\), so \(\text{TF-IDF}(\text{'cat'},S2)=\tfrac{2}{10}\times\left(\ln\tfrac43+1\right)=0.2575\). (ii) \(\text{IDF}(\text{'the'})=\ln\tfrac{3+1}{3+1}+1=\ln 1+1=1\) (no longer zero!), so \(\text{TF-IDF}(\text{'the'},S3)=\tfrac{2}{6}\times 1 = 0.3333\).</p>
+</div>
+<div class="key">
+<span class="box-label">Summary: BoW vs. N-grams vs. TF-IDF, and the matrix structure</span>
+<p>The TF-IDF matrix is an \(n\times m\) matrix, where \(n\) is the number of documents and \(m\) the vocabulary size; its \((i,j)\)-th entry is the TF-IDF score of term \(j\) in document \(i\), and the \(j\)-th column gives the TF-IDF vector for word \(j\). In short: <strong>BoW</strong> represents text as raw word counts (ignores order, high-dimensional, no semantic meaning); <strong>N-grams</strong> add local word order (exponential growth, high-dimensional sparse vectors, expensive); <strong>TF-IDF</strong> weighs words by importance (still sparse, still cannot capture semantic relationships, still ignores context beyond the single document). None of the three captures <em>meaning</em> &mdash; that is what dense embeddings, covered in §7, are built to fix.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-ngramlm">
+<span class="slide-tag">Pages 21&ndash;24</span>
+<h3>6. N-gram Language Models</h3>
+<div class="def">
+<span class="box-label">The chain rule of probability</span>
+<p>For a word sequence \(w_1,\dots,w_n\), the chain rule of probability expresses the joint probability of the whole sequence exactly:</p>
+<p>$$P(w_1,\dots,w_n) = \prod_{i=1}^{n}P(w_i\mid w_1,\dots,w_{i-1}),$$</p>
+<p>where the first factor is \(P(w_1)\), since there is no preceding context for the first word.</p>
+</div>
+<div class="warn">
+<span class="box-label">Why the exact factors are hopeless to estimate</span>
+<p>The exact factor \(P(w_i\mid w_1,\dots,w_{i-1})\) conditions on the <em>entire</em> preceding history. In realistic language, most long histories occur rarely or never, even in a huge training corpus: there are far too many possible histories, counts for any particular long history are usually zero or tiny, and reliable estimates would require an impractically large amount of text. The chain-rule decomposition is mathematically exact but cannot usually be estimated directly from counts.</p>
+</div>
+<div class="def">
+<span class="box-label">The Markov assumption and N-gram models</span>
+<p>An <strong>N-gram language model</strong> fixes this by making a <strong>Markov assumption</strong>: the next word depends only on the previous \(N-1\) words, not on the complete history: \(P(w_i\mid w_1,\dots,w_{i-1})\approx P(w_i\mid w_{i-N+1},\dots,w_{i-1})\). The <strong>bigram model</strong> (\(N=2\)) keeps only one previous word, \(P(w_i\mid w_{i-1})\); the <strong>trigram model</strong> (\(N=3\)) keeps two, \(P(w_i\mid w_{i-2},w_{i-1})\); and so on. For the bigram model,</p>
+<p>$$P(w_1,\dots,w_n)\approx\prod_{i=1}^{n}P(w_i\mid w_{i-1}), \qquad P(w_i\mid w_{i-1}) = \frac{C(w_{i-1},w_i)}{C(w_{i-1})},$$</p>
+<p>where \(C(w_{i-1},w_i)\) is the count of the bigram \(w_{i-1}w_i\) in the corpus and \(C(w_{i-1})\) is the count of \(w_{i-1}\) itself (which equals \(\sum_wC(w_{i-1},w)\), since every occurrence of \(w_{i-1}\) that isn't the very last word of a sentence is followed by exactly one word).</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: a 3-sentence mini-corpus</span>
+<p>Mini-corpus: "The cat sat on the mat."; "The cat sat on the mat and the cat slept."; "The dog sat on the mat." After lowercasing and adding boundary tokens \(\langle s\rangle,\langle/s\rangle\) (punctuation is not treated as a token here):</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:14.5px;">&lang;s&rang; the cat sat on the mat &lang;/s&rang;<br>&lang;s&rang; the cat sat on the mat and the cat slept &lang;/s&rang;<br>&lang;s&rang; the dog sat on the mat &lang;/s&rang;</p>
+<p>Counting bigrams gives the (nonzero) conditional probabilities: \(P(\text{the}\mid\langle s\rangle)=1\), \(P(\text{cat}\mid\text{the})=\tfrac37\), \(P(\text{dog}\mid\text{the})=\tfrac17\), \(P(\text{sat}\mid\text{cat})=1\), \(P(\text{sat}\mid\text{dog})=1\), \(P(\text{on}\mid\text{sat})=1\), \(P(\text{the}\mid\text{on})=1\), \(P(\text{mat}\mid\text{the})=\tfrac37\), \(P(\text{and}\mid\text{mat})=\tfrac13\), \(P(\langle/s\rangle\mid\text{mat})=\tfrac23\), \(P(\text{the}\mid\text{and})=1\), \(P(\langle/s\rangle\mid\text{slept})=1\). (\(C(\text{the})=7\): "the" starts sentences 2 and begins 7 bigrams across the corpus as the left word.)</p>
+<p>For the new sentence "The dog sat on the mat and the cat slept.":</p>
+<p>$$P(\langle s\rangle\,\text{the dog sat on the mat and the cat slept}\,\langle/s\rangle) = 1\cdot\frac17\cdot1\cdot1\cdot1\cdot\frac37\cdot\frac13\cdot1\cdot\frac37\cdot\frac13\cdot1 = \frac{1}{343}\approx0.00291545.$$</p>
+<p>For "The dog slept.": \(P=P(\text{the}\mid\langle s\rangle)P(\text{dog}\mid\text{the})P(\text{slept}\mid\text{dog})P(\langle/s\rangle\mid\text{slept}) = 0\), because the bigram (dog, slept) was never observed in the corpus &mdash; a single missing bigram zeroes out the whole sentence probability.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-smoothing">
+<span class="slide-tag">Pages 25&ndash;26</span>
+<h3>7. Laplace Smoothing and Computing in Log-Space</h3>
+<div class="def">
+<span class="box-label">Laplace (add-one) smoothing</span>
+<p>To fix the zero-probability problem, Laplace smoothing adds one to every possible bigram count:</p>
+<p>$$P(w_i\mid w_{i-1}) = \frac{C(w_{i-1},w_i)+1}{C(w_{i-1})+|V|},$$</p>
+<p>where \(V\) is the vocabulary of possible <em>predicted</em> tokens (the start token \(\langle s\rangle\) is never predicted, so it's excluded from \(V\)). Here \(V=\{\text{the, cat, dog, sat, on, mat, and, slept},\langle/s\rangle\}\), so \(|V|=9\).</p>
+</div>
+<div class="ex">
+<span class="box-label">Recomputing the two example sentences with smoothing</span>
+<p>$$P(\langle s\rangle\,\text{the dog sat on the mat and the cat slept}\,\langle/s\rangle) = \frac{2}{12}\cdot\frac{4}{16}\cdot\frac{2}{10}\cdot\frac{2}{12}\cdot\frac{4}{12}\cdot\frac{4}{16}\cdot\frac{2}{12}\cdot\frac{4}{12}\cdot\frac{2}{16}\cdot\frac{2}{10} = \frac{1}{15552000}\approx6.43\times10^{-8}.$$</p>
+<p>$$P(\langle s\rangle\,\text{the dog slept}\,\langle/s\rangle) = \frac{2}{12}\cdot\frac{4}{16}\cdot\frac{1}{10}\cdot\frac{2}{10} = \frac{1}{1200}\approx0.000833.$$</p>
+<p>The second sentence, which was impossible (probability exactly 0) without smoothing, now has a small but nonzero probability.</p>
+</div>
+<div class="def">
+<span class="box-label">Computing in log-space</span>
+<p>Multiplying many probabilities together (as above) can quickly produce numbers too small for ordinary floating-point representation. In practice this is avoided by working with log-probabilities instead: \(p_1p_2\cdots p_k = \exp(\log p_1+\log p_2+\cdots+\log p_k)\) &mdash; converting a product of tiny numbers into a (numerically well-behaved) sum of logs, exponentiated only at the very end, exactly the same trick already used for Naive Bayes in Part 9.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-perplexity">
+<span class="slide-tag">Pages 26&ndash;27</span>
+<h3>8. Perplexity of a Language Model</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p><strong>Perplexity</strong> (PP or PPL) measures how "surprised" a language model is by a test sequence. For a test sequence \(W=w_1,\dots,w_N\):</p>
+<p>$$\text{PPL}(W) = P(w_1,\dots,w_N)^{-1/N} = \exp\!\left(-\frac1N\log P(w_1,\dots,w_N)\right).$$</p>
+<p>For a bigram model specifically, \(\text{PPL}(W)=\left(\prod_{i=1}^{N}P(w_i\mid w_{i-1})\right)^{-1/N}\). <strong>Lower perplexity is better</strong> — it means the model assigned the actual test sequence a higher probability, i.e. was less "surprised" by it — and perplexity is useful for comparing different models on the same test data.</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: both sentences, with and without smoothing</span>
+<p>For "the dog sat on the mat and the cat slept" (11 bigram predictions, \(N=11\)): without smoothing, \(\text{PPL}=(1/343)^{-1/11}\approx1.7\); with smoothing, \(\text{PPL}=(1/15552000)^{-1/11}\approx4.5\).</p>
+<p>For "the dog slept" (\(N=4\)): without smoothing, the sentence probability is 0, so \(\text{PPL}=\infty\); with smoothing, \(\text{PPL}=(1/1200)^{-1/4}\approx5.89\).</p>
+</div>
+<div class="warn">
+<span class="box-label">A counterintuitive result &mdash; and why it happens</span>
+<p>The smoothed perplexity for the <em>first</em> sentence is <em>worse</em> (4.5 vs. 1.7), even though smoothing is supposed to help! This happens because all of that sentence's bigrams were already observed in the corpus (none needed rescuing), yet Laplace smoothing still takes probability mass <em>away</em> from every observed bigram and redistributes it across all \(|V|=9\) possible continuations regardless. With such a tiny corpus and vocabulary, this redistribution is especially aggressive, so a sentence that needed no help from smoothing is actively penalized by it. This is exactly why practical N-gram systems use gentler methods than Laplace smoothing &mdash; especially <strong>interpolated Kneser&ndash;Ney smoothing</strong>, which discounts observed counts more carefully and assigns probability to unseen events in a more linguistically-informed way.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-embeddings">
+<span class="slide-tag">Pages 28&ndash;29</span>
+<h3>9. Dense Word Embeddings</h3>
+<div class="key">
+<span class="box-label">The motivating question</span>
+<p>Everything so far &mdash; BoW, N-grams, TF-IDF &mdash; represents a word purely by its identity (which slot of the vocabulary it occupies), with no notion that "cat" and "dog" are more alike than "cat" and "taxes." Can we build representations where words with <em>similar meanings</em> get <em>similar vectors</em>?</p>
+</div>
+<div class="def">
+<span class="box-label">Dense word embeddings</span>
+<p>A <strong>dense word embedding</strong> represents each word by a relatively short vector \(e_w\in\mathbb{R}^d\) with \(d\ll|V|\) (typically 100&ndash;300 dimensions), whose entries are ordinary (usually nonzero) real numbers learned from data, rather than being tied directly to specific vocabulary words the way a one-hot or count vector's coordinates are. The aim is that words appearing in similar linguistic contexts receive similar vectors; they capture semantic relationships (famously, <em>king &minus; man + woman &asymp; queen</em> and <em>France &minus; India + Delhi &asymp; Paris</em>) by learning from <strong>co-occurrence patterns</strong> &mdash; which words tend to appear near which other words. Dense vectors are compact, serve as effective features in downstream ML models, and generally capture semantic similarity far better than raw sparse count vectors.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-word2vec">
+<span class="slide-tag">Pages 29&ndash;31</span>
+<h3>10. Word2Vec: Skip-Gram and CBOW</h3>
+<div class="def">
+<span class="box-label">The central idea</span>
+<p><strong>Word2Vec</strong> is a family of methods for learning dense word embeddings from unlabelled text, by learning word representations through a <em>prediction task</em> rather than by directly storing word counts. Two architectures:</p>
+<ul>
+<li><strong>Skip-Gram:</strong> target word &rarr; predict the surrounding context words.</li>
+<li><strong>Continuous Bag of Words (CBOW):</strong> surrounding context words &rarr; predict the target word (combining the context representations without retaining their order &mdash; the "bag of words" aspect of CBOW).</li>
+</ul>
+</div>
+<div class="def">
+<span class="box-label">Skip-Gram with Negative Sampling: the four steps</span>
+<ol>
+<li>Pair a target word with words that actually occur within its context window &mdash; <strong>positive examples</strong>, label \(Y=1\).</li>
+<li>Pair the same target word with words sampled from the vocabulary that are <em>not</em> being treated as genuine context words in this training instance &mdash; <strong>negative examples</strong> ("noise words"), label \(Y=0\).</li>
+<li>Train a logistic-regression classifier to distinguish the positive examples from the negative ones.</li>
+<li>Use the learned weights as the (dense) word embeddings.</li>
+</ol>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: "clouds" in context</span>
+<p>Sentence: "Dark storm clouds brought rain to the valley." Target word: <strong>clouds</strong>; context window size 2 (two words each side): left context {dark, storm}, right context {brought, rain}. Positive pairs (\(L=4\) of them, each labelled \(Y=1\)): (clouds, dark), (clouds, storm), (clouds, brought), (clouds, rain).</p>
+<p>With \(k=2\) negative examples per positive example, \(4\times2=8\) noise words are drawn randomly from the vocabulary (constrained not to be the target word itself) and paired with "clouds," each labelled \(Y=0\) &mdash; for illustration, say: cat, dog, car, table, page, music, teacher, bottle. ("Negative" here just means "not treated as a context word in this instance," not "these words can never co-occur.")</p>
+</div>
+<div class="def">
+<span class="box-label">Choosing noise words: weighted unigram sampling</span>
+<p>The simplest approach samples a noise word by its ordinary <strong>unigram probability</strong> \(P_{\text{uni}}(w)=C(w)/\sum_{v\in V}C(v)\) &mdash; but this gives very frequent words a very high chance of selection and rare words an extremely small one. Word2Vec instead raises unigram counts to a power \(\alpha\) (commonly \(\alpha=0.75\)):</p>
+<p>$$P_\alpha(w) = \frac{C(w)^{0.75}}{\sum_{v\in V}C(v)^{0.75}}.$$</p>
+<p><strong>Worked example:</strong> suppose the vocabulary contains only "the" (\(C=1000\)) and "violin" (\(C=1\)). Ordinary unigram: \(P_{\text{uni}}(\text{the})=\tfrac{1000}{1001}\approx0.999001\), \(P_{\text{uni}}(\text{violin})=\tfrac1{1001}\approx0.000999\). Weighted (\(\alpha=0.75\)): \(P_{0.75}(\text{the})=\tfrac{1000^{0.75}}{1000^{0.75}+1^{0.75}}\approx0.994408\), \(P_{0.75}(\text{violin})\approx0.005592\). Raising to the power \(0.75<1\) <strong>flattens</strong> the distribution: "the" remains far more likely to be sampled, but its dominance shrinks, so rare words like "violin" get a meaningfully larger share than under plain unigram sampling.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-skipgram-math">
+<span class="slide-tag">Pages 31&ndash;34</span>
+<h3>11. The Skip-Gram Classifier, Precisely</h3>
+<div class="def">
+<span class="box-label">Setting up the classifier</span>
+<p>Let \(w=\text{clouds}\) be the target word and \(c\) a candidate context word, and let \(Y=1\) if \(c\) really is a context word for \(w\) in the training data, \(Y=0\) otherwise. The goal is to train a classifier returning \(P(Y=1\mid w,c)\). Each vocabulary word has <em>two</em> vector representations: a target vector \(w\in\mathbb R^d\) and a context vector \(c\in\mathbb R^d\). For a pair \((w,c)\), the score is the dot product \(z=c^Tw\) &mdash; a larger positive value should mean the pair is more likely to be a genuine target&ndash;context pair.</p>
+</div>
+<div class="proof-like def">
+<span class="box-label">From dot product to probability: the sigmoid, and a useful symmetry</span>
+<p>The sigmoid function is \(\sigma(z)=\dfrac1{1+e^{-z}}\). A short algebraic check gives the identity \(1-\sigma(z)=\sigma(-z)\):</p>
+<p>$$1-\sigma(z) = 1-\frac{1}{1+e^{-z}} = \frac{e^{-z}}{1+e^{-z}} = \frac{1}{1+e^{z}} = \sigma(-z).$$</p>
+<p>Therefore, with \(z=c^Tw\): \(P(Y=1\mid w,c)=\sigma(c^Tw)=\dfrac{1}{1+\exp(-c^Tw)}\), and \(P(Y=0\mid w,c)=1-\sigma(c^Tw)=\sigma(-c^Tw)=\dfrac{1}{1+\exp(c^Tw)}\) &mdash; so training pushes \(c^Tw\) to be large for positive pairs and small (or very negative) for negative pairs. Compactly, for a label \(y\in\{0,1\}\): \(P(Y=y\mid w,c)=\sigma(c^Tw)^y\,\sigma(-c^Tw)^{1-y}\).</p>
+</div>
+<div class="def">
+<span class="box-label">Extending to all L context words (conditional independence)</span>
+<p>If the target word \(w\) has \(L\) context words \(c_1,\dots,c_L\), and these are assumed conditionally independent given \(w\), the probability that all \(L\) are genuine context words is \(\prod_{i=1}^L\sigma(c_i^Tw)\); taking logs (to avoid the usual tiny-product problem) turns this into \(\sum_{i=1}^L\log\sigma(c_i^Tw)\). For the running example, \(L=4\) and \((c_1,\dots,c_4)=(\text{dark, storm, brought, rain})\).</p>
+</div>
+<div class="def">
+<span class="box-label">The loss function for one positive pair plus k negative pairs</span>
+<p>Given one positive pair \((w,c_{\text{pos}})\) and \(k\) negative pairs \((w,c_{\text{neg},1}),\dots,(w,c_{\text{neg},k})\), assumed conditionally independent, the likelihood of correctly classifying all \(k+1\) pairs is \(P(Y{=}1\mid w,c_{\text{pos}})\prod_{i=1}^kP(Y{=}0\mid w,c_{\text{neg},i})\). Training maximizes this likelihood, equivalently minimizes its negative logarithm, giving the loss</p>
+<p>$$L = -\log P(Y{=}1\mid w,c_{\text{pos}}) - \sum_{i=1}^k\log P(Y{=}0\mid w,c_{\text{neg},i}).$$</p>
+<p>Substituting the sigmoid forms from above (\(P(Y{=}1\mid w,c)=\sigma(c^Tw)\), \(P(Y{=}0\mid w,c)=\sigma(-c^Tw)\)):</p>
+<p>$$L = -\log\sigma(c_{\text{pos}}^Tw) - \sum_{i=1}^k\log\sigma(-c_{\text{neg},i}^Tw) = -\log\frac{1}{1+\exp(-c_{\text{pos}}^Tw)} - \sum_{i=1}^k\log\frac{1}{1+\exp(c_{\text{neg},i}^Tw)}.$$</p>
+<p>Minimizing \(L\) therefore encourages \(c_{\text{pos}}^Tw\) to become large and positive (positive pair's probability \(\to1\)) while every \(c_{\text{neg},i}^Tw\) becomes small or negative (negative pair's probability of \(Y{=}1\) \(\to0\)). The total cost is the sum of such losses over every word \(w\in V\), minimized by gradient descent.</p>
+</div>
+<div class="key">
+<span class="box-label">The parameter matrix &Theta;</span>
+<p>Word2Vec stores two \(d\)-dimensional vectors per vocabulary word: a target-vector row \(w_i^T\) and a context-vector row \(c_i^T\), for \(i=1,\dots,|V|\). Stacking the target vectors into \(W\in\mathbb R^{|V|\times d}\) and the context vectors into \(C\in\mathbb R^{|V|\times d}\), the full parameter matrix is \(\Theta=\begin{bmatrix}W\\C\end{bmatrix}\in\mathbb R^{2|V|\times d}\): \(2|V|\) rows, since every word has both a target and a context vector, and \(d\) columns, the embedding dimension. After training, the target vectors \(W\) are commonly used as the final word embeddings (sometimes the context vectors, or a combination, are used instead).</p>
+</div>
+<div class="an">
+<span class="box-label">GloVe, briefly</span>
+<p><strong>GloVe (Global Vectors for Word Representation)</strong> is another well-known dense-embedding method. Unlike Word2Vec's prediction-task approach, GloVe builds an explicit global word&ndash;word co-occurrence matrix from the whole corpus and learns vectors whose relationships reflect those observed co-occurrence statistics directly. Both Word2Vec and GloVe end up producing dense vector representations of words; they simply learn them by different routes.</p>
+</div>
+</section>
+
+<section class="slide" id="p15-attention">
+<span class="slide-tag">Pages 35&ndash;41</span>
+<h3>12. From Static to Contextual Embeddings: Self-Attention</h3>
+<div class="warn">
+<span class="box-label">The limitation of static embeddings</span>
+<p>Word2Vec and GloVe produce <strong>static</strong> embeddings: each word gets exactly one fixed vector, no matter which sentence it appears in. This is a real problem for ambiguous words: "bank" means something different in "river bank" than in "bank loan," yet a static embedding assigns the identical vector to "bank" in both, collapsing two distinct meanings into one representation.</p>
+</div>
+<div class="def">
+<span class="box-label">Contextual embeddings and self-attention</span>
+<p>A <strong>contextual embedding</strong> instead computes a word's representation from the <em>surrounding words in that specific sentence</em>, so "bank" in "river bank" gets a different vector than "bank" in "bank loan." <strong>Self-attention</strong> is the mechanism that makes this possible: every word can draw on information from every other word in the sentence. Given input embeddings stacked as rows of a matrix \(X\), three learned projection matrices produce:</p>
+<p>$$Q=XW_Q\ (\text{query}),\qquad K=XW_K\ (\text{key}),\qquad V=XW_V\ (\text{value}).$$</p>
+<p>Informally: a <strong>query</strong> describes what a word is looking for; a <strong>key</strong> describes what a word offers for matching; a <strong>value</strong> carries the information that may be passed into the new, contextual representation. <strong>Scaled dot-product attention</strong> is then</p>
+<p>$$\text{Attention}(Q,K,V) = \text{softmax}\!\left(\frac{QK^T}{\sqrt{d_k}}\right)V,$$</p>
+<p>where \(d_k\) is the key dimension: the dot products give relevance ("how well does this query match that key?") scores, softmax turns them into weights summing to 1, and the weighted sum of value vectors is the new, context-aware representation.</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: computing a contextual representation of "it"</span>
+<p>Sentence: "The animal didn't cross the street because it was tired." Keep six words &mdash; animal, cross, street, because, it, tired &mdash; with toy embedding dimension \(d=2\):</p>
+<p>$$X=\begin{bmatrix}1.0&0.2\\0.9&0.1\\0.1&0.9\\0.2&0.2\\0.5&0.5\\0.6&1.0\end{bmatrix}\ \begin{array}{l}\text{animal}\\\text{cross}\\\text{street}\\\text{because}\\\text{it}\\\text{tired}\end{array},\qquad W_Q=\begin{bmatrix}1&0\\1&1\end{bmatrix},\ \ W_K=\begin{bmatrix}1&1\\0&1\end{bmatrix},\ \ W_V=\begin{bmatrix}1&0\\0&1\end{bmatrix}\ (\text{identity}).$$</p>
+<p class="small" style="color:var(--ink-soft)">\(W_Q\) and \(W_K\) are deliberately chosen different, to emphasize the distinct roles of queries and keys; \(W_V\) is taken to be the identity purely to keep the final weighted-sum arithmetic transparent. In a real Transformer, all three are learned and generally all different.</p>
+</div>
+<div class="def">
+<span class="box-label">Step 1 &mdash; the query vector for "it"</span>
+<p>\(x_{it}=[0.5,\,0.5]\), so \(q_{it}=x_{it}W_Q = [0.5,0.5]\begin{bmatrix}1&0\\1&1\end{bmatrix} = [1.0,\,0.5]\).</p>
+</div>
+<div class="def">
+<span class="box-label">Step 2 &mdash; the key vectors for all six words</span>
+<p>Applying \(a\,b\,W_K = [a,\,a{+}b]\) to each word's embedding (since \(W_K=\begin{bmatrix}1&1\\0&1\end{bmatrix}\)):</p>
+<table class="grid">
+<tr><th>Word</th><th>Embedding</th><th>Key vector</th></tr>
+<tr><td>animal</td><td>[1.0, 0.2]</td><td>[1.0, 1.2]</td></tr>
+<tr><td>cross</td><td>[0.9, 0.1]</td><td>[0.9, 1.0]</td></tr>
+<tr><td>street</td><td>[0.1, 0.9]</td><td>[0.1, 1.0]</td></tr>
+<tr><td>because</td><td>[0.2, 0.2]</td><td>[0.2, 0.4]</td></tr>
+<tr><td>it</td><td>[0.5, 0.5]</td><td>[0.5, 1.0]</td></tr>
+<tr><td>tired</td><td>[0.6, 1.0]</td><td>[0.6, 1.6]</td></tr>
+</table>
+</div>
+<div class="def">
+<span class="box-label">Step 3 &mdash; raw dot-product scores, then scaling</span>
+<p>Dotting \(q_{it}=[1.0,0.5]\) with each key vector gives the raw score vector \(s=[1.60,\,1.40,\,0.60,\,0.40,\,1.00,\,1.40]\) (e.g. for animal: \(1.0{\times}1.0+0.5{\times}1.2=1.6\)). With key dimension \(d_k=2\), scaling divides every score by \(\sqrt2\approx1.4142\):</p>
+<p>$$\frac{s}{\sqrt2}\approx[1.1314,\ 0.9899,\ 0.4243,\ 0.2828,\ 0.7071,\ 0.9899].$$</p>
+</div>
+<div class="ex">
+<span class="box-label">Step 4 &mdash; softmax attention weights</span>
+<table class="grid">
+<tr><th>Word</th><th>Scaled score</th><th>Attention weight</th></tr>
+<tr><td>animal</td><td>1.1314</td><td>0.2319</td></tr>
+<tr><td>cross</td><td>0.9899</td><td>0.2013</td></tr>
+<tr><td>street</td><td>0.4243</td><td>0.1144</td></tr>
+<tr><td>because</td><td>0.2828</td><td>0.0993</td></tr>
+<tr><td>it</td><td>0.7071</td><td>0.1517</td></tr>
+<tr><td>tired</td><td>0.9899</td><td>0.2013</td></tr>
+</table>
+<p>The weights sum to \(\approx1\) (0.9999, up to rounding). Note "cross" and "tired" share the same scaled score and so receive identical weights; "animal" receives the single largest weight in this toy example.</p>
+</div>
+<div class="key">
+<span class="box-label">Step 5 &mdash; the contextual representation of "it"</span>
+<p>Since \(W_V\) is the identity, \(V=X\), i.e. each word's value vector is just its own input embedding. The attention output is the weighted sum of all six value vectors:</p>
+<p>$$h_{it}=\sum_{j}\alpha_jv_j \approx 0.2319[1.0,0.2]+0.2013[0.9,0.1]+0.1144[0.1,0.9]+0.0993[0.2,0.2]+0.1517[0.5,0.5]+0.2013[0.6,1.0] \approx [0.6411,\,0.4665].$$</p>
+<p>The <em>original</em>, static embedding of "it" was \([0.5,0.5]\); its new, contextual representation \([0.6411,0.4665]\) differs, because it is now a weighted blend of information from every word in the sentence — including, substantially, "animal," the word "it" most plausibly refers to. This is the mathematical mechanism, in miniature, behind how a Transformer resolves what a pronoun like "it" refers to: the query–key dot products set the weights, and the weighted sum of values produces a representation that depends on the whole sentence rather than the word in isolation. In an actual trained Transformer the embeddings and \(W_Q,W_K,W_V\) are learned, and multiple attention heads across multiple layers let the model capture many different kinds of relationships at once — this one hand-computed attention step is only a transparent illustration of the mechanism.</p>
+</div>
+</section>
+
+<div class="part-header">
+  <div class="ptag">Part 16 of 16</div>
+  <h2>Introduction to Reinforcement Learning</h2>
+  <p>Every learning method covered so far — Decision Trees (Part 8), Naive Bayes (Part 9), k-NN (Part 10), k-Means (Part 11), HMMs (Part 12), Neural Networks (Part 13) — learns from a fixed dataset of examples, labelled or not. <strong>Reinforcement Learning (RL)</strong> is a fundamentally different setting: there is no dataset at all, only an <strong>agent</strong> that learns by <em>acting</em> in an <strong>environment</strong> and observing the consequences. This final part builds RL's formal framework (the Markov Decision Process), its core recursive identities (the Bellman equations), and the three algorithms used to solve it — Value Iteration, Policy Iteration, and Q-Learning — each verified end to end on a worked gridworld.</p>
+</div>
+
+<section class="slide" id="p16-intro">
+<span class="slide-tag">Pages 1&ndash;3</span>
+<h3>1. What is Reinforcement Learning?</h3>
+<div class="def">
+<span class="box-label">Definition</span>
+<p><strong>Reinforcement Learning</strong> is a branch of machine learning where an <strong>agent</strong> learns to make sequential decisions by interacting with an <strong>environment</strong>. The agent observes the <strong>state</strong>, takes an <strong>action</strong>, and receives a <strong>reward</strong> as feedback. The goal of a reinforcement learning problem is to learn a strategy for choosing actions that <strong>maximizes cumulative reward</strong>.</p>
+</div>
+<div class="an">
+<span class="box-label">How this differs from everything else in the course</span>
+<p>Unlike supervised learning (Decision Trees, Naive Bayes, Neural Networks), reinforcement learning does not rely on labelled examples — there's no dataset of "correct answers" handed to the agent up front. Instead, it learns through <strong>trial and error</strong> and <strong>delayed feedback</strong>: an action taken now might only pay off (or turn out to be a mistake) many steps later. Reinforcement learning is used in robotics, game playing (e.g. AlphaGo), recommendation systems, and autonomous driving.</p>
+</div>
+</section>
+
+<section class="slide" id="p16-returns">
+<span class="slide-tag">Pages 4&ndash;13</span>
+<h3>2. A first example, and the idea of Return</h3>
+<div class="ex">
+<span class="box-label">Setup: a 6-state corridor</span>
+<p>A robot (agent) navigates an environment with six cells (states) 1&ndash;6, arranged in a line. States 1 and 6 are <strong>terminal states</strong>. At any non-terminal cell, the agent may move <strong>left</strong> or <strong>right</strong>. The reward received at each state is fixed: \(R(1){=}100,\ R(2){=}0,\ R(3){=}0,\ R(4){=}0,\ R(5){=}0,\ R(6){=}40\).</p>
+</div>
+<div class="def">
+<span class="box-label">The tuple that drives everything</span>
+<p>At every step, the agent's experience is summarized by the tuple \((s,a,R(s),s')\), where \(s\) is the state, \(a\) is the action taken in state \(s\), \(R(s)\) is the reward at state \(s\), and \(s'\) is the state reached after taking action \(a\) at state \(s\).</p>
+</div>
+<div class="def">
+<span class="box-label">Return: why reward alone isn't enough</span>
+<p>Maximizing the reward at just the <em>next</em> step would be short-sighted — a good agent must care about the whole future, not just the immediate next reward. The <strong>Return</strong> \(G_t\) is defined as the discounted sum of all rewards from time \(t\) onward:</p>
+<p>$$G_t = R_t + \gamma R_{t+1} + \gamma^2 R_{t+2} + \cdots \qquad (\text{until a terminal state is reached}),$$</p>
+<p>where \(R_t,R_{t+1},R_{t+2},\dots\) are the rewards at each state starting from time \(t\), and \(\gamma\in[0,1)\) is the <strong>discount factor</strong>, which makes rewards received sooner count for more than the same reward received later.</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: six returns, with &gamma; = 0.5</span>
+<p>Computing \(G_t\) for six different starting situations in the corridor above (\(\gamma=0.5\)):</p>
+<table class="grid">
+<tr><th>#</th><th>Situation</th><th>Reward sequence</th><th>Return \(G_t\)</th></tr>
+<tr><td>1</td><td>Start at state 4, always move left</td><td>0 (at 4), 0 (at 3), 0 (at 2), 100 (at 1)</td><td>\(0+0.5(0)+0.25(0)+0.125(100)=12.5\)</td></tr>
+<tr><td>2</td><td>Start at state 3, always move left</td><td>0, 0, 100</td><td>\(0+0.5(0)+0.25(100)=25\)</td></tr>
+<tr><td>3</td><td>Start at state 1 (already terminal)</td><td>100</td><td>\(100\)</td></tr>
+<tr><td>4</td><td>Start at state 4, always move right</td><td>0 (at 4), 0 (at 5), 40 (at 6)</td><td>\(0+0.5(0)+0.25(40)=10\)</td></tr>
+<tr><td>5</td><td>Start at state 2, always move right</td><td>0 (at 2), 0 (at 3), 0 (at 4), 0 (at 5), 40 (at 6)</td><td>\(0+0.5(0)+0.25(0)+0.125(0)+0.0625(40)=2.5\)</td></tr>
+<tr><td>6</td><td>Start at state 6 (already terminal)</td><td>40</td><td>\(40\)</td></tr>
+</table>
+<p>Running the "always left" policy from every non-terminal state gives returns \([100,50,25,12.5,6.25,40]\) (states 1&ndash;6); running "always right" from every state gives \([100,2.5,5,10,20,40]\).</p>
+</div>
+<div class="an">
+<span class="box-label">Reading off a sensible strategy</span>
+<p>Comparing the two rows state by state: at state 2, "return by going left" (50) \(>\) "return by going right" (2.5), so go left; likewise at states 3 and 4. At state 5, "return by going right" (20) \(>\) "return by going left" (6.25), so go right. So a reasonable strategy emerges: <em>if at state 2, 3, or 4, go left; if at state 5, go right</em> — the agent is always heading toward whichever terminal state gives the better discounted payoff from where it currently stands.</p>
+</div>
+<div class="key">
+<span class="box-label">The recursive structure of Return</span>
+<p>Writing \(R_t\) for the reward at the state the agent occupies at time \(t\), \(G_t=R_t+\gamma R_{t+1}+\gamma^2R_{t+2}+\cdots=R_t+\gamma(R_{t+1}+\gamma R_{t+2}+\cdots)=R_t+\gamma G_{t+1}\). The return from a state is equal to the reward in that state, plus \(\gamma\) times the return from the next state — this one-step recursive identity, \(G_t=R_t+\gamma G_{t+1}\), is exactly what the Bellman equations below are built from.</p>
+</div>
+</section>
+
+<section class="slide" id="p16-policy">
+<span class="slide-tag">Pages 14&ndash;18</span>
+<h3>3. Policies, and the Markov Decision Process</h3>
+<div class="def">
+<span class="box-label">Policy</span>
+<p>A <strong>policy</strong> \(\pi\) is any function that takes a state as input and outputs an action — the action to take while being at that state. The goal in an RL task is to find a strategy that tells the agent what action to take at <em>every</em> state so as to maximize the return from every state; this strategy is the <strong>optimal policy</strong>, denoted \(\pi^*\). The strategy found above (left at 2, 3, 4; right at 5) <em>is</em> the optimal policy for the 6-state corridor.</p>
+</div>
+<div class="def">
+<span class="box-label">The (deterministic) Markov Decision Process</span>
+<p>A <strong>deterministic Markov Decision Process (MDP)</strong> consists of: a set of states \(S\); a set of actions \(A\); a <strong>state transition function</strong> \(T:S\times A\to S\), where \(T(s,a)\) is the next state when action \(a\) is taken in state \(s\); a <strong>reward function</strong> \(R:S\to\mathbb R\), where \(R(s)\) is the reward received for being in state \(s\); and a <strong>discount factor</strong> \(\gamma\in[0,1)\).</p>
+</div>
+<div class="an">
+<span class="box-label">The Markov property</span>
+<p>"Markov" refers to the fact that the next state depends only on the <em>current</em> state and action — not on the earlier history that led there. This is exactly the same Markov assumption already seen governing state transitions in Hidden Markov Models (Part 12).</p>
+</div>
+</section>
+
+<section class="slide" id="p16-valuefunctions">
+<span class="slide-tag">Page 19</span>
+<h3>4. Value Functions and the Bellman Equations</h3>
+<div class="def">
+<span class="box-label">State-value and action-value functions</span>
+<p>For a policy \(\pi\):</p>
+<p>$$V^\pi(s) = \text{return } G_t \text{ starting in } s_t=s \text{ and following } \pi,$$
+$$Q^\pi(s,a) = \text{return } G_t \text{ starting in } s_t=s,\text{ taking } a_t=a \text{ first, then following } \pi.$$</p>
+<p>In words: <em>the value of a state = the reward for being in that state + \(\gamma\) (the value of the state the agent lands in next)</em>. At a terminal state there is no next state, so \(V^\pi(s)=R(s)\) there. Note \(V^\pi(s)=Q^\pi(s,\pi(s))\) — the value of a state under \(\pi\) is just the action-value of the particular action \(\pi\) happens to choose there. \(V\) is the <strong>state-value function</strong>; \(Q\) is the <strong>action-value function</strong>.</p>
+</div>
+<div class="def">
+<span class="box-label">The Bellman Equations</span>
+<p>Substituting the recursive identity \(G_t=R_t+\gamma G_{t+1}\) (§2) directly into the definitions of \(V^\pi\) and \(Q^\pi\):</p>
+<p>$$V^\pi(s) = R(s) + \gamma\,V^\pi\big(T(s,\pi(s))\big), \qquad Q^\pi(s,a) = R(s) + \gamma\,V^\pi\big(T(s,a)\big).$$</p>
+</div>
+<div class="def">
+<span class="box-label">Optimal value functions and the Bellman Optimality Equations</span>
+<p>The <strong>optimal value functions</strong> are \(V^*(s)=\max_\pi V^\pi(s)\) and \(Q^*(s,a)=\max_\pi Q^\pi(s,a)\): the best possible value achievable from \(s\) (or from \(s\) having just taken \(a\)), over every possible policy. The optimal policy is read off from either one: \(\pi^*(s)=\operatorname*{arg\,max}_aV^*(T(s,a))=\operatorname*{arg\,max}_aQ^*(s,a)\). For finite discounted MDPs, a deterministic policy that is optimal from every state always exists. Substituting the best available action in place of \(\pi\)'s fixed choice gives the <strong>Bellman Optimality Equations</strong>:</p>
+<p>$$V^*(s) = R(s) + \gamma\max_a V^*\big(T(s,a)\big), \qquad Q^*(s,a) = R(s) + \gamma\max_{a'}Q^*\big(T(s,a),a'\big),$$</p>
+<p>with \(V^*(s)=R(s)\) at every terminal state \(s\).</p>
+</div>
+</section>
+
+<section class="slide" id="p16-valueiter">
+<span class="slide-tag">Page 20</span>
+<h3>5. The Value Iteration Algorithm</h3>
+<div class="def">
+<span class="box-label">The algorithm</span>
+<pre class="pseudocode">1. Initialize V(s) = 0 for all s.
+2. Repeat until convergence: {
+     For every non-terminal s:  V_new(s) &larr; R(s) + &gamma; max_a V(T(s,a)).
+     For every terminal s:      V_new(s) &larr; R(s).
+     Set V &larr; V_new.
+   }
+3. Extract the policy:  &pi;(s) = argmax_a V(T(s,a)).   (This is the optimal policy &pi;*.)</pre>
+<p>Value Iteration repeatedly applies the Bellman Optimality Equation for \(V^*\) as an <em>update rule</em>, rather than solving it directly — each sweep uses the previous sweep's values as a stand-in for the true (not-yet-known) \(V^*\), and this is proven to converge to the true \(V^*\).</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: a 3&times;3 gridworld</span>
+<p>Cell \((1,3)\) is the <strong>GOAL</strong> (\(R=+1\)); cell \((2,3)\) is the <strong>PIT</strong> (\(R=-1\)); every other cell has \(R(s)=0\). Both GOAL and PIT are terminal. Actions are \(\{\text{Up},\text{Down},\text{Left},\text{Right}\}\); each moves the agent one cell in that direction, and moving into a wall leaves the agent where it is. Discount \(\gamma=0.9\).</p>
+<table class="grid"><tr><td>(1,1)</td><td>(1,2)</td><td><strong>GOAL</strong></td></tr><tr><td>(2,1)</td><td>(2,2)</td><td><strong>PIT</strong></td></tr><tr><td>(3,1)</td><td>(3,2)</td><td>(3,3)</td></tr></table>
+</div>
+<div class="ex">
+<span class="box-label">The full iteration trace</span>
+<p>Each grid shows \(V\) after the given iteration (terminal cells show \(R(s)\) once updated in Iteration 1):</p>
+<table class="grid">
+<tr><th>Iteration 0</th><th>Iteration 1</th><th>Iteration 2</th><th>Iteration 3</th></tr>
+<tr><td>0, 0, 0<br>0, 0, 0<br>0, 0, 0</td><td>0, 0, 1<br>0, 0, &minus;1<br>0, 0, 0</td><td>0, 0.9, 1<br>0, 0, &minus;1<br>0, 0, 0</td><td>0.81, 0.9, 1<br>0, 0.81, &minus;1<br>0, 0, 0</td></tr>
+</table>
+<table class="grid">
+<tr><th>Iteration 4</th><th>Iteration 5</th><th>Iteration 6 (converged)</th></tr>
+<tr><td>0.81, 0.9, 1<br>0.729, 0.81, &minus;1<br>0, 0.729, 0</td><td>0.81, 0.9, 1<br>0.729, 0.81, &minus;1<br>0.6561, 0.729, 0.6561</td><td>0.81, 0.9, 1<br>0.729, 0.81, &minus;1<br>0.6561, 0.729, 0.6561</td></tr>
+</table>
+<p>Verifying one entry by hand: at iteration 2, cell \((1,2)\) updates to \(R(1,2)+\gamma\max_aV\big(T((1,2),a)\big)=0+0.9\times\max\{V(1,1),V(1,3),V(2,2)\}=0+0.9\times\max\{0,1,0\}=0.9\) — matching the table, since moving <em>right</em> from \((1,2)\) reaches the GOAL, whose iteration-1 value of 1 is the best neighbour available.</p>
+</div>
+<div class="key">
+<span class="box-label">Extracted optimal policy</span>
+<table class="grid"><tr><td>&rarr;</td><td>&rarr;</td><td>G</td></tr><tr><td>&uarr; or &rarr;</td><td>&uarr;</td><td>P</td></tr><tr><td>&uarr; or &rarr;</td><td>&uarr;</td><td>&larr;</td></tr></table>
+<p>Every arrow points along the shortest route toward GOAL while steering clear of PIT — exactly as the discounted rewards should produce. Cells \((1,1)\) and \((2,1)\) have two equally good actions (Up or Right) since both lie on an equally short path to GOAL.</p>
+</div>
+</section>
+
+<section class="slide" id="p16-policyiter">
+<span class="slide-tag">Pages 21&ndash;22</span>
+<h3>6. The Policy Iteration Algorithm</h3>
+<div class="def">
+<span class="box-label">The algorithm</span>
+<pre class="pseudocode">1. Start with any policy &pi; (e.g. arbitrary actions).
+2. Policy evaluation: compute V&pi; by repeating
+     V&pi;(s) &larr; R(s) + &gamma; V&pi;(T(s, &pi;(s)))     (note: no max here &mdash; the action at each state is fixed by &pi;)
+   until the values stop changing.
+3. Policy improvement: define a new policy greedy w.r.t. V&pi;:
+     &pi;'(s) = argmax_a V&pi;(T(s,a)).
+4. If &pi;' = &pi;, stop (&pi; is optimal). Otherwise set &pi; &larr; &pi;' and go to step 2.</pre>
+<p>Unlike Value Iteration — which improves the value estimate <em>and</em> implicitly the policy in the same sweep — Policy Iteration strictly alternates between fully evaluating the current policy's true value function (step 2) and then greedily improving the policy (step 3). The greedy improvement step never makes the policy worse; since there are only finitely many deterministic policies, the loop is guaranteed to terminate, usually after only a few rounds, and it terminates at an optimal policy.</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example: policy iteration on the same gridworld</span>
+<p>Initial policy: "always move left" (a deliberately bad starting point). Evaluation restarts from \(V=0\) each round. Tie-breaking rule for improvement: keep the current action unless some other action is <em>strictly</em> better; among strictly-better ties, take the first in order \(U,D,L,R\) (this is exactly what guarantees the loop stops).</p>
+<table class="grid">
+<tr><th>Round k</th><th>Policy &pi;<sub>k</sub></th><th>V<sup>&pi;<sub>k</sub></sup></th><th>Evaluation iterations</th></tr>
+<tr><td>1</td><td>&larr;,&larr;,G / &larr;,&larr;,P / &larr;,&larr;,&larr;</td><td>0,0,1 / 0,0,&minus;1 / 0,0,0</td><td>1</td></tr>
+<tr><td>2</td><td>&larr;,&rarr;,G / &larr;,&larr;,P / &larr;,&larr;,&larr;</td><td>0,0.9,1 / 0,0,&minus;1 / 0,0,0</td><td>2</td></tr>
+<tr><td>3</td><td>&rarr;,&rarr;,G / &larr;,&uarr;,P / &larr;,&larr;,&larr;</td><td>0.81,0.9,1 / 0,0.81,&minus;1 / 0,0,0</td><td>3</td></tr>
+<tr><td>4</td><td>&rarr;,&rarr;,G / &uarr;,&uarr;,P / &larr;,&uarr;,&larr;</td><td>0.81,0.9,1 / 0.729,0.81,&minus;1 / 0,0.729,0.6561</td><td>5</td></tr>
+<tr><td>5</td><td>&rarr;,&rarr;,G / &uarr;,&uarr;,P / &uarr;,&uarr;,&larr;</td><td>0.81,0.9,1 / 0.729,0.81,&minus;1 / 0.6561,0.729,0.6561</td><td>5</td></tr>
+</table>
+<p>After round 5, the improvement step returns \(\pi_5\) unchanged, so the algorithm stops: \(\pi_5\) is optimal and \(V^{\pi_5}=V^*\) — exactly matching Value Iteration's converged values and policy from §5, as both algorithms must, since both solve for the same \(V^*,\pi^*\).</p>
+</div>
+<div class="warn">
+<span class="box-label">The limitation both algorithms share</span>
+<p>Value Iteration and Policy Iteration both require advance knowledge of the transition model \(T\) and the reward function \(R\) — they are <strong>model-based</strong> reinforcement learning algorithms. In many real RL problems, the agent does <em>not</em> know \(T\) or \(R\) beforehand; instead it only observes experience tuples \((s_t,a_t,r_{t+1},s_{t+1})\) by interacting with the environment. This motivates <strong>model-free</strong> methods, which learn value functions or policies directly from experience without requiring an explicit model — the next section covers the canonical one, Q-Learning.</p>
+</div>
+</section>
+
+<section class="slide" id="p16-qlearning">
+<span class="slide-tag">Pages 22&ndash;23</span>
+<h3>7. Q-Learning</h3>
+<div class="def">
+<span class="box-label">The update rule</span>
+<p>Q-learning proceeds over many episodes. In each episode, the agent interacts with the environment, observes transitions, and updates its action-value estimates \(Q(s,a)\). Suppose the agent takes action \(a\) in state \(s\), receives reward \(R(s)\), and moves to state \(s'\); the <strong>Q-learning update</strong> is</p>
+<p>$$Q(s,a)\ \leftarrow\ Q(s,a) + \alpha\Big[\underbrace{R(s)+\gamma\max_{a'}Q(s',a')}_{\text{target}} - \underbrace{Q(s,a)}_{\text{current estimate}}\Big],$$</p>
+<p>where \(\alpha\in(0,1]\) is the learning rate and \(\gamma\) is the discount factor. If \(s'\) is terminal, there are no future rewards to consider, so the future-value term is taken to be zero, \(\max_{a'}Q(s',a')=0\), and the update becomes simply \(Q(s,a)\leftarrow Q(s,a)+\alpha[R(s)-Q(s,a)]\).</p>
+</div>
+<div class="an">
+<span class="box-label">Reading the update as a nudge toward a target</span>
+<p>The bracketed term is the difference between a <strong>target</strong> (what \(Q(s,a)\) <em>should</em> be, using the reward just observed plus the discounted best estimate of what comes after) and the <strong>current estimate</strong>. The update nudges \(Q(s,a)\) a fraction \(\alpha\) of the way toward that target — exactly the same "move toward the better estimate" spirit as gradient descent in Part 13, but applied to a table of action-values rather than network weights.</p>
+</div>
+<div class="def">
+<span class="box-label">&epsilon;-Greedy Exploration</span>
+<p>If the agent always greedily chooses the action that currently maximizes \(Q(s,a)\), it may never try actions that initially look unfavourable but are actually better — it would never gather the evidence to find out. The standard fix is <strong>\(\varepsilon\)-greedy exploration</strong>:</p>
+<p>$$a = \begin{cases}\text{random action} & \text{with probability }\varepsilon,\\ \operatorname*{arg\,max}_aQ(s,a) & \text{with probability }1-\varepsilon.\end{cases}$$</p>
+<p>Typically \(\varepsilon\) starts relatively large and is gradually decreased over the episodes — encouraging exploration early in training, and exploitation of the learned action-values later.</p>
+</div>
+<div class="def">
+<span class="box-label">The full Q-Learning algorithm</span>
+<pre class="pseudocode">1. Initialize Q(s,a) = 0 for all s, a.
+2. For each episode: {
+     Start in an initial state s.
+     Repeat until the episode ends: {
+       Choose action a by &epsilon;-greedy exploration, observe s', and apply
+         Q(s,a) &larr; Q(s,a) + &alpha;[ R(s) + &gamma; max_a' Q(s',a') &minus; Q(s,a) ].
+       Set s &larr; s'.
+     }
+   }
+3. After many episodes, compute &pi;(s) = argmax_a Q(s,a).</pre>
+<p><strong>Convergence:</strong> Q-learning converges to \(Q^*\) provided every state&ndash;action pair keeps being visited (so no action in any state is ever permanently starved of exploration).</p>
+</div>
+<div class="ex">
+<span class="box-label">Worked example computations (&alpha; = 1, &gamma; = 0.9, all Q = 0 initially)</span>
+<p>Two hand-picked moves on the same 3&times;3 gridworld, chosen to illustrate how information propagates backward through the Q-table one transition at a time. A transition <em>into</em> a terminal state uses that state's reward directly in place of \(\max_{a'}Q(s',a')\):</p>
+<table class="grid">
+<tr><th>#</th><th>Transition \((s,a\to s')\)</th><th>Computation</th><th>New Q</th></tr>
+<tr><td>1</td><td>\((1,2)\), Right \(\to\) GOAL</td><td>\(0+1\big(0+0.9(1)-0\big)\)</td><td>\(Q\big((1,2),R\big)=0.9\)</td></tr>
+<tr><td>2</td><td>\((1,1)\), Right \(\to(1,2)\)</td><td>\(0+1\big(0+0.9(0.9)-0\big)\)</td><td>\(Q\big((1,1),R\big)=0.81\)</td></tr>
+</table>
+<p>The second update reuses the <em>freshly updated</em> \(Q((1,2),\text{Right})=0.9\) as its \(\max_{a'}Q(s',a')\) term — this is exactly how a reward sitting only at the GOAL cell gradually "propagates backward" through the grid, one visited transition at a time, until every state's Q-values reflect how close it sits to the reward.</p>
+</div>
+</section>
+
+<section class="slide" id="p16-stochastic">
+<span class="slide-tag">Pages 24&ndash;29</span>
+<h3>8. Stochastic MDPs</h3>
+<div class="warn">
+<span class="box-label">Why deterministic isn't the whole story</span>
+<p>Everything above assumed that taking action \(a\) in state \(s\) leads to exactly one, predictable next state \(T(s,a)\). Real environments are often not like this: a robot commanded to move right might slip and end up moving up instead. A <strong>stochastic MDP</strong> replaces the deterministic transition function with transition <em>probabilities</em>.</p>
+</div>
+<div class="def">
+<span class="box-label">Definition</span>
+<p>A <strong>stochastic MDP</strong> consists of: a set of states \(S\); a set of actions \(A\); probabilities \(P(s'\mid s,a)\) of moving to state \(s'\) when action \(a\) is taken at state \(s\); a reward function \(R:S\to\mathbb R\); and a discount factor \(\gamma\in[0,1)\). A deterministic MDP is the special case where \(P(s'\mid s,a)=1\) for \(s'=T(s,a)\) and \(0\) for every other \(s'\) — the transition function \(T\) is just a stochastic MDP's probability distribution collapsed onto a single guaranteed outcome.</p>
+</div>
+<div class="def">
+<span class="box-label">Value functions become expectations</span>
+<p>Since the next state is now random, the return \(G_t\) is itself a <strong>random variable</strong> — so the value functions are redefined as its <strong>expected value</strong>:</p>
+<p>$$V^\pi(s) = \mathbb E_\pi[G_t\mid s_t=s], \qquad Q^\pi(s,a) = \mathbb E_\pi[G_t\mid s_t=s,a_t=a].$$</p>
+<p>The goal of a stochastic RL task is unchanged in spirit: choose a policy \(\pi:S\to A\) giving the best action to take from every state \(s\), so as to maximize the <em>expected</em> return.</p>
+</div>
+<div class="def">
+<span class="box-label">Bellman Equations for a stochastic MDP</span>
+<p>The deterministic Bellman equations' single next state \(T(s,a)\) is replaced by an expectation over every possible next state, weighted by its transition probability:</p>
+<p>$$V^\pi(s) = R(s) + \gamma\sum_{s'}P(s'\mid s,\pi(s))\,V^\pi(s'), \qquad Q^\pi(s,a) = R(s) + \gamma\sum_{s'}P(s'\mid s,a)\,V^\pi(s'),$$</p>
+<p>$$V^*(s) = R(s) + \gamma\max_a\sum_{s'}P(s'\mid s,a)\,V^*(s'), \qquad Q^*(s,a) = R(s) + \gamma\sum_{s'}P(s'\mid s,a)\max_{a'}Q^*(s',a').$$</p>
+<p>For a terminal state \(s\), \(V(s)=R(s)\), exactly as in the deterministic case. The optimal policy is still read off the same way: \(\pi^*(s)=\operatorname*{arg\,max}_aQ^*(s,a)\).</p>
+</div>
+<div class="key">
+<span class="box-label">Key takeaway for all of Part 16</span>
+<p>Reinforcement Learning reframes "learning" entirely: rather than fitting a function to labelled examples, an agent learns a policy by interacting with an environment and propagating reward information backward through the Bellman equations' recursive structure \(G_t=R_t+\gamma G_{t+1}\). Value Iteration and Policy Iteration solve this exactly when the model \((T\text{ or }P,R)\) is known; Q-Learning solves the same underlying Bellman Optimality Equation without ever needing to know that model, learning purely from experience tuples \((s,a,R(s),s')\) — the model-free idea that makes RL applicable to environments too complex to ever fully specify in advance.</p>
+</div>
+</section>
+
 <section class="slide" id="recap">
   <span class="slide-tag">Full-course recap</span>
   <h3>Recap: how all thirteen parts connect</h3>
@@ -5213,10 +5996,13 @@
     <tr><td><strong>7. Uncertainty &amp; Bayesian Networks</strong></td><td>How do I reason when I'm not certain of anything?</td><td>A Bayesian network factors a huge joint distribution into small local CPTs, one per node, via \(P(x_1,\dots,x_n)=\prod_i P(x_i\mid\text{Parents}(X_i))\). Inference by Enumeration answers any query correctly but redoes shared work; Variable Elimination computes each distinct factor once and reuses it — same answer, far less computation.</td></tr>
     <tr><td><strong>8. Decision Tree Learning</strong></td><td>How does a machine learn a decision procedure from examples?</td><td>LEARN-DECISION-TREE recursively splits on the attribute with highest Information Gain — Initial entropy minus the Remainder (weighted average entropy of the resulting subsets). Regression trees do the same thing with variance reduction in place of entropy, predicting each leaf's mean target value.</td></tr>
     <tr><td><strong>9. Naive Bayes Classifier</strong></td><td>How do I classify when the full joint distribution is infeasible to even store?</td><td>Assume every feature is conditionally independent given the class: \(P(Y\mid X_1,\dots,X_n)=\alpha\,P(Y)\prod_i P(X_i\mid Y)\). Bernoulli models word presence/absence, Multinomial models word counts; both need Laplace smoothing to survive words never seen for a class, and both are safer computed as a sum of logs than a product of tiny numbers.</td></tr>
-<tr><td><strong>10. Hidden Markov Models</strong></td><td>How do I reason about a hidden state that only reveals itself through noisy, probabilistic observations?</td><td>An HMM adds hidden states and an emission matrix \(B\) on top of a Markov chain. Its three fundamental problems are each solved by one dynamic-programming algorithm: Evaluation by the Forward Algorithm (\(\alpha_t(j)=\sum_i\alpha_{t-1}(i)a_{ij}b_j(o_t)\)), Decoding by Viterbi (same recursion with max instead of sum, plus backpointers), and Learning by Baum&ndash;Welch/EM, which combines \(\alpha\) with the Backward Algorithm's \(\beta_t(i)\) to iteratively re-estimate \(A\) and \(B\).</td></tr>
-<tr><td><strong>11. k-Nearest Neighbours</strong></td><td>How do I classify a new point using only its closest labelled neighbours, with no training phase at all?</td><td>Store all the training data; at query time, compute distances to every point, take the \(k\) closest, and vote (or average, for regression). Small \(k\) overfits, large \(k\) underfits; features must be normalized first, and in high dimensions "nearest" stops being meaningful (the Curse of Dimensionality).</td></tr>
-<tr><td><strong>12. k-Means Clustering</strong></td><td>Given only unlabelled points, how do I group them into \(k\) sensible clusters?</td><td>Alternate two steps to convergence: assign each point to its nearest centroid (\(\text{argmin}_j\lVert x^{(i)}-\mu_j\rVert^2\)), then move each centroid to the mean of the points just assigned to it. Guaranteed to converge, but not guaranteed to find the best clustering — the result depends on the random initial centroids.</td></tr>
+<tr><td><strong>10. k-Nearest Neighbours</strong></td><td>How do I classify a new point using only its closest labelled neighbours, with no training phase at all?</td><td>Store all the training data; at query time, compute distances to every point, take the \(k\) closest, and vote (or average, for regression). Small \(k\) overfits, large \(k\) underfits; features must be normalized first, and in high dimensions "nearest" stops being meaningful (the Curse of Dimensionality).</td></tr>
+<tr><td><strong>11. k-Means Clustering</strong></td><td>Given only unlabelled points, how do I group them into \(k\) sensible clusters?</td><td>Alternate two steps to convergence: assign each point to its nearest centroid (\(\text{argmin}_j\lVert x^{(i)}-\mu_j\rVert^2\)), then move each centroid to the mean of the points just assigned to it. Guaranteed to converge, but not guaranteed to find the best clustering — the result depends on the random initial centroids.</td></tr>
+<tr><td><strong>12. Hidden Markov Models</strong></td><td>How do I reason about a hidden state that only reveals itself through noisy, probabilistic observations?</td><td>An HMM adds hidden states and an emission matrix \(B\) on top of a Markov chain. Its three fundamental problems are each solved by one dynamic-programming algorithm: Evaluation by the Forward Algorithm (\(\alpha_t(j)=\sum_i\alpha_{t-1}(i)a_{ij}b_j(o_t)\)), Decoding by Viterbi (same recursion with max instead of sum, plus backpointers), and Learning by Baum&ndash;Welch/EM, which combines \(\alpha\) with the Backward Algorithm's \(\beta_t(i)\) to iteratively re-estimate \(A\) and \(B\).</td></tr>
 <tr><td><strong>13. Neural Networks</strong></td><td>How can a machine represent and learn functions far more complex than a straight line?</td><td>Stack weighted sums \(z=Wx+b\) with non-linear activations \(a=g(z)\) &mdash; purely linear layers collapse into one linear map, so the non-linearity is what gives depth its power (Universal Approximation Theorem). Backpropagation trains the network by applying the chain rule once per parameter, e.g. \(\partial J/\partial w_{11}^{[1]} = 2(\hat y-y)\,w_1^{[2]}\,g_1'(z_1^{[1]})\,x_1\), with vectorized gradient descent run over many epochs.</td></tr>
+<tr><td><strong>14. CNNs &amp; RNNs</strong></td><td>How can a network exploit the spatial structure of images, or the temporal order of sequences?</td><td>A CNN slides a shared kernel across an image (convolution/cross-correlation), applies ReLU, and pools, so that early layers extract local features and dense layers classify them. An RNN carries a hidden state \(h_t=f(W_hh_{t-1}+W_xx_t+b)\) forward through a sequence; unrolling it shows why training plain RNNs suffers from vanishing/exploding gradients, motivating LSTMs and GRUs.</td></tr>
+<tr><td><strong>15. Natural Language Processing</strong></td><td>How do I turn text into numbers that capture what it means?</td><td>BoW/N-grams/TF-IDF represent text by word identity and frequency, ignoring (or only locally capturing) order and never meaning; N-gram language models predict the next word via the Markov assumption, smoothed (Laplace) to avoid zero probabilities, scored by perplexity. Dense embeddings (Word2Vec's Skip-Gram-with-Negative-Sampling, GloVe) learn meaning-sensitive vectors from co-occurrence; self-attention \(\text{softmax}(QK^T/\sqrt{d_k})V\) goes further, making each word's representation depend on the whole sentence.</td></tr>
+<tr><td><strong>16. Reinforcement Learning</strong></td><td>How does an agent learn to act well through trial and error, with no labelled examples at all?</td><td>An MDP is \((S,A,T\text{ or }P,R,\gamma)\); the Bellman equations \(V^\pi(s)=R(s)+\gamma V^\pi(T(s,\pi(s)))\) follow from the recursive return \(G_t=R_t+\gamma G_{t+1}\). Value Iteration and Policy Iteration solve for \(V^*,\pi^*\) exactly when the model is known (model-based); Q-Learning learns \(Q^*\) directly from experience tuples \((s,a,R(s),s')\) with no model at all (model-free), using \(\varepsilon\)-greedy exploration to balance trying new actions against exploiting what's already learned.</td></tr>
   </table>
 
   <h4>Mini glossary</h4>
@@ -5261,16 +6047,6 @@
     <tr><td><strong>Bernoulli Naive Bayes</strong></td><td>Models each feature as present/absent (0/1); best for short texts where mere occurrence matters more than frequency.</td></tr>
     <tr><td><strong>Multinomial Naive Bayes</strong></td><td>Models each feature as a count of occurrences; best for longer documents where repetition carries information.</td></tr>
     <tr><td><strong>Laplace smoothing</strong></td><td>Adding a small pretend count (usually +1, with a matching denominator correction) to every probability estimate, so no feature ever gets an estimated probability of exactly zero.</td></tr>
-<tr><td><strong>Markov property</strong></td><td>The future depends only on the present state, not on any state further in the past: \(P(q_i\mid q_1,\ldots,q_{i-1})=P(q_i\mid q_{i-1})\).</td></tr>
-<tr><td><strong>HMM, \(\lambda=(A,B,\pi)\)</strong></td><td>A Markov chain extended with hidden states: \(A\) is the transition matrix, \(B\) the emission matrix (\(b_{ij}=P(O_t{=}j\mid Q_t{=}i)\)), and \(\pi\) the initial state distribution.</td></tr>
-<tr><td><strong>Three fundamental HMM problems</strong></td><td>Evaluation (\(P(O\mid\lambda)\)), Decoding (\(\operatorname*{argmax}_Q P(Q\mid O)\)), and Learning (\(\operatorname*{argmax}_\lambda P(O\mid\lambda)\)) &mdash; as framed by Ferguson and popularised by Rabiner (1989).</td></tr>
-<tr><td><strong>Forward variable \(\alpha_t(j)\)</strong></td><td>\(P(o_1,\ldots,o_t,\,Q_t{=}j)\); computed by the Forward Algorithm in \(O(N^2T)\) time to solve Evaluation, replacing an \(O(N^T)\) brute-force sum.</td></tr>
-<tr><td><strong>Viterbi variable \(v_t(j)\)</strong></td><td>The probability of the single most likely path ending in state \(j\) at time \(t\); same recursion as \(\alpha_t(j)\) but with max in place of sum, paired with a backpointer \(bt_t(j)\) to recover the full best path.</td></tr>
-<tr><td><strong>Backward variable \(\beta_t(i)\)</strong></td><td>\(P(o_{t+1},\ldots,o_T\mid Q_t{=}i,\lambda)\); the time-reversed counterpart of \(\alpha_t(i)\), used together with it in Baum&ndash;Welch.</td></tr>
-<tr><td><strong>\(\xi_t(i,j)\)</strong></td><td>The probability of being in state \(i\) at time \(t\) and state \(j\) at time \(t+1\), given the full observation sequence: \(\xi_t(i,j)=\alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)/P(O\mid\lambda)\).</td></tr>
-<tr><td><strong>\(\gamma_t(j)\)</strong></td><td>The probability of occupying state \(j\) at time \(t\), given the full observation sequence: \(\gamma_t(j)=\alpha_t(j)\beta_t(j)/P(O\mid\lambda)\).</td></tr>
-<tr><td><strong>Baum&ndash;Welch / Forward&ndash;Backward Algorithm</strong></td><td>The EM algorithm specialised to HMMs: the E-step computes \(\gamma_t(j)\) and \(\xi_t(i,j)\) from the current \(A,B\); the M-step re-estimates \(A,B\) as expected-count ratios; log-likelihood increases monotonically to a local optimum.</td></tr>
-<tr><td><strong>Expectation&ndash;Maximization (EM)</strong></td><td>A general iterative scheme for maximum-likelihood estimation with hidden/latent variables: alternate estimating the hidden information (E-step) and updating the parameters to fit it (M-step) until convergence.</td></tr>
 <tr><td><strong>k-NN</strong></td><td>k-Nearest Neighbours — a supervised, non-parametric, instance-based ("lazy") learning algorithm that predicts via a majority vote (or average) among the \(k\) closest training points.</td></tr>
 <tr><td><strong>Lazy / instance-based learning</strong></td><td>A learning style with no real training phase: the entire training set is stored verbatim and used directly at prediction time.</td></tr>
 <tr><td><strong>Minkowski distance (\(L_p\) norm)</strong></td><td>\(L_p(x_i,x_j)=\left(\sum_k|x_{i,k}-x_{j,k}|^p\right)^{1/p}\); \(p=1\) gives Manhattan distance, \(p=2\) gives Euclidean distance.</td></tr>
@@ -5282,6 +6058,16 @@
 <tr><td><strong>Centroid</strong></td><td>The mean position of all points currently assigned to a given cluster; k-means moves each centroid to this mean on every update step.</td></tr>
 <tr><td><strong>Indicator function \(\mathbf{1}\{P\}\)</strong></td><td>Equals 1 if the statement \(P\) is true, and 0 if \(P\) is false; used here to pick out exactly the points assigned to a given cluster when averaging.</td></tr>
 <tr><td><strong>Convergence (k-means)</strong></td><td>Reached when an assignment step changes no point's cluster, so the following update step leaves every centroid unchanged.</td></tr>
+<tr><td><strong>Markov property</strong></td><td>The future depends only on the present state, not on any state further in the past: \(P(q_i\mid q_1,\ldots,q_{i-1})=P(q_i\mid q_{i-1})\).</td></tr>
+<tr><td><strong>HMM, \(\lambda=(A,B,\pi)\)</strong></td><td>A Markov chain extended with hidden states: \(A\) is the transition matrix, \(B\) the emission matrix (\(b_{ij}=P(O_t{=}j\mid Q_t{=}i)\)), and \(\pi\) the initial state distribution.</td></tr>
+<tr><td><strong>Three fundamental HMM problems</strong></td><td>Evaluation (\(P(O\mid\lambda)\)), Decoding (\(\operatorname*{argmax}_Q P(Q\mid O)\)), and Learning (\(\operatorname*{argmax}_\lambda P(O\mid\lambda)\)) &mdash; as framed by Ferguson and popularised by Rabiner (1989).</td></tr>
+<tr><td><strong>Forward variable \(\alpha_t(j)\)</strong></td><td>\(P(o_1,\ldots,o_t,\,Q_t{=}j)\); computed by the Forward Algorithm in \(O(N^2T)\) time to solve Evaluation, replacing an \(O(N^T)\) brute-force sum.</td></tr>
+<tr><td><strong>Viterbi variable \(v_t(j)\)</strong></td><td>The probability of the single most likely path ending in state \(j\) at time \(t\); same recursion as \(\alpha_t(j)\) but with max in place of sum, paired with a backpointer \(bt_t(j)\) to recover the full best path.</td></tr>
+<tr><td><strong>Backward variable \(\beta_t(i)\)</strong></td><td>\(P(o_{t+1},\ldots,o_T\mid Q_t{=}i,\lambda)\); the time-reversed counterpart of \(\alpha_t(i)\), used together with it in Baum&ndash;Welch.</td></tr>
+<tr><td><strong>\(\xi_t(i,j)\)</strong></td><td>The probability of being in state \(i\) at time \(t\) and state \(j\) at time \(t+1\), given the full observation sequence: \(\xi_t(i,j)=\alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)/P(O\mid\lambda)\).</td></tr>
+<tr><td><strong>\(\gamma_t(j)\)</strong></td><td>The probability of occupying state \(j\) at time \(t\), given the full observation sequence: \(\gamma_t(j)=\alpha_t(j)\beta_t(j)/P(O\mid\lambda)\).</td></tr>
+<tr><td><strong>Baum&ndash;Welch / Forward&ndash;Backward Algorithm</strong></td><td>The EM algorithm specialised to HMMs: the E-step computes \(\gamma_t(j)\) and \(\xi_t(i,j)\) from the current \(A,B\); the M-step re-estimates \(A,B\) as expected-count ratios; log-likelihood increases monotonically to a local optimum.</td></tr>
+<tr><td><strong>Expectation&ndash;Maximization (EM)</strong></td><td>A general iterative scheme for maximum-likelihood estimation with hidden/latent variables: alternate estimating the hidden information (E-step) and updating the parameters to fit it (M-step) until convergence.</td></tr>
 <tr><td><strong>Neuron / layer</strong></td><td>A neuron computes a weighted sum plus bias, then applies an activation; a layer is a collection of neurons computed in parallel from the same inputs. The input layer is never counted toward a network's "number of layers."</td></tr>
 <tr><td><strong>Pre-activation \(z\) / activation \(a\)</strong></td><td>\(z=w^Tx+b\) is the raw weighted sum; \(a=g(z)\) is the result after applying the (possibly non-linear) activation function \(g\).</td></tr>
 <tr><td><strong>Step function</strong></td><td>\(g(z)=1\) if \(z\ge0\), else \(0\); produces hard yes/no decisions, as used in the OR/AND single-neuron examples; not differentiable, so rarely used in trainable modern networks.</td></tr>
@@ -5296,7 +6082,7 @@
 </section>
 
 <footer>
-  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems &middot; Logical Agents &amp; Propositional Logic &middot; Uncertainty &amp; Bayesian Networks &middot; Decision Tree Learning &middot; Naive Bayes Classifier &middot; Hidden Markov Models &middot; k-Nearest Neighbours &middot; k-Means Clustering &middot; Neural Networks (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, the backtracking and AC-3 trace tables in Part 5, every TT-ENTAILS?, Resolution, DPLL, Forward Chaining, and Backward Chaining trace in Part 6, the Enumeration and Variable Elimination computations in Part 7, the Information Gain calculations in Part 8, the smoothed Bernoulli/Multinomial Naive Bayes computations in Part 9, the Forward and Viterbi trace tables in Part 10, the Euclidean-distance classification and k-means clustering numericals in Parts 11&ndash;12, and the backpropagation derivation in Part 13.
+  Built as a study companion for <em>Introduction to Artificial Intelligence</em> — Agents and Rationality &middot; Search Problems, Uninformed and Informed Search &middot; Local Search Algorithms &middot; Adversarial Search and Games &middot; Constraint Satisfaction Problems &middot; Logical Agents &amp; Propositional Logic &middot; Uncertainty &amp; Bayesian Networks &middot; Decision Tree Learning &middot; Naive Bayes Classifier &middot; k-Nearest Neighbours &middot; k-Means Clustering &middot; Hidden Markov Models &middot; Neural Networks &middot; Convolutional &amp; Recurrent Neural Networks &middot; Introduction to Natural Language Processing &middot; Introduction to Reinforcement Learning (Dr Aishwarya S., MIT Manipal). All worked examples were carefully cross-checked against the original lecture slides, including a full independent verification of the Minimax and Alpha-Beta trace tables in Part 4, the backtracking and AC-3 trace tables in Part 5, every TT-ENTAILS?, Resolution, DPLL, Forward Chaining, and Backward Chaining trace in Part 6, the Enumeration and Variable Elimination computations in Part 7, the Information Gain calculations in Part 8, the smoothed Bernoulli/Multinomial Naive Bayes computations in Part 9, the Euclidean-distance classification and k-means clustering numericals in Parts 10&ndash;11, the Forward and Viterbi trace tables in Part 12, the backpropagation derivation in Part 13, the convolution/pooling arithmetic and vanishing-gradient derivation in Part 14, the BoW/TF-IDF/N-gram-language-model/Word2Vec/self-attention worked examples in Part 15, and the Value Iteration, Policy Iteration, and Q-Learning gridworld traces in Part 16.
 </footer>
 </main>
 </div>
